@@ -14,14 +14,15 @@ Game::~Game()
 void Game::Init(HWND hwnd)
 {
 	_hwnd = hwnd;
-	hdc = ::GetDC(hwnd);
+	_hdc = ::GetDC(hwnd);
 
-	::GetClientRect(hwnd, &_rect);
+	// 더블 버퍼링 코드
+	//::GetClientRect(hwnd, &_rect);
 
-	hdcBack = ::CreateCompatibleDC(hdc);	// hdc와 호환되는 DC 생성
-	_bmpBack = ::CreateCompatibleBitmap(hdc, _rect.right, _rect.bottom);	// hdc와 호환되는 비트맵 생성
-	HBITMAP prev = (HBITMAP)::SelectObject(hdcBack, _bmpBack);	// DC와 BMP 연결
-	::DeleteObject(prev);
+	//hdcBack = ::CreateCompatibleDC(_hdc);	// hdc와 호환되는 DC 생성
+	//_bmpBack = ::CreateCompatibleBitmap(_hdc, _rect.right, _rect.bottom);	// hdc와 호환되는 비트맵 생성
+	//HBITMAP prev = (HBITMAP)::SelectObject(hdcBack, _bmpBack);	// DC와 BMP 연결
+	//::DeleteObject(prev);
 
 	// 각 매니저들 Init
 	GET_SINGLE(InputManager)->Init(hwnd);
@@ -36,4 +37,17 @@ void Game::Update()
 
 void Game::Render()
 {
+	uint32 fps = GET_SINGLE(TimeManager)->GetFps();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	{
+		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+		std::wstring str = std::format(L"Mouse({0}, {1})", mousePos.x, mousePos.y);
+		::TextOut(_hdc, 20, 10, str.c_str(), static_cast<int32>(str.size()));
+	}
+
+	{
+		std::wstring str = std::format(L"FPS({0}), DT({1})", fps, deltaTime);
+		::TextOut(_hdc, 550, 10, str.c_str(), static_cast<int32>(str.size()));
+	}
 }

@@ -110,7 +110,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     RECT windowRect = { 0, 0, GWinSizeX, GWinSizeY };
     ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
-    HWND hWnd = CreateWindowW(L"B1A2_project1", L"Client", WS_OVERLAPPEDWINDOW,
+    HWND hWnd = CreateWindowW(L"B1A2_project1", L"B1A2", WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
 
     g_hwnd = hWnd;  // 전역 핸들 번호에 넣어줌
