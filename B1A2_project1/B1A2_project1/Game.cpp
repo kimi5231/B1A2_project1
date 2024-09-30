@@ -14,7 +14,7 @@ Game::~Game()
 void Game::Init(HWND hwnd)
 {
 	_hwnd = hwnd;
-	_hdc = ::GetDC(hwnd);
+	_hdc = ::GetDC(hwnd);	// hwnd로 hdc 알 수 있는 함수
 
 	// 더블 버퍼링 코드
 	//::GetClientRect(hwnd, &_rect);

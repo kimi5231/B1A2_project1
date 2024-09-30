@@ -143,6 +143,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Types.h" />
@@ -158,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>

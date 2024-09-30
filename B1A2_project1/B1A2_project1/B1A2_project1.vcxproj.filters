@@ -71,6 +71,7 @@
     <ClInclude Include="TimeManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -93,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
