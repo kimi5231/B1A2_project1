@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 
 Game::Game()
 {
@@ -24,11 +25,13 @@ void Game::Init(HWND hwnd)
 
 	// 각 매니저들 Init
 	GET_SINGLE(InputManager)->Init(hwnd);
+	GET_SINGLE(TimeManager)->Init();
 }
 
 void Game::Update()
 {
 	GET_SINGLE(InputManager)->Update();
+	GET_SINGLE(TimeManager)->Update();
 }
 
 void Game::Render()
