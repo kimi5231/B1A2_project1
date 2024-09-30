@@ -50,6 +50,9 @@
     <ClInclude Include="Values.h">
       <Filter>소스 파일\99. Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>소스 파일\00. MainGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -57,6 +60,9 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일\99. Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>소스 파일\00. MainGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

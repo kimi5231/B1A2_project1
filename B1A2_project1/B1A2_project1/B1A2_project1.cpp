@@ -4,12 +4,13 @@
 #include "pch.h"
 #include "framework.h"
 #include "B1A2_project1.h"
+#include "Game.h"
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
-HWND g_hwnd;
+HWND g_hwnd;    // 전역 핸들 번호
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -34,6 +35,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 초기화 
     MSG msg = {};
 
+    Game game;
+    game.Init(g_hwnd);
+
+    uint64 prevTick = 0;
+
     // 3) 메인 루프
     while (msg.message != WM_QUIT)
     {
@@ -45,6 +51,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             uint64 now = ::GetTickCount64();
+
+            //if (now - prevTick >= 30)     // 프레임 설정할 때 사용하는 코드
+            {
+                game.Update();
+                game.Render();
+
+                prevTick = now;
+            }
         }
     }
 
@@ -99,7 +113,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     HWND hWnd = CreateWindowW(L"B1A2_project1", L"Client", WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
 
-    //g_hwnd = hwnd;
+    g_hwnd = hWnd;  // 전역 핸들 번호에 넣어줌
 
     if (!hWnd)
     {

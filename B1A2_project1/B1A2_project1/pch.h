@@ -11,5 +11,6 @@
 #include "Types.h"
 #include "Defines.h"
 #include "Values.h"
+#include "Enums.h"
 
 //using namespace std;
