@@ -2,10 +2,12 @@
 1. 기본 제공 함수는 :: 붙여 표시하기
 2. 변수, 함수 등의 이름은 길어지더라도 의미를 알기 쉽게 정하기
 3. 멤버 변수 정렬하지 않기
+4. 경로는 상대경로로 하기
 
 [변수 작성 요령]
--전역 변수:
--지역 변수:
--멤버 변수: PascalCase => ex) MemberFunc
--멤버 함수: _ + camelCase => ex) _memberValue
--Boolean: is + (value name) => ex) isHuman
+-전역 변수: g_ + (value name) => ex) g_value
+-상수 변수: PascalCase => ConstValue
+-멤버 함수: PascalCase => ex) MemberFunc
+-멤버 변수: _ + camelCase => ex) _memberValue
+-Boolean: is + (value name) => ex) isValue
+-클래스: PascalCase => ex) ClassName
