@@ -33,6 +33,9 @@
     <Filter Include="소스 파일\04. Resources">
       <UniqueIdentifier>{4fafa560-2df1-4ff7-b3f8-c68a02cd0b46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\06. UI">
+      <UniqueIdentifier>{d47e664b-7760-48fb-be70-33502b26a3ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -95,6 +98,9 @@
     <ClInclude Include="ResourceBase.h">
       <Filter>소스 파일\04. Resources</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>소스 파일\06. UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -135,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="ResourceBase.cpp">
       <Filter>소스 파일\04. Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>소스 파일\06. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
