@@ -24,6 +24,7 @@ void Button::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
+	Utils::DrawRect(hdc, _pos, _size);
 }
 
 void Button::SetButtonState(ButtonState state)

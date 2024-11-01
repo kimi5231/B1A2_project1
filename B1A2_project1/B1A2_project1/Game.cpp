@@ -4,6 +4,7 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include <iostream>
 
 Game::Game()
 {
