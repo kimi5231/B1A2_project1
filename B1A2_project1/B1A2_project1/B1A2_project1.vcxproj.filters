@@ -107,7 +107,9 @@
     <ClInclude Include="Button.h">
       <Filter>소스 파일\06. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Utils.h">
+      <Filter>소스 파일\99. Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -159,7 +161,7 @@
       <Filter>소스 파일\06. UI</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\99. Headers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
