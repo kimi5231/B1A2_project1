@@ -6,8 +6,10 @@ ResourceManager::~ResourceManager()
 	Clear();
 }
 
-void ResourceManager::Init()
+void ResourceManager::Init(HWND hwnd, std::filesystem::path resourcePath)
 {
+	_hwnd = hwnd;
+	_resourcePath = resourcePath;
 }
 
 void ResourceManager::Clear()

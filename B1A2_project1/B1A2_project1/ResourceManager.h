@@ -1,4 +1,7 @@
 #pragma once
+
+class ResourceBase;
+
 class ResourceManager
 {
 public:
@@ -7,10 +10,13 @@ public:
 	~ResourceManager();
 
 public:
-	void Init();
+	void Init(HWND hwnd, std::filesystem::path resourcePath);
 	void Clear();
 
-private:
+	const std::filesystem::path& GetResourcePath() { return _resourcePath; }
 
+private:
+	HWND _hwnd;
+	std::filesystem::path _resourcePath;
 };
 

@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "SceneManager.h"
+#include "ResourceManager.h"
 
 Game::Game()
 {
@@ -16,6 +18,10 @@ void Game::Init(HWND hwnd)
 	_hwnd = hwnd;
 	_hdc = ::GetDC(hwnd);	// hwnd로 hdc 알 수 있는 함수
 
+	// 상대 경로 path 알아내는 코드
+	_resourcePath = std::filesystem::current_path().relative_path();
+	std::cout << _resourcePath << std::endl;
+
 	// 더블 버퍼링 코드
 	//::GetClientRect(hwnd, &_rect);
 
@@ -27,6 +33,8 @@ void Game::Init(HWND hwnd)
 	// 각 매니저들 Init
 	GET_SINGLE(InputManager)->Init(hwnd);
 	GET_SINGLE(TimeManager)->Init();
+	GET_SINGLE(SceneManager)->Init();
+	GET_SINGLE(ResourceManager)->Init(hwnd, _resourcePath);
 }
 
 void Game::Update()

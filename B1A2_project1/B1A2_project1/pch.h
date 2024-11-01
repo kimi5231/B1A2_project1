@@ -17,6 +17,7 @@
 
 // C++ 20
 #include <format>
+#include <filesystem>
 
 // Memory leak 확인 - CRT 라이브러리의 디버그 기능 활성화하는 것, 출력창에 메모리 해제 안 된 것 알려줌.
 #define _CRTDEBG_MAP_ALLOC		
