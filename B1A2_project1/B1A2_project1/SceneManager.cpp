@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "DevScene.h"
 #include "TestScene.h"
+#include "TitleScene.h"
 
 void SceneManager::Init()
 {
@@ -39,6 +40,10 @@ void SceneManager::ChangeScene(SceneType sceneType)
 		break;
 	case SceneType::TestScene:
 		newScene = new TestScene();
+		break;
+	case SceneType::TitleScene:
+		newScene = new TitleScene();
+		break;
 	//case SceneType::GameScene:
 	//	newScene = new GameScene();
 	//	break;

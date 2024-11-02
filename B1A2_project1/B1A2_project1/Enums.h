@@ -3,7 +3,7 @@
 enum class SceneType
 {
 	None,
-	LobbyScene,	// ∑Œ∫Ò æ¿
+	TitleScene,	// ≈∏¿Ã∆≤ æ¿
 	DevScene,	// ∞≥πﬂ æ¿
 	GameScene,	// ¿Œ∞‘¿” æ¿
 	TestScene,
