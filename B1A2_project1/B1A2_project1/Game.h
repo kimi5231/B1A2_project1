@@ -16,9 +16,9 @@ private:
 
 private:
 	// 더블 버퍼링
-	//RECT _rect;
-	//HDC hdcBack = {};
-	//HBITMAP _bmpBack = {};
+	RECT _rect;
+	HDC hdcBack = {};
+	HBITMAP _bmpBack = {};
 
 	// 상대 경로를 위해 Game에 path 넣음(절대 경로로 했을 땐 ResourceManager에서 관리했음)
 	std::filesystem::path _resourcePath;

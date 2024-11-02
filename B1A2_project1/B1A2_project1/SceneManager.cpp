@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SceneManager.h"
 #include "DevScene.h"
+#include "TestScene.h"
 
 void SceneManager::Init()
 {
@@ -8,10 +9,14 @@ void SceneManager::Init()
 
 void SceneManager::Update()
 {
+	if (_scene)
+		_scene->Update();
 }
 
 void SceneManager::Render(HDC hdc)
 {
+	if (_scene)
+		_scene->Render(hdc);
 }
 
 void SceneManager::Clear()
@@ -32,6 +37,8 @@ void SceneManager::ChangeScene(SceneType sceneType)
 	case SceneType::DevScene:
 		newScene = new DevScene();
 		break;
+	case SceneType::TestScene:
+		newScene = new TestScene();
 	//case SceneType::GameScene:
 	//	newScene = new GameScene();
 	//	break;

@@ -6,6 +6,7 @@ enum class SceneType
 	LobbyScene,	// ∑Œ∫Ò æ¿
 	DevScene,	// ∞≥πﬂ æ¿
 	GameScene,	// ¿Œ∞‘¿” æ¿
+	TestScene,
 };
 
 enum LAYER_TYPE
