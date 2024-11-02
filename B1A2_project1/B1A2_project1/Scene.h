@@ -1,5 +1,7 @@
 #pragma once
 
+class Panel;
+
 class Scene
 {
 public:
@@ -9,4 +11,7 @@ public:
 	virtual void Init();
 	virtual void Update();
 	virtual void Render(HDC hdc);
+
+protected:
+	Panel* _panel = nullptr;
 };
