@@ -6,8 +6,7 @@ public:
 	Scene();
 	virtual ~Scene();	// 소멸자에 virtual 필수!!!
 
-	virtual void Init() abstract;
-	virtual void Update() abstract;
-	virtual void Render(HDC hdc) abstract;
+	virtual void Init();
+	virtual void Update();
+	virtual void Render(HDC hdc);
 };
-
