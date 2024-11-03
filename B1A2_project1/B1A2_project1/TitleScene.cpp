@@ -22,32 +22,32 @@ void TitleScene::Init()
 	// 일단은 위치 확인을 위해 Button으로 생성 => 추후 변경 예정
 	{
 		Button* title = new Button();
-		title->SetPos({ 200, 100 });
-		title->SetSize({ 300, 100 });
+		title->SetPos({ 350, 250 });
+		title->SetSize({ 545, 339 });
 		_panel->AddChild(title);
 	}
 	
 	// 게임 시작 Button 추가
 	{
 		Button* button = new Button();
-		button->SetPos({ 600, 300 });
-		button->SetSize({ 100, 50 });
+		button->SetPos({ 1100, 400 });
+		button->SetSize({ 163, 60 });
 		_panel->AddChild(button);
 	}
 
 	// 설정 Button 추가
 	{
 		Button* button = new Button();
-		button->SetPos({ 600, 400 });
-		button->SetSize({ 100, 50 });
+		button->SetPos({ 1100, 500 });
+		button->SetSize({ 163, 60 });
 		_panel->AddChild(button);
 	}
 
 	// 게임 종료 Button 추가
 	{
 		Button* button = new Button();
-		button->SetPos({ 600, 500 });
-		button->SetSize({ 100, 50 });
+		button->SetPos({ 1100, 600 });
+		button->SetSize({ 163, 60 });
 		_panel->AddChild(button);
 	}
 }

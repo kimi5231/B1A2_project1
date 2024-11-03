@@ -1,4 +1,4 @@
 #pragma once
 
-const int32 GWinSizeX = 800;
-const int32 GWinSizeY = 600;
+const int32 GWinSizeX = 1280;
+const int32 GWinSizeY = 720;
