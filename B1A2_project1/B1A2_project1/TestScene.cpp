@@ -15,18 +15,19 @@ TestScene::~TestScene()
 void TestScene::Init()
 {
 	GET_SINGLE(ResourceManager)->LoadTexture(L"Stage01", L"Sprite\\Map\\Stage01.bmp");
+
 }
 
 void TestScene::Update()
 {
-	//Super::Update();
+	Super::Update();
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 }
 
 void TestScene::Render(HDC hdc)
 {
-	//Super::Render(hdc);
+	Super::Render(hdc);
 
 	Texture* tex = GET_SINGLE(ResourceManager)->GetTexture(L"Stage01");
 
