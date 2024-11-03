@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "ResourceManager.h"
 #include "Texture.h"
-
-#include <iostream>
+#include "Sprite.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -29,9 +28,6 @@ Texture* ResourceManager::LoadTexture(const std::wstring& key, const std::wstrin
 		return _textures[key];
 
 	std::filesystem::path fullpath = _resourcePath / path;		// /는 경로 결합 연산자
-	std::wcout << "Current Path: " << std::filesystem::current_path() << std::endl;
-	std::wcout << "Full Path: " << fullpath << std::endl;
-
 
 	Texture* texture = new Texture();
 	texture->LoadBMP(_hwnd, fullpath.c_str());
@@ -39,4 +35,20 @@ Texture* ResourceManager::LoadTexture(const std::wstring& key, const std::wstrin
 	_textures[key] = texture;
 
 	return texture;
+}
+
+Sprite* ResourceManager::CreateSprite(const std::wstring& key, Texture* texture, int32 x, int32 y, int32 cx, int32 cy)
+{
+	if (_sprites.find(key) != _sprites.end())
+		return _sprites[key];
+
+	if (cx == 0)
+		cx = texture->GetSize().x;
+	if (cy == 0)
+		cy = texture->GetSize().y;
+
+	Sprite* sprite = new Sprite(texture, x, y, cx, cy);
+	_sprites[key] = sprite;
+
+	return sprite;
 }
