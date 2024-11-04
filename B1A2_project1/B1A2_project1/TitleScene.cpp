@@ -42,6 +42,7 @@ void TitleScene::Init()
 		Button* button = new Button();
 		button->SetPos({ 1100, 500 });
 		button->SetSize({ 163, 60 });
+		button->AddOnClickDelegate(this, &TitleScene::OnClickSettingButton);
 		_panel->AddChild(button);
 	}
 
@@ -50,6 +51,7 @@ void TitleScene::Init()
 		Button* button = new Button();
 		button->SetPos({ 1100, 600 });
 		button->SetSize({ 163, 60 });
+		button->AddOnClickDelegate(this, &TitleScene::OnClickEndButton);
 		_panel->AddChild(button);
 	}
 }
@@ -67,4 +69,12 @@ void TitleScene::Render(HDC hdc)
 void TitleScene::OnClickStartButton()
 {
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
+}
+
+void TitleScene::OnClickSettingButton()
+{
+}
+
+void TitleScene::OnClickEndButton()
+{
 }

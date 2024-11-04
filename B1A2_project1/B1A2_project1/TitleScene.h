@@ -14,4 +14,6 @@ public:
 
 public:
 	void OnClickStartButton();
+	void OnClickSettingButton();
+	void OnClickEndButton();
 };
