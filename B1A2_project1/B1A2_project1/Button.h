@@ -23,6 +23,9 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
+	RECT GetRect();
+	bool IsMouseInRect();
+
 	void SetButtonState(ButtonState state);
 
 private:
