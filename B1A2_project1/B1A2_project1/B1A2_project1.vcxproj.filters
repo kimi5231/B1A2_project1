@@ -36,6 +36,9 @@
     <Filter Include="소스 파일\06. UI">
       <UniqueIdentifier>{d47e664b-7760-48fb-be70-33502b26a3ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Resources\paper2D">
+      <UniqueIdentifier>{d31ed43a-263c-4d16-83a6-d7934bb35ec7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -117,7 +120,10 @@
       <Filter>소스 파일\02. Scene\Game</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>소스 파일\04. Resources</Filter>
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,7 +185,10 @@
       <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>소스 파일\04. Resources</Filter>
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
