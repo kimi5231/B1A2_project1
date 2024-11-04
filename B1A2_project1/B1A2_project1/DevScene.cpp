@@ -16,10 +16,12 @@ void DevScene::Init()
 
 void DevScene::Update()
 {
-	//Super::Update();	// 이 코드 쓰면 오류나서 일단 주석 처리...
+	Super::Update();
 }
 
 void DevScene::Render(HDC hdc)
 {
-	//Super::Render(hdc);
+	Super::Render(hdc);
+
+	Utils::DrawRect(hdc, { 500, 500 }, { 100, 100 });
 }

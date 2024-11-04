@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <string>
 #include <algorithm>
+#include <functional>
 
 #include "Types.h"
 #include "Defines.h"

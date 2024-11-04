@@ -30,4 +30,17 @@ public:
 
 private:
 	ButtonState _state = BS_Default;
+
+public:
+	// CallBack 함수 연결을 위한 템플릿 함수
+	template<typename T>
+	void AddOnClickDelegate(T* owner, void(T::* func)())
+	{
+		_onClick = [owner, func]()
+			{
+				(owner->*func)();
+			};
+	}
+
+	std::function<void(void)> _onClick = nullptr;
 };

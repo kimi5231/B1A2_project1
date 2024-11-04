@@ -21,7 +21,10 @@ void Button::Tick()
 
 	if (IsMouseInRect())
 	{
-		int a = 3;
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+		{
+			_onClick();
+		}
 	}
 }
 
