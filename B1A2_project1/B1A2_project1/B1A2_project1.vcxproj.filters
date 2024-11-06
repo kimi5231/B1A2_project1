@@ -77,9 +77,6 @@
     <ClInclude Include="Scene.h">
       <Filter>소스 파일\02. Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DevScene.h">
-      <Filter>소스 파일\02. Scene\Game</Filter>
-    </ClInclude>
     <ClInclude Include="TimeManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
@@ -125,6 +122,12 @@
     <ClInclude Include="Sprite.h">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
+    <ClInclude Include="DevScene.h">
+      <Filter>소스 파일\02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingScene.h">
+      <Filter>소스 파일\02. Scene\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -141,9 +144,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>소스 파일\02. Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="DevScene.cpp">
-      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
@@ -189,6 +189,12 @@
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClCompile>
+    <ClCompile Include="DevScene.cpp">
+      <Filter>소스 파일\02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingScene.cpp">
+      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

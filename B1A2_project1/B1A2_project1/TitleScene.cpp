@@ -73,6 +73,7 @@ void TitleScene::OnClickStartButton()
 
 void TitleScene::OnClickSettingButton()
 {
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::SettingScene);
 }
 
 void TitleScene::OnClickEndButton()

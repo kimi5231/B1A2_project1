@@ -4,8 +4,9 @@ enum class SceneType
 {
 	None,
 	TitleScene,	// ≈∏¿Ã∆≤ æ¿
-	DevScene,	// ∞≥πﬂ æ¿
+	SettingScene, // º≥¡§ æ¿
 	GameScene,	// ¿Œ∞‘¿” æ¿
+	DevScene,	// ∞≥πﬂ æ¿
 	TestScene,
 };
 
