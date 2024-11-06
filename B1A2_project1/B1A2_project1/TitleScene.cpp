@@ -78,4 +78,7 @@ void TitleScene::OnClickSettingButton()
 
 void TitleScene::OnClickEndButton()
 {
+	// 추후 게임을 종료할 것인지 물어보는 메세지 창을 추가할 예정.
+	// 일단은 바로 종료되게 설정.
+	::PostQuitMessage(0);
 }
