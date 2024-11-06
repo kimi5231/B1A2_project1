@@ -30,8 +30,8 @@ public:
 protected:
 	ObjectType _type = ObjectType::None;
 	MoveDir _dir = MoveDir::Right;
-	// Stat _stat = {};
-	// Vector _pos = {};
+	Stat _stat = {};
+	Vec2 _pos = {};
 	float _radius = 0.f;
 };
 

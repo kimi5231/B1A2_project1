@@ -9,6 +9,14 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
+// * Stat 엑셀로 읽어오는 방식으로 바꾸기
+struct Stat
+{
+	int32 hp = 0;
+	int32 maxHp = 0;
+	float speed = 0;
+};
+
 // 2차원 벡터
 struct Vec2
 {
