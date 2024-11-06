@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "TitleScene.h"
-#include "Panel.h"
-#include "Button.h"
 #include "UI.h"
+#include "Panel.h"
+#include "StaticUI.h"
+#include "Button.h"
 #include "SceneManager.h"
 
 TitleScene::TitleScene()
@@ -20,9 +21,8 @@ void TitleScene::Init()
 	_panel = new Panel();
 
 	// Title 추가
-	// 일단은 위치 확인을 위해 Button으로 생성 => 추후 변경 예정
 	{
-		Button* title = new Button();
+		StaticUI* title = new StaticUI();
 		title->SetPos({ 350, 250 });
 		title->SetSize({ 545, 339 });
 		_panel->AddChild(title);

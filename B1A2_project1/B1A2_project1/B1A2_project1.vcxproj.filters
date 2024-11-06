@@ -128,6 +128,9 @@
     <ClInclude Include="SettingScene.h">
       <Filter>소스 파일\02. Scene\Game</Filter>
     </ClInclude>
+    <ClInclude Include="StaticUI.h">
+      <Filter>소스 파일\06. UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="SettingScene.cpp">
       <Filter>소스 파일\02. Scene\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticUI.cpp">
+      <Filter>소스 파일\06. UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
