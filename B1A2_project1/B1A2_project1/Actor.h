@@ -12,7 +12,6 @@ public:
 	virtual void Tick();	// Update
 	virtual void Render(HDC hdc);
 
-	// Vector 만들고 주석 풀기
 	void SetPos(Vec2 pos) { _pos = pos; }
 	Vec2 GetPos() { return _pos; }
 

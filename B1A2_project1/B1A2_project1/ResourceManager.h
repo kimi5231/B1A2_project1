@@ -3,6 +3,7 @@
 class ResourceBase;
 class Texture;
 class Sprite;
+class Flipbook;
 
 class ResourceManager
 {
@@ -23,6 +24,9 @@ public:
 	Sprite* GetSprite(const std::wstring& key) { return _sprites[key]; }
 	Sprite* CreateSprite(const std::wstring& key, Texture* texture, int32 x = 0, int32 y = 0, int32 cx = 0, int32 cy = 0);
 
+	Flipbook* GetFlipbook(const std::wstring& key) { return _flipbooks[key]; }
+	Flipbook* CreateFlipbook(const std::wstring& key);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -30,5 +34,6 @@ private:
 	// Resources
 	std::unordered_map<std::wstring, Texture*> _textures;
 	std::unordered_map<std::wstring, Sprite*> _sprites;
+	std::unordered_map<std::wstring, Flipbook*> _flipbooks;
 };
 
