@@ -16,6 +16,7 @@ public:
 	Vec2 GetPos() { return _pos; }
 
 	void SetLayer(LAYER_TYPE layer) {}
+	LAYER_TYPE GetLayer() { return _layer; }
 
 protected:
 	Vec2 _pos = { 0, 0 };
