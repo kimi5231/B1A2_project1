@@ -141,6 +141,7 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Flipbook.h" />
     <ClInclude Include="FlipbookActor.h" />
+    <ClInclude Include="FlipbookUI.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputManager.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="DevScene.cpp" />
     <ClCompile Include="Flipbook.cpp" />
     <ClCompile Include="FlipbookActor.cpp" />
+    <ClCompile Include="FlipbookUI.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Object.cpp" />
