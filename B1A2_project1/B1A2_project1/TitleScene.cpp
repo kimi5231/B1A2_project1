@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "TitleScene.h"
+#include "SceneManager.h"
+#include "ResourceManager.h"
 #include "UI.h"
 #include "Panel.h"
-#include "StaticUI.h"
+#include "FlipbookUI.h"
 #include "Button.h"
-#include "SceneManager.h"
+#include "Texture.h"
+#include "Flipbook.h"
 
 TitleScene::TitleScene()
 {
@@ -18,13 +21,21 @@ void TitleScene::Init()
 {
 	Super::Init();
 
+	// TitleScene Texture Load
+	GET_SINGLE(ResourceManager)->LoadTexture(L"Title", L"Sprite\\UI\\Title.bmp", RGB(55, 255, 0));
+
 	_panel = new Panel();
 
 	// Title Ãß°¡
 	{
-		StaticUI* title = new StaticUI();
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Title");
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Title");
+		fb->SetInfo({ texture, L"FB_Title", { 545, 339 }, 0, 3, 0, 0.5f, true });
+
+		FlipbookUI* title = new FlipbookUI();
 		title->SetPos({ 350, 250 });
 		title->SetSize({ 545, 339 });
+		title->SetFilpbook(fb);
 		_panel->AddChild(title);
 	}
 	
