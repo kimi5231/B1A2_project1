@@ -4,15 +4,11 @@
 #include "TimeManager.h"
 #include "InputManager.h"
 
-// *리소스 마지로 수정해야 함!
 Player::Player()
 {
-	// 젤다
-	_flipbookLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveLeft");
-	_flipbookRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveRight");
-
 	// 마지
 	_flipbookPlayerRunRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRunRight");
+	_flipbookPlayerRunLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRunLeft");
 }
 
 Player::~Player()
@@ -24,7 +20,7 @@ void Player::BeginPlay()
 	Super::BeginPlay();
 
 	// 처음 상태 지정
-	SetFlipbook(_flipbookRight);
+	SetFlipbook(_flipbookPlayerRunRight);
 }
 
 void Player::Tick()
@@ -37,12 +33,12 @@ void Player::Tick()
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
 		_pos.x -= 200 * deltaTime;
-		SetFlipbook(_flipbookLeft);
+		SetFlipbook(_flipbookPlayerRunLeft);
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
 	{
 		_pos.x += 200 * deltaTime;
-		SetFlipbook(_flipbookRight);
+		SetFlipbook(_flipbookPlayerRunRight);
 	}
 
 }

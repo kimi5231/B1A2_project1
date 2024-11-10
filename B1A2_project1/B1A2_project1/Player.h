@@ -16,11 +16,8 @@ public:
 	virtual void Render(HDC hdc) override;
 
 private:
-	// 젤다 리소스
-	Flipbook* _flipbookLeft = nullptr;
-	Flipbook* _flipbookRight = nullptr;
-
 	// 마지 리소스
 	Flipbook* _flipbookPlayerRunRight = nullptr;
+	Flipbook* _flipbookPlayerRunLeft = nullptr;
 };
 
