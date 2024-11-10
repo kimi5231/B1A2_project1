@@ -15,12 +15,12 @@ public:
 	void SetPos(Vec2 pos) { _pos = pos; }
 	Vec2 GetPos() { return _pos; }
 
-	void SetLayer(LAYER_TYPE layer) {}
-	LAYER_TYPE GetLayer() { return _layer; }
+	//void SetLayer(LAYER_TYPE layer) {}
+	//LAYER_TYPE GetLayer() { return _layer; }
 
 protected:
-	Vec2 _pos = { 0, 0 };
-	Vec2 _destPos = { 0, 0 };
-	LAYER_TYPE _layer = LAYER_OBJECT;
+	Vec2 _pos = { 100, 600 };
+	//Vec2 _destPos = { 0, 0 };
+	//LAYER_TYPE _layer = LAYER_OBJECT;
 };
 
