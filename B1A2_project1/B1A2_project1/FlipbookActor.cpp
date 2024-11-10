@@ -50,7 +50,7 @@ void FlipbookActor::Render(HDC hdc)
 		return;
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
-	
+
 	::TransparentBlt(hdc,
 		(int32)_pos.x - info.size.x / 2,
 		(int32)_pos.y - info.size.y / 2,

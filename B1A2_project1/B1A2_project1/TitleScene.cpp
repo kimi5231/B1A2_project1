@@ -79,7 +79,7 @@ void TitleScene::Render(HDC hdc)
 
 void TitleScene::OnClickStartButton()
 {
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
 }
 
 void TitleScene::OnClickSettingButton()

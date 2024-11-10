@@ -152,6 +152,9 @@
     <ClInclude Include="FlipbookUI.h">
       <Filter>소스 파일\06. UI</Filter>
     </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>소스 파일\02. Scene\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -237,6 +240,9 @@
     </ClCompile>
     <ClCompile Include="FlipbookUI.cpp">
       <Filter>소스 파일\06. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

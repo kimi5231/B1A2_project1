@@ -51,12 +51,15 @@ void FlipbookUI::Render(HDC hdc)
 	const FlipbookInfo& info = _flipbook->GetInfo();
 
 	::TransparentBlt(hdc,
-		(int32)_pos.x - info.size.x / 2, (int32)_pos.y - info.size.y / 2,
-		info.size.x, info.size.y,
+		(int32)_pos.x - info.size.x / 2,
+		(int32)_pos.y - info.size.y / 2,
+		info.size.x,
+		info.size.y,
 		info.texture->GetDC(),
 		(info.start + _idx) * info.size.x,
 		info.line * info.size.y,
-		info.size.x, info.size.y,
+		info.size.x,
+		info.size.y,
 		info.texture->GetTransparent());
 }
 
