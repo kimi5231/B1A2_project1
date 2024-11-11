@@ -4,6 +4,7 @@ class ResourceBase;
 class Texture;
 class Sprite;
 class Flipbook;
+class Sound;
 
 class ResourceManager
 {
@@ -27,6 +28,9 @@ public:
 	Flipbook* GetFlipbook(const std::wstring& key) { return _flipbooks[key]; }
 	Flipbook* CreateFlipbook(const std::wstring& key);
 
+	Sound* GetSound(const std::wstring& key) { return _sounds[key]; }
+	Sound* LoadSound(const std::wstring& key, const std::wstring& path);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -35,5 +39,6 @@ private:
 	std::unordered_map<std::wstring, Texture*> _textures;
 	std::unordered_map<std::wstring, Sprite*> _sprites;
 	std::unordered_map<std::wstring, Flipbook*> _flipbooks;
+	std::unordered_map<std::wstring, Sound*> _sounds;
 };
 

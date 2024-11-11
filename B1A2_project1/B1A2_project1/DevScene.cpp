@@ -9,6 +9,8 @@
 #include "Actor.h"
 #include "Flipbook.h"
 #include "Player.h"
+#include "SoundManager.h"
+#include "Sound.h"
 
 DevScene::DevScene()
 {
@@ -38,6 +40,13 @@ void DevScene::Init()
 	{
 		Player* player = new Player();
 		_actor = player;
+	}
+
+	// Sound
+	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	{
+		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
+		sound->Play(true);
 	}
 
 	Super::Init();

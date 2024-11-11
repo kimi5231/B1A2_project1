@@ -4,6 +4,7 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "SoundManager.h"
 
 Game::Game()
 {
@@ -35,6 +36,7 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(TimeManager)->Init();
 	GET_SINGLE(SceneManager)->Init();
 	GET_SINGLE(ResourceManager)->Init(hwnd, _resourcePath);
+	GET_SINGLE(SoundManager)->Init(hwnd);
 
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
 }

@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Flipbook.h"
+#include "Sound.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -73,4 +74,18 @@ Flipbook* ResourceManager::CreateFlipbook(const std::wstring& key)
 	_flipbooks[key] = fb;
 
 	return fb;
+}
+
+Sound* ResourceManager::LoadSound(const std::wstring& key, const std::wstring& path)
+{
+	if (_sounds.find(key) != _sounds.end())
+		return _sounds[key];
+
+	std::filesystem::path fullPath = _resourcePath / path;
+
+	Sound* sound = new Sound();
+	sound->LoadWave(fullPath);
+	_sounds[key] = sound;
+
+	return sound;
 }

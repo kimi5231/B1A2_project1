@@ -32,3 +32,9 @@
 
 // TransparentBlt
 #pragma comment(lib, "msimg32.lib")
+
+// Sound
+#include <MMSystem.h>
+#include <dsound.h>
+#pragma comment (lib, "winmm.lib")
+#pragma comment (lib, "dsound.lib")
