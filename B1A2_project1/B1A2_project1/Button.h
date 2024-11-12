@@ -1,6 +1,8 @@
 #pragma once
 #include "UI.h"
 
+class Flipbook;
+
 enum ButtonState
 {
 	BS_Default,
@@ -27,9 +29,14 @@ public:
 	bool IsMouseInRect();
 
 	void SetButtonState(ButtonState state);
+	void SetFlipbook(Flipbook* flipbook);
+	void Reset();
 
 private:
 	ButtonState _state = BS_Default;
+	Flipbook* _flipbook = nullptr;
+	int32 _idx = 0;
+	float _sumTime = 0.f;
 
 public:
 	// CallBack 함수 연결을 위한 템플릿 함수
