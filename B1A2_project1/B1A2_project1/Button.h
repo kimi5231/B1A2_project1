@@ -29,12 +29,14 @@ public:
 	bool IsMouseInRect();
 
 	void SetButtonState(ButtonState state);
-	void SetFlipbook(Flipbook* flipbook);
+	void SetFlipbook(Flipbook* flipbook, ButtonState state);
+	void SetCurrentFlipbook(ButtonState state) { _currentFlipbook = _flipbooks[state]; }
 	void Reset();
 
 private:
-	ButtonState _state = BS_Default;
-	Flipbook* _flipbook = nullptr;
+	ButtonState _state;
+	Flipbook* _flipbooks[BS_MaxCount]{};
+	Flipbook* _currentFlipbook = nullptr;
 	int32 _idx = 0;
 	float _sumTime = 0.f;
 

@@ -19,8 +19,6 @@ TitleScene::~TitleScene()
 
 void TitleScene::Init()
 {
-	Super::Init();
-
 	// TitleScene Texture Load
 	GET_SINGLE(ResourceManager)->LoadTexture(L"Title", L"Sprite\\UI\\Title.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"GameStart", L"Sprite\\UI\\GameStart.bmp", RGB(55, 255, 0));
@@ -44,57 +42,80 @@ void TitleScene::Init()
 	
 	// 게임 시작 Button 추가
 	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"GameStart");
-		{
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameStartHover");
-			fb->SetInfo({ texture, L"FB_GameStartHover", {163, 60}, 0, 3, 0, 0.5f, true });
-		}
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameStartDefault");
-		fb->SetInfo({ texture, L"FB_GameStartDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
-
 		Button* button = new Button();
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"GameStart");
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameStartDefault");
+			fb->SetInfo({ texture, L"FB_GameStartDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameStartHovered");
+			fb->SetInfo({ texture, L"FB_GameStartHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
+		}
+		
 		button->SetPos({ 1100, 400 });
 		button->SetSize({ 163, 60 });
-		button->SetFlipbook(fb);
 		button->AddOnClickDelegate(this, &TitleScene::OnClickStartButton);
 		_panel->AddChild(button);
 	}
 
 	// 설정 Button 추가
 	{
+		Button* button = new Button();
+
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Setting");
+		
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SettingDefault");
+			fb->SetInfo({ texture, L"FB_SettingDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
 		{
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SettingHover");
-			fb->SetInfo({ texture, L"FB_SettingHover", {163, 60}, 0, 3, 0, 0.5f, true });
+			fb->SetInfo({ texture, L"FB_SettingHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
 		}
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SettingDefault");
-		fb->SetInfo({ texture, L"FB_SettingDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+	
 
-		Button* button = new Button();
 		button->SetPos({ 1100, 500 });
 		button->SetSize({ 163, 60 });
-		button->SetFlipbook(fb);
+
 		button->AddOnClickDelegate(this, &TitleScene::OnClickSettingButton);
 		_panel->AddChild(button);
 	}
 
 	// 게임 종료 Button 추가
 	{
+		Button* button = new Button();
+
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"GameEnd");
+		
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameEndDefault");
+			fb->SetInfo({ texture, L"FB_GameEndDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
 		{
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameEndHover");
-			fb->SetInfo({ texture, L"FB_GameEndHover", {163, 60}, 0, 3, 0, 0.5f, true });
+			fb->SetInfo({ texture, L"FB_GameEndHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
 		}
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GameEndDefault");
-		fb->SetInfo({ texture, L"FB_GameEndDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
-
-		Button* button = new Button();
+		
 		button->SetPos({ 1100, 600 });
 		button->SetSize({ 163, 60 });
-		button->SetFlipbook(fb);
+		
 		button->AddOnClickDelegate(this, &TitleScene::OnClickEndButton);
 		_panel->AddChild(button);
 	}
+
+	Super::Init();
 }
 
 void TitleScene::Update()

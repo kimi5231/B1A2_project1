@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "ResourceManager.h"
 #include "Flipbook.h"
 #include "Texture.h"
 
@@ -16,6 +17,8 @@ Button::~Button()
 void Button::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetButtonState(BS_Default);
 }
 
 void Button::Tick()
@@ -24,16 +27,22 @@ void Button::Tick()
 
 	if (IsMouseInRect())
 	{
+		SetButtonState(BS_Hovered);
+
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
 			_onClick();
 		}
 	}
+	else
+	{
+		SetButtonState(BS_Default);
+	}
 
-	if (_flipbook == nullptr)
+	if (_currentFlipbook == nullptr)
 		return;
 
-	const FlipbookInfo& info = _flipbook->GetInfo();
+	const FlipbookInfo& info = _currentFlipbook->GetInfo();
 	if (info.loop == false && _idx == info.end)
 		return;
 
@@ -54,13 +63,13 @@ void Button::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	if (_flipbook == nullptr)
+	if (_currentFlipbook == nullptr)
 	{
 		Utils::DrawRect(hdc, _pos, _size);
 	}
 	else
 	{
-		const FlipbookInfo& info = _flipbook->GetInfo();
+		const FlipbookInfo& info = _currentFlipbook->GetInfo();
 
 		::TransparentBlt(hdc,
 			(int32)_pos.x - info.size.x / 2,
@@ -98,15 +107,22 @@ bool Button::IsMouseInRect()
 
 void Button::SetButtonState(ButtonState state)
 {
+	if (_state == state)
+		return;
+
 	_state = state;
+
+	SetCurrentFlipbook(state);
+	Reset();
 }
 
-void Button::SetFlipbook(Flipbook* flipbook)
+void Button::SetFlipbook(Flipbook* flipbook, ButtonState state)
 {
 	if (flipbook == nullptr)
 		return;
 
-	_flipbook = flipbook;
+	_flipbooks[state] = flipbook;
+
 	Reset();
 }
 
