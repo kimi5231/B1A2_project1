@@ -48,6 +48,9 @@
     <Filter Include="소스 파일\04. Resources\Sound">
       <UniqueIdentifier>{a8ac1726-2807-46ff-9ba6-cb6df4ae6ff1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Component">
+      <UniqueIdentifier>{85e340cc-e42f-4faf-a769-35efc34164c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -161,6 +164,9 @@
     <ClInclude Include="SoundManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>소스 파일\05. Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -252,6 +258,9 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>소스 파일\05. Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
