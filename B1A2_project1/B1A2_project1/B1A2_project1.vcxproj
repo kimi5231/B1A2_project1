@@ -136,6 +136,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="B1A2_project1.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DevScene.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="B1A2_project1.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DevScene.cpp" />
     <ClCompile Include="Flipbook.cpp" />

@@ -51,6 +51,12 @@
     <Filter Include="소스 파일\05. Component">
       <UniqueIdentifier>{85e340cc-e42f-4faf-a769-35efc34164c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Component\Camera">
+      <UniqueIdentifier>{534f8678-4dda-440b-acdb-8611a2e4ba8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Component\Collision">
+      <UniqueIdentifier>{9ca717f2-09fd-4656-8254-207a0a0cbc7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -167,6 +173,9 @@
     <ClInclude Include="Component.h">
       <Filter>소스 파일\05. Component</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>소스 파일\05. Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -261,6 +270,9 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>소스 파일\05. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>소스 파일\05. Component\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
