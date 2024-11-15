@@ -31,7 +31,8 @@ void Button::Tick()
 
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
-			_onClick();
+			if(_onClick)
+				_onClick();
 		}
 	}
 	else
