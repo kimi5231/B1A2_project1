@@ -44,5 +44,5 @@ void SettingScene::Render(HDC hdc)
 // callback ÇÔ¼ö
 void SettingScene::ChangeFullScreen()
 {
-	int a;
+
 }
