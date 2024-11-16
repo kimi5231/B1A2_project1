@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Flipbook.h"
 #include "Sound.h"
+#include "Tilemap.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -88,4 +89,24 @@ Sound* ResourceManager::LoadSound(const std::wstring& key, const std::wstring& p
 	_sounds[key] = sound;
 
 	return sound;
+}
+
+Tilemap* ResourceManager::CreateTilemap(const std::wstring& key)
+{
+	if (_tilemaps.find(key) != _tilemaps.end())
+		return _tilemaps[key];
+
+	Tilemap* tilemap = new Tilemap();
+	_tilemaps[key] = tilemap;
+
+	return tilemap;
+}
+
+Tilemap* ResourceManager::LoadTilemap(const std::wstring& key, const std::wstring& path)
+{
+	return nullptr;
+}
+
+void ResourceManager::SaveTilemap(const std::wstring& key, const std::wstring& path)
+{
 }

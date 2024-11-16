@@ -176,6 +176,9 @@
     <ClInclude Include="CameraComponent.h">
       <Filter>소스 파일\05. Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Tilemap.h">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -273,6 +276,9 @@
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>소스 파일\05. Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
