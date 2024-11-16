@@ -11,6 +11,8 @@
 #include "Player.h"
 #include "SoundManager.h"
 #include "Sound.h"
+#include "Tilemap.h"
+#include "TilemapActor.h"
 
 DevScene::DevScene()
 {
@@ -39,14 +41,33 @@ void DevScene::Init()
 
 	{
 		Player* player = new Player();
-		_actor = player;
+		_actors.push_back(player);
 	}
 
 	// Sound
-	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
 		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
 		sound->Play(true);
+	}*/
+
+	// Tilemap
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp");
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
+		
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
+		
+		Tilemap* tm = new Tilemap();
+		tm->SetMapSize({ 63, 43 });
+		tm->SetTileSize(48);
+
+		TilemapActor* actor = new TilemapActor();
+		actor->SetPos({0, 0});
+		actor->SetShowDebug(true);
+		actor->SetTilemap(tm);
+
+		_actors.push_back(actor);
 	}
 
 	Super::Init();
@@ -56,12 +77,14 @@ void DevScene::Update()
 {
 	Super::Update(); 
 
-	_actor->Tick();
+	for(Actor* actor : _actors)
+		actor->Tick();
 }
 
 void DevScene::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	_actor->Render(hdc);
+	for (Actor* actor : _actors)
+		actor->Render(hdc);
 }
