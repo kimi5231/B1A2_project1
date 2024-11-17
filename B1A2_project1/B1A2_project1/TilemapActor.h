@@ -20,6 +20,8 @@ public:
 	Tilemap* GetTilemap() { return _tilemap; }
 	void SetShowDebug(bool show) { _showDebug = show; }
 
+	void TickPicking();
+
 private:
 	Tilemap* _tilemap = nullptr;
 	bool _showDebug = false;

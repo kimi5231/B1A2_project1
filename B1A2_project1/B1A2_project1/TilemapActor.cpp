@@ -2,6 +2,7 @@
 #include "TilemapActor.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 #include "Tilemap.h"
 #include "Sprite.h"
 
@@ -21,6 +22,8 @@ void TilemapActor::BeginPlay()
 void TilemapActor::Tick()
 {
 	Super::Tick();
+
+	TickPicking();
 }
 
 void TilemapActor::Render(HDC hdc)
@@ -95,5 +98,33 @@ void TilemapActor::Render(HDC hdc)
 				break;
 			}
 		}
+	}
+}
+
+void TilemapActor::TickPicking()
+{
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+	{
+		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+
+		// 카메라 좌표
+		int32 screenX = (int32)cameraPos.x - GWinSizeX / 2;
+		int32 screenY = (int32)cameraPos.y - GWinSizeY / 2;
+
+		// 월드 좌표
+		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+
+		// 월드 좌표를 카메라 좌표로 변환
+		int32 posX = mousePos.x + screenX;
+		int32 posY = mousePos.y + screenY;
+
+		// 인덱스로 변환
+		int32 x = posX / TILE_SIZEX;
+		int32 y = posY / TILE_SIZEY;
+
+		Tile* tile = _tilemap->GetTileAt({x, y});
+
+		if (tile)
+			tile->value = 1;
 	}
 }

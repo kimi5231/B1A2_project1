@@ -52,6 +52,7 @@ void DevScene::Init()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
 		
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
 		
 		Tilemap* tm = new Tilemap();
 		tm->SetMapSize({ 63, 43 });
