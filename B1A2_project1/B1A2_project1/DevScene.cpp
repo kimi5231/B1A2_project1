@@ -39,11 +39,6 @@ void DevScene::Init()
 		fb->SetInfo({ texture, L"FB_PlayerRunLeft", {67, 70}, 0, 9, 0, 0.7f });
 	}
 
-	{
-		Player* player = new Player();
-		_actors.push_back(player);
-	}
-
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
@@ -53,7 +48,7 @@ void DevScene::Init()
 
 	// Tilemap
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
 		
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
@@ -68,6 +63,12 @@ void DevScene::Init()
 		actor->SetTilemap(tm);
 
 		_actors.push_back(actor);
+	}
+
+	{
+		Player* player = new Player();
+		player->SetPos({ 100, 100 });
+		_actors.push_back(player);
 	}
 
 	Super::Init();

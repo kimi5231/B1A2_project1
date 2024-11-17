@@ -35,6 +35,7 @@ public:
 	void SetTileSize(int32 size);
 
 private:
+	// 맵에 들어가는 타일 수
 	Vec2Int _mapSize{};
 	int32 _tileSize = 0;
 	std::vector<std::vector<Tile>> _tiles;

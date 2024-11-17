@@ -17,10 +17,10 @@ Player::~Player()
 
 void Player::BeginPlay()
 {
-	Super::BeginPlay();
-
 	// 처음 상태 지정
 	SetFlipbook(_flipbookPlayerRunRight);
+
+	Super::BeginPlay();
 }
 
 void Player::Tick()

@@ -43,10 +43,28 @@ void TilemapActor::Render(HDC hdc)
 
 	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
 
-	for (int y = 0; y < mapSize.y; ++y)
+	// 컬링
+	// 카메라 좌표의 시작과 끝을 구하기
+	int32 leftX = (int32)cameraPos.x - GWinSizeX / 2;
+	int32 leftY = (int32)cameraPos.y - GWinSizeY / 2;
+	int32 rightX = (int32)cameraPos.x + GWinSizeX / 2;
+	int32 rightY = (int32)cameraPos.y + GWinSizeY / 2;
+
+	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 인덱스 구하기
+	int32 startX = (leftX - _pos.x) / TILE_SIZEX;
+	int32 startY = (leftY - _pos.x) / TILE_SIZEY;
+	int32 endX = (rightX - _pos.x) / TILE_SIZEX;
+	int32 endY = (rightY - _pos.y) / TILE_SIZEY;
+
+	for (int y = startY; y <= endY; ++y)
 	{
-		for (int x = 0; x < mapSize.x; ++x)
+		for (int x = startX; x <= endX; ++x)
 		{
+			if (x < 0 || x >= mapSize.x)
+				continue;
+			if (y < 0 || y >= mapSize.y)
+				continue;
+
 			switch (tiles[y][x].value)
 			{
 			case 0:
