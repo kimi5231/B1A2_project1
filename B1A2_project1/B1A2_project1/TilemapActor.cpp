@@ -59,9 +59,9 @@ void TilemapActor::Render(HDC hdc)
 	int32 endX = (rightX - _pos.x) / TILE_SIZEX;
 	int32 endY = (rightY - _pos.y) / TILE_SIZEY;
 
-	for (int y = startY; y <= endY; ++y)
+	for (int32 y = startY; y <= endY; ++y)
 	{
-		for (int x = startX; x <= endX; ++x)
+		for (int32 x = startX; x <= endX; ++x)
 		{
 			if (x < 0 || x >= mapSize.x)
 				continue;

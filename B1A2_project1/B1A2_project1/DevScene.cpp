@@ -48,14 +48,16 @@ void DevScene::Init()
 
 	// Tilemap
 	{
+		// Tile Texture Load
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
 		
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
-		
-		Tilemap* tm = new Tilemap();
-		tm->SetMapSize({ 63, 43 });
+
+		// Tilemap Load
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
 		tm->SetTileSize(48);
 
 		TilemapActor* actor = new TilemapActor();
@@ -81,6 +83,16 @@ void DevScene::Update()
 
 	for(Actor* actor : _actors)
 		actor->Tick();
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
+	{
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::E))
+	{
+		GET_SINGLE(ResourceManager)->SaveTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	}
 }
 
 void DevScene::Render(HDC hdc)
