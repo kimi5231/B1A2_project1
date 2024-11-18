@@ -7,7 +7,7 @@ enum class SceneType
 	SettingScene, // º≥¡§ æ¿
 	GameScene,	// ¿Œ∞‘¿” æ¿
 	DevScene,	// ∞≥πﬂ æ¿
-	TestScene,
+	TilemapScene,
 };
 
 enum LAYER_TYPE
