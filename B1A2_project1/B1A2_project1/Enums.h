@@ -25,3 +25,24 @@ enum class WinSize
 	HD,		// 1280*720(Default)
 	FullScreen,
 };
+
+// 충돌
+enum class ColliderType
+{
+	Box,
+	Sphere,
+};
+
+enum COLLISION_LAYER_TYPE : uint8
+{
+	CLT_OBJECT,		// 0
+	CLT_GROUND,		// 1
+	CLT_WALL,		// 2
+};
+
+// 플레이어 방향
+enum Dir
+{
+	DIR_LEFT,
+	DIR_RIGHT,
+};
