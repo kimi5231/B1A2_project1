@@ -1,6 +1,9 @@
 #pragma once
 #include "Component.h"
 
+class BoxCollider;
+class SphereCollider;
+
 class Collider : public Component
 {
 public:
@@ -17,13 +20,15 @@ public:
 	void SetShowDebug(bool show) { _showDebug = show; }
 
 public:
-	//static bool CHeckCollisionBox2Box()
+	static bool CheckCollisionBox2Box(BoxCollider* b1, BoxCollider* b2);
+	static bool CheckCollisionSphere2Box(SphereCollider* s1, BoxCollider* b2);
+	static bool CheckCollisionSphere2Sphere(SphereCollider* s1, SphereCollider* s2);
 	
 	// 충돌 레이어 설정, 가져오기
 	void SetCollisionLayer(COLLISION_LAYER_TYPE layer) { _collisionLayer = layer; }
 	COLLISION_LAYER_TYPE GetCollisionLayer() { return _collisionLayer; }
 	
-	// 충돌하고 싶은 레이어 추가, 제가
+	// 충돌하고 싶은 레이어 추가, 제거
 	void AddCollisionFlagLayer(COLLISION_LAYER_TYPE layer);		// 충돌 레이어 설정
 	void RemoveCollisionFlagLayer(COLLISION_LAYER_TYPE layer);
 	

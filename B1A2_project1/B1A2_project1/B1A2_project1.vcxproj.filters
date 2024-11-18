@@ -185,6 +185,12 @@
     <ClInclude Include="TilemapScene.h">
       <Filter>소스 파일\02. Scene</Filter>
     </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -291,6 +297,12 @@
     </ClCompile>
     <ClCompile Include="TilemapScene.cpp">
       <Filter>소스 파일\02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>소스 파일\05. Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
