@@ -58,7 +58,7 @@ void DevScene::Init()
 		// Tilemap Load
 		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-		tm->SetTileSize(48);
+		//tm->SetTileSize(48);
 
 		TilemapActor* actor = new TilemapActor();
 		actor->SetPos({0, 0});

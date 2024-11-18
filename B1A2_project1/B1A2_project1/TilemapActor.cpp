@@ -37,7 +37,7 @@ void TilemapActor::Render(HDC hdc)
 		return;
 
 	Vec2Int mapSize = _tilemap->GetMapSize();
-	int32 tileSize = _tilemap->GetTileSize();
+	//int32 tileSize = _tilemap->GetTileSize();
 
 	std::vector<std::vector<Tile>>& tiles = _tilemap->GetTiles();
 
@@ -54,10 +54,10 @@ void TilemapActor::Render(HDC hdc)
 	int32 rightY = (int32)cameraPos.y + GWinSizeY / 2;
 
 	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 인덱스 구하기
-	int32 startX = (leftX - _pos.x) / TILE_SIZEX;
-	int32 startY = (leftY - _pos.x) / TILE_SIZEY;
-	int32 endX = (rightX - _pos.x) / TILE_SIZEX;
-	int32 endY = (rightY - _pos.y) / TILE_SIZEY;
+	int32 startX = (leftX - _pos.x) / MAP_TILE_SIZEX;
+	int32 startY = (leftY - _pos.x) / MAP_TILE_SIZEY;
+	int32 endX = (rightX - _pos.x) / MAP_TILE_SIZEX;
+	int32 endY = (rightY - _pos.y) / MAP_TILE_SIZEY;
 
 	for (int32 y = startY; y <= endY; ++y)
 	{
@@ -72,10 +72,10 @@ void TilemapActor::Render(HDC hdc)
 			{
 			case 0:
 				::TransparentBlt(hdc,
-					_pos.x + x * TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
-					_pos.y + y * TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
-					TILE_SIZEX,
-					TILE_SIZEY,
+					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
+					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
+					MAP_TILE_SIZEX,
+					MAP_TILE_SIZEY,
 					spriteO->GetDC(),
 					spriteO->GetPos().x,
 					spriteO->GetPos().y,
@@ -85,10 +85,10 @@ void TilemapActor::Render(HDC hdc)
 				break;
 			case 1:
 				::TransparentBlt(hdc,
-					_pos.x + x * TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
-					_pos.y + y * TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
-					TILE_SIZEX,
-					TILE_SIZEY,
+					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
+					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
+					MAP_TILE_SIZEX,
+					MAP_TILE_SIZEY,
 					spriteX->GetDC(),
 					spriteX->GetPos().x,
 					spriteX->GetPos().y,
@@ -119,8 +119,8 @@ void TilemapActor::TickPicking()
 		int32 posY = mousePos.y + screenY;
 
 		// 인덱스로 변환
-		int32 x = posX / TILE_SIZEX;
-		int32 y = posY / TILE_SIZEY;
+		int32 x = posX / MAP_TILE_SIZEX;
+		int32 y = posY / MAP_TILE_SIZEY;
 
 		Tile* tile = _tilemap->GetTileAt({x, y});
 

@@ -5,5 +5,5 @@ const int32 GWinSizeX = 1280;
 const int32 GWinSizeY = 720;
 
 // ∏  ªÁ¿Ã¡Ó
-const int32 mapX = 4000;
-const int32 mapY = 4000;
+const int32 mapX = 6400;
+const int32 mapY = 1440;

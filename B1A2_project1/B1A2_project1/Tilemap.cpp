@@ -82,7 +82,7 @@ void Tilemap::SetMapSize(Vec2Int size)
 	}
 }
 
-void Tilemap::SetTileSize(int32 size)
-{
-	_tileSize = size;
-}
+//void Tilemap::SetTileSize(int32 size)
+//{
+//	_tileSize = size;
+//}

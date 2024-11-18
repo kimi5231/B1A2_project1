@@ -10,8 +10,8 @@ struct Tile
 
 enum TILE_SIZE
 {
-	TILE_WIDTH = 40,
-	TILE_HIGHT = 40,
+	MAP_TILE_SIZEX = 40,
+	MAP_TILE_SIZEY = 40,
 	TILE_SIZEX = 48,
 	TILE_SIZEY = 48,
 };
@@ -27,7 +27,7 @@ public:
 	virtual void SaveFile(const std::wstring& path) override;
 
 	Vec2Int GetMapSize() { return _mapSize; }
-	int32 GetTileSize() { return _tileSize; }
+	//int32 GetTileSize() { return _tileSize; }
 	Tile* GetTileAt(Vec2Int pos);
 	std::vector<std::vector<Tile>>& GetTiles() { return _tiles; }
 
@@ -37,7 +37,7 @@ public:
 private:
 	// 맵에 들어가는 타일 수
 	Vec2Int _mapSize{};
-	int32 _tileSize = 0;
+	//int32 _tileSize = 0;
 	std::vector<std::vector<Tile>> _tiles;
 };
 
