@@ -185,11 +185,16 @@
     <ClInclude Include="TilemapScene.h">
       <Filter>소스 파일\02. Scene</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="BoxCollider.h">
       <Filter>소스 파일\05. Component\Collision</Filter>
     </ClInclude>
     <ClInclude Include="SphereCollider.h">
       <Filter>소스 파일\05. Component\Collision</Filter>
+=======
+    <ClInclude Include="CameraActor.h">
+      <Filter>소스 파일\03. Objects</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,11 +303,16 @@
     <ClCompile Include="TilemapScene.cpp">
       <Filter>소스 파일\02. Scene</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="SphereCollider.cpp">
       <Filter>소스 파일\05. Component\Collision</Filter>
     </ClCompile>
     <ClCompile Include="BoxCollider.cpp">
       <Filter>소스 파일\05. Component\Collision</Filter>
+=======
+    <ClCompile Include="CameraActor.cpp">
+      <Filter>소스 파일\03. Objects</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

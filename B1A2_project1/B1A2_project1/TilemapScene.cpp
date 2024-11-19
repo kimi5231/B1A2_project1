@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "TilemapActor.h"
 #include "SpriteActor.h"
+#include "CameraActor.h"
 
 TilemapScene::TilemapScene()
 {
@@ -57,9 +58,12 @@ void TilemapScene::Init()
 		_actors.push_back(actor);
 	}
 	
-	// 
+	// CameraActor
 	{
+		CameraActor* actor = new CameraActor();
+		actor->SetPos({ 0, 0 });
 
+		_actors.push_back(actor);
 	}
 	
 	Super::Init();
@@ -67,16 +71,12 @@ void TilemapScene::Init()
 
 void TilemapScene::Update()
 {
-	for (Actor* actor : _actors)
-		actor->Tick();
 
 	Super::Update();
 }
 
 void TilemapScene::Render(HDC hdc)
 {
-	for (Actor* actor : _actors)
-		actor->Render(hdc);
-
+	
 	Super::Render(hdc);
 }
