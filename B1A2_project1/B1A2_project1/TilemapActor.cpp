@@ -127,4 +127,29 @@ void TilemapActor::TickPicking()
 		if (tile)
 			tile->value = TILE_X;
 	}
+
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::RightMouse))
+	{
+		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+
+		// 카메라 좌표
+		int32 screenX = (int32)cameraPos.x - GWinSizeX / 2;
+		int32 screenY = (int32)cameraPos.y - GWinSizeY / 2;
+
+		// 월드 좌표
+		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+
+		// 월드 좌표를 카메라 좌표로 변환
+		int32 posX = mousePos.x + screenX;
+		int32 posY = mousePos.y + screenY;
+
+		// 인덱스로 변환
+		int32 x = posX / MAP_TILE_SIZEX;
+		int32 y = posY / MAP_TILE_SIZEY;
+
+		Tile* tile = _tilemap->GetTileAt({ x, y });
+
+		if (tile)
+			tile->value = TILE_O;
+	}
 }
