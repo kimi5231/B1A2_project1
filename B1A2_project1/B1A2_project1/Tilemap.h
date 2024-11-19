@@ -32,7 +32,7 @@ public:
 	std::vector<std::vector<Tile>>& GetTiles() { return _tiles; }
 
 	void SetMapSize(Vec2Int size);
-	void SetTileSize(int32 size);
+	//void SetTileSize(int32 size);
 
 private:
 	// 맵에 들어가는 타일 수

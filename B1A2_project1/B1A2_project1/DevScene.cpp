@@ -46,6 +46,23 @@ void DevScene::Init()
 		sound->Play(true);
 	}*/
 
+	// Map
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapX, mapY);
+
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
+		SpriteActor* map = new SpriteActor();
+		const Vec2Int size = sprite->GetSize();
+		map->SetPos(Vec2(size.x / 2, size.y / 2));
+		map->SetSprite(sprite);
+		map->SetLayer(LAYER_BACKGROUND);
+
+		_actors.push_back(map);
+	}
+
 	// Tilemap
 	{
 		// Tile Texture Load
