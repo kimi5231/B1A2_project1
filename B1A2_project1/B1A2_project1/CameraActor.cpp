@@ -41,12 +41,13 @@ void CameraActor::Tick()
 		_pos.x += 1000 * deltaTime;
 	}
 
+	_pos.x = std::clamp(_pos.x, (float)GWinSizeX / 2, (float)mapX - (float)GWinSizeX / 2);
+	_pos.y = std::clamp(_pos.y, (float)GWinSizeY / 2, (float)mapY - (float)GWinSizeY / 2);
+
 	Super::Tick();
 }
 
 void CameraActor::Render(HDC hdc)
 {
 	Super::Render(hdc);
-
-	Utils::DrawRect(hdc, _pos, {100, 100});
 }

@@ -52,7 +52,7 @@ void TilemapScene::Init()
 		Tilemap* tilemap = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
 		TilemapActor* actor = new TilemapActor();
 		actor->SetPos({ 0, 0 });
-		actor->SetShowDebug(false);
+		actor->SetShowDebug(true);
 		actor->SetTilemap(tilemap);
 
 		_actors.push_back(actor);
@@ -61,7 +61,7 @@ void TilemapScene::Init()
 	// CameraActor
 	{
 		CameraActor* actor = new CameraActor();
-		actor->SetPos({ 0, 0 });
+		actor->SetPos({ 100, 100 });
 
 		_actors.push_back(actor);
 	}
