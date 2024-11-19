@@ -71,12 +71,16 @@ void TilemapScene::Init()
 
 void TilemapScene::Update()
 {
-
 	Super::Update();
+
+	for (Actor* actor : _actors)
+		actor->Tick();
 }
 
 void TilemapScene::Render(HDC hdc)
 {
-	
 	Super::Render(hdc);
+
+	for (Actor* actor : _actors)
+		actor->Render(hdc);
 }
