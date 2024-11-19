@@ -33,11 +33,10 @@ void TilemapActor::Render(HDC hdc)
 	if (!_showDebug)
 		return;
 
-	if (_tilemap == nullptr)
+	if (!_tilemap)
 		return;
 
 	Vec2Int mapSize = _tilemap->GetMapSize();
-	//int32 tileSize = _tilemap->GetTileSize();
 
 	std::vector<std::vector<Tile>>& tiles = _tilemap->GetTiles();
 
@@ -103,6 +102,7 @@ void TilemapActor::Render(HDC hdc)
 
 void TilemapActor::TickPicking()
 {
+	// 드래그 가능
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
 	{
 		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
@@ -125,6 +125,6 @@ void TilemapActor::TickPicking()
 		Tile* tile = _tilemap->GetTileAt({x, y});
 
 		if (tile)
-			tile->value = 1;
+			tile->value = TILE_X;
 	}
 }

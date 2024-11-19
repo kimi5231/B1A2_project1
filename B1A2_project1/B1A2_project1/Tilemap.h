@@ -3,9 +3,16 @@
 #include <string>
 #include <string>
 
+enum TILE_TYPE
+{
+	TILE_O,
+	TILE_X,
+	
+};
+
 struct Tile
 {
-	int32 value = 0;
+	int32 value = TILE_O;
 };
 
 enum TILE_SIZE
@@ -27,17 +34,14 @@ public:
 	virtual void SaveFile(const std::wstring& path) override;
 
 	Vec2Int GetMapSize() { return _mapSize; }
-	//int32 GetTileSize() { return _tileSize; }
 	Tile* GetTileAt(Vec2Int pos);
 	std::vector<std::vector<Tile>>& GetTiles() { return _tiles; }
 
 	void SetMapSize(Vec2Int size);
-	//void SetTileSize(int32 size);
 
 private:
 	// 맵에 들어가는 타일 수
 	Vec2Int _mapSize{};
-	//int32 _tileSize = 0;
 	std::vector<std::vector<Tile>> _tiles;
 };
 

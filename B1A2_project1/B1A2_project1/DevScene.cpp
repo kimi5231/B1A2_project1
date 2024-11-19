@@ -100,16 +100,6 @@ void DevScene::Update()
 
 	for(Actor* actor : _actors)
 		actor->Tick();
-
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
-	{
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-	}
-
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::E))
-	{
-		GET_SINGLE(ResourceManager)->SaveTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-	}
 }
 
 void DevScene::Render(HDC hdc)

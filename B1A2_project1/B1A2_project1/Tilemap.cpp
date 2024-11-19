@@ -78,11 +78,6 @@ void Tilemap::SetMapSize(Vec2Int size)
 	for (int32 y = 0; y < size.y; y++)
 	{
 		for (int32 x = 0; x < size.x; x++)
-			_tiles[y][x] = Tile{ 0 };
+			_tiles[y][x] = Tile{TILE_O};
 	}
 }
-
-//void Tilemap::SetTileSize(int32 size)
-//{
-//	_tileSize = size;
-//}

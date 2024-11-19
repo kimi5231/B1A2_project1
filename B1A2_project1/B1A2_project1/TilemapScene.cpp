@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TilemapScene.h"
 #include "ResourceManager.h"
+#include "InputManager.h"
 #include "Tilemap.h"
 #include "Sprite.h"
 #include "TilemapActor.h"
@@ -31,9 +32,9 @@ void TilemapScene::Init()
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
 	}
-	
+
 	// Tilemap
-	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	GET_SINGLE(ResourceManager)->CreateTilemap(L"Tilemap");
 	
 	// Map
 	{
@@ -50,6 +51,7 @@ void TilemapScene::Init()
 	// TilemapActor
 	{
 		Tilemap* tilemap = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+		tilemap->SetMapSize({ 160, 36 });
 		TilemapActor* actor = new TilemapActor();
 		actor->SetPos({ 0, 0 });
 		actor->SetShowDebug(true);
@@ -75,6 +77,16 @@ void TilemapScene::Update()
 
 	for (Actor* actor : _actors)
 		actor->Tick();
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
+	{
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::E))
+	{
+		GET_SINGLE(ResourceManager)->SaveTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	}
 }
 
 void TilemapScene::Render(HDC hdc)
