@@ -35,7 +35,7 @@ void Panel::Render(HDC hdc)
 
 void Panel::AddChild(UI* ui)
 {
-	if (ui == nullptr)
+	if (!ui)
 		return;
 
 	_children.push_back(ui);

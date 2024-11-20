@@ -22,7 +22,7 @@ void FlipbookActor::Tick()
 {
 	Super::Tick();
 
-	if (_flipbook == nullptr)
+	if (!_flipbook)
 		return;
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
@@ -47,7 +47,7 @@ void FlipbookActor::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	if (_flipbook == nullptr)
+	if (!_flipbook)
 		return;
 
 	const FlipbookInfo& info = _flipbook->GetInfo();

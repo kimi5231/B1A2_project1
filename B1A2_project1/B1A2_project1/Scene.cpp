@@ -55,7 +55,7 @@ void Scene::Render(HDC hdc)
 
 void Scene::AddActor(Actor* actor)
 {
-	if (actor == nullptr)
+	if (!actor)
 		return;
 
 	//_actors[actor->GetLayer()].push_back(actor);
@@ -63,7 +63,7 @@ void Scene::AddActor(Actor* actor)
 
 void Scene::RemoveActor(Actor* actor)
 {
-	if (actor == nullptr)
+	if (!actor)
 		return;
 
 	//std::vector<Actor*>& v = _actors[actor->GetLayer()];

@@ -17,7 +17,7 @@ void CameraComponent::BeginPlay()
 
 void CameraComponent::TickComponent()
 {
-	if (_owner == nullptr)
+	if (!_owner)
 		return;
 
 	Vec2 pos = _owner->GetPos();

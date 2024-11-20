@@ -25,7 +25,7 @@ void SpriteActor::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	if (_sprite == nullptr)
+	if (!_sprite)
 		return;
 
 	Vec2Int size = _sprite->GetSize();

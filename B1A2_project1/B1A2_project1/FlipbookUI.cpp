@@ -21,7 +21,7 @@ void FlipbookUI::Tick()
 {
 	Super::Tick();
 
-	if (_flipbook == nullptr)
+	if (!_flipbook)
 		return;
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
@@ -45,7 +45,7 @@ void FlipbookUI::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	if (_flipbook == nullptr)
+	if (!_flipbook)
 		return;
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
@@ -65,7 +65,7 @@ void FlipbookUI::Render(HDC hdc)
 
 void FlipbookUI::SetFilpbook(Flipbook* flipbook)
 {
-	if (flipbook == nullptr)
+	if (!flipbook)
 		return;
 
 	_flipbook = flipbook;

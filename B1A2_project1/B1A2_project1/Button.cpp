@@ -40,7 +40,7 @@ void Button::Tick()
 		SetButtonState(BS_Default);
 	}
 
-	if (_currentFlipbook == nullptr)
+	if (!_currentFlipbook)
 		return;
 
 	const FlipbookInfo& info = _currentFlipbook->GetInfo();
@@ -64,7 +64,7 @@ void Button::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	if (_currentFlipbook == nullptr)
+	if (!_currentFlipbook)
 	{
 		Utils::DrawRect(hdc, _pos, _size);
 	}
@@ -119,7 +119,7 @@ void Button::SetButtonState(ButtonState state)
 
 void Button::SetFlipbook(Flipbook* flipbook, ButtonState state)
 {
-	if (flipbook == nullptr)
+	if (!flipbook)
 		return;
 
 	_flipbooks[state] = flipbook;

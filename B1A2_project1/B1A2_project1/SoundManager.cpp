@@ -30,7 +30,7 @@ void SoundManager::Init(HWND hwnd)
 void SoundManager::Play(const std::wstring& key, bool loop /*= false*/)
 {
 	Sound* sound = GET_SINGLE(ResourceManager)->GetSound(key);
-	if (sound == nullptr)
+	if (!sound)
 		return;
 
 	sound->Play(loop);

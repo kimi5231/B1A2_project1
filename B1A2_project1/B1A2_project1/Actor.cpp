@@ -38,7 +38,7 @@ void Actor::Render(HDC hdc)
 
 void Actor::AddComponent(Component* component)
 {
-	if (component == nullptr)
+	if (!component)
 		return;
 
 	component->SetOwner(this);
