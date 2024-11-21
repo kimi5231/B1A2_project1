@@ -2,6 +2,7 @@
 #include "SettingScene.h"
 #include "Panel.h"
 #include "Button.h"
+#include "ValueManager.h"
 
 SettingScene::SettingScene()
 {
@@ -44,5 +45,15 @@ void SettingScene::Render(HDC hdc)
 // callback 함수
 void SettingScene::ChangeFullScreen()
 {
+	// 화면 크기로 설정하기
+	GET_SINGLE(ValueManager)->SetWinSize({ ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) });
+	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
+	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
+	// 현재 창 스타일 가져오기
+	DWORD dwStyle = ::GetWindowLong(hwnd, GWL_STYLE);
+	// 전체화면 스타일로 변환
+	::SetWindowLong(hwnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
+	// 창 크기 재설정
+	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW);
 }

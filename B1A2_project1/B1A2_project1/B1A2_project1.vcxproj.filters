@@ -194,6 +194,9 @@
     <ClInclude Include="CameraActor.h">
       <Filter>소스 파일\03. Objects</Filter>
     </ClInclude>
+    <ClInclude Include="ValueManager.h">
+      <Filter>소스 파일\01. Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -309,6 +312,9 @@
     </ClCompile>
     <ClCompile Include="CameraActor.cpp">
       <Filter>소스 파일\03. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueManager.cpp">
+      <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

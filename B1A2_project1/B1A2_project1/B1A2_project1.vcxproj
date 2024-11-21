@@ -181,6 +181,7 @@
     <ClInclude Include="Types.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="ValueManager.h" />
     <ClInclude Include="Values.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="ValueManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="B1A2_project1.rc" />

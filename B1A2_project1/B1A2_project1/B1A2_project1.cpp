@@ -5,6 +5,7 @@
 #include "framework.h"
 #include "B1A2_project1.h"
 #include "Game.h"
+#include "ValueManager.h"
 
 #define MAX_LOADSTRING 100
 
@@ -107,7 +108,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-    RECT windowRect = { 0, 0, GWinSizeX, GWinSizeY };
+    Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+    RECT windowRect = { 0, 0, winSize.x, winSize.y };
     ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
     HWND hWnd = CreateWindowW(L"B1A2_project1", L"B1A2", WS_OVERLAPPED | WS_SYSMENU,

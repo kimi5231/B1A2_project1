@@ -1,5 +1,7 @@
 #pragma once
 
+// const value
+
 // 윈도우 창 사이즈
 const int32 GWinSizeX = 1280;
 const int32 GWinSizeY = 720;
