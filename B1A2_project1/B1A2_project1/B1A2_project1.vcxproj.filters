@@ -24,9 +24,6 @@
     <Filter Include="소스 파일\02. Scene\Game">
       <UniqueIdentifier>{02e339d2-90d1-41f0-bed6-c437dc8bd456}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\99. Headers\Defalt">
-      <UniqueIdentifier>{438ebc11-e325-480e-aae2-e7d6ae2b3207}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03. Objects">
       <UniqueIdentifier>{d0619cbf-24a0-4661-991e-ad7c7fa79f7a}</UniqueIdentifier>
     </Filter>
@@ -57,16 +54,19 @@
     <Filter Include="소스 파일\05. Component\Collision">
       <UniqueIdentifier>{9ca717f2-09fd-4656-8254-207a0a0cbc7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\99. Headers\Default">
+      <UniqueIdentifier>{438ebc11-e325-480e-aae2-e7d6ae2b3207}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>소스 파일\99. Headers\Defalt</Filter>
+      <Filter>소스 파일\99. Headers\Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>소스 파일\99. Headers\Defalt</Filter>
+      <Filter>소스 파일\99. Headers\Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>소스 파일\99. Headers\Defalt</Filter>
+      <Filter>소스 파일\99. Headers\Default</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>소스 파일\99. Headers</Filter>

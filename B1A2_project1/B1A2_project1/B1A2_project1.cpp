@@ -108,8 +108,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-    Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-    RECT windowRect = { 0, 0, winSize.x, winSize.y };
+    Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
+
+    RECT windowRect = { 0, 0, size.x, size.y };
+    //RECT windowRect = { 0, 0, ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) };
     ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
     HWND hWnd = CreateWindowW(L"B1A2_project1", L"B1A2", WS_OVERLAPPED | WS_SYSMENU,
@@ -169,7 +171,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         ::PostQuitMessage(0);
         break;
     default:
-        return ::DefWindowProc(hWnd, message, wParam, lParam);
+         return ::DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
 }

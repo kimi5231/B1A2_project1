@@ -3,6 +3,7 @@
 #include "Panel.h"
 #include "Button.h"
 #include "ValueManager.h"
+#include <iostream>
 
 SettingScene::SettingScene()
 {
@@ -23,7 +24,7 @@ void SettingScene::Init()
 	// FullScreen 테스트용 버튼
 	{
 		Button* ui = new Button();
-		ui->SetPos({500, 500});
+		ui->SetPos({1280, 720});
 		ui->SetSize({ 100, 100 });
 		ui->AddOnClickDelegate(this, &SettingScene::ChangeFullScreen);
 		_panel->AddChild(ui);
@@ -39,6 +40,19 @@ void SettingScene::Update()
 
 void SettingScene::Render(HDC hdc)
 {
+	{
+		HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
+		Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
+
+		SetMapMode(hdc, MM_ANISOTROPIC);
+		SetViewportExtEx(hdc, size.x, size.y, NULL);
+		SetWindowExtEx(hdc, size.x, size.y, NULL);
+		SetViewportOrgEx(hdc, 0, 0, NULL);
+		SetWindowOrgEx(hdc, 0, 0, NULL);
+
+	
+	}
+
 	Super::Render(hdc);
 }
 
@@ -55,5 +69,23 @@ void SettingScene::ChangeFullScreen()
 	// 전체화면 스타일로 변환
 	::SetWindowLong(hwnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
 	// 창 크기 재설정
-	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW);
+	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+
+	{
+		HDC hdc = GetDC(hwnd);
+
+		SetMapMode(hdc, MM_ANISOTROPIC);
+		SetViewportExtEx(hdc, size.x, size.y, NULL);
+		SetWindowExtEx(hdc, size.x, size.y, NULL);
+		SetViewportOrgEx(hdc, 0, 0, NULL);
+		SetWindowOrgEx(hdc, 0, 0, NULL);
+
+		
+
+
+	
+		ReleaseDC(hwnd, hdc);
+
+		
+	}
 }

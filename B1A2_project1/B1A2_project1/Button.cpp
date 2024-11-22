@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
+#include "ValueManager.h"
 #include "Flipbook.h"
 #include "Texture.h"
 
@@ -64,8 +65,11 @@ void Button::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 	if (!_currentFlipbook)
 	{
+		// 화면 해상도에 맞춰 위치 조정
 		Utils::DrawRect(hdc, _pos, _size);
 	}
 	else
