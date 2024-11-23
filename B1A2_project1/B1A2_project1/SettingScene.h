@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+class Button;
+
 class SettingScene : public Scene
 {
 	using Super = Scene;
@@ -14,4 +16,6 @@ public:
 
 public:
 	void ChangeFullScreen();
+
+	Button* button = nullptr;
 };
