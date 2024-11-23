@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "ValueManager.h"
 #include "Tilemap.h"
 #include "Sprite.h"
 
@@ -44,13 +45,14 @@ void TilemapActor::Render(HDC hdc)
 	Sprite* spriteX = GET_SINGLE(ResourceManager)->GetSprite(L"TileX");
 
 	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 	// 컬링
 	// 카메라 좌표의 시작과 끝을 구하기
-	int32 leftX = (int32)cameraPos.x - GWinSizeX / 2;
-	int32 leftY = (int32)cameraPos.y - GWinSizeY / 2;
-	int32 rightX = (int32)cameraPos.x + GWinSizeX / 2;
-	int32 rightY = (int32)cameraPos.y + GWinSizeY / 2;
+	int32 leftX = (int32)cameraPos.x - winSize.x / 2;
+	int32 leftY = (int32)cameraPos.y - winSize.y / 2;
+	int32 rightX = (int32)cameraPos.x + winSize.x / 2;
+	int32 rightY = (int32)cameraPos.y + winSize.y / 2;
 
 	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 인덱스 구하기
 	int32 startX = (leftX - _pos.x) / MAP_TILE_SIZEX;
@@ -71,8 +73,8 @@ void TilemapActor::Render(HDC hdc)
 			{
 			case 0:
 				::TransparentBlt(hdc,
-					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
-					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
+					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - winSize.x / 2),
+					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - winSize.y / 2),
 					MAP_TILE_SIZEX,
 					MAP_TILE_SIZEY,
 					spriteO->GetDC(),
@@ -84,8 +86,8 @@ void TilemapActor::Render(HDC hdc)
 				break;
 			case 1:
 				::TransparentBlt(hdc,
-					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - GWinSizeX / 2),
-					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - GWinSizeY / 2),
+					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - winSize.x / 2),
+					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - winSize.y / 2),
 					MAP_TILE_SIZEX,
 					MAP_TILE_SIZEY,
 					spriteX->GetDC(),
@@ -106,10 +108,12 @@ void TilemapActor::TickPicking()
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
 	{
 		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+		
+		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 		// 카메라 좌표
-		int32 screenX = (int32)cameraPos.x - GWinSizeX / 2;
-		int32 screenY = (int32)cameraPos.y - GWinSizeY / 2;
+		int32 screenX = (int32)cameraPos.x - winSize.x / 2;
+		int32 screenY = (int32)cameraPos.y - winSize.y / 2;
 
 		// 월드 좌표
 		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
@@ -132,9 +136,11 @@ void TilemapActor::TickPicking()
 	{
 		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
 
+		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 		// 카메라 좌표
-		int32 screenX = (int32)cameraPos.x - GWinSizeX / 2;
-		int32 screenY = (int32)cameraPos.y - GWinSizeY / 2;
+		int32 screenX = (int32)cameraPos.x - winSize.x / 2;
+		int32 screenY = (int32)cameraPos.y - winSize.y / 2;
 
 		// 월드 좌표
 		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();

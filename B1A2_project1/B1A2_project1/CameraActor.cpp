@@ -2,6 +2,7 @@
 #include "CameraActor.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "ValueManager.h"
 #include "CameraComponent.h"
 #include "Component.h"
 
@@ -41,8 +42,11 @@ void CameraActor::Tick()
 		_pos.x += 1000 * deltaTime;
 	}
 
-	_pos.x = std::clamp(_pos.x, (float)GWinSizeX / 2, (float)mapX - (float)GWinSizeX / 2);
-	_pos.y = std::clamp(_pos.y, (float)GWinSizeY / 2, (float)mapY - (float)GWinSizeY / 2);
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
+
+	_pos.x = std::clamp(_pos.x, (float)winSize.x / 2, (float)mapSize.x - (float)winSize.x / 2);
+	_pos.y = std::clamp(_pos.y, (float)winSize.y / 2, (float)mapSize.y - (float)winSize.y / 2);
 
 	Super::Tick();
 }

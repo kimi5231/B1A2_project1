@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "Actor.h"
 #include "BoxCollider.h"
+#include "ValueManager.h"
 
 SphereCollider::SphereCollider() : Collider(ColliderType::Sphere)
 {
@@ -36,9 +37,11 @@ void SphereCollider::Render(HDC hdc)
 		return;
 
 	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 	Vec2 pos = GetOwner()->GetPos();
-	pos.x -= (cameraPos.x - GWinSizeX / 2);
-	pos.y -= (cameraPos.y - GWinSizeY / 2);
+	pos.x -= (cameraPos.x - winSize.x / 2);
+	pos.y -= (cameraPos.y - winSize.y / 2);
 
 	HBRUSH myBrush = (HBRUSH)::GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)::SelectObject(hdc, myBrush);

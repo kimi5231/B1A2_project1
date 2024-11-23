@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
+#include "ValueManager.h"
 #include "TitleScene.h"
 #include "SettingScene.h"
 #include "GameScene.h"
@@ -8,7 +9,12 @@
 
 void SceneManager::Init()
 {
-}
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
+	_cameraPos.x = winSize.x / 2;
+	_cameraPos.y = winSize.y / 2;
+};
+
 
 void SceneManager::Update()
 {

@@ -13,6 +13,7 @@
 #include "Sound.h"
 #include "Tilemap.h"
 #include "TilemapActor.h"
+#include "ValueManager.h"
 
 DevScene::DevScene()
 {
@@ -50,8 +51,9 @@ void DevScene::Init()
 	{
 		GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
 
+		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapX, mapY);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
 
 		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
 		SpriteActor* map = new SpriteActor();

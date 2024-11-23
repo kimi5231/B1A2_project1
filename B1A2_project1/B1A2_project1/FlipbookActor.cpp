@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "ValueManager.h"
 
 FlipbookActor::FlipbookActor()
 {
@@ -52,10 +53,11 @@ void FlipbookActor::Render(HDC hdc)
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
 	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 	::TransparentBlt(hdc,
-		(int32)_pos.x - info.size.x / 2 - ((int32)cameraPos.x - GWinSizeX / 2),
-		(int32)_pos.y - info.size.y / 2 - ((int32)cameraPos.y - GWinSizeY / 2),
+		(int32)_pos.x - info.size.x / 2 - ((int32)cameraPos.x - winSize.x / 2),
+		(int32)_pos.y - info.size.y / 2 - ((int32)cameraPos.y - winSize.y / 2),
 		info.size.x,
 		info.size.y,
 		info.texture->GetDC(),

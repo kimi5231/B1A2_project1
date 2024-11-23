@@ -2,6 +2,7 @@
 #include "TilemapScene.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
+#include "ValueManager.h"
 #include "Tilemap.h"
 #include "Sprite.h"
 #include "TilemapActor.h"
@@ -25,7 +26,8 @@ void TilemapScene::Init()
 	// Sprite
 	{
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapX, mapY);
+		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
 	}
 	{
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");

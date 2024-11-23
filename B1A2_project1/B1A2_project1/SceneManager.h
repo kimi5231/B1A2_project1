@@ -26,6 +26,6 @@ public:
 	void SetCameraPos(Vec2 pos) { _cameraPos = pos; }
 
 private:
-	Vec2  _cameraPos = { GWinSizeX / 2, GWinSizeY / 2 };
+	Vec2  _cameraPos{};
 };
 
