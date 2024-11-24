@@ -42,7 +42,6 @@ private:
 	virtual void TickHit();
 	virtual void TickDead();
 
-
 	void SetState(PlayerState);
 	void SetDir(Dir dir);
 
@@ -68,5 +67,7 @@ private:
 	Dir _dir = DIR_RIGHT;
 	PlayerState _state = PlayerState::Idle;
 	bool _keyPressed = false;
+	int32 _playerID = 1;	
+	std::vector<PlayerStat> _stat;
 };
 

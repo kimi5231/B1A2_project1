@@ -1,4 +1,5 @@
 #pragma once
+
 class Game
 {
 public:
@@ -9,6 +10,8 @@ public:
 	void Init(HWND hwnd);
 	void Update();
 	void Render();
+
+	std::vector<PlayerStat> LoadPlayerStats(const std::filesystem::path& filePath);
 
 private:
 	HWND _hwnd = {};	// 윈도우 핸들 번호

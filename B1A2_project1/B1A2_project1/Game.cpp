@@ -6,6 +6,10 @@
 #include "ResourceManager.h"
 #include "SoundManager.h"
 #include "ValueManager.h"
+#include <fstream>
+#include <iostream>
+#include "Player.h"		// Stat 저장 위해
+std::vector<PlayerStat> stats;
 
 Game::Game()
 {
@@ -24,6 +28,9 @@ void Game::Init(HWND hwnd)
 	_resourcePath = std::filesystem::current_path().relative_path();
 	std::filesystem::path _resourcePath = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources";
 	
+	// CSV 파일 읽어서 배열에 저장하는 코드
+	stats = LoadPlayerStats(_resourcePath / "DataBase\\TEST_playerData");
+
 	// 더블 버퍼링 코드
 	::GetClientRect(hwnd, &_rect);
 
@@ -71,4 +78,56 @@ void Game::Render()
 	// Double Buffering
 	::BitBlt(_hdc, 0, 0, _rect.right, _rect.bottom, hdcBack, 0, 0, SRCCOPY); // 비트 블릿 : 고속 복사
 	::PatBlt(hdcBack, 0, 0, _rect.right, _rect.bottom, WHITENESS);
+}
+
+std::vector<PlayerStat> Game::LoadPlayerStats(const std::filesystem::path& filePath)
+{
+	// std::vector<PlayerStat> playerStats;
+
+	std::ifstream playerDBFile(filePath);
+	if (!playerDBFile.is_open())
+	{
+		std::cerr << "Failed to poen file : " << filePath << std::endl;
+		return stats;
+	}
+
+	std::string line;
+	while (std::getline(playerDBFile, line))
+	{
+		if (line.empty())
+			continue;
+
+		std::istringstream lineStream(line);
+		std::string cell;
+		PlayerStat stat;
+		int column = 0;
+
+		while (std::getline(lineStream, cell, '\t')) 
+		{
+			switch (column)
+			{
+			// stoi : 문자열을 정수로 변환
+			case 0: stat.healthPoint = std::stoi(cell); break;
+			case 1: stat.runSpeed = std::stoi(cell); break;
+			case 2: stat.crouchSpeed = std::stoi(cell); break;
+			case 3: stat.jumpHeight = std::stoi(cell); break;
+			case 4: stat.attRange = std::stoi(cell); break;
+			case 5: stat.enemyExistInAttRange = (cell == "1"); break;
+			case 6: stat.attID = std::stoi(cell); break;
+			case 7: stat.attDamage = std::stoi(cell); break;
+			case 8: stat.attStepDistance = std::stoi(cell); break;
+			case 9: stat.skillPoint = std::stoi(cell); break;
+			case 10: stat.skillDamage = std::stoi(cell); break;
+			case 11: stat.skillRange = std::stoi(cell); break;
+			case 12: stat.skillDuration = std::stoi(cell); break;
+			case 13: stat.skillStepDistance = std::stoi(cell); break;
+			}
+			++column;
+		}
+
+		if (column >= 14) 
+			stats.push_back(stat);
+	}
+
+	return stats;
 }

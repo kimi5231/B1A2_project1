@@ -9,12 +9,22 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
-// * Stat 엑셀로 읽어오는 방식으로 바꾸기
-struct Stat
+struct PlayerStat 
 {
-	int32 hp = 0;
-	int32 maxHp = 0;
-	float speed = 0;
+	int32 healthPoint  = 0;
+	int32 runSpeed = 0;
+	int32 crouchSpeed = 0;
+	int32 jumpHeight = 0;
+	int32 attRange = 0;
+	bool enemyExistInAttRange = false;
+	int32 attID = 0;
+	int32 attDamage = 0;
+	int32 attStepDistance = 0;
+	int32 skillPoint = 0;
+	int32 skillDamage = 0;
+	int32 skillRange = 0;
+	int32 skillDuration = 0;
+	int32 skillStepDistance;
 };
 
 // 2차원 벡터

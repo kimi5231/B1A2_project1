@@ -7,6 +7,12 @@
 
 Player::Player()
 {
+	//_playerID++;	// 이렇게 하면 Scene마다 ID 늘어나는데.. 일단 ID는 1로 지정하고 고민해보기
+	//if (!stats.empty())
+	//{
+	//	_stat.push_back(stats[0]);	// 일단 1열만!!!
+	//}
+
 	// 마지
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");
 	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveLeft");
