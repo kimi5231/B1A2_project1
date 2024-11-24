@@ -58,7 +58,7 @@ void Scene::AddActor(Actor* actor)
 	if (!actor)
 		return;
 
-	//_actors[actor->GetLayer()].push_back(actor);
+	_actors[actor->GetLayer()].push_back(actor);
 }
 
 void Scene::RemoveActor(Actor* actor)
@@ -66,6 +66,6 @@ void Scene::RemoveActor(Actor* actor)
 	if (!actor)
 		return;
 
-	//std::vector<Actor*>& v = _actors[actor->GetLayer()];
-	//v.erase(std::remove(v.begin(), v.end(), actor), v.end());
+	std::vector<Actor*>& v = _actors[actor->GetLayer()];
+	v.erase(std::remove(v.begin(), v.end(), actor), v.end());
 }

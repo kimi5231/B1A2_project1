@@ -14,6 +14,7 @@
 #include "Tilemap.h"
 #include "TilemapActor.h"
 #include "ValueManager.h"
+#include "Scene.h"
 
 DevScene::DevScene()
 {
@@ -26,18 +27,18 @@ DevScene::~DevScene()
 void DevScene::Init()
 {
 	// 마지 리소스
-	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerRunRight", L"Sprite\\Player\\PlayerRunRight.bmp", RGB(55, 255, 0));	// 녹색 배경 (55, 255, 0)
-	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerRunLeft", L"Sprite\\Player\\PlayerRunLeft.bmp", RGB(55, 255, 0));	
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerMoveRight", L"Sprite\\Player\\PlayerMoveRight.bmp", RGB(55, 255, 0));	// 녹색 배경 (55, 255, 0)
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerMoveLeft", L"Sprite\\Player\\PlayerMoveLeft.bmp", RGB(55, 255, 0));	
 
 	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerRunRight");
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerRunRight");
-		fb->SetInfo({ texture, L"FB_PlayerRunRight", {67, 70}, 0, 9, 0, 0.7f });
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerMoveRight");
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerMoveRight");
+		fb->SetInfo({ texture, L"FB_PlayerMoveRight", {67, 70}, 0, 9, 0, 0.7f });
 	}
 	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerRunLeft");
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerRunLeft");
-		fb->SetInfo({ texture, L"FB_PlayerRunLeft", {67, 70}, 0, 9, 0, 0.7f });
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerMoveLeft");
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerMoveLeft");
+		fb->SetInfo({ texture, L"FB_PlayerMoveLeft", {67, 70}, 0, 9, 0, 0.7f });
 	}
 
 	// Sound
@@ -62,7 +63,7 @@ void DevScene::Init()
 		map->SetSprite(sprite);
 		map->SetLayer(LAYER_BACKGROUND);
 
-		_actors.push_back(map);
+		AddActor(map);
 	}
 
 	// Tilemap
@@ -83,14 +84,17 @@ void DevScene::Init()
 		actor->SetPos({0, 0});
 		actor->SetShowDebug(true);
 		actor->SetTilemap(tm);
+		actor->SetLayer(LAYER_TILEMAP);
 
-		_actors.push_back(actor);
+		AddActor(actor);
 	}
 
 	{
 		Player* player = new Player();
 		player->SetPos({ 100, 100 });
-		_actors.push_back(player);
+		player->SetLayer(LAYER_OBJECT);
+
+		AddActor(player);
 	}
 
 	Super::Init();
@@ -99,15 +103,9 @@ void DevScene::Init()
 void DevScene::Update()
 {
 	Super::Update(); 
-
-	for(Actor* actor : _actors)
-		actor->Tick();
 }
 
 void DevScene::Render(HDC hdc)
 {
 	Super::Render(hdc);
-
-	for (Actor* actor : _actors)
-		actor->Render(hdc);
 }

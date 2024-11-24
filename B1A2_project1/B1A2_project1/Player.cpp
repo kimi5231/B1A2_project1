@@ -8,8 +8,8 @@
 Player::Player()
 {
 	// 마지
-	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRunRight");
-	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRunLeft");
+	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");
+	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveLeft");
 
 	// 카메라 컴포넌트
 	CameraComponent* camera = new CameraComponent();
@@ -25,9 +25,7 @@ void Player::BeginPlay()
 	Super::BeginPlay();
 
 	// 처음 상태 지정
-	// SetFlipbook(_flipbookPlayerRunRight);
 	SetState(PlayerState::Idle);
-	
 }
 
 void Player::Tick()
@@ -42,32 +40,31 @@ void Player::Tick()
 	case PlayerState::Move:
 		TickMove();
 		break;
-	case PlayerState::DuckDown:
-		TickDuckDown();
-		break;
-	case PlayerState::Jump:
-		TickJump();
-		break;
-	case PlayerState::Hang:
-		TickHang();
-		break;
-	case PlayerState::Release:
-		TickRelease();
-		break;
-	case PlayerState::Skill:
-		TickSkill();
-		break;
-	case PlayerState::AttackNormal:
-		TickAttackNormal();
-		break;
-	case PlayerState::Hit:
-		TickHit();
-		break;
-	case PlayerState::Dead:
-		TickDead();
-		break;
+	//case PlayerState::DuckDown:
+	//	TickDuckDown();
+	//	break;
+	//case PlayerState::Jump:
+	//	TickJump();
+	//	break;
+	//case PlayerState::Hang:
+	//	TickHang();
+	//	break;
+	//case PlayerState::Release:
+	//	TickRelease();
+	//	break;
+	//case PlayerState::Skill:
+	//	TickSkill();
+	//	break;
+	//case PlayerState::AttackNormal:
+	//	TickAttackNormal();
+	//	break;
+	//case PlayerState::Hit:
+	//	TickHit();
+	//	break;
+	//case PlayerState::Dead:
+	//	TickDead();
+	//	break;
 	}
-
 }
 
 void Player::Render(HDC hdc)
@@ -171,14 +168,34 @@ void Player::UpdateAnimation()
 		if (_keyPressed)
 			SetFlipbook(_flipbookPlayerMove[_dir]);
 		else
-			SetFlipbook(_flipbookPlayerIdle[_dir]);
+			SetFlipbook(_flipbookPlayerMove[_dir]);		// IDLE 리소스 없어서, 리소스 생기면 Idle로 바꾸기
 		break;
 	case PlayerState::Move:
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
-	case PlayerState::DuckDown:
-		SetFlipbook(_flipbookPlayerDuckDown[_dir]);
-		break;
-
+	//case PlayerState::DuckDown:
+	//	SetFlipbook(_flipbookPlayerDuckDown[_dir]);
+	//	break;
+	//case PlayerState::Jump:
+	//	SetFlipbook(_flipbookPlayerJump[_dir]);
+	//	break;
+	//case PlayerState::Hang:
+	//	SetFlipbook(_flipbookPlayerHang[_dir]);
+	//	break;
+	//case PlayerState::Release:
+	//	SetFlipbook(_flipbookPlayerRelease[_dir]);
+	//	break;
+	//case PlayerState::Skill:
+	//	SetFlipbook(_flipbookPlayerSkill[_dir]);
+	//	break;
+	//case PlayerState::AttackNormal:
+	//	SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+	//	break;
+	//case PlayerState::Hit:
+	//	SetFlipbook(_flipbookPlayerHit[_dir]);
+	//	break;
+	//case PlayerState::Dead:
+	//	SetFlipbook(_flipbookPlayerDead[_dir]);
+	//	break;
 	}
 }

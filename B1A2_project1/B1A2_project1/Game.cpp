@@ -40,7 +40,7 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(SoundManager)->Init(hwnd);
 	GET_SINGLE(ValueManager)->Init(hwnd);
 
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::SettingScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
 }
 
 void Game::Update()

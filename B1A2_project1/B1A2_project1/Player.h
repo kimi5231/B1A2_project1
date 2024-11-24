@@ -61,7 +61,7 @@ private:
 	Flipbook* _flipbookPlayerSkill[2] = {};
 	Flipbook* _flipbookPlayerAttackNormal[2] = {};
 	Flipbook* _flipbookPlayerHit[2] = {};
-	Flipbook* _flipbookPlayer[2] = {};
+	Flipbook* _flipbookPlayerDead[2] = {};
 
 	Vec2Int _cellPos = {};
 	Vec2 _speed = {};
