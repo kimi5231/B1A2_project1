@@ -197,7 +197,9 @@
     <ClInclude Include="ValueManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStatManager.h" />
+    <ClInclude Include="PlayerStatManager.h">
+      <Filter>소스 파일\01. Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -318,7 +320,7 @@
       <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStatManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
