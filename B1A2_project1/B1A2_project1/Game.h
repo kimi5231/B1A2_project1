@@ -11,8 +11,6 @@ public:
 	void Update();
 	void Render();
 
-	std::vector<PlayerStat> LoadPlayerStats(const std::filesystem::path& filePath);
-
 private:
 	HWND _hwnd = {};	// 윈도우 핸들 번호
 	HDC _hdc = {};		// 도화지 번호

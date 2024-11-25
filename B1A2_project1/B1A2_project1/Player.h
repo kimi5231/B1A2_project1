@@ -17,6 +17,25 @@ enum class PlayerState
 	Dead	// 사망
 };
 
+struct PlayerStat
+{
+	int32 playerID = 0;
+	int32 healthPoint = 0;
+	int32 runSpeed = 0;
+	int32 crouchSpeed = 0;
+	int32 jumpHeight = 0;
+	int32 attRange = 0;
+	bool enemyExistInAttRange = false;
+	int32 attID = 0;
+	int32 attDamage = 0;
+	int32 attStepDistance = 0;
+	int32 skillPoint = 0;
+	int32 skillDamage = 0;
+	int32 skillRange = 0;
+	int32 skillDuration = 0;
+	int32 skillStepDistance;
+};
+
 class Player : public FlipbookActor
 {
 	using Super = FlipbookActor;
@@ -28,6 +47,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
+
+	PlayerStat* GetPlayerStat() { return _playerStat; }
+	void SetPlayerStat(PlayerStat* playerStat) { _playerStat = playerStat; }
 
 private:
 	// Player State
@@ -46,6 +68,8 @@ private:
 	void SetDir(Dir dir);
 
 	void UpdateAnimation();
+
+
 
 	// * 목적지 관련 코드 추가 필요
 
@@ -67,7 +91,7 @@ private:
 	Dir _dir = DIR_RIGHT;
 	PlayerState _state = PlayerState::Idle;
 	bool _keyPressed = false;
-	int32 _playerID = 1;	
-	std::vector<PlayerStat> _stat;
+
+	PlayerStat* _playerStat = {};
 };
 

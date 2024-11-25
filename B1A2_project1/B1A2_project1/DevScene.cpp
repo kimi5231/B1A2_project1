@@ -15,6 +15,8 @@
 #include "TilemapActor.h"
 #include "ValueManager.h"
 #include "Scene.h"
+#include "PlayerStatManager.h"
+#include "Player.h"
 
 DevScene::DevScene()
 {
@@ -94,6 +96,8 @@ void DevScene::Init()
 		player->SetPos({ 100, 100 });
 		player->SetLayer(LAYER_OBJECT);
 
+		// Stat
+		player->SetPlayerStat(GET_SINGLE(PlayerStatManager)->LoadPlayerStats(1, L"DataBase\\TEST_playerData.csv"));		// ID 1인 Stat 얻어오기
 		AddActor(player);
 	}
 

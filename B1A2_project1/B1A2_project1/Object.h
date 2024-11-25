@@ -30,7 +30,6 @@ public:
 protected:
 	ObjectType _type = ObjectType::None;
 	MoveDir _dir = MoveDir::Right;
-	PlayerStat _stat = {};
 	Vec2 _pos = {};
 	float _radius = 0.f;
 };

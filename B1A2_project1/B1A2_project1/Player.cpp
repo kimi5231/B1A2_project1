@@ -4,9 +4,16 @@
 #include "TimeManager.h"
 #include "InputManager.h"
 #include "CameraComponent.h"
+#include <fstream>		// PlayrStat 저장
+#include <iostream>
+#include "Game.h"
+std::vector<PlayerStat> stats;
+
 
 Player::Player()
 {
+	// CSV 파일 읽어서 배열에 저장하는 코드
+
 	//_playerID++;	// 이렇게 하면 Scene마다 ID 늘어나는데.. 일단 ID는 1로 지정하고 고민해보기
 	//if (!stats.empty())
 	//{
