@@ -8,6 +8,7 @@ enum class PlayerState
 	Idle,	// 대기
 	Move,	// 달리기
 	DuckDown,	// 숙이기
+	DuckDownMove,	// 숙이면서 달리기
 	Jump,	// 점프
 	Hang,	// 매달리기
 	Release,	// 놓기
@@ -56,6 +57,7 @@ private:
 	virtual void TickIdle();
 	virtual void TickMove();
 	virtual void TickDuckDown();
+	virtual void TickDuckDownMove();
 	virtual void TickJump();
 	virtual void TickHang();
 	virtual void TickRelease();
@@ -69,8 +71,6 @@ private:
 
 	void UpdateAnimation();
 
-
-
 	// * 목적지 관련 코드 추가 필요
 
 private:
@@ -78,6 +78,7 @@ private:
 	Flipbook* _flipbookPlayerIdle[2] = {};
 	Flipbook* _flipbookPlayerMove[2] = {};
 	Flipbook* _flipbookPlayerDuckDown[2] = {};
+	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
 	Flipbook* _flipbookPlayerJump[2] = {};
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
@@ -86,12 +87,14 @@ private:
 	Flipbook* _flipbookPlayerHit[2] = {};
 	Flipbook* _flipbookPlayerDead[2] = {};
 
+private:
 	Vec2Int _cellPos = {};
-	Vec2 _speed = {};
 	Dir _dir = DIR_RIGHT;
 	PlayerState _state = PlayerState::Idle;
 	bool _keyPressed = false;
-
 	PlayerStat* _playerStat = {};
+
+private:
+	int32 _geravity = 1000;
 };
 

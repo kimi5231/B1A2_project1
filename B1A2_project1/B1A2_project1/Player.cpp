@@ -114,18 +114,33 @@ void Player::TickMove()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	switch (_dir)
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
-	case DIR_RIGHT:
-		_pos.x += 200 * deltaTime;
-		break;
-	case DIR_LEFT:
+		SetDir(DIR_LEFT);
 		_pos.x -= 200 * deltaTime;
-		break;
 	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += 200 * deltaTime;
+	}
+
+	//switch (_dir)		// 이 코드로 하면 키보드 입력이 한 번밖에 안 먹음.. 일단 보류
+	//{
+	//case DIR_RIGHT:
+	//	_pos.x += 200 * deltaTime;
+	//	break;
+	//case DIR_LEFT:
+	//	_pos.x -= 200 * deltaTime;
+	//	break;
+	//}
 }
 
 void Player::TickDuckDown()
+{
+}
+
+void Player::TickDuckDownMove()
 {
 }
 
@@ -188,6 +203,9 @@ void Player::UpdateAnimation()
 		break;
 	//case PlayerState::DuckDown:
 	//	SetFlipbook(_flipbookPlayerDuckDown[_dir]);
+	//	break;
+	//case PlayerState::DuckDownMove:
+	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 	//	break;
 	//case PlayerState::Jump:
 	//	SetFlipbook(_flipbookPlayerJump[_dir]);
