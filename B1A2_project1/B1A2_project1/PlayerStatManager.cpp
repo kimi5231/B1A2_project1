@@ -41,24 +41,24 @@ PlayerStat* PlayerStatManager::LoadPlayerStats(const int32 playerID, const std::
 
 		while (std::getline(lineStream, cell, '\t'))
 		{
+			++stat->playerID;
 			switch (column)
 			{
 			// stoi : 문자열을 정수로 변환
-			case 0: stat->playerID = currentID++; break;
-			case 1: stat->healthPoint = std::stoi(cell); break;
-			case 2: stat->runSpeed = std::stoi(cell); break;
-			case 3: stat->crouchSpeed = std::stoi(cell); break;
-			case 4: stat->jumpHeight = std::stoi(cell); break;
-			case 5: stat->attRange = std::stoi(cell); break;
-			case 6: stat->enemyExistInAttRange = (cell == "1"); break;
-			case 7: stat->attID = std::stoi(cell); break;
-			case 8: stat->attDamage = std::stoi(cell); break;
-			case 9: stat->attStepDistance = std::stoi(cell); break;
-			case 10: stat->skillPoint = std::stoi(cell); break;
-			case 11: stat->skillDamage = std::stoi(cell); break;
-			case 12: stat->skillRange = std::stoi(cell); break;
-			case 13: stat->skillDuration = std::stoi(cell); break;
-			case 14: stat->skillStepDistance = std::stoi(cell); break;
+			case 0: stat->healthPoint = std::stoi(cell); break;
+			case 1: stat->runSpeed = std::stoi(cell); break;
+			case 2: stat->crouchSpeed = std::stoi(cell); break;
+			case 3: stat->jumpHeight = std::stoi(cell); break;
+			case 4: stat->attRange = std::stoi(cell); break;
+			case 5: stat->enemyExistInAttRange = (cell == "1"); break;
+			case 6: stat->attID = std::stoi(cell); break;
+			case 7: stat->attDamage = std::stoi(cell); break;
+			case 8: stat->attStepDistance = std::stoi(cell); break;
+			case 9: stat->skillPoint = std::stoi(cell); break;
+			case 10: stat->skillDamage = std::stoi(cell); break;
+			case 11: stat->skillRange = std::stoi(cell); break;
+			case 12: stat->skillDuration = std::stoi(cell); break;
+			case 13: stat->skillStepDistance = std::stoi(cell); break;
 			}
 			++column;
 		}
