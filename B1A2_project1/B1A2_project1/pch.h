@@ -40,7 +40,3 @@
 #include <dsound.h>
 #pragma comment (lib, "winmm.lib")
 #pragma comment (lib, "dsound.lib")
-
-//#include <fmod_studio.hpp>  // 헤더 파일 (포함 디렉터리 설정 필요)
-//#pragma comment(lib, "fmodstudio_vc.lib")  // 정적 라이브러리 링크
-//#pragma comment(lib, "fmodstudioL_vc.lib") // 디버그용 라이브러리 링크
