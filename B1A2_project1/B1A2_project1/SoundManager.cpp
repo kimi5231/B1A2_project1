@@ -1,37 +1,68 @@
 #include "pch.h"
 #include "SoundManager.h"
-
 #include "ResourceManager.h"
 #include "Sound.h"
 
 SoundManager::~SoundManager()
 {
-	if (_soundDevice)
-		_soundDevice->Release();
+	StopAll();
+
+	for (auto& pair : _sounds)
+	{
+		delete pair.second;
+	}
+	_sounds.clear();
+
+	if (_system)
+	{
+		_system->release(); // FMOD 시스템 해제
+		_system = nullptr;
+	}
 }
 
 void SoundManager::Init(HWND hwnd)
 {
-	// 사운드 디바이스 생성
-	if (FAILED(::DirectSoundCreate(NULL, &_soundDevice, NULL)))
+	FMOD_RESULT result = FMOD::System_Create(&_system);
+	if (result != FMOD_OK)
 	{
-		::MessageBox(NULL, L"사운드디바이스생성실패", L"SYSTEM ERROR", MB_OK);
+		::MessageBox(NULL, L"FMOD system creation failed", L"", MB_OK);
 		return;
 	}
 
-	// 사운드 디바이스 협조레벨 설정
-	if (FAILED(_soundDevice->SetCooperativeLevel(hwnd, DSSCL_PRIORITY)))
+	result = _system->init(512, FMOD_INIT_NORMAL, nullptr);
+	if (result != FMOD_OK)
 	{
-		::MessageBox(NULL, L"사운드디바이스 협조레벨 설정", L"SYSTEM ERROR", MB_OK);
+		::MessageBox(NULL, L"FMOD system initialization failed", L"", MB_OK);
 		return;
 	}
 }
 
-void SoundManager::Play(const std::wstring& key, bool loop /*= false*/)
+void SoundManager::Play(const std::wstring& key, SoundType type, bool loop)
 {
-	Sound* sound = GET_SINGLE(ResourceManager)->GetSound(key);
-	if (!sound)
-		return;
+	//auto iter = _sounds.find(key);
+	//if (iter == _sounds.end())
+	//{
+	//	// 사운드가 없는 경우 에러 출력 후 종료
+	//	::MessageBox(NULL, L"Sound not found", L"", MB_OK);
+	//	return;
+	//}
 
-	sound->Play(loop);
+	_sounds[key]->Play(loop);
+}
+
+void SoundManager::Stop(const std::wstring& key)
+{
+	auto iter = _sounds.find(key);
+	if (iter != _sounds.end())
+	{
+		iter->second->Stop();
+	}
+}
+
+void SoundManager::StopAll()
+{
+	for (auto& pair : _sounds)
+	{
+		pair.second->Stop();
+	}
 }

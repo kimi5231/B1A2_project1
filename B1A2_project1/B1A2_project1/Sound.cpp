@@ -2,92 +2,81 @@
 #include "Sound.h"
 #include "SoundManager.h"
 
-Sound::Sound()
+Sound::Sound() : _sound(nullptr), _channel(nullptr) 
 {
 
 }
 
 Sound::~Sound()
 {
-	if (_soundBuffer)
-		_soundBuffer->Release();
+	if (_sound)
+	{
+		_sound->release();	// FMOD 리소스 해제
+		_sound = nullptr;
+	}
 }
 
-bool Sound::LoadWave(std::filesystem::path fullPath)
+bool Sound::Load(const std::filesystem::path& fullPath, FMOD::System* system, SoundType type)
 {
-	if (fullPath.extension() != L".wav")
-		return false;
+    if (!system || fullPath.extension() != L".wav")
+    {
+        ::MessageBox(NULL, L"Invalid system or file extension", L"", MB_OK);
+        return false;
+    }
 
-	HMMIO file = ::mmioOpen((WCHAR*)fullPath.c_str(), NULL, MMIO_READ);
-	if (file == 0)
-	{
-		::MessageBox(NULL, L"사운드 파일 없음", L"", MB_OK);
-		return false;
-	}
+    FMOD_MODE mode = FMOD_DEFAULT;
 
-	MMCKINFO parent;
-	::memset(&parent, 0, sizeof(parent));
-	parent.fccType = mmioFOURCC('W', 'A', 'V', 'E');
-	::mmioDescend(file, &parent, NULL, MMIO_FINDRIFF);
+    switch (type)
+    {
+    case SoundType::BGM:
+        mode = FMOD_LOOP_NORMAL | FMOD_2D; // 배경음악은 반복 재생
+        break;
 
-	MMCKINFO child;
-	::memset(&child, 0, sizeof(child));
-	child.ckid = mmioFOURCC('f', 'm', 't', ' ');
-	::mmioDescend(file, &child, &parent, MMIO_FINDCHUNK);
+    case SoundType::Normal:
+        mode = FMOD_LOOP_OFF | FMOD_2D; // 일반 사운드는 1회 재생
+        break;
 
-	WAVEFORMATEX wft;
-	::memset(&wft, 0, sizeof(wft));
-	::mmioRead(file, (char*)&wft, sizeof(wft));
+    default:
+        ::MessageBox(NULL, L"알 수 없는 사운드 타입", L"", MB_OK);
+        return false;
+    }
 
-	::mmioAscend(file, &child, 0);
-	child.ckid = mmioFOURCC('d', 'a', 't', 'a');
-	::mmioDescend(file, &child, &parent, MMIO_FINDCHUNK);
+    // FMOD 시스템에서 사운드 로드
+    FMOD_RESULT result = system->createSound(fullPath.string().c_str(), mode, nullptr, &_sound);
+    if (result != FMOD_OK)
+    {
+        ::MessageBox(NULL, L"사운드 파일 로드 실패", L"", MB_OK);
+        return false;
+    }
 
-	::memset(&_bufferDesc, 0, sizeof(DSBUFFERDESC));
-	_bufferDesc.dwBufferBytes = child.cksize;
-	_bufferDesc.dwSize = sizeof(DSBUFFERDESC);
-	_bufferDesc.dwFlags = DSBCAPS_STATIC;
-	_bufferDesc.lpwfxFormat = &wft;
-
-	if (FAILED(GET_SINGLE(SoundManager)->GetSoundDevice()->CreateSoundBuffer(&_bufferDesc, &_soundBuffer, NULL)))
-	{
-		::MessageBox(NULL, L"사운드 버퍼 생성 실패", L"", MB_OK);
-		return false;
-	}
-
-	void* write1 = NULL;
-	void* write2 = NULL;
-	DWORD len1;
-	DWORD len2;
-
-	_soundBuffer->Lock(0, child.cksize, &write1, &len1, &write2, &len2, 0);
-
-	if (write1)
-		::mmioRead(file, (char*)write1, len1);
-
-	if (write2)
-		::mmioRead(file, (char*)write2, len2);
-
-	_soundBuffer->Unlock(write1, len1, write2, len2);
-
-	::mmioClose(file, 0);
-	return true;
+    return true;
 }
 
 void Sound::Play(bool loop)
 {
-	_soundBuffer->SetCurrentPosition(0);
+    if (_sound)
+    {
+        if (loop)
+            _sound->setMode(FMOD_LOOP_NORMAL);
+        else
+            _sound->setMode(FMOD_LOOP_OFF);
 
-	if (loop)
-		_soundBuffer->Play(0, 0, DSBPLAY_LOOPING);
-	else
-		_soundBuffer->Play(0, 0, 0);
+        FMOD::System* system = nullptr;
+        _sound->getSystemObject(&system);
+
+        FMOD_RESULT result = system->playSound(_sound, nullptr, false, &_channel);
+        if (result != FMOD_OK)
+        {
+            ::MessageBox(NULL, L"FMOD play failed", L"", MB_OK);
+        }
+    }
 }
 
-void Sound::Stop(bool reset)
+void Sound::Stop()
 {
-	_soundBuffer->Stop();
-
-	if (reset)
-		_soundBuffer->SetCurrentPosition(0);
+    if (_channel)
+    {
+        _channel->stop();
+    }
 }
+

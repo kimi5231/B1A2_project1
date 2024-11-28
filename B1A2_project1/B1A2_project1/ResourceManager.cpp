@@ -5,6 +5,7 @@
 #include "Flipbook.h"
 #include "Sound.h"
 #include "Tilemap.h"
+#include "SoundManager.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -85,7 +86,7 @@ Sound* ResourceManager::LoadSound(const std::wstring& key, const std::wstring& p
 	std::filesystem::path fullPath = _resourcePath / path;
 
 	Sound* sound = new Sound();
-	sound->LoadWave(fullPath);
+	sound->Load(fullPath, GET_SINGLE(SoundManager)->GetSystem(), SoundType::BGM);
 	_sounds[key] = sound;
 
 	return sound;

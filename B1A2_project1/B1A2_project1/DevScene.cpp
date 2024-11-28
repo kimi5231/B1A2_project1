@@ -44,11 +44,11 @@ void DevScene::Init()
 	}
 
 	// Sound
-	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
 		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
 		sound->Play(true);
-	}*/
+	}
 
 	// Map
 	{

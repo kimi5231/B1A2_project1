@@ -1,5 +1,8 @@
 #pragma once
 #include "ResourceBase.h"
+#include <fmod.hpp>
+#include <filesystem>
+#include <string>
 
 enum class SoundType
 {
@@ -13,16 +16,16 @@ public:
 	Sound();
 	virtual ~Sound();
 
-	bool LoadWave(std::filesystem::path fullPath);
+	bool Load(const std::filesystem::path& fullPath, FMOD::System* system, SoundType type);
 	void Play(bool loop = false);
-	void Stop(bool reset = false);
+	void Stop();
 
 private:
-	virtual void LoadFile(const std::wstring& path) {}
-	virtual void SaveFile(const std::wstring& path) {}
+	virtual void LoadFile(const std::wstring& path) override {}
+	virtual void SaveFile(const std::wstring& path) override {}
 
 private:
-	LPDIRECTSOUNDBUFFER _soundBuffer = nullptr;
-	DSBUFFERDESC _bufferDesc = {};
+	FMOD::Sound* _sound = nullptr;  // FMOD »ç¿îµå °´Ã¼
+	FMOD::Channel* _channel = nullptr;  // FMOD Ã¤³Î °´Ã¼
 };
 
