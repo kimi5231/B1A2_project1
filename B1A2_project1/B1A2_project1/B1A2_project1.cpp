@@ -108,10 +108,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
+    // 윈도우 창 사이즈 얻어오기.
     Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
 
+    // 설정한 사이즈에 맞춰 윈도우 창 사이즈 지정.
     RECT windowRect = { 0, 0, size.x, size.y };
-    //RECT windowRect = { 0, 0, ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) };
     ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
     HWND hWnd = CreateWindowW(L"B1A2_project1", L"B1A2", WS_OVERLAPPED | WS_SYSMENU,

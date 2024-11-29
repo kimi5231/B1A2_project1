@@ -69,7 +69,6 @@ void Button::Render(HDC hdc)
 
 	if (!_currentFlipbook)
 	{
-		// 화면 해상도에 맞춰 위치 조정
 		Utils::DrawRect(hdc, _pos, _size);
 	}
 	else

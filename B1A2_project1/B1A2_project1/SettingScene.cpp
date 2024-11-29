@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "SettingScene.h"
 #include "InputManager.h"
+#include "ValueManager.h"
 #include "Panel.h"
 #include "Button.h"
-#include "ValueManager.h"
-#include <iostream>
 
 SettingScene::SettingScene()
 {
@@ -25,11 +24,10 @@ void SettingScene::Init()
 	// FullScreen 테스트용 버튼
 	{
 		Button* ui = new Button();
-		ui->SetPos({500, 500});
+		ui->SetPos({500, 700});
 		ui->SetSize({ 100, 100 });
 		ui->AddOnClickDelegate(this, &SettingScene::ChangeFullScreen);
-		button = ui;
-		//_panel->AddChild(ui);
+		_panel->AddChild(ui);
 	}
 
 	Super::Init();
@@ -38,39 +36,10 @@ void SettingScene::Init()
 void SettingScene::Update()
 {
 	Super::Update();
-	
-	button->Tick();
-
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
-	{
-		Vec2 pos = button->GetPos();
-		pos.x += 10;
-		pos.y += 10;
-		button->SetPos(pos);
-	}
-
 }
 
 void SettingScene::Render(HDC hdc)
 {
-	{
-
-		//HDC hdc = GetDC(hwnd);
-		//HDC hdc2 = CreateCompatibleDC(hdc);
-		
-		//SetViewportOrgEx(hdc, 0, 0, NULL);
-		//SetWindowOrgEx(hdc, 0, 0, NULL);
-		Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-		SetMapMode(hdc, MM_ANISOTROPIC);
-		SetViewportExtEx(hdc, size.x, size.y, NULL);
-		SetWindowExtEx(hdc, size.x, size.y, NULL);
-
-	//	//DeleteDC(hdc2);
-	//	//ReleaseDC(hwnd, hdc);
-	}
-
-	button->Render(hdc);
-
 	Super::Render(hdc);
 }
 
@@ -80,6 +49,7 @@ void SettingScene::ChangeFullScreen()
 	// 화면 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) });
 	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
+
 	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
 	// 현재 창 스타일 가져오기
@@ -88,16 +58,4 @@ void SettingScene::ChangeFullScreen()
 	::SetWindowLong(hwnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
 	// 창 크기 재설정
 	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
-
-	{
-		/*HDC hdc = GetDC(hwnd);
-
-		SetMapMode(hdc, MM_ANISOTROPIC);
-		SetViewportExtEx(hdc, 1280, 720, NULL);
-		SetWindowExtEx(hdc, size.x, size.y, NULL);
-		SetViewportOrgEx(hdc, 100, 100, NULL);
-		SetWindowOrgEx(hdc, 0, 0, NULL);
-		
-		ReleaseDC(hwnd, hdc);*/
-	}
 }

@@ -16,6 +16,4 @@ public:
 
 public:
 	void ChangeFullScreen();
-
-	Button* button = nullptr;
 };
