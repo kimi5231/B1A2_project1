@@ -69,27 +69,27 @@ void DevScene::Init()
 	}
 
 	// Tilemap
-	{
-		// Tile Texture Load
-		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
-		
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
+	//{
+	//	// Tile Texture Load
+	//	GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
+	//	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
+	//	
+	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
+	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
 
-		// Tilemap Load
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-		//tm->SetTileSize(48);
+	//	// Tilemap Load
+	//	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	//	Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+	//	//tm->SetTileSize(48);
 
-		TilemapActor* actor = new TilemapActor();
-		actor->SetPos({0, 0});
-		actor->SetShowDebug(true);
-		actor->SetTilemap(tm);
-		actor->SetLayer(LAYER_TILEMAP);
+	//	TilemapActor* actor = new TilemapActor();
+	//	actor->SetPos({0, 0});
+	//	actor->SetShowDebug(true);
+	//	actor->SetTilemap(tm);
+	//	actor->SetLayer(LAYER_TILEMAP);
 
-		AddActor(actor);
-	}
+	//	AddActor(actor);
+	//}
 
 	{
 		Player* player = new Player();

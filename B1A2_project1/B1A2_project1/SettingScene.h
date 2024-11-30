@@ -15,5 +15,8 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
+	void ChangeqHD();
+	void ChangeHD();
+	void ChangeFullHD();
 	void ChangeFullScreen();
 };

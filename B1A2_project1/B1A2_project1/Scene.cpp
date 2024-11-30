@@ -45,12 +45,12 @@ void Scene::Update()
 
 void Scene::Render(HDC hdc)
 {
-	if (_panel != nullptr)
-		_panel->Render(hdc);
-
 	for (const std::vector<Actor*>& actors : _actors)
 		for (Actor* actor : actors)
 			actor->Render(hdc);
+
+	if (_panel != nullptr)
+		_panel->Render(hdc);
 }
 
 void Scene::AddActor(Actor* actor)

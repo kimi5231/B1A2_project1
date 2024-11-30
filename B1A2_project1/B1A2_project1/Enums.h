@@ -20,13 +20,6 @@ enum LAYER_TYPE
 	LAYER_MAXCOUNT
 };
 
-// 윈도우 창 크기
-enum class WinSize
-{
-	HD,		// 1280*720(Default)
-	FullScreen,
-};
-
 // 충돌
 enum class ColliderType
 {

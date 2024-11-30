@@ -34,10 +34,10 @@ void SpriteActor::Render(HDC hdc)
 	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 	::TransparentBlt(hdc,
-		(int32)_pos.x - size.x / 2 - ((int32)cameraPos.x - winSize.x / 2),
-		(int32)_pos.y - size.y / 2 - ((int32)cameraPos.y - winSize.y / 2),
-		size.x,
-		size.y,
+		(((int32)_pos.x - size.x / 2) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2)),
+		(((int32)_pos.y - size.y / 2) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2)),
+		size.x * ((float)winSize.x / (float)DefaultWinSizeX),
+		size.y * ((float)winSize.y / (float)DefaultWinSizeY),
 		_sprite->GetDC(),
 		_sprite->GetPos().x,
 		_sprite->GetPos().y,

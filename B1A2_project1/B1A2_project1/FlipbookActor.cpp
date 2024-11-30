@@ -56,10 +56,10 @@ void FlipbookActor::Render(HDC hdc)
 	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 	::TransparentBlt(hdc,
-		(int32)_pos.x - info.size.x / 2 - ((int32)cameraPos.x - winSize.x / 2),
-		(int32)_pos.y - info.size.y / 2 - ((int32)cameraPos.y - winSize.y / 2),
-		info.size.x,
-		info.size.y,
+		((int32)_pos.x - info.size.x / 2) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+		((int32)_pos.y - info.size.y / 2) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+		info.size.x * ((float)winSize.x / (float)DefaultWinSizeX),
+		info.size.y * ((float)winSize.y / (float)DefaultWinSizeY),
 		info.texture->GetDC(),
 		(info.start + _idx) * info.size.x,
 		info.line * info.size.y,

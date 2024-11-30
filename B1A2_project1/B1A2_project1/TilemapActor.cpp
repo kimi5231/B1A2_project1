@@ -73,10 +73,10 @@ void TilemapActor::Render(HDC hdc)
 			{
 			case 0:
 				::TransparentBlt(hdc,
-					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - winSize.x / 2),
-					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - winSize.y / 2),
-					MAP_TILE_SIZEX,
-					MAP_TILE_SIZEY,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
 					spriteO->GetDC(),
 					spriteO->GetPos().x,
 					spriteO->GetPos().y,
@@ -86,10 +86,10 @@ void TilemapActor::Render(HDC hdc)
 				break;
 			case 1:
 				::TransparentBlt(hdc,
-					_pos.x + x * MAP_TILE_SIZEX - ((int32)cameraPos.x - winSize.x / 2),
-					_pos.y + y * MAP_TILE_SIZEY - ((int32)cameraPos.y - winSize.y / 2),
-					MAP_TILE_SIZEX,
-					MAP_TILE_SIZEY,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
 					spriteX->GetDC(),
 					spriteX->GetPos().x,
 					spriteX->GetPos().y,
