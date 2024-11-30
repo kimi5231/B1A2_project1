@@ -33,6 +33,7 @@ public:
 	virtual void LoadFile(const std::wstring& path) override;
 	virtual void SaveFile(const std::wstring& path) override;
 
+public:
 	Vec2Int GetMapSize() { return _mapSize; }
 	Tile* GetTileAt(Vec2Int pos);
 	std::vector<std::vector<Tile>>& GetTiles() { return _tiles; }

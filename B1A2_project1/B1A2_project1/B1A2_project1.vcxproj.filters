@@ -200,6 +200,9 @@
     <ClInclude Include="PlayerStatManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Dialogue.h">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -321,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="PlayerStatManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogue.cpp">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
