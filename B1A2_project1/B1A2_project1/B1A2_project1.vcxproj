@@ -120,8 +120,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)FMOD_API\studio\lib\x64;$(SolutionDir)FMOD_API\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)FMOD_API\studio\lib\x64;$(SolutionDir)FMOD_API\core\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmodL_vc.lib;fmodstudioL_vc.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)FMOD_API\core\lib\x64\*.dll" "$(OutDir)"
