@@ -40,3 +40,7 @@
 #include <dsound.h>
 #pragma comment (lib, "winmm.lib")
 #pragma comment (lib, "dsound.lib")
+
+// Window API
+#pragma comment(lib, "user32.lib")
+#pragma comment(lib, "gdi32.lib")
