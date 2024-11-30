@@ -17,6 +17,7 @@
 #include "Scene.h"
 #include "PlayerStatManager.h"
 #include "Player.h"
+#include "Dialogue.h"
 
 DevScene::DevScene()
 {
@@ -99,6 +100,13 @@ void DevScene::Init()
 		// Stat
 		player->SetPlayerStat(GET_SINGLE(PlayerStatManager)->LoadPlayerStats(1, L"DataBase\\TEST_playerData.csv"));		// ID 1인 Stat 얻어오기
 		AddActor(player);
+	}
+
+	// Dialogue
+	{
+		GET_SINGLE(ResourceManager)->LoadDialogue(L"Script\\Dialogue.csv");
+		std::vector<LineInfo>& event = GET_SINGLE(ResourceManager)->GetDialogue(L"test1");
+		int a = 3;
 	}
 
 	Super::Init();

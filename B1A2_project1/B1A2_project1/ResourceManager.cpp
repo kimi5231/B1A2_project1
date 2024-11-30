@@ -5,6 +5,7 @@
 #include "Flipbook.h"
 #include "Sound.h"
 #include "Tilemap.h"
+#include "Dialogue.h"
 #include "SoundManager.h"
 
 ResourceManager::~ResourceManager()
@@ -125,4 +126,23 @@ void ResourceManager::SaveTilemap(const std::wstring& key, const std::wstring& p
 	std::filesystem::path fullPath = _resourcePath / path;
 
 	_tilemaps[key]->SaveFile(fullPath);
+}
+
+std::vector<LineInfo>& ResourceManager::GetDialogue(const std::wstring& key)
+{
+	return _dialogues->GetEvent(key);
+}
+
+Dialogue* ResourceManager::LoadDialogue(const std::wstring& path)
+{
+	if(_dialogues)
+		return _dialogues;
+
+	std::filesystem::path fullPath = _resourcePath / path;
+
+	Dialogue* dialogue = new Dialogue();
+	dialogue->LoadFile(fullPath);
+	_dialogues = dialogue;
+
+	return dialogue;
 }
