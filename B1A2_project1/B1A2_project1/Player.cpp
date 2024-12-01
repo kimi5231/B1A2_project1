@@ -4,6 +4,8 @@
 #include "TimeManager.h"
 #include "InputManager.h"
 #include "CameraComponent.h"
+#include "DialogueComponent.h"
+#include "Dialogue.h"
 #include <fstream>		// PlayrStat 저장
 #include <iostream>
 #include "Game.h"
@@ -27,6 +29,12 @@ Player::Player()
 	// 카메라 컴포넌트
 	CameraComponent* camera = new CameraComponent();
 	AddComponent(camera);
+
+	// Dialogue Component
+	DialogueComponent* dialogueComponent = new DialogueComponent();
+	Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
+	dialogueComponent->SetDialogue(dialogue);
+	AddComponent(dialogueComponent);
 }
 
 Player::~Player()

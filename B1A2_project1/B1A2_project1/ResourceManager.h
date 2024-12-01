@@ -39,8 +39,8 @@ public:
 	Tilemap* LoadTilemap(const std::wstring& key, const std::wstring& path);
 	void SaveTilemap(const std::wstring& key, const std::wstring& path);
 
-	std::vector<LineInfo>& GetDialogue(const std::wstring& key);
-	Dialogue* LoadDialogue(const std::wstring& path);
+	Dialogue* GetDialogue(const std::wstring& key) { return _dialogues[key]; }
+	Dialogue* LoadDialogue(const std::wstring& key, const std::wstring& path);
 
 private:
 	HWND _hwnd;
@@ -52,6 +52,6 @@ private:
 	std::unordered_map<std::wstring, Flipbook*> _flipbooks;
 	std::unordered_map<std::wstring, Sound*> _sounds;
 	std::unordered_map<std::wstring, Tilemap*> _tilemaps;
-	Dialogue* _dialogues = nullptr;
+	std::unordered_map<std::wstring, Dialogue*> _dialogues;
 };
 

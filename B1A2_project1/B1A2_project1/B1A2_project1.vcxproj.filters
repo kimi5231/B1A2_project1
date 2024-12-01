@@ -57,6 +57,9 @@
     <Filter Include="소스 파일\99. Headers\Default">
       <UniqueIdentifier>{438ebc11-e325-480e-aae2-e7d6ae2b3207}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Component\Dialogue">
+      <UniqueIdentifier>{e3d8cbc2-d294-467f-a972-bfaa6a2aae8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -203,6 +206,9 @@
     <ClInclude Include="Dialogue.h">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueComponent.h">
+      <Filter>소스 파일\05. Component\Dialogue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -327,6 +333,9 @@
     </ClCompile>
     <ClCompile Include="Dialogue.cpp">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueComponent.cpp">
+      <Filter>소스 파일\05. Component\Dialogue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

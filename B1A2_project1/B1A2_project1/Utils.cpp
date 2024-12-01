@@ -15,3 +15,8 @@ void Utils::DrawCircle(HDC hdc, Vec2 pos, int32 radius)
 {
 	::Ellipse(hdc, static_cast<int32>(pos.x - radius), static_cast<int32>(pos.y - radius), static_cast<int32>(pos.x + radius), static_cast<int32>(pos.y + radius));
 }
+
+void Utils::DrawString(HDC hdc, Vec2 pos, std::wstring str)
+{
+	::TextOut(hdc, pos.x, pos.y, str.c_str(), static_cast<int32>(str.size()));
+}

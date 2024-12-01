@@ -128,21 +128,16 @@ void ResourceManager::SaveTilemap(const std::wstring& key, const std::wstring& p
 	_tilemaps[key]->SaveFile(fullPath);
 }
 
-std::vector<LineInfo>& ResourceManager::GetDialogue(const std::wstring& key)
+Dialogue* ResourceManager::LoadDialogue(const std::wstring& key, const std::wstring& path)
 {
-	return _dialogues->GetEvent(key);
-}
-
-Dialogue* ResourceManager::LoadDialogue(const std::wstring& path)
-{
-	if(_dialogues)
-		return _dialogues;
+	if (_dialogues.find(key) != _dialogues.end())
+		return _dialogues[key];
 
 	std::filesystem::path fullPath = _resourcePath / path;
 
 	Dialogue* dialogue = new Dialogue();
 	dialogue->LoadFile(fullPath);
-	_dialogues = dialogue;
+	_dialogues[key] = dialogue;
 
 	return dialogue;
 }
