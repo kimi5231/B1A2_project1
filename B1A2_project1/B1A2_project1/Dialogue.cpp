@@ -16,6 +16,9 @@ void Dialogue::LoadFile(const std::wstring& path)
 {
 	std::wifstream ifs;
 
+	// 한글 인코딩 설정
+	ifs.imbue(std::locale("ko_KR.UTF-8"));
+
 	ifs.open(path);
 
 	// 이벤트 저장을 위한 키, 값 변수
@@ -54,6 +57,7 @@ void Dialogue::LoadFile(const std::wstring& path)
 		info.dir = std::stoi(dir);
 
 		std::getline(wiss, info.speech, L',');
+		//::MultiByteToWideChar(CP_UTF8, 0, &info.speech, (int)utf8Speech.size(), &info.speech[0], size_needed);
 
 		infos.push_back(info);
 	}
