@@ -40,3 +40,11 @@ enum Dir
 	DIR_LEFT,
 	DIR_RIGHT,
 };
+
+
+// Sound
+enum class SoundType
+{
+	BGM,
+	Normal,
+};

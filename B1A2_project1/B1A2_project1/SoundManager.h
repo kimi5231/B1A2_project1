@@ -1,6 +1,8 @@
 #pragma once
 #include <fmod.hpp>
-#include "Sound.h"	// SoundType 때문에 어쩔 수 없이 include 함
+#include "Enums.h"
+
+class Sound;
 
 class SoundManager
 {

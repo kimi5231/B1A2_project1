@@ -4,12 +4,6 @@
 #include <filesystem>
 #include <string>
 
-enum class SoundType
-{
-	BGM,
-	Normal,
-};
-
 class Sound : public ResourceBase
 {
 public:
