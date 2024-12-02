@@ -7,6 +7,7 @@
 #include "SoundManager.h"
 #include "ValueManager.h"
 #include "PlayerStatManager.h"
+#include "CollisionManager.h"
 
 Game::Game()
 {
@@ -41,6 +42,7 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(SoundManager)->Init(hwnd);
 	GET_SINGLE(ValueManager)->Init(hwnd);
 	GET_SINGLE(PlayerStatManager)->Init(hwnd, _resourcePath);
+	GET_SINGLE(CollisionManager)->Init();
 
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
 }
@@ -50,6 +52,7 @@ void Game::Update()
 	GET_SINGLE(InputManager)->Update();
 	GET_SINGLE(TimeManager)->Update();
 	GET_SINGLE(SceneManager)->Update();
+	GET_SINGLE(CollisionManager)->Update();
 }
 
 void Game::Render()

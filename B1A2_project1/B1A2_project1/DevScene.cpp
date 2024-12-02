@@ -97,6 +97,7 @@ void DevScene::Init()
 	//	AddActor(actor);
 	//}
 
+	// Player
 	{
 		Player* player = new Player();
 		player->SetPos({ 100, 300 });
@@ -108,19 +109,41 @@ void DevScene::Init()
 		// Colider
 		{
 			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();		// 리셋 안 하면 모두 충돌함
+			// 리셋 안 하면 모두 충돌함
+			collider->ResetCollisionFlag();	
 
-			collider->AddCollisionFlagLayer(CLT_GROUND);	// 충돌하고 싶은 객체
+			// 나 자신을 설정
+			 collider->SetCollisionLayer(CLT_OBJECT);
+
+			// 충돌하고 싶은 객체 설정
+			collider->AddCollisionFlagLayer(CLT_GROUND);	
+			collider->AddCollisionFlagLayer(CLT_WALL);
 			collider->AddCollisionFlagLayer(CLT_OBJECT);
 
 			collider->SetSize({ 100, 100 });
-			//collider->SetCollisionLayer(CLT_OBJECT);
-
-			player->AddComponent(collider);
+			
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			player->AddComponent(collider);
 		}
 
 		AddActor(player);
+	}
+
+	// 충돌 객체
+	{
+		Actor* test = new Actor();
+		test->SetPos({ 300, 400 });
+		test->SetLayer(LAYER_OBJECT);
+
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 50, 500 });
+			collider->SetCollisionLayer(CLT_OBJECT);
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			test->AddComponent(collider);
+		}
+
+		AddActor(test);
 	}
 
 	Super::Init();

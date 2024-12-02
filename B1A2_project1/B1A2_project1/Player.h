@@ -2,6 +2,7 @@
 #include "FlipbookActor.h"
 
 class Flipbook;
+class BoxCollider;
 
 enum class PlayerState
 {
@@ -71,7 +72,14 @@ private:
 
 	void UpdateAnimation();
 
-	// * 목적지 관련 코드 추가 필요
+
+	
+	// Collider
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+	
+	void AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2);	// 튕기기
+	void TickGravity();
 
 private:
 	// 마지 리소스
