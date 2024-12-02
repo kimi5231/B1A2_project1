@@ -128,6 +128,7 @@ void TitleScene::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
+// CallBack ÇÔ¼ö
 void TitleScene::OnClickStartButton()
 {
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);

@@ -61,28 +61,17 @@ void SettingScene::Init()
 		_panel->AddChild(ui);
 	}
 
-	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
-		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
-	
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
-		SpriteActor* map = new SpriteActor();
-		const Vec2Int size = sprite->GetSize();
-		map->SetPos(Vec2(size.x / 2, size.y / 2));
-		map->SetSprite(sprite);
-		map->SetLayer(LAYER_BACKGROUND);
-
-		_actors->push_back(map);
-	}
-
 	Super::Init();
 }
 
 void SettingScene::Update()
 {
 	Super::Update();
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Esc))
+	{
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
+	}
 }
 
 void SettingScene::Render(HDC hdc)
@@ -90,7 +79,7 @@ void SettingScene::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
-// callback 함수
+// CallBack 함수
 void SettingScene::ChangeqHD()
 {
 	// qHD(960*540) 크기로 설정하기

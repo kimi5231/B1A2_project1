@@ -69,17 +69,21 @@ void Button::Render(HDC hdc)
 
 	if (!_currentFlipbook)
 	{
-		Utils::DrawRect(hdc, _pos, _size);
+		Utils::DrawRect(hdc, 
+			{ _pos.x * ((float)winSize.x / (float)DefaultWinSizeX),
+			_pos.y * ((float)winSize.y / (float)DefaultWinSizeY) },
+			{ (int32)(_size.x * ((float)winSize.x / (float)DefaultWinSizeX)),
+			(int32)(_size.y * ((float)winSize.y / (float)DefaultWinSizeY)) });
 	}
 	else
 	{
 		const FlipbookInfo& info = _currentFlipbook->GetInfo();
 
 		::TransparentBlt(hdc,
-			(int32)_pos.x - info.size.x / 2,
-			(int32)_pos.y - info.size.y / 2,
-			info.size.x,
-			info.size.y,
+			((int32)_pos.x - info.size.x / 2) * ((float)winSize.x / (float)DefaultWinSizeX),
+			((int32)_pos.y - info.size.y / 2) * ((float)winSize.y / (float)DefaultWinSizeY),
+			info.size.x * ((float)winSize.x / (float)DefaultWinSizeX),
+			info.size.y * ((float)winSize.y / (float)DefaultWinSizeY),
 			info.texture->GetDC(),
 			(info.start + _idx) * info.size.x,
 			info.line * info.size.y,
@@ -91,11 +95,13 @@ void Button::Render(HDC hdc)
 
 RECT Button::GetRect()
 {
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 	RECT rect = {
-		_pos.x - _size.x,
-		_pos.y - _size.y,
-		_pos.x + _size.x,
-		_pos.y + _size.y
+		(_pos.x - _size.x)* ((float)winSize.x / (float)DefaultWinSizeX),
+		(_pos.y - _size.y)* ((float)winSize.x / (float)DefaultWinSizeX),
+		(_pos.x + _size.x)* ((float)winSize.x / (float)DefaultWinSizeX),
+		(_pos.y + _size.y)* ((float)winSize.x / (float)DefaultWinSizeX)
 	};
 
 	return rect;

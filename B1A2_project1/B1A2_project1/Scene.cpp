@@ -22,7 +22,7 @@ Scene::~Scene()
 
 void Scene::Init()
 {
-	if (_panel != nullptr)
+	if (_panel)
 		_panel->BeginPlay();
 
 	for (const std::vector<Actor*>& actors : _actors)
@@ -34,13 +34,13 @@ void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	if (_panel != nullptr)
-		_panel->Tick();
-
 	// 거리 = 시간 * 속도
 	for (const std::vector<Actor*>& actors : _actors)
 		for (Actor* actor : actors)
 			actor->Tick();
+
+	if (_panel)
+		_panel->Tick();
 }
 
 void Scene::Render(HDC hdc)
@@ -49,7 +49,7 @@ void Scene::Render(HDC hdc)
 		for (Actor* actor : actors)
 			actor->Render(hdc);
 
-	if (_panel != nullptr)
+	if (_panel)
 		_panel->Render(hdc);
 }
 
