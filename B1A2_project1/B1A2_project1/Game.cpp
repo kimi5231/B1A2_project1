@@ -42,7 +42,7 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(ValueManager)->Init(hwnd);
 	GET_SINGLE(PlayerStatManager)->Init(hwnd, _resourcePath);
 
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
 }
 
 void Game::Update()

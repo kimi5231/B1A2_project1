@@ -74,7 +74,7 @@ void SettingScene::Init()
 		map->SetSprite(sprite);
 		map->SetLayer(LAYER_BACKGROUND);
 
-		_actors->push_back(map);
+		AddActor(map);
 	}
 
 	Super::Init();
@@ -83,6 +83,11 @@ void SettingScene::Init()
 void SettingScene::Update()
 {
 	Super::Update();
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Esc))
+	{
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
+	}
 }
 
 void SettingScene::Render(HDC hdc)
@@ -90,7 +95,7 @@ void SettingScene::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
-// callback 함수
+// CallBack 함수
 void SettingScene::ChangeqHD()
 {
 	// qHD(960*540) 크기로 설정하기
