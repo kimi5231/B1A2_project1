@@ -17,6 +17,9 @@
 #include "Scene.h"
 #include "PlayerStatManager.h"
 #include "Player.h"
+#include "Collider.h"
+#include "BoxCollider.h"
+#include "CollisionManager.h"
 
 DevScene::DevScene()
 {
@@ -96,11 +99,27 @@ void DevScene::Init()
 
 	{
 		Player* player = new Player();
-		player->SetPos({ 100, 100 });
+		player->SetPos({ 100, 300 });
 		player->SetLayer(LAYER_OBJECT);
 
 		// Stat
 		player->SetPlayerStat(GET_SINGLE(PlayerStatManager)->LoadPlayerStats(1, L"DataBase\\TEST_playerData.csv"));		// ID 1인 Stat 얻어오기
+
+		// Colider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();		// 리셋 안 하면 모두 충돌함
+
+			collider->AddCollisionFlagLayer(CLT_GROUND);	// 충돌하고 싶은 객체
+			collider->AddCollisionFlagLayer(CLT_OBJECT);
+
+			collider->SetSize({ 100, 100 });
+			//collider->SetCollisionLayer(CLT_OBJECT);
+
+			player->AddComponent(collider);
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+		}
+
 		AddActor(player);
 	}
 

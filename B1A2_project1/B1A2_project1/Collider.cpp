@@ -26,7 +26,8 @@ void Collider::Render(HDC hdc)
 
 bool Collider::CheckCollision(Collider* other)
 {
-	uint8 layer = other->GetCollisionLayer();
+	// 충돌 의지가 있는지 확인
+	uint8 layer = other->GetCollisionLayer();	// 상대방이 어떤 충돌 타입인지 갖고 와서
 	if (_collisionFlag & (1 << layer))		// 내 flag에서 상대방 것이 켜져 있는가 확인
 		return true;
 

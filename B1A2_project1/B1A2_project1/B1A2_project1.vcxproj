@@ -152,6 +152,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraActor.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DevScene.h" />
@@ -203,6 +204,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DevScene.cpp" />
     <ClCompile Include="Dialogue.cpp" />

@@ -209,6 +209,9 @@
     <ClInclude Include="DialogueComponent.h">
       <Filter>소스 파일\05. Component\Dialogue</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>소스 파일\01. Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -336,6 +339,9 @@
     </ClCompile>
     <ClCompile Include="DialogueComponent.cpp">
       <Filter>소스 파일\05. Component\Dialogue</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
