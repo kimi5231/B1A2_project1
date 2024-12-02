@@ -34,13 +34,28 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_WALL,		// 2
 };
 
+// 플레이어 상태
+enum class PlayerState
+{
+	Idle,	// 대기
+	Move,	// 달리기
+	DuckDown,	// 숙이기
+	DuckDownMove,	// 숙이면서 달리기
+	Jump,	// 점프
+	Hang,	// 매달리기
+	Release,	// 놓기
+	Skill,	// 스킬
+	AttackNormal,	// 기본 공격
+	Hit,	// 피격
+	Dead	// 사망
+};
+
 // 플레이어 방향
 enum Dir
 {
 	DIR_LEFT,
 	DIR_RIGHT,
 };
-
 
 // Sound
 enum class SoundType

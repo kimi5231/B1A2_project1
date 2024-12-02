@@ -60,6 +60,9 @@
     <Filter Include="소스 파일\05. Component\Dialogue">
       <UniqueIdentifier>{e3d8cbc2-d294-467f-a972-bfaa6a2aae8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Component\Inventory">
+      <UniqueIdentifier>{66d81370-f727-4fae-8c8a-f1711e9f9a3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -212,6 +215,12 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>소스 파일\05. Component\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>소스 파일\03. Objects\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -342,6 +351,12 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>소스 파일\05. Component\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>소스 파일\03. Objects\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
