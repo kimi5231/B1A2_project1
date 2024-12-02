@@ -26,8 +26,10 @@ void StaticUI::Render(HDC hdc)
 
 	// 화면 해상도에 맞춰 위치 조정
 	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-	_pos.x *= (float(winSize.x) / float(DefaultWinSizeX));
-	_pos.y *= (float(winSize.y) / float(DefaultWinSizeY));
 
-	Utils::DrawRect(hdc, _pos, _size);
+	Utils::DrawRect(hdc,
+		{ _pos.x * ((float)winSize.x / (float)DefaultWinSizeX),
+		_pos.y * ((float)winSize.y / (float)DefaultWinSizeY) },
+		{ (int32)(_size.x * ((float)winSize.x / (float)DefaultWinSizeX)),
+		(int32)(_size.y * ((float)winSize.y / (float)DefaultWinSizeY)) });
 }

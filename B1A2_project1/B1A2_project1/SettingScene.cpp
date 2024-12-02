@@ -61,22 +61,6 @@ void SettingScene::Init()
 		_panel->AddChild(ui);
 	}
 
-	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
-		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
-	
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
-		SpriteActor* map = new SpriteActor();
-		const Vec2Int size = sprite->GetSize();
-		map->SetPos(Vec2(size.x / 2, size.y / 2));
-		map->SetSprite(sprite);
-		map->SetLayer(LAYER_BACKGROUND);
-
-		AddActor(map);
-	}
-
 	Super::Init();
 }
 

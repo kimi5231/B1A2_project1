@@ -3,6 +3,7 @@
 #include "Flipbook.h"
 #include "Texture.h"
 #include "TimeManager.h"
+#include "ValueManager.h"
 
 FlipbookUI::FlipbookUI()
 {
@@ -50,11 +51,13 @@ void FlipbookUI::Render(HDC hdc)
 
 	const FlipbookInfo& info = _flipbook->GetInfo();
 
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 	::TransparentBlt(hdc,
-		(int32)_pos.x - info.size.x / 2,
-		(int32)_pos.y - info.size.y / 2,
-		info.size.x,
-		info.size.y,
+		((int32)_pos.x - info.size.x / 2) * ((float)winSize.x / (float)DefaultWinSizeX),
+		((int32)_pos.y - info.size.y / 2) * ((float)winSize.y / (float)DefaultWinSizeY),
+		info.size.x * ((float)winSize.x / (float)DefaultWinSizeX),
+		info.size.y * ((float)winSize.y / (float)DefaultWinSizeY),
 		info.texture->GetDC(),
 		(info.start + _idx) * info.size.x,
 		info.line * info.size.y,
