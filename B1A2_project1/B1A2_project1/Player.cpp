@@ -15,9 +15,8 @@ Player::Player()
 	PlayerStat* playerStat = new PlayerStat();
 	playerStat = GET_SINGLE(ResourceManager)->LoadPlayerStat(L"DataBase\\playerStat.csv");
 	_playerStat = playerStat;
-	_playerStat->attDamage;
-	_playerStat->enemyExistInAttRange;
-
+	CalPixelPerSecond();	// 속도 변경(아직은 run만 구현)
+	
 	// 마지
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");
 	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveLeft");
@@ -89,6 +88,17 @@ void Player::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
+void Player::CalPixelPerSecond()
+{
+	float PIXEL_PER_METER = (10.0 / 3);
+	float RUN_SPEED_KMPH = _playerStat->runSpeed;
+	float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
+	float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
+	float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
+
+	_playerStat->runSpeed = RUN_SPEED_PPS;
+}
+
 void Player::TickIdle()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
@@ -121,12 +131,12 @@ void Player::TickMove()
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
 		SetDir(DIR_LEFT);
-		_pos.x -= 200 * deltaTime;
+		_pos.x -= _playerStat->runSpeed * deltaTime;
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
 	{
 		SetDir(DIR_RIGHT);
-		_pos.x += 200 * deltaTime;
+		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
 
 	//switch (_dir)		// 이 코드로 하면 키보드 입력이 한 번밖에 안 먹음.. 일단 보류

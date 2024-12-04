@@ -89,10 +89,15 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
+public:
+	// Player Stat
 	PlayerStat* GetPlayerStat() { return _playerStat; }
 	void SetPlayerStat(PlayerStat* playerStat) { _playerStat = playerStat; }
 
-private:
+	// 현실에서의 단위를 픽셀 단위로 바꿈
+	void CalPixelPerSecond();
+
+public:
 	// Player State
 	virtual void TickIdle();
 	virtual void TickMove();
@@ -111,6 +116,7 @@ private:
 
 	void UpdateAnimation();
 
+public: 
 	// Collider
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
@@ -139,7 +145,6 @@ private:
 	bool _keyPressed = false;
 	PlayerStat* _playerStat = {};
 
-private:
 	int32 _geravity = 1000;
 };
 
