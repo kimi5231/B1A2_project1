@@ -7,6 +7,7 @@
 #include "Tilemap.h"
 #include "Dialogue.h"
 #include "SoundManager.h"
+#include "Player.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -140,4 +141,18 @@ Dialogue* ResourceManager::LoadDialogue(const std::wstring& key, const std::wstr
 	_dialogues[key] = dialogue;
 
 	return dialogue;
+}
+
+PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)
+{
+	if (_playerStat)
+		return _playerStat;
+
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	PlayerStat* playerStat = new PlayerStat();
+	playerStat->LoadFile(fullpath);
+	_playerStat = playerStat;
+
+	return playerStat; 
 }

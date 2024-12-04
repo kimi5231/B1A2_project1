@@ -1,5 +1,8 @@
 #pragma once
 #include "FlipbookActor.h"
+#include <fstream>
+#include <iostream>
+#include <string>
 
 class Flipbook;
 class BoxCollider;
@@ -21,21 +24,54 @@ enum class PlayerState
 
 struct PlayerStat
 {
-	int32 playerID = 0;
 	int32 healthPoint = 0;
 	int32 runSpeed = 0;
 	int32 crouchSpeed = 0;
 	int32 jumpHeight = 0;
-	int32 attRange = 0;
 	bool enemyExistInAttRange = false;
-	int32 attID = 0;
-	int32 attDamage = 0;
+	int32 attRange = 0;
 	int32 attStepDistance = 0;
-	int32 skillPoint = 0;
+	int32 attDamage = 0;
 	int32 skillDamage = 0;
 	int32 skillRange = 0;
 	int32 skillDuration = 0;
-	int32 skillStepDistance;
+	int32 skillStepDistance = 0;
+
+	void LoadFile(const std::wstring& path)
+	{
+		std::ifstream ifs;
+		ifs.open(path);
+
+		std::string line;
+
+		if (std::getline(ifs, line))
+		{
+			std::istringstream lineStream(line);
+			std::string cell;
+			int column = 0;
+
+			while (std::getline(lineStream, cell, '\t'))
+			{
+				switch (column)
+				{
+				case 0: this->healthPoint = std::stoi(cell); break;
+				case 1: this->runSpeed = std::stoi(cell); break;
+				case 2: this->crouchSpeed = std::stoi(cell); break;
+				case 3: this->jumpHeight = std::stoi(cell); break;
+				case 4: this->enemyExistInAttRange = (cell == "1"); break;
+				case 5: this->attRange = std::stoi(cell); break;
+				case 6: this->attStepDistance = std::stoi(cell); break;
+				case 7: this->attDamage = std::stoi(cell); break;
+				case 8: this->skillDamage = std::stoi(cell); break;
+				case 9: this->skillRange = std::stoi(cell); break;
+				case 10: this->skillDuration = std::stoi(cell); break;
+				case 11: this->skillStepDistance = std::stoi(cell); break;
+				}
+				++column;
+			}
+		}
+		ifs.close();
+	}
 };
 
 class Player : public FlipbookActor
@@ -72,8 +108,6 @@ private:
 
 	void UpdateAnimation();
 
-
-	
 	// Collider
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);

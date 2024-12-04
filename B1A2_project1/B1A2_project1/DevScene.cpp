@@ -15,7 +15,6 @@
 #include "TilemapActor.h"
 #include "ValueManager.h"
 #include "Scene.h"
-#include "PlayerStatManager.h"
 #include "Player.h"
 #include "Collider.h"
 #include "BoxCollider.h"
@@ -102,9 +101,6 @@ void DevScene::Init()
 		Player* player = new Player();
 		player->SetPos({ 100, 300 });
 		player->SetLayer(LAYER_OBJECT);
-
-		// Stat
-		player->SetPlayerStat(GET_SINGLE(PlayerStatManager)->LoadPlayerStats(1, L"DataBase\\TEST_playerData.csv"));		// ID 1인 Stat 얻어오기
 
 		// Colider
 		{

@@ -6,22 +6,16 @@
 #include "CameraComponent.h"
 #include "DialogueComponent.h"
 #include "Dialogue.h"
-#include <fstream>		// PlayrStat 저장
-#include <iostream>
 #include "Game.h"
 #include "BoxCollider.h"
-std::vector<PlayerStat> stats;
-
 
 Player::Player()
 {
-	// CSV 파일 읽어서 배열에 저장하는 코드
+	// PlayerStat
+	PlayerStat* playerStat = new PlayerStat();
+	playerStat = GET_SINGLE(ResourceManager)->LoadPlayerStat(L"DataBase\\playerStat.csv");
 
-	//_playerID++;	// 이렇게 하면 Scene마다 ID 늘어나는데.. 일단 ID는 1로 지정하고 고민해보기
-	//if (!stats.empty())
-	//{
-	//	_stat.push_back(stats[0]);	// 일단 1열만!!!
-	//}
+	_playerStat = playerStat;
 
 	// 마지
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");

@@ -203,9 +203,6 @@
     <ClInclude Include="ValueManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStatManager.h">
-      <Filter>소스 파일\01. Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Dialogue.h">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
@@ -338,9 +335,6 @@
       <Filter>소스 파일\03. Objects</Filter>
     </ClCompile>
     <ClCompile Include="ValueManager.cpp">
-      <Filter>소스 파일\01. Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStatManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
     <ClCompile Include="Dialogue.cpp">

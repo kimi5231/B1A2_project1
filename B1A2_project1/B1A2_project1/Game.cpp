@@ -6,7 +6,6 @@
 #include "ResourceManager.h"
 #include "SoundManager.h"
 #include "ValueManager.h"
-#include "PlayerStatManager.h"
 #include "CollisionManager.h"
 
 Game::Game()
@@ -41,7 +40,6 @@ void Game::Init(HWND hwnd)
 	GET_SINGLE(ResourceManager)->Init(hwnd, _resourcePath);
 	GET_SINGLE(SoundManager)->Init(hwnd);
 	GET_SINGLE(ValueManager)->Init(hwnd);
-	GET_SINGLE(PlayerStatManager)->Init(hwnd, _resourcePath);
 	GET_SINGLE(CollisionManager)->Init();
 
 	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);

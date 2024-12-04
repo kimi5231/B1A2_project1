@@ -1,5 +1,4 @@
 #pragma once
-
 class ResourceBase;
 class Texture;
 class Sprite;
@@ -8,6 +7,7 @@ class Sound;
 class Tilemap;
 class Dialogue;
 class LineInfo;
+struct PlayerStat;
 
 class ResourceManager
 {
@@ -42,6 +42,9 @@ public:
 	Dialogue* GetDialogue(const std::wstring& key) { return _dialogues[key]; }
 	Dialogue* LoadDialogue(const std::wstring& key, const std::wstring& path);
 
+	PlayerStat* GetPlayerStat() { return _playerStat; }
+	PlayerStat* LoadPlayerStat(const std::wstring& path);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -53,5 +56,6 @@ private:
 	std::unordered_map<std::wstring, Sound*> _sounds;
 	std::unordered_map<std::wstring, Tilemap*> _tilemaps;
 	std::unordered_map<std::wstring, Dialogue*> _dialogues;
+	PlayerStat* _playerStat;
 };
 
