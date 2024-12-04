@@ -14,8 +14,9 @@ Player::Player()
 	// PlayerStat
 	PlayerStat* playerStat = new PlayerStat();
 	playerStat = GET_SINGLE(ResourceManager)->LoadPlayerStat(L"DataBase\\playerStat.csv");
-
 	_playerStat = playerStat;
+	_playerStat->attDamage;
+	_playerStat->enemyExistInAttRange;
 
 	// ¸¶Áö
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");

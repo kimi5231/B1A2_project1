@@ -50,7 +50,7 @@ struct PlayerStat
 			std::string cell;
 			int column = 0;
 
-			while (std::getline(lineStream, cell, '\t'))
+			while (std::getline(lineStream, cell, ','))
 			{
 				switch (column)
 				{
@@ -58,8 +58,11 @@ struct PlayerStat
 				case 1: this->runSpeed = std::stoi(cell); break;
 				case 2: this->crouchSpeed = std::stoi(cell); break;
 				case 3: this->jumpHeight = std::stoi(cell); break;
-				case 4: this->enemyExistInAttRange = (cell == "1"); break;
-				case 5: this->attRange = std::stoi(cell); break;
+				case 4: this->enemyExistInAttRange = std::stoi(cell); break;
+				case 5: 
+					if (cell == "1")
+						this->attRange = true; 
+					break;
 				case 6: this->attStepDistance = std::stoi(cell); break;
 				case 7: this->attDamage = std::stoi(cell); break;
 				case 8: this->skillDamage = std::stoi(cell); break;
