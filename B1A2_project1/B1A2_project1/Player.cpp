@@ -90,13 +90,22 @@ void Player::Render(HDC hdc)
 
 void Player::CalPixelPerSecond()
 {
-	float PIXEL_PER_METER = (10.0 / 3);
+	float PIXEL_PER_METER = (10.0 / 0.3);
+		
+	// run
 	float RUN_SPEED_KMPH = _playerStat->runSpeed;
 	float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
 	float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
 	float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
 
+	// crouch
+	float CROUCH_SPEED_KMPH = _playerStat->crouchSpeed;
+	float CROUCH_SPEED_MPM = (CROUCH_SPEED_KMPH * 1000.0 / 60.0);
+	float CROUCH_SPEED_MPS = (CROUCH_SPEED_MPM / 60.0);
+	float CROUCH_SPEED_PPS = (CROUCH_SPEED_MPS * PIXEL_PER_METER);
+
 	_playerStat->runSpeed = RUN_SPEED_PPS;
+	_playerStat->crouchSpeed = CROUCH_SPEED_PPS;
 }
 
 void Player::TickIdle()
