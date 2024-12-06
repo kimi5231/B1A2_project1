@@ -141,7 +141,7 @@ private:
 private:
 	Vec2Int _cellPos = {};
 	Dir _dir = DIR_RIGHT;
-	PlayerState _state = PlayerState::Idle;
+	PlayerState _state;
 	bool _keyPressed = false;
 	PlayerStat* _playerStat = {};
 

@@ -16,6 +16,7 @@ public:
 	virtual void Render(HDC hdc) override;
 
 	void SetFlipbook(Flipbook* flipbook);
+	Flipbook* GetFlipbook() { return _flipbook; }
 	void Reset();
 
 private:

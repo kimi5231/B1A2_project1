@@ -49,11 +49,11 @@ void DevScene::Init()
 	GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\Dialogues.csv");
 
 	// Sound
-	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
 		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
 		sound->Play(true);
-	}
+	}*/
 
 	// Map
 	{
@@ -116,7 +116,7 @@ void DevScene::Init()
 			collider->AddCollisionFlagLayer(CLT_WALL);
 			collider->AddCollisionFlagLayer(CLT_OBJECT);
 
-			collider->SetSize({ 100, 100 });
+			collider->SetSize({ 67, 70 });
 			
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			player->AddComponent(collider);
