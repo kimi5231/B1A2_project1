@@ -9,14 +9,6 @@ Item::~Item()
 {
 }
 
-void Item::BeginPlay()
-{
-}
-
-void Item::Tick()
-{
-}
-
-void Item::Render(HDC hdc)
+void Item::LoadFile(const std::wstring& path)
 {
 }

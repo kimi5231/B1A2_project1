@@ -8,6 +8,7 @@
 #include "Dialogue.h"
 #include "SoundManager.h"
 #include "Player.h"
+#include "Item.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -155,4 +156,18 @@ PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)
 	_playerStat = playerStat;
 
 	return playerStat; 
+}
+
+Item* ResourceManager::LoadItem(const std::wstring& key, const std::wstring& path)
+{
+	if (_items[key])
+		return _items[key];
+
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	Item* item = new Item();
+	item->LoadFile(fullpath);
+	_items[key] = item;
+
+	return item;
 }
