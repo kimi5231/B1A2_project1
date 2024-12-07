@@ -7,5 +7,5 @@ public:
 
 	static void DrawCircle(HDC hdc, Vec2 pos, int32 radius);
 
-	static void DrawString(HDC hdc, Vec2 pos, std::wstring str);
+	static void DrawString(HDC hdc, const std::wstring& str, RECT rect);
 };

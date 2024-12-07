@@ -21,8 +21,11 @@ public:
 	void SetShowDialogue(bool show) { _showDialogue = show; }
 	bool GetShowDialogue() { return _showDialogue; }
 
+	Vec2Int GetDialogueRectSize(HDC hdc, const std::wstring& str);
+
 private:
 	Dialogue* _dialogue = nullptr;
 	bool _showDialogue = false;
+	int32 _fontSize{};
 };
 
