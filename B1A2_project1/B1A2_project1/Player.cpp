@@ -15,7 +15,7 @@ Player::Player()
 	PlayerStat* playerStat = new PlayerStat();
 	playerStat = GET_SINGLE(ResourceManager)->LoadPlayerStat(L"DataBase\\playerStat.csv");
 	_playerStat = playerStat;
-	CalPixelPerSecond();	// 속도 변경(아직은 run만 구현)
+	CalPixelPerSecond();
 	
 	// 마지
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");

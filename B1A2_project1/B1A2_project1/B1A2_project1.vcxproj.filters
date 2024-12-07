@@ -215,8 +215,11 @@
     <ClInclude Include="Inventory.h">
       <Filter>소스 파일\05. Component\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="ItemActor.h">
       <Filter>소스 파일\03. Objects\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,8 +352,11 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>소스 파일\05. Component\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
+    <ClCompile Include="ItemActor.cpp">
       <Filter>소스 파일\03. Objects\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ class Tilemap;
 class Dialogue;
 class LineInfo;
 struct PlayerStat;
+class Item;
 
 class ResourceManager
 {
@@ -45,6 +46,9 @@ public:
 	PlayerStat* GetPlayerStat() { return _playerStat; }
 	PlayerStat* LoadPlayerStat(const std::wstring& path);
 
+	Item* GetItem(const std::wstring& key) { return _items[key]; }
+	Item* LoadItem(const std::wstring& key, const std::wstring& path);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -57,5 +61,6 @@ private:
 	std::unordered_map<std::wstring, Tilemap*> _tilemaps;
 	std::unordered_map<std::wstring, Dialogue*> _dialogues;
 	PlayerStat* _playerStat;
+	std::unordered_map<std::wstring, Item*> _items;
 };
 
