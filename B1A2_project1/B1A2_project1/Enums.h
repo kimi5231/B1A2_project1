@@ -48,3 +48,11 @@ enum class SoundType
 	BGM,
 	Normal,
 };
+
+// Dialogue
+enum class DialogueState
+{
+	Running,
+	Wait,
+	Hidden,
+};

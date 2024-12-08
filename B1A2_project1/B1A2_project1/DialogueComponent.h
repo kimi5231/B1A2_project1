@@ -15,17 +15,22 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
-	void SetSpeech(const std::wstring& speech) { _speech = speech; }
-	//std::wstring GetSpeech() { return _speech; }
+	void SetSpeech(const std::wstring& speech);
+	const std::wstring& GetSpeech() { return _speech; }
+	void SetCurrentSpeech(const std::wstring& speech) { _currentSpeech = speech; }
 
-	void SetShowDialogue(bool show) { _showDialogue = show; }
-	bool GetShowDialogue() { return _showDialogue; }
+	void SetState(DialogueState state) { _state = state; }
+	DialogueState GetState() { return _state; }
 
 	Vec2Int GetDialogueRectSize(HDC hdc, const std::wstring& str);
 
 private:
 	std::wstring _speech;
-	bool _showDialogue = false;
+	std::wstring _currentSpeech;
+	int32 _speechCount = 0;
+	DialogueState _state = DialogueState::Hidden;
 	int32 _fontSize{};
+
+	float _sumTime = 0.f;
 };
 

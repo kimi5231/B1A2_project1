@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "DialogueManager.h"
+#include "InputManager.h"
 #include "Dialogue.h"
 #include "Actor.h"
 #include "Player.h"
 #include "DialogueComponent.h"
-#include "TimeManager.h"
 
 DialogueManager::~DialogueManager()
 {
@@ -27,9 +27,50 @@ void DialogueManager::Update()
 	if (!_isDialogue)
 		return;
 
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_sumTime += deltaTime;
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+	{
+		if (_currentComponent->GetState() == DialogueState::Wait)
+		{
+			_eventCount++;
 
+			if (_eventCount == _event.size())
+				EndDialogue();
+			else
+				ChangeSpeech();
+		}
+		else if (_currentComponent->GetState() == DialogueState::Running)
+		{
+			const std::wstring& speech = _currentComponent->GetSpeech();
+			_currentComponent->SetCurrentSpeech(speech);
+		}
+	}
+}
+
+void DialogueManager::StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors)
+{
+	_event = _dialogue->GetEvent(eventName);
+	_actors = actors;
+
+	_isDialogue = true;
+
+	ChangeSpeech();
+}
+
+void DialogueManager::EndDialogue()
+{
+	for (Actor* actor : _actors)
+	{
+		DialogueComponent* component = actor->GetDialogue();
+		component->SetState(DialogueState::Hidden);
+	}
+
+	_eventCount = 0;
+
+	_isDialogue = false;
+}
+
+void DialogueManager::ChangeSpeech()
+{
 	for (Actor* actor : _actors)
 	{
 		// 대사에 맞는 객체 찾기
@@ -43,44 +84,16 @@ void DialogueManager::Update()
 				player->SetState(static_cast<PlayerState>(_event[_eventCount].state));
 				player->SetDir(static_cast<Dir>(_event[_eventCount].dir));
 				// DialogueComponent Setting
-				DialogueComponent* component = player->GetDialogue();
-				component->SetShowDialogue(true);
-				component->SetSpeech(_event[_eventCount].speech);
+				_currentComponent = player->GetDialogue();
+				_currentComponent->SetState(DialogueState::Running);
+				_currentComponent->SetSpeech(_event[_eventCount].speech);
 			}
 
-
-			// 다음 대사로 이동
-			if (_sumTime >= 2.0)
-			{
-				_eventCount++;
-				_sumTime = 0.f;
-			}
-			
-			// 대화 종료
-			if (_eventCount == _event.size())
-				EndDialogue();
-
-			break;
+			continue;
 		}
-	}
-	
-}
 
-void DialogueManager::StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors)
-{
-	_event = _dialogue->GetEvent(eventName);
-	_actors = actors;
-
-	_isDialogue = true;
-}
-
-void DialogueManager::EndDialogue()
-{
-	for (Actor* actor : _actors)
-	{
+		// 대사에 맞는 객체가 아닐 때
 		DialogueComponent* component = actor->GetDialogue();
-		component->SetShowDialogue(false);
+		component->SetState(DialogueState::Hidden);
 	}
-
-	_isDialogue = false;
 }

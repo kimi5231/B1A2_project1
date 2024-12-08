@@ -4,6 +4,7 @@
 #include "Actor.h"
 #include "FlipbookActor.h"
 #include "Flipbook.h"
+#include "TimeManager.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -23,11 +24,28 @@ void DialogueComponent::BeginPlay()
 
 void DialogueComponent::TickComponent()
 {
+	if (_state == DialogueState::Hidden || _state == DialogueState::Wait)
+		return;
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_currentSpeech == _speech)
+	{
+		_speechCount = 0;
+		_state = DialogueState::Wait;
+	}
+
+	if (_sumTime >= 0.5f)
+	{
+		_currentSpeech += _speech[_speechCount++];
+		_sumTime = 0.f;
+	}
 }
 
 void DialogueComponent::Render(HDC hdc)
 {
-	if (!_showDialogue)
+	if (_state == DialogueState::Hidden)
 		return;
 	
 	// owner 사이즈 가져오기
@@ -62,15 +80,21 @@ void DialogueComponent::Render(HDC hdc)
 	// 텍스트 출력 범위 사이즈 얻어오기
 	Vec2Int rectSize = GetDialogueRectSize(hdc, _speech);
 
-	// Dialogue 위치 지정
+	// DialogueComponent 위치 지정
 	Vec2 ownerPos = _owner->GetPos();
 	Vec2 pos = { ownerPos.x - (float)rectSize.x / 2, ownerPos.y - (float)size.y / 2 - rectSize.y };
 	RECT rect = { pos.x, pos.y, pos.x + rectSize.x, pos.y + rectSize.y };
 
-	Utils::DrawString(hdc, _speech, rect);
+	Utils::DrawString(hdc, _currentSpeech, rect);
 
 	::SelectObject(hdc, oldFont);
 	::DeleteObject(hfont);
+}
+
+void DialogueComponent::SetSpeech(const std::wstring& speech)
+{
+	_speech = speech;
+	SetCurrentSpeech(L"");
 }
 
 Vec2Int DialogueComponent::GetDialogueRectSize(HDC hdc, const std::wstring& str)
