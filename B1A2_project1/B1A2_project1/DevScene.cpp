@@ -20,6 +20,7 @@
 #include "BoxCollider.h"
 #include "CollisionManager.h"
 #include "DialogueManager.h"
+#include "SceneManager.h"
 
 DevScene::DevScene()
 {
@@ -77,27 +78,27 @@ void DevScene::Init()
 	}
 
 	// Tilemap
-	{
-		// Tile Texture Load
-		GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
-		
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
+	//{
+	//	// Tile Texture Load
+	//	GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
+	//	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
+	//	
+	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
+	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
 
-		// Tilemap Load
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-		//tm->SetTileSize(48);
+	//	// Tilemap Load
+	//	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	//	Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+	//	//tm->SetTileSize(48);
 
-		TilemapActor* actor = new TilemapActor();
-		actor->SetPos({0, 0});
-		//actor->SetShowDebug(true);
-		actor->SetTilemap(tm);
-		actor->SetLayer(LAYER_TILEMAP);
+	//	TilemapActor* actor = new TilemapActor();
+	//	actor->SetPos({0, 0});
+	//	actor->SetShowDebug(true);
+	//	actor->SetTilemap(tm);
+	//	actor->SetLayer(LAYER_TILEMAP);
 
-		AddActor(actor);
-	}
+	//	AddActor(actor);
+	//}
 
 	// Player
 	{
@@ -135,6 +136,76 @@ void DevScene::Init()
 			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
 		}
 	}
+
+
+	// Tilemap Collision
+	{
+		// Tilemap Load
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");	// x : 160개, y : 36개 
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+
+		TilemapActor* actor = new TilemapActor();
+		actor->SetPos({ 0, 0 });
+		actor->SetTilemap(tm);
+		actor->SetLayer(LAYER_TILEMAP);
+
+		{
+			Vec2Int mapSize = tm->GetMapSize();
+
+			std::vector<std::vector<Tile>>& tiles = tm->GetTiles();
+
+			Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
+			int32 startX = 0;
+			int32 startY = 0;
+			int32 endX = winSize.x / MAP_TILE_SIZEX;
+			int32 endY = winSize.y / MAP_TILE_SIZEY;
+
+			int count = 0;
+
+			for (int32 y = startY; y <= endY; ++y)
+			{
+				for (int32 x = startX; x <= endX; ++x)
+				{
+					if (tiles[y][x].value == 1)
+					{
+						Actor* tile = new Actor();
+						tile->SetPos({ (float)x * MAP_TILE_SIZEX, (float)y * MAP_TILE_SIZEY });
+						tile->SetLayer(LAYER_TILEMAP);
+
+						{
+							BoxCollider* collider = new BoxCollider();
+							collider->SetSize({ 24, 24 });
+							collider->SetCollisionLayer(CLT_GROUND);
+							GET_SINGLE(CollisionManager)->AddCollider(collider);
+							tile->AddComponent(collider);
+							count++;
+						}
+					}
+				}
+			}
+		}
+
+		AddActor(actor);
+	}
+
+	// 충돌 객체 - 참고
+	{
+		Actor* test = new Actor();
+		test->SetPos({ 500, 400 });
+		test->SetLayer(LAYER_OBJECT);
+
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 50, 500 });
+			collider->SetCollisionLayer(CLT_OBJECT);
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			test->AddComponent(collider);
+		}
+
+		AddActor(test);
+	}
+
 
 	Super::Init();
 }
