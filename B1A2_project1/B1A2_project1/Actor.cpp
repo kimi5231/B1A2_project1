@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "Component.h"
 #include "Collider.h"
+#include "DialogueComponent.h"
 
 Actor::Actor()
 {
@@ -72,4 +73,15 @@ void Actor::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 void Actor::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+}
+
+DialogueComponent* Actor::GetDialogue()
+{
+	for (Component* component : _components)
+	{
+		if (dynamic_cast<DialogueComponent*>(component))
+			return dynamic_cast<DialogueComponent*>(component);
+	}
+
+	return nullptr;
 }

@@ -221,6 +221,9 @@
     <ClInclude Include="Item.h">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueManager.h">
+      <Filter>소스 파일\01. Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -357,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueManager.cpp">
+      <Filter>소스 파일\01. Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

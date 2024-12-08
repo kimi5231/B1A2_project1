@@ -48,16 +48,26 @@ void Dialogue::LoadFile(const std::wstring& path)
 		
 		LineInfo info;
 
-		std::getline(wiss, info.speaker, L',');
-		std::getline(wiss, info.state, L',');
+		std::getline(wiss, info.speakerName, L',');
+		std::getline(wiss, info.speakerID, L',');
 
 		// 문자열 정수로 변환
+		std::wstring state;
+		std::getline(wiss, state, L',');
+		info.state = std::stoi(state);
+
 		std::wstring dir;
 		std::getline(wiss, dir, L',');
 		info.dir = std::stoi(dir);
 
 		std::getline(wiss, info.speech, L',');
-		//::MultiByteToWideChar(CP_UTF8, 0, &info.speech, (int)utf8Speech.size(), &info.speech[0], size_needed);
+		// 개행문자 처리
+		int32 start = 0;
+		while ((start = info.speech.find(L"\\n", start))!= std::wstring::npos)
+		{
+			info.speech.replace(start, 2, L"\n");
+			start += 1;
+		}
 
 		infos.push_back(info);
 	}

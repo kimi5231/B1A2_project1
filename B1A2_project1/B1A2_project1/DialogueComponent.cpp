@@ -27,7 +27,7 @@ void DialogueComponent::TickComponent()
 
 void DialogueComponent::Render(HDC hdc)
 {
-	if (!_owner)
+	if (!_showDialogue)
 		return;
 	
 	// owner 사이즈 가져오기
@@ -35,9 +35,6 @@ void DialogueComponent::Render(HDC hdc)
 	Flipbook* flipbook = owner->GetFlipbook();
 	const FlipbookInfo& info = flipbook->GetInfo();
 	Vec2Int size = info.size;
-
-	// 이벤트 가져오기
-	std::vector<LineInfo>& event = _dialogue->GetEvent(L"test1");
 
 	// 폰트 생성
 	HFONT hfont = CreateFont(
@@ -63,14 +60,14 @@ void DialogueComponent::Render(HDC hdc)
 	SetBkMode(hdc, TRANSPARENT);
 
 	// 텍스트 출력 범위 사이즈 얻어오기
-	Vec2Int rectSize = GetDialogueRectSize(hdc, event.begin()->speech);
+	Vec2Int rectSize = GetDialogueRectSize(hdc, _speech);
 
 	// Dialogue 위치 지정
 	Vec2 ownerPos = _owner->GetPos();
 	Vec2 pos = { ownerPos.x - (float)rectSize.x / 2, ownerPos.y - (float)size.y / 2 - rectSize.y };
 	RECT rect = { pos.x, pos.y, pos.x + rectSize.x, pos.y + rectSize.y };
 
-	Utils::DrawString(hdc, event.begin()->speech, rect);
+	Utils::DrawString(hdc, _speech, rect);
 
 	::SelectObject(hdc, oldFont);
 	::DeleteObject(hfont);

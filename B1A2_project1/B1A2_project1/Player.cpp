@@ -27,8 +27,6 @@ Player::Player()
 
 	// Dialogue Component
 	DialogueComponent* dialogueComponent = new DialogueComponent();
-	Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
-	dialogueComponent->SetDialogue(dialogue);
 	AddComponent(dialogueComponent);
 }
 

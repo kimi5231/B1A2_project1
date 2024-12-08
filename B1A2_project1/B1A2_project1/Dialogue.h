@@ -3,8 +3,9 @@
 
 struct LineInfo
 {
-	std::wstring speaker;
-	std::wstring state;
+	std::wstring speakerName;
+	std::wstring speakerID;
+	int32 state;
 	int32 dir;
 	std::wstring speech;
 };

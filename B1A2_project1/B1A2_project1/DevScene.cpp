@@ -19,6 +19,7 @@
 #include "Collider.h"
 #include "BoxCollider.h"
 #include "CollisionManager.h"
+#include "DialogueManager.h"
 
 DevScene::DevScene()
 {
@@ -47,6 +48,8 @@ void DevScene::Init()
 
 	// Dialogue
 	GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\Dialogues.csv");
+	Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
+	GET_SINGLE(DialogueManager)->SetDialogue(dialogue);
 
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
@@ -99,8 +102,9 @@ void DevScene::Init()
 	// Player
 	{
 		Player* player = new Player();
-		player->SetPos({ 100, 300 });
+		player->SetPos({ 300, 300 });
 		player->SetLayer(LAYER_OBJECT);
+		player->SetID(L"1");
 
 		// Colider
 		{
@@ -123,6 +127,13 @@ void DevScene::Init()
 		}
 
 		AddActor(player);
+		
+		// Start Dialogue
+		{
+			std::vector<Actor*> actors;
+			actors.push_back(player);
+			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
+		}
 	}
 
 	Super::Init();

@@ -15,8 +15,8 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
-	void SetDialogue(Dialogue* dialogue) { _dialogue = dialogue; }
-	Dialogue* GetDialogue() { return _dialogue; }
+	void SetSpeech(const std::wstring& speech) { _speech = speech; }
+	//std::wstring GetSpeech() { return _speech; }
 
 	void SetShowDialogue(bool show) { _showDialogue = show; }
 	bool GetShowDialogue() { return _showDialogue; }
@@ -24,7 +24,7 @@ public:
 	Vec2Int GetDialogueRectSize(HDC hdc, const std::wstring& str);
 
 private:
-	Dialogue* _dialogue = nullptr;
+	std::wstring _speech;
 	bool _showDialogue = false;
 	int32 _fontSize{};
 };
