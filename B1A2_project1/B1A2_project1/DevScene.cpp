@@ -154,6 +154,90 @@ void DevScene::Init()
 			}
 			AddActor(ground1);
 		}
+		{
+			Actor* ground2 = new Actor();
+			ground2->SetPos({ 960, 840 });
+			ground2->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 1920, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground2->AddComponent(collider);
+			}
+			AddActor(ground2);
+		}
+		{
+			Actor* ground3 = new Actor();
+			ground3->SetPos({ 1940, 440 });
+			ground3->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 920, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground3->AddComponent(collider);
+			}
+			AddActor(ground3);
+		}
+		{
+			Actor* ground4 = new Actor();
+			ground4->SetPos({ 1200, 760 });
+			ground4->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 80, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground4->AddComponent(collider);
+			}
+			AddActor(ground4);
+		}
+		{
+			Actor* ground5 = new Actor();
+			ground5->SetPos({ 1280, 680 });
+			ground5->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 80, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground5->AddComponent(collider);
+			}
+			AddActor(ground5);
+		}
+		{
+			Actor* ground6 = new Actor();
+			ground6->SetPos({ 1360, 600 });
+			ground6->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 80, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground6->AddComponent(collider);
+			}
+			AddActor(ground6);
+		}
+		{
+			Actor* ground7 = new Actor();
+			ground7->SetPos({ 1440, 520 });
+			ground7->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 80, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground7->AddComponent(collider);
+			}
+			AddActor(ground7);
+		}
 
 		// top
 		{
@@ -184,6 +268,21 @@ void DevScene::Init()
 				top2->AddComponent(collider);
 			}
 			AddActor(top2);
+		}
+
+		// wall
+		{
+			Actor* wall1 = new Actor();
+			wall1->SetPos({ 40, 640 });
+			wall1->SetLayer(LAYER_TILEMAP);
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 80, 320 });
+				collider->SetCollisionLayer(CLT_WALL);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				wall1->AddComponent(collider);
+			}
+			AddActor(wall1);
 		}
 	}
 

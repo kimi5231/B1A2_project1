@@ -148,5 +148,6 @@ private:
 	int32 _gravity = 1000;
 	float _ySpeed = {};
 	bool _onGround = false;
+	bool _jumping = false;
 };
 
