@@ -103,7 +103,7 @@ void DevScene::Init()
 	// Player
 	{
 		Player* player = new Player();
-		player->SetPos({ 300, 300 });
+		player->SetPos({ 400, 200 });
 		player->SetLayer(LAYER_OBJECT);
 		player->SetID(L"1");
 
@@ -137,75 +137,55 @@ void DevScene::Init()
 		}
 	}
 
-
-	// Tilemap Collision
+	// Tile Collision
 	{
-		// Tilemap Load
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");	// x : 160개, y : 36개 
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-
-		TilemapActor* actor = new TilemapActor();
-		actor->SetPos({ 0, 0 });
-		actor->SetTilemap(tm);
-		actor->SetLayer(LAYER_TILEMAP);
-
+		// ground
 		{
-			Vec2Int mapSize = tm->GetMapSize();
+			Actor* ground1 = new Actor();
+			ground1->SetPos({ 320, 440 });
+			ground1->SetLayer(LAYER_TILEMAP);
 
-			std::vector<std::vector<Tile>>& tiles = tm->GetTiles();
-
-			Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-
-			int32 startX = 0;
-			int32 startY = 0;
-			int32 endX = winSize.x / MAP_TILE_SIZEX;
-			int32 endY = winSize.y / MAP_TILE_SIZEY;
-
-			int count = 0;
-
-			for (int32 y = startY; y <= endY; ++y)
 			{
-				for (int32 x = startX; x <= endX; ++x)
-				{
-					if (tiles[y][x].value == 1)
-					{
-						Actor* tile = new Actor();
-						tile->SetPos({ (float)x * MAP_TILE_SIZEX, (float)y * MAP_TILE_SIZEY });
-						tile->SetLayer(LAYER_TILEMAP);
-
-						{
-							BoxCollider* collider = new BoxCollider();
-							collider->SetSize({ 24, 24 });
-							collider->SetCollisionLayer(CLT_GROUND);
-							GET_SINGLE(CollisionManager)->AddCollider(collider);
-							tile->AddComponent(collider);
-							count++;
-						}
-					}
-				}
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 640, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				ground1->AddComponent(collider);
 			}
+			AddActor(ground1);
 		}
 
-		AddActor(actor);
-	}
+		// top
+		{
+			Actor* top1 = new Actor();
+			top1->SetPos({ 1200, 40 });
+			top1->SetLayer(LAYER_TILEMAP);
 
-	// 충돌 객체 - 참고
-	{
-		Actor* test = new Actor();
-		test->SetPos({ 500, 400 });
-		test->SetLayer(LAYER_OBJECT);
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 2400, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				top1->AddComponent(collider);
+			}
+			AddActor(top1);
+		}
 
 		{
-			BoxCollider* collider = new BoxCollider();
-			collider->SetSize({ 50, 500 });
-			collider->SetCollisionLayer(CLT_OBJECT);
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			test->AddComponent(collider);
+			Actor* top2 = new Actor();
+			top2->SetPos({ 4600, 40 });
+			top2->SetLayer(LAYER_TILEMAP);
+
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ 2400, 80 });
+				collider->SetCollisionLayer(CLT_GROUND);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				top2->AddComponent(collider);
+			}
+			AddActor(top2);
 		}
-
-		AddActor(test);
 	}
-
 
 	Super::Init();
 }

@@ -79,6 +79,8 @@ void Player::Tick()
 	//	TickDead();
 	//	break;
 	}
+
+	TickGravity();
 }
 
 void Player::Render(HDC hdc)
@@ -122,6 +124,10 @@ void Player::TickIdle()
 	{
 		SetDir(DIR_RIGHT);
 		SetState(PlayerState::Move);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+	{
+		SetState(PlayerState::Jump);
 	}
 	else
 	{
@@ -254,6 +260,18 @@ void Player::UpdateAnimation()
 
 void Player::TickGravity()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	if (deltaTime > 0.1f)
+		return;
+
+	// v = at
+	// s = vt
+
+	if (_onGround)
+		return;
+
+	_ySpeed += _gravity * deltaTime;
+	_pos.y += _ySpeed * deltaTime;
 }
 
 void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
@@ -265,10 +283,20 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 
 	AdjustCollisionPos(b1, b2);
+
+	_onGround = true;
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	// Ãæµ¹ ³¡: ¶¥¿¡¼­ ¶³¾îÁü
+	_onGround = false;
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)

@@ -10,7 +10,7 @@ enum class KeyType	// Å° ¹öÆ°
 	DOWN = VK_DOWN,
 	Left = VK_LEFT,
 	Right = VK_RIGHT,
-	SpacwBar = VK_SPACE,
+	SpaceBar = VK_SPACE,
 	Esc = VK_ESCAPE,
 
 	KEY_1 = '1',
