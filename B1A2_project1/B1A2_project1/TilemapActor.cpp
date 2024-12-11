@@ -56,7 +56,7 @@ void TilemapActor::Render(HDC hdc)
 
 	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 인덱스 구하기
 	int32 startX = (leftX - _pos.x) / MAP_TILE_SIZEX;
-	int32 startY = (leftY - _pos.x) / MAP_TILE_SIZEY;
+	int32 startY = (leftY - _pos.y) / MAP_TILE_SIZEY;
 	int32 endX = (rightX - _pos.x) / MAP_TILE_SIZEX;
 	int32 endY = (rightY - _pos.y) / MAP_TILE_SIZEY;
 

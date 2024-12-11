@@ -57,9 +57,9 @@ void Player::Tick()
 	//case PlayerState::DuckDown:
 	//	TickDuckDown();
 	//	break;
-	//case PlayerState::Jump:
-	//	TickJump();
-	//	break;
+	case PlayerState::Jump:
+		TickJump();
+		break;
 	//case PlayerState::Hang:
 	//	TickHang();
 	//	break;
@@ -79,6 +79,8 @@ void Player::Tick()
 	//	TickDead();
 	//	break;
 	}
+
+	TickGravity();
 }
 
 void Player::Render(HDC hdc)
@@ -123,6 +125,10 @@ void Player::TickIdle()
 		SetDir(DIR_RIGHT);
 		SetState(PlayerState::Move);
 	}
+	/*else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+	{
+		SetState(PlayerState::Jump);
+	}*/
 	else
 	{
 		_keyPressed = false;
@@ -145,7 +151,6 @@ void Player::TickMove()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
-
 	//switch (_dir)		// 이 코드로 하면 키보드 입력이 한 번밖에 안 먹음.. 일단 보류
 	//{
 	//case DIR_RIGHT:
@@ -167,6 +172,7 @@ void Player::TickDuckDownMove()
 
 void Player::TickJump()
 {
+
 }
 
 void Player::TickHang()
@@ -228,9 +234,9 @@ void Player::UpdateAnimation()
 	//case PlayerState::DuckDownMove:
 	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 	//	break;
-	//case PlayerState::Jump:
-	//	SetFlipbook(_flipbookPlayerJump[_dir]);
-	//	break;
+	case PlayerState::Jump:
+		SetFlipbook(_flipbookPlayerMove[_dir]);
+		break;
 	//case PlayerState::Hang:
 	//	SetFlipbook(_flipbookPlayerHang[_dir]);
 	//	break;
@@ -254,6 +260,18 @@ void Player::UpdateAnimation()
 
 void Player::TickGravity()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	if (deltaTime > 0.1f)
+		return;
+
+	// v = at
+	// s = vt
+
+	if (_onGround)
+		return;
+
+	_ySpeed += _gravity * deltaTime;
+	_pos.y += _ySpeed * deltaTime;
 }
 
 void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
@@ -265,10 +283,22 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 
 	AdjustCollisionPos(b1, b2);
+
+	// 충돌 시작 : 땅에 닿음
+	_onGround = true;
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	// 충돌 끝: 땅에서 떨어짐
+	if (b2->GetCollisionLayer() == CLT_GROUND)
+		_onGround = false;
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)

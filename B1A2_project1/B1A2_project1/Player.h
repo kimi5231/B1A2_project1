@@ -145,6 +145,9 @@ private:
 	bool _keyPressed = false;
 	PlayerStat* _playerStat = {};
 
-	int32 _geravity = 1000;
+	int32 _gravity = 1000;
+	float _ySpeed = {};
+	bool _onGround = false;
+	bool _jumping = false;
 };
 
