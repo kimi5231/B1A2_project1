@@ -132,7 +132,7 @@ void DevScene::Init()
 		Player* player = new Player();
 		player->SetPos({ 400, 200 });
 		player->SetLayer(LAYER_OBJECT);
-		player->SetID(L"1");
+		player->SetID(1);
 
 		// Colider
 		{

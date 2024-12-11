@@ -49,7 +49,11 @@ void Dialogue::LoadFile(const std::wstring& path)
 		LineInfo info;
 
 		std::getline(wiss, info.speakerName, L',');
-		std::getline(wiss, info.speakerID, L',');
+
+		// 문자열 정수로 변환
+		std::wstring id;
+		std::getline(wiss, id, L',');
+		info.speakerID = std::stoi(id);
 
 		// 문자열 정수로 변환
 		std::wstring state;
