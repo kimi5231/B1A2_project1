@@ -77,7 +77,17 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueHeightRight", texture, 7, 0, 7, 1);
 	}
 
-	
+	// Item
+	{
+		// Item info
+		GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
+
+		// Texture
+		/*GET_SINGLE(ResourceManager)->LoadTexture(L"1001_key", L"Sprite\Item");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\Item");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_match", L"Sprite\Item");*/
+		
+	}
 
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
@@ -163,6 +173,42 @@ void DevScene::Init()
 			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
 		}
 	}
+
+	// Tile Collision - for 문으로
+	//{
+	//	// Tilemap Load
+	//	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");	// x : 160개, y : 36개 
+	//	Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+
+	//	{
+	//		Vec2Int mapSize = tm->GetMapSize();
+
+	//		std::vector<std::vector<Tile>>& tiles = tm->GetTiles();
+	//		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
+	//		for (int32 y = 0; y < mapSize.y; ++y)
+	//		{
+	//			for (int32 x = 0; x < mapSize.x; ++x)
+	//			{
+	//				if (tiles[y][x].value == 1)
+	//				{
+	//					Actor* tile = new Actor();
+	//					tile->SetPos({ (float)x * MAP_TILE_SIZEX + 20, (float)y * MAP_TILE_SIZEY + 20 });
+	//					tile->SetLayer(LAYER_TILEMAP);
+
+	//					{
+	//						BoxCollider* collider = new BoxCollider();
+	//						collider->SetSize({ 40, 40 });
+	//						collider->SetCollisionLayer(CLT_GROUND);
+	//						GET_SINGLE(CollisionManager)->AddCollider(collider);
+	//						tile->AddComponent(collider);
+	//					}
+	//					AddActor(tile);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	// Tile Collision
 	{
