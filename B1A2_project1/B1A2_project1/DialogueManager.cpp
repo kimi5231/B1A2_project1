@@ -44,6 +44,10 @@ void DialogueManager::Update()
 			_currentComponent->SetCurrentSpeech(speech);
 		}
 	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Tab))
+	{
+		EndDialogue();
+	}
 }
 
 void DialogueManager::StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors)
@@ -63,6 +67,8 @@ void DialogueManager::EndDialogue()
 		DialogueComponent* component = actor->GetDialogue();
 		component->SetState(DialogueState::Hidden);
 	}
+
+	_event.clear();
 
 	_eventCount = 0;
 
