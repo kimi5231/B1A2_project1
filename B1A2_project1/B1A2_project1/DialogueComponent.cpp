@@ -93,7 +93,7 @@ void DialogueComponent::Render(HDC hdc)
 
 	// DialogueComponent 위치 지정
 	Vec2 ownerPos = _owner->GetPos() * winSizeAdjustmemt - cameraPosAdjustmemt;
-	Vec2 pos = { (ownerPos.x - (float)rectSize.x / 2), (ownerPos.y - (((float)size.y / 2 + 21) * winSizeAdjustmemt.y) - rectSize.y) };
+	Vec2 pos = { (ownerPos.x - (float)rectSize.x / 2), (ownerPos.y - (((float)size.y / 2 + 21.f) * winSizeAdjustmemt.y) - (float)rectSize.y) };
 	RECT rect = { pos.x, pos.y, pos.x + rectSize.x, pos.y + rectSize.y};
 
 	// 말풍선 출력
@@ -103,7 +103,7 @@ void DialogueComponent::Render(HDC hdc)
 			Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"DialogueCornerLeftTop");
 			BubbleTile tile{ sprite, {pos.x - (CORNER_SIZEX * winSizeAdjustmemt.x),
 				pos.y - (CORNER_SIZEY * winSizeAdjustmemt.y)},
-				{CORNER_SIZEX, CORNER_SIZEY} };
+				{CORNER_SIZEX + 1, CORNER_SIZEY + 1} };
 			
 			_cornerTiles.push_back(tile);
 		}
@@ -112,7 +112,7 @@ void DialogueComponent::Render(HDC hdc)
 			Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"DialogueCornerRightTop");
 			BubbleTile tile{ sprite, {pos.x + rectSize.x,
 				pos.y - (CORNER_SIZEY * winSizeAdjustmemt.y)},
-				{CORNER_SIZEX, CORNER_SIZEY} };
+				{CORNER_SIZEX, CORNER_SIZEY + 1} };
 
 			_cornerTiles.push_back(tile);
 		}
@@ -121,7 +121,7 @@ void DialogueComponent::Render(HDC hdc)
 			Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"DialogueCornerLeftBottom");
 			BubbleTile tile{ sprite, {pos.x - (CORNER_SIZEX * winSizeAdjustmemt.x),
 				pos.y + rectSize.y},
-				{CORNER_SIZEX, CORNER_SIZEY} };
+				{CORNER_SIZEX + 1, CORNER_SIZEY} };
 			
 			_cornerTiles.push_back(tile);
 		}
@@ -141,7 +141,7 @@ void DialogueComponent::Render(HDC hdc)
 			{
 				BubbleTile tile{ sprite, {pos.x + i * WIDTH_SIZEX,
 					pos.y - (WIDTH_SIZEY * winSizeAdjustmemt.y)},
-					{WIDTH_SIZEX, WIDTH_SIZEY} };
+					{WIDTH_SIZEX, WIDTH_SIZEY + 1} };
 
 				_widthTiles.push_back(tile);
 			}
@@ -168,7 +168,7 @@ void DialogueComponent::Render(HDC hdc)
 			{
 				BubbleTile tile{ sprite, {pos.x - (HEIGHT_SIZEX * winSizeAdjustmemt.x),
 					pos.y + i * HEIGHT_SIZEY},
-					{HEIGHT_SIZEX, HEIGHT_SIZEY} };
+					{HEIGHT_SIZEX + 1, HEIGHT_SIZEY} };
 
 				_heightTiles.push_back(tile);
 			}
