@@ -48,9 +48,36 @@ void DevScene::Init()
 	}
 
 	// Dialogue
-	GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\Dialogues.csv");
-	Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
-	GET_SINGLE(DialogueManager)->SetDialogue(dialogue);
+	{
+		// Script
+		GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\Dialogues.csv");
+		Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
+		GET_SINGLE(DialogueManager)->SetDialogue(dialogue);
+
+		// Texture
+		GET_SINGLE(ResourceManager)->LoadTexture(L"DialogueCorner", L"Sprite\\Dialogue\\DialogueCorner.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"DialogueTail", L"Sprite\\Dialogue\\DialogueTail.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"DialogueWidth", L"Sprite\\Dialogue\\DialogueWidth.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"DialogueHeight", L"Sprite\\Dialogue\\DialogueHeight.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"DialogueBackground", L"Sprite\\Dialogue\\DialogueBackground.bmp");
+
+		// Sprite
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"DialogueCorner");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueCornerLeftTop", texture, 0, 0, 7, 6);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueCornerRightTop", texture, 7, 0, 7, 6);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueCornerLeftBottom", texture, 14, 0, 7, 6);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueCornerRightBottom", texture, 21, 0, 7, 6);
+
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"DialogueWidth");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueWidthTop", texture, 0, 0, 1, 6);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueWidthBottom", texture, 1, 0, 1, 6);
+
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"DialogueHeight");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueHeightLeft", texture, 0, 0, 7, 1);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"DialogueHeightRight", texture, 7, 0, 7, 1);
+	}
+
+	
 
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
@@ -205,7 +232,6 @@ void DevScene::Init()
 
 		AddActor(test);
 	}
-
 
 	Super::Init();
 }

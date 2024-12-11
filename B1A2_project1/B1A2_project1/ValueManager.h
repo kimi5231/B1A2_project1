@@ -18,6 +18,11 @@ public:
 	void SetMapSize(Vec2Int size) { _mapSize = size; }
 	Vec2Int GetMapSize() { return _mapSize; }
 
+	// 윈도우 창 크기에 따른 보정값
+	Vec2 GetWinSizeAdjustment();
+	// 카메라 위치에 따른 보정값
+	Vec2 GetCameraPosAdjustment();
+
 private:
 	// 윈도우 핸들
 	HWND _hwnd{};

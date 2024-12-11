@@ -35,6 +35,14 @@ struct Vec2
 		return ret;
 	}
 
+	Vec2 operator*(const Vec2& other)
+	{
+		Vec2 ret;
+		ret.x = x * other.x;
+		ret.y = y * other.y;
+		return ret;
+	}
+
 	Vec2 operator*(float value)
 	{
 		Vec2 ret;

@@ -1,7 +1,5 @@
 #pragma once
 #include "ResourceBase.h"
-#include <string>
-#include <string>
 
 enum TILE_TYPE
 {

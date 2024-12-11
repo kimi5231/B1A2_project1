@@ -2,6 +2,26 @@
 #include "Component.h"
 
 class Dialogue;
+class Sprite;
+
+enum BUBBLE_TILE_SIZE
+{
+	CORNER_SIZEX = 7,
+	CORNER_SIZEY = 6,
+	WIDTH_SIZEX = 1,
+	WIDTH_SIZEY = 6,
+	HEIGHT_SIZEX = 7,
+	HEIGHT_SIZEY = 1,
+	TAIL_SIZEX = 14,
+	TAIL_SIZEY = 15,
+};
+
+struct BubbleTile
+{
+	Sprite* sprite;
+	Vec2 pos;
+	Vec2Int size;
+};
 
 class DialogueComponent : public Component
 {
@@ -29,7 +49,11 @@ private:
 	std::wstring _currentSpeech;
 	int32 _speechCount = 0;
 	DialogueState _state = DialogueState::Hidden;
-	int32 _fontSize{};
+	float _fontSize{};
+
+	std::vector<BubbleTile> _cornerTiles;
+	std::vector<BubbleTile> _widthTiles;
+	std::vector<BubbleTile> _heightTiles;
 
 	float _sumTime = 0.f;
 };
