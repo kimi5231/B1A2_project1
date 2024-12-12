@@ -4,11 +4,14 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "ValueManager.h"
+#include "CollisionManager.h"
 #include "Tilemap.h"
 #include "Sprite.h"
+#include "BoxCollider.h"
 
 TilemapActor::TilemapActor()
 {
+
 }
 
 TilemapActor::~TilemapActor()
@@ -18,11 +21,39 @@ TilemapActor::~TilemapActor()
 void TilemapActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Vec2Int mapSize = _tilemap->GetMapSize();
+
+	std::vector<std::vector<Tile>>& tiles = _tilemap->GetTiles();
+
+	for (int32 y = 0; y < mapSize.y; ++y)
+	{
+		for (int32 x = 0; x < mapSize.x; ++x)
+		{
+			if (tiles[y][x].value == 1)
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->SetSize({ MAP_TILE_SIZEX, MAP_TILE_SIZEY });
+				collider->SetPos({ (float)(x * MAP_TILE_SIZEX + MAP_TILE_SIZEX / 2),
+					(float)(y * MAP_TILE_SIZEY + MAP_TILE_SIZEY / 2) });
+				// flag reset
+				collider->ResetCollisionFlag();
+				collider->SetCollisionLayer(CLT_GROUND);
+				// 충돌할 객체
+				collider->AddCollisionFlagLayer(CLT_OBJECT);
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				AddComponent(collider);
+			}
+		}
+	}
 }
 
 void TilemapActor::Tick()
 {
 	Super::Tick();
+
+	if (!_showDebug)
+		return;
 
 	TickPicking();
 }
@@ -54,7 +85,7 @@ void TilemapActor::Render(HDC hdc)
 	int32 rightX = (int32)cameraPos.x + winSize.x / 2;
 	int32 rightY = (int32)cameraPos.y + winSize.y / 2;
 
-	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 인덱스 구하기
+	// 카메라 좌표의 시작과 끝을 월드 좌표로 변환한 후 카메라에 보이는 타일 인덱스 범위 구하기
 	int32 startX = (leftX - _pos.x) / MAP_TILE_SIZEX;
 	int32 startY = (leftY - _pos.y) / MAP_TILE_SIZEY;
 	int32 endX = (rightX - _pos.x) / MAP_TILE_SIZEX;

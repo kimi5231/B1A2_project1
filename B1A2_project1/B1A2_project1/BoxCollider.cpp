@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "BoxCollider.h"
+#include "SphereCollider.h"
 #include "SceneManager.h"
 #include "ValueManager.h"
 #include "Actor.h"
-#include "SphereCollider.h"
+#include "TilemapActor.h"
 
 BoxCollider::BoxCollider() : Collider(ColliderType::Box)
 {
@@ -19,29 +20,32 @@ void BoxCollider::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	if (!dynamic_cast<TilemapActor*>(_owner))
+		_pos = _owner->GetPos();
 }
 
 void BoxCollider::TickComponent()
 {
 	Super::TickComponent();
 
-
+	if (!dynamic_cast<TilemapActor*>(_owner))
+		_pos = _owner->GetPos();
 }
 
 void BoxCollider::Render(HDC hdc)
 {
 	Super::Render(hdc);
 
-	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
-	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-	Vec2 pos = GetOwner()->GetPos();
-	pos.x -= (cameraPos.x - winSize.x / 2);
-	pos.y -= (cameraPos.y - winSize.y / 2);
+	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
 	HBRUSH myBrush = (HBRUSH)::GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)::SelectObject(hdc, myBrush);
-	Utils::DrawRect(hdc, pos, _size.x, _size.y);
+	Utils::DrawRect(hdc, 
+		{ _pos.x * winSizeAdjustment.x - cameraPosAdjustment.x,
+		_pos.y * winSizeAdjustment.y - cameraPosAdjustment.y },
+		_size.x * winSizeAdjustment.x,
+		_size.y* winSizeAdjustment.y);
 	::SelectObject(hdc, oldBrush);
 	::DeleteObject(myBrush);
 }
@@ -64,15 +68,12 @@ bool BoxCollider::CheckCollision(Collider* other)
 
 RECT BoxCollider::GetRect()
 {
-	Vec2 pos = GetOwner()->GetPos();
-	Vec2 size = GetSize();
-
 	RECT rect =
 	{
-		(int32)(pos.x - (size.x / 2)),
-		(int32)(pos.y - (size.y / 2)),
-		(int32)(pos.x + (size.x / 2)),
-		(int32)(pos.y + (size.y / 2))
+		(int32)(_pos.x - (_size.x / 2)),
+		(int32)(_pos.y - (_size.y / 2)),
+		(int32)(_pos.x + (_size.x / 2)),
+		(int32)(_pos.y + (_size.y / 2))
 	};
 
 	return rect;

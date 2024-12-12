@@ -24,6 +24,9 @@ public:
 	static bool CheckCollisionSphere2Box(SphereCollider* s1, BoxCollider* b2);
 	static bool CheckCollisionSphere2Sphere(SphereCollider* s1, SphereCollider* s2);
 	
+	Vec2 GetPos() { return _pos; }
+	void SetPos(Vec2 pos) { _pos = pos; }
+
 	// 충돌 레이어 설정, 가져오기
 	void SetCollisionLayer(COLLISION_LAYER_TYPE layer) { _collisionLayer = layer; }
 	COLLISION_LAYER_TYPE GetCollisionLayer() { return _collisionLayer; }
@@ -40,6 +43,7 @@ public:
 protected:
 	ColliderType _colliderType;
 	bool _showDebug = true;
+	Vec2 _pos{};
 
 public: 
 	std::unordered_set<Collider*> _collisionMap;
