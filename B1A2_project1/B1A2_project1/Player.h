@@ -93,9 +93,7 @@ public:
 	// Player Stat
 	PlayerStat* GetPlayerStat() { return _playerStat; }
 	void SetPlayerStat(PlayerStat* playerStat) { _playerStat = playerStat; }
-
-	// 현실에서의 단위를 픽셀 단위로 바꿈
-	void CalPixelPerSecond();
+	void CalPixelPerSecond();	// 현실에서의 단위를 픽셀 단위로 바꿈
 
 public:
 	// Player State
@@ -145,9 +143,11 @@ private:
 	bool _keyPressed = false;
 	PlayerStat* _playerStat = {};
 
+	// Jump
 	int32 _gravity = 1000;
 	float _ySpeed = {};
-	bool _onGround = false;
-	bool _jumping = false;
+
+	bool _Ground = false;
+	bool _isInAir = false;
 };
 
