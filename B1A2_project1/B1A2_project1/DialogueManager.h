@@ -32,5 +32,7 @@ private:
 	std::vector<Actor*> _actors;
 	DialogueComponent* _currentComponent;
 	bool _isDialogue = false;
+
+	float _sumTime = 0.f;
 };
 

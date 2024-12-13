@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DialogueManager.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 #include "Dialogue.h"
 #include "Actor.h"
 #include "Player.h"
@@ -27,6 +28,9 @@ void DialogueManager::Update()
 	if (!_isDialogue)
 		return;
 
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 	{
 		if (_currentComponent->GetState() == DialogueState::Wait)
@@ -44,8 +48,9 @@ void DialogueManager::Update()
 			_currentComponent->SetCurrentSpeech(speech);
 		}
 	}
-	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Tab))
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::Tab) && (_sumTime >= 2.0f))
 	{
+		_sumTime = 0.f;
 		EndDialogue();
 	}
 }
