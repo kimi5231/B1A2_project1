@@ -31,14 +31,15 @@ void DialogueComponent::TickComponent()
 	if (_state == DialogueState::Hidden || _state == DialogueState::Wait)
 		return;
 
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_sumTime += deltaTime;
-
 	if (_currentSpeech == _speech)
 	{
 		_speechCount = 0;
 		_state = DialogueState::Wait;
+		return;
 	}
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
 	if (_sumTime >= 0.1f)
 	{
@@ -51,7 +52,7 @@ void DialogueComponent::Render(HDC hdc)
 {
 	if (_state == DialogueState::Hidden)
 		return;
-	
+
 	// 보정 변수 가져오기
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
@@ -266,6 +267,23 @@ void DialogueComponent::Render(HDC hdc)
 		_cornerTiles.clear();
 		_widthTiles.clear();
 		_heightTiles.clear();
+	}
+
+	// 대사가 끝났음을 알리는 삼각형 출력
+	if (_state == DialogueState::Wait)
+	{
+		Texture* triangle = GET_SINGLE(ResourceManager)->GetTexture(L"DialogueTriangle");
+		::TransparentBlt(hdc,
+			pos.x + rectSize.x + ((HEIGHT_SIZEX + 1) * winSizeAdjustmemt.x),
+			pos.y + rectSize.y + ((WIDTH_SIZEY - TRIANGLE_SIZEY) * winSizeAdjustmemt.y),
+			TRIANGLE_SIZEX * winSizeAdjustmemt.x,
+			TRIANGLE_SIZEY * winSizeAdjustmemt.y,
+			triangle->GetDC(),
+			0,
+			0,
+			TRIANGLE_SIZEX,
+			TRIANGLE_SIZEY,
+			triangle->GetTransparent());
 	}
 
 	// 텍스트 출력
