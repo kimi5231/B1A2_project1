@@ -130,10 +130,14 @@ void Player::TickIdle()
 		SetDir(DIR_RIGHT);
 		SetState(PlayerState::Move);
 	}
-	/*else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 	{
-		SetState(PlayerState::Jump);
-	}*/
+		if (_Ground)	// Ãæµ¹ Ã¼Å©¿¡¼­ ¶¥¿¡ ´êÀ¸¸é _Ground = true·Î µÆ´Âµ¥ ¿Ö false·Î ³ª¿À´Â °ÅÁö??
+		{
+			SetState(PlayerState::Jump);
+		}
+		return;
+	}
 	else
 	{
 		_keyPressed = false;
@@ -177,8 +181,20 @@ void Player::TickDuckDownMove()
 
 void Player::TickJump()
 {
+	//if (_isInAir)
+	//	return;
 
-}
+	//if (_Ground)
+	//	SetState(PlayerState::Idle);
+
+	//_isInAir = true;
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+
+	if (deltaTime > 0.1f)
+		return;
+ }
 
 void Player::TickHang()
 {
@@ -265,15 +281,16 @@ void Player::UpdateAnimation()
 
 void Player::TickGravity()
 {
+	// ¶¥¿¡ ´ê¾ÆÀÖÀ¸¸é Áß·Â Àû¿ë X
+	if (_Ground)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	if (deltaTime > 0.1f)
 		return;
 
 	// v = at
 	// s = vt
-
-	if (_onGround)
-		return;
 
 	_ySpeed += _gravity * deltaTime;
 	_pos.y += _ySpeed * deltaTime;
@@ -290,7 +307,8 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	AdjustCollisionPos(b1, b2);
 
 	// Ãæµ¹ ½ÃÀÛ : ¶¥¿¡ ´êÀ½
-	_onGround = true;
+	if (b2->GetCollisionLayer() == CLT_GROUND)
+		_Ground = true;
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
@@ -302,8 +320,8 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		return;
 
 	// Ãæµ¹ ³¡: ¶¥¿¡¼­ ¶³¾îÁü
-	if (b2->GetCollisionLayer() == CLT_GROUND)
-		_onGround = false;
+	//if (b2->GetCollisionLayer() == CLT_GROUND)
+	//	_Ground = false;
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
