@@ -115,27 +115,19 @@ void DevScene::Init()
 	}
 
 	// Tilemap
-	//{
-	//	// Tile Texture Load
-	//	GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(128, 128, 128));
-	//	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
-	//	
-	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
-	//	GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
+	{
+		// Tilemap Load
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt"); 
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
 
-	//	// Tilemap Load
-	//	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-	//	Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-	//	//tm->SetTileSize(48);
+		TilemapActor* actor = new TilemapActor();
+		actor->SetPos({0, 0});
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+		actor->SetLayer(LAYER_TILEMAP);
 
-	//	TilemapActor* actor = new TilemapActor();
-	//	actor->SetPos({0, 0});
-	//	actor->SetShowDebug(true);
-	//	actor->SetTilemap(tm);
-	//	actor->SetLayer(LAYER_TILEMAP);
-
-	//	AddActor(actor);
-	//}
+		AddActor(actor);
+	}
 
 	// Player
 	{
@@ -175,43 +167,43 @@ void DevScene::Init()
 	}
 
 	// Tile Collision - for 문으로
-	//{
-	//	// Tilemap Load
-	//	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");	// x : 160개, y : 36개 
-	//	Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+	/* {
+		// Tilemap Load
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");	// x : 160개, y : 36개 
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
 
-	//	{
-	//		Vec2Int mapSize = tm->GetMapSize();
+		{
+			Vec2Int mapSize = tm->GetMapSize();
 
-	//		std::vector<std::vector<Tile>>& tiles = tm->GetTiles();
-	//		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+			std::vector<std::vector<Tile>>& tiles = tm->GetTiles();
+			Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
-	//		for (int32 y = 0; y < mapSize.y; ++y)
-	//		{
-	//			for (int32 x = 0; x < mapSize.x; ++x)
-	//			{
-	//				if (tiles[y][x].value == 1)
-	//				{
-	//					Actor* tile = new Actor();
-	//					tile->SetPos({ (float)x * MAP_TILE_SIZEX + 20, (float)y * MAP_TILE_SIZEY + 20 });
-	//					tile->SetLayer(LAYER_TILEMAP);
+			for (int32 y = 0; y < mapSize.y; ++y)
+			{
+				for (int32 x = 0; x < mapSize.x; ++x)
+				{
+					if (tiles[y][x].value == 1)
+					{
+						Actor* tile = new Actor();
+						tile->SetPos({ (float)x * MAP_TILE_SIZEX + 20, (float)y * MAP_TILE_SIZEY + 20 });
+						tile->SetLayer(LAYER_TILEMAP);
 
-	//					{
-	//						BoxCollider* collider = new BoxCollider();
-	//						collider->SetSize({ 40, 40 });
-	//						collider->SetCollisionLayer(CLT_GROUND);
-	//						GET_SINGLE(CollisionManager)->AddCollider(collider);
-	//						tile->AddComponent(collider);
-	//					}
-	//					AddActor(tile);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+						{
+							BoxCollider* collider = new BoxCollider();
+							collider->SetSize({ 40, 40 });
+							collider->SetCollisionLayer(CLT_GROUND);
+							GET_SINGLE(CollisionManager)->AddCollider(collider);
+							tile->AddComponent(collider);
+						}
+						AddActor(tile);
+					}
+				}
+			}
+		}
+	}*/
 
 	// Tile Collision
-	{
+	/*{
 		// ground
 		{
 			Actor* ground1 = new Actor();
@@ -357,7 +349,7 @@ void DevScene::Init()
 			}
 			AddActor(wall1);
 		}
-	}
+	}*/
 
 	Super::Init();
 }
