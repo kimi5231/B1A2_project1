@@ -2,6 +2,7 @@
 #include "ItemActor.h"
 #include "SpriteActor.h"
 
+class Sprite;
 class Player;
 class Item;
 
@@ -10,7 +11,7 @@ class ItemActor : public SpriteActor
 	using Super = SpriteActor;
 
 public:
-	ItemActor();
+	ItemActor(ItemType itemType);
 	virtual ~ItemActor() override;
 
 	virtual void BeginPlay() override;
@@ -19,5 +20,11 @@ public:
 
 protected:
 	Player* _owner = nullptr;
+
+private:
+	// Item ¸®¼Ò½º
+	Sprite* _spriteItemInMap = {};
+	Sprite* _spriteItemInInven = {};
+	Sprite* _spriteItemInInvenEffect = {};
 };
 

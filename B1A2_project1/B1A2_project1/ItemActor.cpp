@@ -3,9 +3,16 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "ResourceManager.h"
 
-ItemActor::ItemActor()
+ItemActor::ItemActor(ItemType itemType)
 {
+	if (itemType == ItemType::Pencil)
+	{
+		_spriteItemInMap = GET_SINGLE(ResourceManager)->GetSprite(L"1002_pencil_inMap");
+		_spriteItemInInven = GET_SINGLE(ResourceManager)->GetSprite(L"1002_pencil_inInven");
+		_spriteItemInInvenEffect = GET_SINGLE(ResourceManager)->GetSprite(L"1002_pencil_inInvenEffect");
+	}
 }
 
 ItemActor::~ItemActor()
@@ -22,4 +29,5 @@ void ItemActor::Tick()
 
 void ItemActor::Render(HDC hdc)
 {
+
 }

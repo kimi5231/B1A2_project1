@@ -56,3 +56,11 @@ enum class DialogueState
 	Wait,
 	Hidden,
 };
+
+// Item Á¾·ù
+enum class ItemType
+{
+	Pencil,
+	Match,
+	Key,
+};

@@ -137,7 +137,6 @@ private:
 	Flipbook* _flipbookPlayerDead[2] = {};
 
 private:
-	Vec2Int _cellPos = {};
 	Dir _dir = DIR_RIGHT;
 	PlayerState _state;
 	bool _keyPressed = false;
