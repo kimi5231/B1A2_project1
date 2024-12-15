@@ -23,8 +23,7 @@ protected:
 
 private:
 	// Item ¸®¼Ò½º
-	Sprite* _spriteItemInMap = {};
-	Sprite* _spriteItemInInven = {};
-	Sprite* _spriteItemInInvenEffect = {};
+	//Sprite* _spriteItemInInven = {};
+	//Sprite* _spriteItemInInvenEffect = {};
 };
 

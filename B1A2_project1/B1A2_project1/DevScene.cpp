@@ -85,15 +85,25 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
 
 		// Texture
-		//GET_SINGLE(ResourceManager)->LoadTexture(L"1001_key", L"Sprite\\Item\\1001_key.bmp");
-		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\\Item\\1002_pencil.bmp");
-		//GET_SINGLE(ResourceManager)->LoadTexture(L"1003_match", L"Sprite\\Item\\1003_match.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_key", L"Sprite\\Item\\1001_key.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\\Item\\1002_pencil.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_match", L"Sprite\\Item\\1003_match.bmp", RGB(55, 255, 0));
 
 		// Sprite
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencil");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inMap", texture, 0, 0, 30, 30);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInven", texture, 30, 0, 128, 128);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInvenEffect", texture, 158, 0, 128, 128);
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_key");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1001_key_inMap", texture, 0, 0, 30, 30);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1001_key_inInven", texture, 30, 0, 128, 128);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_key_inInvenEffect", texture, 158, 0, 128, 128);
+
+		Texture* texture2 = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencil");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inMap", texture2, 0, 0, 30, 30);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInven", texture2, 30, 0, 128, 128);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInvenEffect", texture2, 158, 0, 128, 128);
+
+		Texture* texture3 = GET_SINGLE(ResourceManager)->GetTexture(L"1003_match");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inMap", texture3, 0, 0, 30, 30);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInven", texture3, 30, 0, 128, 128);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInvenEffect", texture3, 158, 0, 128, 128);
 	}
 
 	// Sound
@@ -176,23 +186,21 @@ void DevScene::Init()
 	// Item
 	{
 		ItemActor* item = new ItemActor(ItemType::Pencil);
-		item->SetPos({ 500, 500 });
+		item->SetPos({ 100, 200 });		// 적당한 y 좌표 : 370
 		item->SetLayer(LAYER_OBJECT);
-		// item->SetID(1);	// ID 관련 상의 필요 - 읽을 때는 문자열로(key 구분), 생성 시 Scene에서 ID를 따로 설정하는 방식으로!?
+		item->SetID(1);	// ID 관련 상의 필요 - 읽을 때는 문자열로(key 구분), 생성 시 Scene에서 ID를 따로 설정하는 방식으로!?
 
 		// Collider
 		{
 			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 100, 55 });	// 원래 크기보다 크게 설정
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_OBJECT);
 			collider->AddCollisionFlagLayer(CLT_OBJECT);
 
-			collider->SetSize({30, 30});
-
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			item->AddComponent(collider);
 		}
-
 		AddActor(item);
 	}
 
