@@ -29,6 +29,6 @@ private:
 	Flipbook* _flipbookItemInMap = {};
 	Flipbook* _flipbookFKey = {};
 
-	FKeyState _FkeyState = FKeyState::Show;
+	FKeyState _FkeyState = FKeyState::Hidden;
 };
 

@@ -2,6 +2,8 @@
 
 class Panel;
 class Actor;
+class Player;
+class Inventory;
 
 class Scene
 {
@@ -19,4 +21,7 @@ public:
 protected:
 	Panel* _panel = nullptr;
 	std::vector<Actor*> _actors[LAYER_MAXCOUNT];
+
+	Player* _player = nullptr;
+	Inventory* _inventory = nullptr;
 };

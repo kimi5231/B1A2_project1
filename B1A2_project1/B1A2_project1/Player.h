@@ -148,5 +148,8 @@ private:
 
 	bool _Ground = false;
 	bool _isInAir = false;
+
+	// »πµÊ«— æ∆¿Ã≈€¿« ¡§∫∏
+	std::vector<std::wstring> _ownItemIDs;
 };
 

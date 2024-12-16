@@ -22,6 +22,7 @@
 #include "DialogueManager.h"
 #include "SceneManager.h"
 #include "ItemActor.h"
+#include "Inventory.h"
 
 DevScene::DevScene()
 {
@@ -159,6 +160,14 @@ void DevScene::Init()
 		}		
 	}
 
+	// Inventory
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Inventory", L"Sprite\\Inventory\\Inventory.bmp");
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Inventory");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"Inventory", texture, 0, 0, 1280, 720);
+	}
+
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
@@ -225,6 +234,16 @@ void DevScene::Init()
 			player->AddComponent(collider);
 		}
 
+		// Inventory
+		{
+			Inventory* inventory = new Inventory();
+			player->AddComponent(inventory);
+
+			// Update에서 inventory의 멤버 변수에 접근하기 위해
+			_player = player;
+			_inventory = inventory;
+		}
+
 		AddActor(player);
 		
 		// Start Dialogue
@@ -262,6 +281,14 @@ void DevScene::Init()
 void DevScene::Update()
 {
 	Super::Update(); 
+
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::Esc))
+	{
+		if (_inventory)
+		{
+			_inventory->SetInventoryState(InventoryState::Show);
+		}
+	}
 }
 
 void DevScene::Render(HDC hdc)

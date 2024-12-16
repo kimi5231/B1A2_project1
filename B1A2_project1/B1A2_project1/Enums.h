@@ -73,3 +73,10 @@ enum class FKeyState
 	Hidden,
 	Show,
 };
+
+// Inventory
+enum class InventoryState
+{
+	Hidden,
+	Show,
+};
