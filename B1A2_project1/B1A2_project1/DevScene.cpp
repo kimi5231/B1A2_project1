@@ -85,39 +85,79 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
 
 		// Texture
-		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_key", L"Sprite\\Item\\1001_key.bmp", RGB(55, 255, 0));
-		/*GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\\Item\\1002_pencil.bmp", RGB(55, 255, 0));
-		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_match", L"Sprite\\Item\\1003_match.bmp", RGB(55, 255, 0));
-		GET_SINGLE(ResourceManager)->LoadTexture(L"F_key", L"Sprite\\Item\\F_key.bmp", RGB(55, 255, 0));*/
+		GET_SINGLE(ResourceManager)->LoadTexture(L"F_key", L"Sprite\\Item\\F_key.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_keyInMap", L"Sprite\\Item\\1001_keyInMap.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencilInMap", L"Sprite\\Item\\1002_pencilInMap.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_matchInMap", L"Sprite\\Item\\1003_matchInMap.bmp", RGB(55, 255, 0));
 
 		// Flipbook
-		// B button
-		//{
-		//	Texture* texture_Fkey = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
-		//	Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook("FB_KeyInMap");
-		//	fb->SetInfo({texture_Fkey, L})
-		//}
+		// F button
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Fkey");
+			fb->SetInfo({ texture, L"FB_Fkey", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
 		// 1001_Key
 		{
-			Texture* texture_key = GET_SINGLE(ResourceManager)->GetTexture(L"1001_key");
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInMap");
-			fb->SetInfo({ texture_key, L"FB_keyInMap", {30, 30}, 0, 3, 0, 0.7f, true });
-		}
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInMap");
+			
+			// in Map
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInMap");
+				fb->SetInfo({ texture, L"FB_keyInMap", {30, 30}, 0, 2, 0, 0.7f, true });
+			}
 
-		/*{
-			Texture* texture_pencil = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencil");
-			Sprite* sp1 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inMap", texture_pencil, 0, 0, 30, 30);
-			Sprite* sp2 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInven", texture_pencil, 30, 0, 128, 128);
-			Sprite* sp3 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInvenEffect", texture_pencil, 158, 0, 128, 128);
-		}
+			// in Inventory
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInInventory");
+				fb->SetInfo({ texture, L"FB_keyInInventory", {128, 128}, 0, 2, 0, 0.7f, true });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInInventoryEffect");
+				fb->SetInfo({ texture, L"FB_keyInInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
+			}
 
+		}
+		// 1002_pencil
 		{
-			Texture* texture_match = GET_SINGLE(ResourceManager)->GetTexture(L"1003_match");
-			Sprite* sp1 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inMap", texture_match, 0, 0, 30, 30);
-			Sprite* sp2 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInven", texture_match, 30, 0, 128, 128);
-			Sprite* sp3 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInvenEffect", texture_match, 158, 0, 128, 128);
-		}*/
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInMap");
+			
+			// in Map
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_pencilInMap");
+				fb->SetInfo({ texture, L"FB_pencilInMap", {30, 30}, 0, 2, 0, 0.7f, true });
+			}
 
+			// in Inventory
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_pencilInInventory");
+				fb->SetInfo({ texture, L"FB_pencilInventory", {128, 128}, 0, 2, 0, 0.7f, true });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_pencilInInventoryEffect");
+				fb->SetInfo({ texture, L"FB_pencilInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
+			}
+		}
+		// 1003_match
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInMap");
+			
+			// in Map
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_matchInMap");
+				fb->SetInfo({ texture, L"FB_matchInMap", {30, 30}, 0, 2, 0, 0.7f, true });
+			}
+
+			// in Inventory
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_matchInInventory");
+				fb->SetInfo({ texture, L"FB_matchInInventory", {128, 128}, 0, 2, 0, 0.7f, true });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_matchInInventoryEffect");
+				fb->SetInfo({ texture, L"FB_matchInInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
+			}
+		}		
 	}
 
 	// Sound
@@ -164,7 +204,7 @@ void DevScene::Init()
 	{
 		Player* player = new Player();
 		player->SetPos({ 400, 200 });
-		player->SetLayer(LAYER_OBJECT);
+		player->SetLayer(LAYER_PLAYER);
 		player->SetID(1);
 
 		// Colider
@@ -198,9 +238,9 @@ void DevScene::Init()
 
 	// Item
 	{
-		ItemActor* item = new ItemActor(ItemType::Key);
+		ItemActor* item = new ItemActor(ItemType::Match);
 		item->SetPos({ 100, 200 });		// 적당한 y 좌표 : 370
-		item->SetLayer(LAYER_OBJECT);
+		item->SetLayer(LAYER_ITEM);
 		item->SetID(1);	// ID 관련 상의 필요 - 읽을 때는 문자열로(key 구분), 생성 시 Scene에서 ID를 따로 설정하는 방식으로!?
 
 		// Collider

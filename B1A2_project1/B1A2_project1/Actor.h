@@ -41,7 +41,7 @@ protected:
 	Vec2 _pos = { 100, 600 };
 	Vec2 _destPos = { 0, 0 };
 	int32 _id{};
-	LAYER_TYPE _layer = LAYER_OBJECT;
+	LAYER_TYPE _layer = {};
 	std::vector<Component*> _components;
 };
 

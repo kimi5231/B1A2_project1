@@ -26,9 +26,8 @@ protected:
 	Player* _owner = nullptr;
 
 private:
-	// Item ¸®¼Ò½º
 	Flipbook* _flipbookItemInMap = {};
-	Flipbook* _flipbookItemInInven = {};
-	Flipbook* _flipbookItemInInvenEffect = {};
+	Flipbook* _flipbookFKeyNoShow = {};
+	Flipbook* _flipbookFKeyShow = {};
 };
 

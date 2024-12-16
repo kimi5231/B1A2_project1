@@ -4,19 +4,25 @@
 
 ItemActor::ItemActor(ItemType itemType)
 {
+	// Item
 	if (itemType == ItemType::Key)
 	{
 		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
-		SetFlipbook(_flipbookItemInMap);
 	}
-	/*else if (itemType == ItemType::Pencil)
+	else if (itemType == ItemType::Pencil)
 	{
-		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetSprite(L"1002_pencil_inMap");
+		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");
 	}
 	else if (itemType == ItemType::Match)
 	{
-		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetSprite(L"1003_match_inMap");
-	}*/
+		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_matchInMap");
+	}
+
+	// F_key
+	_flipbookFKeyNoShow = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FkeyNoShow");
+	_flipbookFKeyShow = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FkeyShow");
+
+	SetFlipbook(_flipbookItemInMap);
 }
 
 ItemActor::~ItemActor()
