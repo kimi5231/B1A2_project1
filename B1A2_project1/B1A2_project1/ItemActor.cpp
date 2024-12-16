@@ -39,3 +39,11 @@ void ItemActor::Render(HDC hdc)
 {
 	Super::Render(hdc);
 }
+
+void ItemActor::OnConponentBeginOverlap(Collider* collider, Collider* other)
+{
+}
+
+void ItemActor::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
+}

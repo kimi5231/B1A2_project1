@@ -85,7 +85,7 @@ void Player::Tick()
 	//	break;
 	}
 
-	//TickGravity();
+	// TickGravity();
 }
 
 void Player::Render(HDC hdc)

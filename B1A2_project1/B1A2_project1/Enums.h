@@ -29,9 +29,10 @@ enum class ColliderType
 
 enum COLLISION_LAYER_TYPE : uint8
 {
-	CLT_OBJECT,		// 0
-	CLT_GROUND,		// 1
-	CLT_WALL,		// 2
+	CLT_PLAYER,		// 0
+	CLT_ITEM,		// 1
+	CLT_GROUND,		// 2
+	CLT_WALL,		// 3
 };
 
 

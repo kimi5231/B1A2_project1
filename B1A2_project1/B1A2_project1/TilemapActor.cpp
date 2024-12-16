@@ -40,7 +40,7 @@ void TilemapActor::BeginPlay()
 				collider->ResetCollisionFlag();
 				collider->SetCollisionLayer(CLT_GROUND);
 				// Ãæµ¹ÇÒ °´Ã¼
-				collider->AddCollisionFlagLayer(CLT_OBJECT);
+				collider->AddCollisionFlagLayer(CLT_PLAYER);
 				GET_SINGLE(CollisionManager)->AddCollider(collider);
 				AddComponent(collider);
 			}

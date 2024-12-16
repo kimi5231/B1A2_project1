@@ -160,12 +160,11 @@ void DevScene::Init()
 			collider->ResetCollisionFlag();	
 
 			// 나 자신을 설정
-			 collider->SetCollisionLayer(CLT_OBJECT);
+			 collider->SetCollisionLayer(CLT_PLAYER);
 
 			// 충돌하고 싶은 객체 설정
 			collider->AddCollisionFlagLayer(CLT_GROUND);	
 			collider->AddCollisionFlagLayer(CLT_WALL);
-			collider->AddCollisionFlagLayer(CLT_OBJECT);
 
 			collider->SetSize({ 67, 70 });
 			
@@ -195,8 +194,8 @@ void DevScene::Init()
 			BoxCollider* collider = new BoxCollider();
 			collider->SetSize({ 100, 55 });	// 원래 크기보다 크게 설정
 			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_OBJECT);
-			collider->AddCollisionFlagLayer(CLT_OBJECT);
+			collider->SetCollisionLayer(CLT_ITEM);
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			item->AddComponent(collider);

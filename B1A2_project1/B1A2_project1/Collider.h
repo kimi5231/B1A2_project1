@@ -49,7 +49,7 @@ public:
 	std::unordered_set<Collider*> _collisionMap;
 
 protected:
-	COLLISION_LAYER_TYPE _collisionLayer = CLT_OBJECT;	// 나는 누구인가?
+	COLLISION_LAYER_TYPE _collisionLayer = CLT_PLAYER;	// 나는 누구인가?
 	uint32 _collisionFlag = 0xFFFFFFFF;		// 누구랑 충돌할 것인가? / 0 : 아무와 충돌하지 않음, 0xFFF : 모두와 충돌
 };
 
