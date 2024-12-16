@@ -1,14 +1,13 @@
 #pragma once
 #include "ItemActor.h"
-#include "SpriteActor.h"
+#include "FlipbookActor.h"
 
-class Sprite;
 class Player;
 class Item;
 
-class ItemActor : public SpriteActor
+class ItemActor : public FlipbookActor
 {
-	using Super = SpriteActor;
+	using Super = FlipbookActor;
 
 public:
 	ItemActor(ItemType itemType);
@@ -28,7 +27,8 @@ protected:
 
 private:
 	// Item ¸®¼Ò½º
-	//Sprite* _spriteItemInInven = {};
-	//Sprite* _spriteItemInInvenEffect = {};
+	Flipbook* _flipbookItemInMap = {};
+	Flipbook* _flipbookItemInInven = {};
+	Flipbook* _flipbookItemInInvenEffect = {};
 };
 

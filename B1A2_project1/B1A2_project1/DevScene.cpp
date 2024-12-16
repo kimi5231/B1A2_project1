@@ -86,24 +86,38 @@ void DevScene::Init()
 
 		// Texture
 		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_key", L"Sprite\\Item\\1001_key.bmp", RGB(55, 255, 0));
-		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\\Item\\1002_pencil.bmp", RGB(55, 255, 0));
+		/*GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencil", L"Sprite\\Item\\1002_pencil.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_match", L"Sprite\\Item\\1003_match.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"F_key", L"Sprite\\Item\\F_key.bmp", RGB(55, 255, 0));*/
 
-		// Sprite
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_key");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1001_key_inMap", texture, 0, 0, 30, 30);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1001_key_inInven", texture, 30, 0, 128, 128);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_key_inInvenEffect", texture, 158, 0, 128, 128);
+		// Flipbook
+		// B button
+		//{
+		//	Texture* texture_Fkey = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
+		//	Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook("FB_KeyInMap");
+		//	fb->SetInfo({texture_Fkey, L})
+		//}
+		// 1001_Key
+		{
+			Texture* texture_key = GET_SINGLE(ResourceManager)->GetTexture(L"1001_key");
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInMap");
+			fb->SetInfo({ texture_key, L"FB_keyInMap", {30, 30}, 0, 3, 0, 0.7f, true });
+		}
 
-		Texture* texture2 = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencil");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inMap", texture2, 0, 0, 30, 30);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInven", texture2, 30, 0, 128, 128);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInvenEffect", texture2, 158, 0, 128, 128);
+		/*{
+			Texture* texture_pencil = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencil");
+			Sprite* sp1 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inMap", texture_pencil, 0, 0, 30, 30);
+			Sprite* sp2 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInven", texture_pencil, 30, 0, 128, 128);
+			Sprite* sp3 = GET_SINGLE(ResourceManager)->CreateSprite(L"1002_pencil_inInvenEffect", texture_pencil, 158, 0, 128, 128);
+		}
 
-		Texture* texture3 = GET_SINGLE(ResourceManager)->GetTexture(L"1003_match");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inMap", texture3, 0, 0, 30, 30);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInven", texture3, 30, 0, 128, 128);
-		GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInvenEffect", texture3, 158, 0, 128, 128);
+		{
+			Texture* texture_match = GET_SINGLE(ResourceManager)->GetTexture(L"1003_match");
+			Sprite* sp1 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inMap", texture_match, 0, 0, 30, 30);
+			Sprite* sp2 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInven", texture_match, 30, 0, 128, 128);
+			Sprite* sp3 = GET_SINGLE(ResourceManager)->CreateSprite(L"1003_match_inInvenEffect", texture_match, 158, 0, 128, 128);
+		}*/
+
 	}
 
 	// Sound
@@ -184,7 +198,7 @@ void DevScene::Init()
 
 	// Item
 	{
-		ItemActor* item = new ItemActor(ItemType::Pencil);
+		ItemActor* item = new ItemActor(ItemType::Key);
 		item->SetPos({ 100, 200 });		// 적당한 y 좌표 : 370
 		item->SetLayer(LAYER_OBJECT);
 		item->SetID(1);	// ID 관련 상의 필요 - 읽을 때는 문자열로(key 구분), 생성 시 Scene에서 ID를 따로 설정하는 방식으로!?

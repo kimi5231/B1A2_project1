@@ -17,6 +17,7 @@ public:
 
 	// Sprite로 설정하려면
 	void SetSprite(Sprite* sprite) { _sprite = sprite; }
+	Sprite* GetSprite() { return _sprite; }
 
 protected:
 	Sprite* _sprite = nullptr;
