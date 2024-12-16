@@ -27,7 +27,8 @@ protected:
 
 private:
 	Flipbook* _flipbookItemInMap = {};
-	Flipbook* _flipbookFKeyNoShow = {};
-	Flipbook* _flipbookFKeyShow = {};
+	Flipbook* _flipbookFKey = {};
+
+	FKeyState _FkeyState = FKeyState::Show;
 };
 

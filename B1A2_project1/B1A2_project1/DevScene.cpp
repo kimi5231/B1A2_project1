@@ -94,8 +94,7 @@ void DevScene::Init()
 		// F button
 		{
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Fkey");
-			fb->SetInfo({ texture, L"FB_Fkey", {30, 30}, 0, 2, 0, 0.7f, true });
+			GET_SINGLE(ResourceManager)->CreateSprite(L"F_key", texture, 0, 0, 30, 30);
 		}
 		// 1001_Key
 		{

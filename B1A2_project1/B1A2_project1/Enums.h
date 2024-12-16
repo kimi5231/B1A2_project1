@@ -66,3 +66,10 @@ enum class ItemType
 	Match,
 	Key,
 };
+
+// F_key 
+enum class FKeyState
+{
+	Hidden,
+	Show,
+};
