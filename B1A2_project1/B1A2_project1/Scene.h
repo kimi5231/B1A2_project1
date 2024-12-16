@@ -9,7 +9,7 @@ class Scene
 {
 public:
 	Scene();
-	virtual ~Scene();	// 소멸자에 virtual 필수!!!
+	virtual ~Scene();
 
 	virtual void Init();
 	virtual void Update();
@@ -22,6 +22,5 @@ protected:
 	Panel* _panel = nullptr;
 	std::vector<Actor*> _actors[LAYER_MAXCOUNT];
 
-	Player* _player = nullptr;
 	Inventory* _inventory = nullptr;
 };

@@ -6,7 +6,9 @@
 
 Inventory::Inventory()
 {
-
+	_flipbookKey = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInInventory");
+	_flipbookPencil = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInInventory");
+	_flipbookMatch = GET_SINGLE(ResourceManager)->GetFlipbook(L"1003_matchInMap");
 }
 
 Inventory::~Inventory()
@@ -43,9 +45,16 @@ void Inventory::Render(HDC hdc)
 		texture->GetSize().y,
 		texture->GetTransparent());
 
+	// 가지고 있는 아이템 정보 가져오기
+	
+	// 설명
+
+	// 사진
+
+	// 인벤토리 안
 }
 
-void Inventory::SavePlayerOwnItems()
+void Inventory::GetPlayerOwnItems()
 {
 }
 

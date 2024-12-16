@@ -240,7 +240,6 @@ void DevScene::Init()
 			player->AddComponent(inventory);
 
 			// Update에서 inventory의 멤버 변수에 접근하기 위해
-			_player = player;
 			_inventory = inventory;
 		}
 
