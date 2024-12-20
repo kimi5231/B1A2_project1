@@ -178,7 +178,7 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->LoadTexture(L"InventoryButton", L"Sprite\\UI\\Inventory.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Setting", L"Sprite\\UI\\Setting.bmp", RGB(55, 255, 0));
 
-		_panel = new Panel();
+		_menuPanel = new Panel();
 	}
 	// Go Title
 	{
@@ -201,7 +201,7 @@ void DevScene::Init()
 		button->SetPos({ 1100, 400 });
 		button->SetSize({ 163, 60 });
 		button->AddOnClickDelegate(this, &DevScene::OnClickGoTitleButton);
-		_panel->AddChild(button);
+		_menuPanel->AddChild(button);
 	}
 	// Inventory
 	{
@@ -226,7 +226,7 @@ void DevScene::Init()
 		button->SetSize({ 163, 60 });
 
 		button->AddOnClickDelegate(this, &DevScene::OnClickMenuButton);
-		_panel->AddChild(button);
+		_menuPanel->AddChild(button);
 	}
 	// Setting
 	{
@@ -250,7 +250,7 @@ void DevScene::Init()
 		button->SetSize({ 163, 60 });
 
 		button->AddOnClickDelegate(this, &DevScene::OnClickSettingButton);
-		_panel->AddChild(button);
+		_menuPanel->AddChild(button);
 	}
 	 
 	// Sound
@@ -372,7 +372,8 @@ void DevScene::Update()
 	}
 	else if (_sceneState == SceneState::Menu)
 	{
-
+		if (_menuPanel)
+			_menuPanel->Tick();
 	}
 }
 
@@ -384,9 +385,9 @@ void DevScene::Render(HDC hdc)
 	}
 	else if (_sceneState == SceneState::Menu)
 	{
-
+		if (_menuPanel)
+			_menuPanel->Render(hdc);
 	}
-	
 }
 
 void DevScene::SetSceneState()
@@ -406,7 +407,7 @@ void DevScene::SetSceneState()
 
 void DevScene::OnClickGoTitleButton()
 {
-	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
 }
 
 void DevScene::OnClickMenuButton()
@@ -415,5 +416,5 @@ void DevScene::OnClickMenuButton()
 
 void DevScene::OnClickSettingButton()
 {
-	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::SettingScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::SettingScene);
 }
