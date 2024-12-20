@@ -80,3 +80,10 @@ enum class InventoryState
 	Hidden,
 	Show,
 };
+
+// Scene
+enum class SceneState
+{
+	Play,
+	Menu,
+};

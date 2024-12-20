@@ -12,5 +12,11 @@ public:
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
-};
 
+public:
+	void SetSceneState();	// ESC 입력으로 Menu
+	
+	void OnClickGoTitleButton();
+	void OnClickMenuButton();
+	void OnClickSettingButton();
+};

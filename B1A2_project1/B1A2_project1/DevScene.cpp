@@ -23,6 +23,10 @@
 #include "SceneManager.h"
 #include "ItemActor.h"
 #include "Inventory.h"
+#include "Button.h"
+#include "Panel.h"
+#include "FlipbookUI.h"
+#include "TitleScene.h"
 
 DevScene::DevScene()
 {
@@ -168,6 +172,87 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->CreateSprite(L"Inventory", texture, 0, 0, 1280, 720);
 	}
 
+	// Menu
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"GoTitle", L"Sprite\\UI\\GoTitle.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"InventoryButton", L"Sprite\\UI\\Inventory.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Setting", L"Sprite\\UI\\Setting.bmp", RGB(55, 255, 0));
+
+		_panel = new Panel();
+	}
+	// Go Title
+	{
+		Button* button = new Button();
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"GoTitle");
+		
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GoTitleDefault");
+			fb->SetInfo({ texture, L"FB_GoTitleDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_GoTitleHovered");
+			fb->SetInfo({ texture, L"FB_GoTitleHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
+		}
+
+		button->SetPos({ 1100, 400 });
+		button->SetSize({ 163, 60 });
+		button->AddOnClickDelegate(this, &DevScene::OnClickGoTitleButton);
+		_panel->AddChild(button);
+	}
+	// Inventory
+	{
+		Button* button = new Button();
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"InventoryButton");
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_InventoryDefault");
+			fb->SetInfo({ texture, L"FB_InventoryDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_InventoryHover");
+			fb->SetInfo({ texture, L"FB_InventoryHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
+		}
+
+
+		button->SetPos({ 1100, 500 });
+		button->SetSize({ 163, 60 });
+
+		button->AddOnClickDelegate(this, &DevScene::OnClickMenuButton);
+		_panel->AddChild(button);
+	}
+	// Setting
+	{
+		Button* button = new Button();
+
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Setting");
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SettingDefault");
+			fb->SetInfo({ texture, L"FB_SettingDefalt", {163, 60}, 0, 0, 0, 0.5f, false });
+			button->SetFlipbook(fb, BS_Default);
+		}
+
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SettingHover");
+			fb->SetInfo({ texture, L"FB_SettingHovered", {163, 60}, 0, 3, 1, 0.5f, true });
+			button->SetFlipbook(fb, BS_Hovered);
+		}
+
+		button->SetPos({ 1100, 600 });
+		button->SetSize({ 163, 60 });
+
+		button->AddOnClickDelegate(this, &DevScene::OnClickSettingButton);
+		_panel->AddChild(button);
+	}
+	 
 	// Sound
 	/*GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
 	{
@@ -279,18 +364,56 @@ void DevScene::Init()
 
 void DevScene::Update()
 {
-	Super::Update(); 
+	SetSceneState();	// (Game -> Menu) or (Menu -> Game)
 
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::Esc))
+	if (_sceneState == SceneState::Play)
 	{
-		if (_inventory)
-		{
-			_inventory->SetInventoryState(InventoryState::Show);
-		}
+		Super::Update();
+	}
+	else if (_sceneState == SceneState::Menu)
+	{
+
 	}
 }
 
 void DevScene::Render(HDC hdc)
 {
-	Super::Render(hdc);
+	if (_sceneState == SceneState::Play)
+	{
+		Super::Render(hdc);
+	}
+	else if (_sceneState == SceneState::Menu)
+	{
+
+	}
+	
+}
+
+void DevScene::SetSceneState()
+{
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Esc))
+	{
+		if (_sceneState == SceneState::Play)
+		{
+			_sceneState = SceneState::Menu;
+		}
+		else if (_sceneState == SceneState::Menu)
+		{
+			_sceneState = SceneState::Play;
+		}
+	}
+}
+
+void DevScene::OnClickGoTitleButton()
+{
+	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::TitleScene);
+}
+
+void DevScene::OnClickMenuButton()
+{
+}
+
+void DevScene::OnClickSettingButton()
+{
+	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::SettingScene);
 }
