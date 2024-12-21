@@ -16,6 +16,7 @@ public:
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
 	
+	// Menu
 	void OnClickGoTitleButton();
 	void OnClickMenuButton();
 	void OnClickSettingButton();

@@ -364,7 +364,7 @@ void DevScene::Init()
 
 void DevScene::Update()
 {
-	SetSceneState();	// (Game -> Menu) or (Menu -> Game)
+	SetSceneState();	// (Game -> Menu) or (Menu -> Game) or (Menu -> Inventory)
 
 	if (_sceneState == SceneState::Play)
 	{
@@ -374,6 +374,11 @@ void DevScene::Update()
 	{
 		if (_menuPanel)
 			_menuPanel->Tick();
+	}
+	else if (_sceneState == SceneState::Inventory)
+	{
+		if (_inventory->GetInventoryState() == InventoryState::Show)
+			_inventory->TickComponent();
 	}
 }
 
@@ -387,6 +392,11 @@ void DevScene::Render(HDC hdc)
 	{
 		if (_menuPanel)
 			_menuPanel->Render(hdc);
+	}
+	else if (_sceneState == SceneState::Inventory)
+	{
+		if (_inventory->GetInventoryState() == InventoryState::Show)
+			_inventory->Render(hdc);
 	}
 }
 
@@ -402,6 +412,11 @@ void DevScene::SetSceneState()
 		{
 			_sceneState = SceneState::Play;
 		}
+		else if (_sceneState == SceneState::Inventory)
+		{
+			_inventory->SetInventoryState(InventoryState::Hidden);
+			_sceneState = SceneState::Play;
+		}
 	}
 }
 
@@ -412,6 +427,8 @@ void DevScene::OnClickGoTitleButton()
 
 void DevScene::OnClickMenuButton()
 {
+	_sceneState = SceneState::Inventory;
+	_inventory->SetInventoryState(InventoryState::Show);
 }
 
 void DevScene::OnClickSettingButton()
