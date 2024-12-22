@@ -307,7 +307,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
-		ItemActor* Item = dynamic_cast<ItemActor*>(b2->GetOwner());
+		ItemActor* Item = reinterpret_cast<ItemActor*>(b2->GetOwner());
 		Item->SetFKeyState(FKeyState::Show);
 		return;
 	}
@@ -329,7 +329,7 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
-		ItemActor* Item = dynamic_cast<ItemActor*>(b2->GetOwner());
+		ItemActor* Item = reinterpret_cast<ItemActor*>(b2->GetOwner());
 		Item->SetFKeyState(FKeyState::Hidden);
 		return;
 	}
