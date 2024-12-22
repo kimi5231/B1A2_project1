@@ -4,6 +4,7 @@
 class Item;
 class Flipbook;
 class Player;
+struct ItemInfo;
 
 class Inventory : public Component
 {
@@ -24,9 +25,9 @@ public:
 	Player* GetOwner() { return _owner; }
 	void SetOwner(Player* owner) { _owner = owner; }
 
-	// _items에 Player가 획득한 아이템 저장
+	// _acquiredItens에 Player가 획득한 아이템 저장
 	void SaveAcquireItems();
-	
+
 private:
 	Player* _owner = {};
 
@@ -39,5 +40,6 @@ private:
 	Flipbook* _flipbookMatch = {};
 
 	std::unordered_map<int32, int32> _acquiredItems;
+	std::unordered_map<int32, ItemInfo*> _items;
 };
 

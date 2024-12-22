@@ -326,7 +326,7 @@ void DevScene::Init()
 			player->AddComponent(inventory);
 
 			inventory->SetOwner(player);
-
+			
 			// Update에서 inventory의 멤버 변수에 접근하기 위해
 			_inventory = inventory;
 		}
