@@ -6,6 +6,7 @@
 
 class Flipbook;
 class BoxCollider;
+class ItemActor;
 
 enum class PlayerState
 {
@@ -121,6 +122,11 @@ public:
 	void AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2);	// 튕기기
 	void TickGravity();
 
+public:
+	// Item
+	void RemoveItem(int32 id, int32 count);
+	std::unordered_map<int32, int32>& GetAquireItems() { return _acquiredItems; }
+
 private:
 	// 마지 리소스
 	Flipbook* _flipbookPlayerIdle[2] = {};
@@ -148,7 +154,8 @@ private:
 	bool _Ground = false;
 	bool _isInAir = false;
 
-	// 획득한 아이템의 정보
-	std::vector<std::wstring> _ownItemIDs;
+	// 획득한 아이템
+	ItemActor* _collideItem = {};	// unordered map에 저장하기 위해, 충돌한 아이템을 담을 변수
+	std::unordered_map<int32, int32> _acquiredItems;		// [아이템 ID, 개수]
 };
 

@@ -325,6 +325,8 @@ void DevScene::Init()
 			Inventory* inventory = new Inventory();
 			player->AddComponent(inventory);
 
+			inventory->SetOwner(player);
+
 			// Update에서 inventory의 멤버 변수에 접근하기 위해
 			_inventory = inventory;
 		}
@@ -430,6 +432,10 @@ void DevScene::OnClickGoTitleButton()
 
 void DevScene::OnClickMenuButton()
 {
+	// 아이템 정보 넣기
+	_inventory->SaveAcquireItems();
+
+	// 인벤토리 들어가기
 	_sceneState = SceneState::Inventory;
 	_inventory->SetInventoryState(InventoryState::Show);
 }

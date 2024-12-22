@@ -23,6 +23,13 @@ public:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 public:
+	int32 GetItemID() { return _itemID; }
+	void SetItemID(int32 id) { _itemID = id; }
+
+	Player* GetOwner() { return _owner; }
+	void SetOwner(Player* player) { _owner = player; }
+
+public:
 	void SetFKeyState(FKeyState state) { _FkeyState = state; }
 	FKeyState GetFKeyState() { return _FkeyState; }
 
@@ -30,9 +37,12 @@ protected:
 	Player* _owner = nullptr;
 
 private:
+	int32 _itemID = {};
+
 	Flipbook* _flipbookItemInMap = {};
 	Flipbook* _flipbookFKey = {};
 
+private:
 	FKeyState _FkeyState = FKeyState::Hidden;
 };
 

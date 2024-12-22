@@ -3,6 +3,7 @@
 
 class Item;
 class Flipbook;
+class Player;
 
 class Inventory : public Component
 {
@@ -20,9 +21,15 @@ public:
 	InventoryState GetInventoryState() { return _inventoryState; }
 	void SetInventoryState(InventoryState state) { _inventoryState = state; }
 
-	void GetPlayerOwnItems();	// _items에 저장
+	Player* GetOwner() { return _owner; }
+	void SetOwner(Player* owner) { _owner = owner; }
+
+	// _items에 Player가 획득한 아이템 저장
+	void SaveAcquireItems();
 	
 private:
+	Player* _owner = {};
+
 	// Inventory 창 
 	InventoryState _inventoryState = InventoryState::Hidden;
 
@@ -31,6 +38,6 @@ private:
 	Flipbook* _flipbookPencil = {};
 	Flipbook* _flipbookMatch = {};
 
-	std::vector<std::wstring> _items;	// Player가 가지고 있는 아이템의 정보 저장
+	std::unordered_map<int32, int32> _acquiredItems;
 };
 

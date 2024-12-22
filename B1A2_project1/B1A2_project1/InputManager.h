@@ -22,7 +22,8 @@ enum class KeyType	// 키 버튼
 	S = 'S',
 	D = 'D',
 	Q = 'Q',
-	E = 'E'
+	E = 'E',
+	F = 'F'
 };
 
 enum class KeyState		// 키 상태

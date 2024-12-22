@@ -4,7 +4,7 @@
 struct ItemInfo
 {
 	//int32 ID;
-	std::wstring ID;	// ID의 문자열 버전
+	int32 ID;	// ID의 문자열 버전
 	std::wstring name;
 	std::wstring explain;
 };
@@ -19,6 +19,6 @@ public:
 	virtual void LoadFile(const std::wstring& path) override;
 
 private:
-	std::unordered_map<std::wstring, ItemInfo*> _items;	
+	std::unordered_map<int32, ItemInfo*> _items;	
 };
 

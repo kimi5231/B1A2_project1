@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "BoxCollider.h"
 #include "ItemActor.h"
+#include "Item.h"
 
 Player::Player()
 {
@@ -51,6 +52,20 @@ void Player::Tick()
 	// 이 코드의 위치는 추후 수정될 수 있음
 	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
 		return;
+
+
+	// Item 획득
+	if (_collideItem)
+	{
+		if (_collideItem->GetFKeyState() == FKeyState::Show)
+		{
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
+			{
+				_acquiredItems[_collideItem->GetItemID()]++;
+			}
+		}
+	}
+
 
 	switch (_state)
 	{
@@ -297,6 +312,17 @@ void Player::TickGravity()
 	_pos.y += _ySpeed * deltaTime;
 }
 
+
+void Player::RemoveItem(int32 id, int32 count)
+{
+	if (_acquiredItems.find(id) != _acquiredItems.end() && _acquiredItems[id] >= count)
+	{
+		_acquiredItems[id] -= count;
+		if (_acquiredItems[id] == 0)	// 아이템 개수가 0이면 삭제
+			_acquiredItems.erase(id);	
+	}
+}
+
 void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
@@ -307,8 +333,11 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
-		ItemActor* Item = reinterpret_cast<ItemActor*>(b2->GetOwner());
-		Item->SetFKeyState(FKeyState::Show);
+		ItemActor* item = reinterpret_cast<ItemActor*>(b2->GetOwner());
+		item->SetFKeyState(FKeyState::Show);
+
+		_collideItem = item;
+
 		return;
 	}
 
@@ -331,6 +360,9 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	{
 		ItemActor* Item = reinterpret_cast<ItemActor*>(b2->GetOwner());
 		Item->SetFKeyState(FKeyState::Hidden);
+
+		_collideItem = nullptr;
+
 		return;
 	}
 

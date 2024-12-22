@@ -29,7 +29,9 @@ void Item::LoadFile(const std::wstring& path)
         std::wstringstream wiss(line);
         auto* info = new ItemInfo(); // 동적 할당
 
-        std::getline(wiss, info->ID, L',');
+        std::wstring strID;
+        std::getline(wiss, strID, L',');
+        info->ID = std::stoi(strID);
 
         std::getline(wiss, info->name, L',');
         

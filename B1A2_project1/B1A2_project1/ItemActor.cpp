@@ -7,6 +7,8 @@
 #include "SceneManager.h"
 #include "Texture.h"
 #include "BoxCollider.h"
+#include "Item.h"
+#include "InputManager.h"
 
 ItemActor::ItemActor(ItemType itemType)
 {
@@ -14,14 +16,17 @@ ItemActor::ItemActor(ItemType itemType)
 	if (itemType == ItemType::Key)
 	{
 		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
+		_itemID = 1001;
 	}
 	else if (itemType == ItemType::Pencil)
 	{
 		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");
+		_itemID = 1002;
 	}
 	else if (itemType == ItemType::Match)
 	{
 		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_matchInMap");
+		_itemID = 1003;
 	}
 
 	// F_key
@@ -77,13 +82,6 @@ void ItemActor::Render(HDC hdc)
 
 void ItemActor::OnConponentBeginOverlap(Collider* collider, Collider* other)
 {
-	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
-	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
-
-	if (b1 == nullptr || b2 == nullptr)
-		return;
-
-	SetFKeyState(FKeyState::Show);
 }
 
 void ItemActor::OnComponentEndOverlap(Collider* collider, Collider* other)
