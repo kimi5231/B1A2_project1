@@ -22,6 +22,10 @@ public:
 	virtual void OnConponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
+public:
+	void SetFKeyState(FKeyState state) { _FkeyState = state; }
+	FKeyState GetFKeyState() { return _FkeyState; }
+
 protected:
 	Player* _owner = nullptr;
 

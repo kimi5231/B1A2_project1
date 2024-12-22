@@ -310,6 +310,7 @@ void DevScene::Init()
 			 collider->SetCollisionLayer(CLT_PLAYER);
 
 			// 충돌하고 싶은 객체 설정
+			collider->AddCollisionFlagLayer(CLT_ITEM);
 			collider->AddCollisionFlagLayer(CLT_GROUND);	
 			collider->AddCollisionFlagLayer(CLT_WALL);
 
@@ -341,17 +342,19 @@ void DevScene::Init()
 	// Item
 	{
 		ItemActor* item = new ItemActor(ItemType::Match);
-		item->SetPos({ 100, 200 });		// 적당한 y 좌표 : 370
+		item->SetPos({ 550, 200 });		// 적당한 y 좌표 : 370, 200
 		item->SetLayer(LAYER_ITEM);
-		item->SetID(1);	// ID 관련 상의 필요 - 읽을 때는 문자열로(key 구분), 생성 시 Scene에서 ID를 따로 설정하는 방식으로!?
+		item->SetID(1);
 
 		// Collider
 		{
 			BoxCollider* collider = new BoxCollider();
-			collider->SetSize({ 100, 55 });	// 원래 크기보다 크게 설정
 			collider->ResetCollisionFlag();
+			
 			collider->SetCollisionLayer(CLT_ITEM);
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 120, 55 });	
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			item->AddComponent(collider);

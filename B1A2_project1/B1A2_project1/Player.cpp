@@ -8,6 +8,7 @@
 #include "Dialogue.h"
 #include "Game.h"
 #include "BoxCollider.h"
+#include "ItemActor.h"
 
 Player::Player()
 {
@@ -85,7 +86,7 @@ void Player::Tick()
 	//	break;
 	}
 
-	// TickGravity();
+	//TickGravity();
 }
 
 void Player::Render(HDC hdc)
@@ -304,6 +305,13 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
+	if (b2->GetCollisionLayer() == CLT_ITEM)
+	{
+		ItemActor* Item = dynamic_cast<ItemActor*>(b2->GetOwner());
+		Item->SetFKeyState(FKeyState::Show);
+		return;
+	}
+
 	AdjustCollisionPos(b1, b2);
 
 	// Ãæµ¹ ½ÃÀÛ : ¶¥¿¡ ´êÀ½
@@ -318,6 +326,13 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 	if (b1 == nullptr || b2 == nullptr)
 		return;
+
+	if (b2->GetCollisionLayer() == CLT_ITEM)
+	{
+		ItemActor* Item = dynamic_cast<ItemActor*>(b2->GetOwner());
+		Item->SetFKeyState(FKeyState::Hidden);
+		return;
+	}
 
 	// Ãæµ¹ ³¡: ¶¥¿¡¼­ ¶³¾îÁü
 	//if (b2->GetCollisionLayer() == CLT_GROUND)

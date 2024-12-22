@@ -6,6 +6,7 @@
 #include "FlipbookActor.h"
 #include "SceneManager.h"
 #include "Texture.h"
+#include "BoxCollider.h"
 
 ItemActor::ItemActor(ItemType itemType)
 {
@@ -76,6 +77,13 @@ void ItemActor::Render(HDC hdc)
 
 void ItemActor::OnConponentBeginOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	SetFKeyState(FKeyState::Show);
 }
 
 void ItemActor::OnComponentEndOverlap(Collider* collider, Collider* other)
