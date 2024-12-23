@@ -157,11 +157,11 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 	{
-		if (_Ground)	// 충돌 체크에서 땅에 닿으면 _Ground = true로 됐는데 왜 false로 나오는 거지??
+		if (_Ground)
 		{
+			_ySpeed = 500.f;
 			SetState(PlayerState::Jump);
 		}
-		return;
 	}
 	else
 	{
@@ -185,6 +185,19 @@ void Player::TickMove()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
+	else
+	{
+		SetState(PlayerState::Idle); // 이동 키를 뗐을 때 Idle 상태로 변경
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+	{
+		if (_Ground) // 땅에 있을 때만 점프 가능
+		{
+			_ySpeed = 500.f; // 초기 점프 힘 설정
+			SetState(PlayerState::Jump);
+		}
+	}
 }
 
 void Player::TickDuckDown()
@@ -197,19 +210,32 @@ void Player::TickDuckDownMove()
 
 void Player::TickJump()
 {
-	//if (_isInAir)
-	//	return;
-
-	//if (_Ground)
-	//	SetState(PlayerState::Idle);
-
-	//_isInAir = true;
-
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
+	// 좌우 이동도 가능하도록 추가
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	}
 
-	if (deltaTime > 0.1f)
-		return;
+	// 땅에 닿으면 점프 종료
+	if (_Ground)
+	{
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::A) || GET_SINGLE(InputManager)->GetButton(KeyType::D))
+		{
+			SetState(PlayerState::Move);
+		}
+		else
+		{
+			SetState(PlayerState::Idle);
+		}
+	}
  }
 
 void Player::TickHang()
