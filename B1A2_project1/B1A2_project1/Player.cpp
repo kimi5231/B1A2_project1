@@ -54,8 +54,8 @@ void Player::Tick()
 	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
 		return;
 
-
-	// Item 획득
+	// F key가 활성화되면 획득할 수 있음
+	// 획득 후 F key와 Item을 화면에서 지움
 	if (_collideItem)
 	{
 		if (_collideItem->GetFKeyState() == FKeyState::Show)
@@ -110,7 +110,7 @@ void Player::Tick()
 	//	break;
 	}
 
-	//TickGravity();
+	TickGravity();
 }
 
 void Player::Render(HDC hdc)
@@ -185,15 +185,6 @@ void Player::TickMove()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
-	//switch (_dir)		// 이 코드로 하면 키보드 입력이 한 번밖에 안 먹음.. 일단 보류
-	//{
-	//case DIR_RIGHT:
-	//	_pos.x += 200 * deltaTime;
-	//	break;
-	//case DIR_LEFT:
-	//	_pos.x -= 200 * deltaTime;
-	//	break;
-	//}
 }
 
 void Player::TickDuckDown()
@@ -340,6 +331,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
+	// Item과 충돌하면 F key 활성화(밀어내기 X)
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
 		ItemActor* item = reinterpret_cast<ItemActor*>(b2->GetOwner());
@@ -354,7 +346,10 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 	// 충돌 시작 : 땅에 닿음
 	if (b2->GetCollisionLayer() == CLT_GROUND)
+	{
+		_groundCollisionCount++;
 		_Ground = true;
+	}
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
@@ -375,9 +370,16 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	// 충돌 끝: 땅에서 떨어짐
-	//if (b2->GetCollisionLayer() == CLT_GROUND)
-	//	_Ground = false;
+	if (b2->GetCollisionLayer() == CLT_GROUND)
+	{
+		_groundCollisionCount--;
+
+		if (_groundCollisionCount <= 0)		// 충돌 끝: 땅에서 떨어짐
+		{
+			_Ground = false;
+			_groundCollisionCount = 0;
+		}
+	}
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)

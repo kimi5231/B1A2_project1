@@ -148,6 +148,7 @@ private:
 	PlayerStat* _playerStat = {};
 
 	// Jump
+	int32 _groundCollisionCount = 0;	// 충돌중인 타일맵 개수 (0개일 때 _Ground = true)
 	int32 _gravity = 1000;
 	float _ySpeed = {};
 

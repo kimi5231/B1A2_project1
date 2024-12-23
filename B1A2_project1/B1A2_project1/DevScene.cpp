@@ -352,7 +352,7 @@ void DevScene::Init()
 	// Item
 	{
 		ItemActor* item = new ItemActor(ItemType::Match);
-		item->SetPos({ 550, 200 });		// Àû´çÇÑ y ÁÂÇ¥ : 370, 200
+		item->SetPos({ 550, 370 });		// Àû´çÇÑ y ÁÂÇ¥ : 370, 200
 		item->SetLayer(LAYER_ITEM);
 		item->SetID(1);
 
