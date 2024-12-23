@@ -21,4 +21,3 @@ public:
 private:
 	std::unordered_map<int32, ItemInfo*> _items;	
 };
-

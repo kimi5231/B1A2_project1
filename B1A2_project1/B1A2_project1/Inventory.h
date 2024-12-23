@@ -39,7 +39,12 @@ private:
 	Flipbook* _flipbookPencil = {};
 	Flipbook* _flipbookMatch = {};
 
+	// 획득한 아이템
 	std::unordered_map<int32, int32> _acquiredItems;
-	std::unordered_map<int32, ItemInfo*> _items;
+
+	// csv에서 읽어온 정보
+	Item* _itemList;
+	// [ID, itemInfo]
+	std::unordered_map<int32, ItemInfo*> _itemInfo;
 };
 
