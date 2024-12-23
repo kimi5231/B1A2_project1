@@ -7,6 +7,7 @@
 #include "Item.h"
 #include "FlipbookActor.h"
 #include "Flipbook.h"
+#include "InputManager.h"
 
 Inventory::Inventory()
 {
@@ -30,6 +31,13 @@ void Inventory::BeginPlay()
 
 void Inventory::TickComponent()
 {
+	if (_inventoryState == InventoryState::Show)
+	{
+		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+
+		//if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+			// MouseClick(mousePos);	// 오류가 발생한다..
+	}
 }
 
 void Inventory::Render(HDC hdc)
@@ -104,6 +112,43 @@ void Inventory::Render(HDC hdc)
 				texture->GetTransparent());
 
 			_itemBoxes.push_back({ boxX, boxY, boxX + ITEM_SIZEX, boxY + ITEM_SIZEY });
+
+			// 아이템 개수 출력
+			std::wstring itemCountStr = std::to_wstring(itemCount);
+
+			// 출력할 위치
+			RECT rect = { boxX + 108, boxY, boxX + ITEM_SIZEX, boxY + 20 };
+
+			HFONT hfont = CreateFont(
+				-20.f * winSizeAdjustmemt.y,
+				0,
+				0,
+				0,
+				FW_NORMAL,
+				FALSE,
+				FALSE,
+				FALSE,
+				DEFAULT_CHARSET,
+				OUT_DEFAULT_PRECIS,
+				CLIP_DEFAULT_PRECIS,
+				DEFAULT_QUALITY,
+				DEFAULT_PITCH | FF_SWISS,
+				L"둥근모꼴");
+
+			// 폰트 선택
+			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
+
+			// 텍스트 색깔 설정
+			::SetTextColor(hdc, RGB(0, 0, 0));
+
+			// 텍스트 배경 투명화
+			::SetBkMode(hdc, TRANSPARENT);
+
+			Utils::DrawString(hdc, itemCountStr, rect);
+
+			::SetTextColor(hdc, RGB(0, 0, 0));
+			::SelectObject(hdc, oldFont);
+			::DeleteObject(hfont);
 		}	
 	}
 
@@ -207,10 +252,6 @@ void Inventory::MouseClick(POINT mousePos)
 			// 클릭된 아이템의 ID 가져오기
 			auto it = std::next(_acquiredItems.begin(), i);
 			_clickedItemID = it->first;
-
-			// InventoryState 변경
-			//_inventoryItemState = InventoryItemState::Clicked;
-
 		}
 		++i;
 	}
