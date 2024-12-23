@@ -6,6 +6,15 @@ class Flipbook;
 class Player;
 struct ItemInfo;
 
+enum ITEM_SIZE
+{
+	ITEM_STARTX = 560,
+	ITEM_STARTY = 165,
+
+	ITEM_SIZEX = 128,
+	ITEM_SIZEY = 128,
+};
+
 class Inventory : public Component
 {
 	using Super = Component;

@@ -90,10 +90,16 @@ void DevScene::Init()
 		GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
 
 		// Texture
+		// in Map
 		GET_SINGLE(ResourceManager)->LoadTexture(L"F_key", L"Sprite\\Item\\F_key.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_keyInMap", L"Sprite\\Item\\1001_keyInMap.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencilInMap", L"Sprite\\Item\\1002_pencilInMap.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_matchInMap", L"Sprite\\Item\\1003_matchInMap.bmp", RGB(55, 255, 0));
+		// in Inventory
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1001_keyInInventory", L"Sprite\\Item\\1001_keyInInventory.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencilInInventory", L"Sprite\\Item\\1002_pencilInInventory.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"1003_matchInInventory", L"Sprite\\Item\\1003_matchInInventory.bmp", RGB(55, 255, 0));
+
 
 		// Flipbook
 		// F button
@@ -120,7 +126,7 @@ void DevScene::Init()
 				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInInventoryEffect");
 				fb->SetInfo({ texture, L"FB_keyInInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
 			}
-
+			//GET_SINGLE(ResourceManager)->CreateSprite(L"SP_keyInInvnetory", texture, 0, 0, 128, 128);
 		}
 		// 1002_pencil
 		{
@@ -141,6 +147,7 @@ void DevScene::Init()
 				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_pencilInInventoryEffect");
 				fb->SetInfo({ texture, L"FB_pencilInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
 			}
+			//GET_SINGLE(ResourceManager)->CreateSprite(L"SP_pencilInInvnetory", texture, 0, 0, 128, 128);
 		}
 		// 1003_match
 		{
@@ -161,6 +168,7 @@ void DevScene::Init()
 				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_matchInInventoryEffect");
 				fb->SetInfo({ texture, L"FB_matchInInventoryEffect", {128, 128}, 0, 2, 1, 0.7f, true });
 			}
+			//GET_SINGLE(ResourceManager)->CreateSprite(L"SP_matchInInvnetory", texture, 0, 0, 128, 128);
 		}		
 	}
 
