@@ -88,9 +88,12 @@ void Inventory::Render(HDC hdc)
 				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInInventory"); break;
 			}
 
+			int32 boxX = ITEM_STARTX + (i % 5) * ITEM_SIZEX;
+			int32 boxY = ITEM_STARTY + (i / 5) * ITEM_SIZEY;
+
 			::TransparentBlt(hdc,
-				ITEM_STARTX + (i % 5) * ITEM_SIZEX,
-				ITEM_STARTY + (i / 5) * ITEM_SIZEY,
+				boxX,
+				boxY,
 				ITEM_SIZEX,
 				ITEM_SIZEY,
 				texture->GetDC(),
@@ -99,7 +102,87 @@ void Inventory::Render(HDC hdc)
 				ITEM_SIZEX,
 				ITEM_SIZEY,
 				texture->GetTransparent());
+
+			_itemBoxes.push_back({ boxX, boxY, boxX + ITEM_SIZEX, boxY + ITEM_SIZEY });
 		}	
+	}
+
+	// Photo
+	{
+		if (_clickedItemID != 0)
+		{
+			Texture* texture = nullptr;
+
+			switch (_clickedItemID)
+			{
+			case 1001:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInInventory"); break;
+				break;
+			case 1002:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInInventory"); break;
+			case 1003:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInInventory"); break;
+
+			}
+
+			::TransparentBlt(hdc,
+				81,
+				165,
+				426,
+				323,
+				texture->GetDC(),
+				0,
+				0,
+				128,
+				128,
+				texture->GetTransparent());
+		}
+	}
+
+	// explain
+	{
+		if (_clickedItemID != 0)
+		{
+			// 출력할 설명
+			std::wstring explain;
+			auto it = _itemInfo.find(_clickedItemID);
+			if (it != _itemInfo.end())
+				explain = it->second->explain;
+
+			// 출력할 위치
+			RECT rect = { 81, 488, 507, 677 };
+
+			HFONT hfont = CreateFont(
+				-20.f * winSizeAdjustmemt.y,
+				0,
+				0,
+				0,
+				FW_NORMAL,
+				FALSE,
+				FALSE,
+				FALSE,
+				DEFAULT_CHARSET,
+				OUT_DEFAULT_PRECIS,
+				CLIP_DEFAULT_PRECIS,
+				DEFAULT_QUALITY,
+				DEFAULT_PITCH | FF_SWISS,
+				L"둥근모꼴");
+
+			// 폰트 선택
+			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
+
+			// 텍스트 색깔 설정
+			::SetTextColor(hdc, RGB(0, 0, 0));
+
+			// 텍스트 배경 투명화
+			::SetBkMode(hdc, TRANSPARENT);
+
+			Utils::DrawString(hdc, explain, rect);
+
+			::SetTextColor(hdc, RGB(0, 0, 0));
+			::SelectObject(hdc, oldFont);
+			::DeleteObject(hfont);
+		}
 	}
 	
 }
@@ -113,3 +196,22 @@ void Inventory::SaveAcquireItems()
 	_acquiredItems = _owner->GetAquireItems();
 }
 
+void Inventory::MouseClick(POINT mousePos)
+{
+	int32 i = 0;
+	for (const RECT& box : _itemBoxes)
+	{
+		if (mousePos.x >= box.left && mousePos.x <= box.right &&
+			mousePos.y >= box.top && mousePos.y <= box.bottom)
+		{
+			// 클릭된 아이템의 ID 가져오기
+			auto it = std::next(_acquiredItems.begin(), i);
+			_clickedItemID = it->first;
+
+			// InventoryState 변경
+			//_inventoryItemState = InventoryItemState::Clicked;
+
+		}
+		++i;
+	}
+}

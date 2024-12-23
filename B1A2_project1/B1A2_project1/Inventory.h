@@ -15,6 +15,18 @@ enum ITEM_SIZE
 	ITEM_SIZEY = 128,
 };
 
+enum InventoryItemState
+{
+	Default,
+	Clicked,
+};
+
+enum NameAndExplainState
+{
+	Hidden,
+	Show,
+};
+
 class Inventory : public Component
 {
 	using Super = Component;
@@ -36,6 +48,13 @@ public:
 
 	// _acquiredItens에 Player가 획득한 아이템 저장
 	void SaveAcquireItems();
+
+public:
+	// 마우스 입력
+	NameAndExplainState _nameAndExplainState = NameAndExplainState::Hidden;
+	std::vector<RECT> _itemBoxes;	// 클릭 영역 확인
+	void MouseClick(POINT mousePos);
+	int32 _clickedItemID = 1003;
 
 private:
 	Player* _owner = {};
