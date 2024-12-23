@@ -11,11 +11,6 @@
 
 Inventory::Inventory()
 {
-	// Flipbook
-	_flipbookKey = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInInventory");
-	_flipbookPencil = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInInventory");
-	_flipbookMatch = GET_SINGLE(ResourceManager)->GetFlipbook(L"1003_matchInInventory");
-
 	// csv 파일로 저장한 Item 정보 가져옴
 	_itemList = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 	_itemInfo = _itemList->GetItems();
@@ -35,8 +30,8 @@ void Inventory::TickComponent()
 	{
 		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
 
-		//if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
-			// MouseClick(mousePos);	// 오류가 발생한다..
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+			 MouseClick(mousePos);	
 	}
 }
 
@@ -249,9 +244,13 @@ void Inventory::MouseClick(POINT mousePos)
 		if (mousePos.x >= box.left && mousePos.x <= box.right &&
 			mousePos.y >= box.top && mousePos.y <= box.bottom)
 		{
-			// 클릭된 아이템의 ID 가져오기
-			auto it = std::next(_acquiredItems.begin(), i);
-			_clickedItemID = it->first;
+			if (i < _acquiredItems.size())
+			{
+				// 클릭된 아이템의 ID 가져오기
+				auto it = std::next(_acquiredItems.begin(), i);
+				_clickedItemID = it->first;
+			}
+			return;
 		}
 		++i;
 	}

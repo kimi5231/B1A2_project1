@@ -21,12 +21,6 @@ enum InventoryItemState
 	Clicked,
 };
 
-enum NameAndExplainState
-{
-	Hidden,
-	Show,
-};
-
 class Inventory : public Component
 {
 	using Super = Component;
@@ -51,21 +45,15 @@ public:
 
 public:
 	// 마우스 입력
-	NameAndExplainState _nameAndExplainState = NameAndExplainState::Hidden;
 	std::vector<RECT> _itemBoxes;	// 클릭 영역 확인
 	void MouseClick(POINT mousePos);
-	int32 _clickedItemID = 1003;
+	int32 _clickedItemID = 0;
 
 private:
 	Player* _owner = {};
 
 	// Inventory 창 
 	InventoryState _inventoryState = InventoryState::Hidden;
-
-	// Item Flipbook (효과는 아직..)
-	Flipbook* _flipbookKey = {};	
-	Flipbook* _flipbookPencil = {};
-	Flipbook* _flipbookMatch = {};
 
 	// 획득한 아이템
 	std::unordered_map<int32, int32> _acquiredItems;
