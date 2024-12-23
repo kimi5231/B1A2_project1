@@ -4,6 +4,7 @@
 
 class Player;
 class Item;
+class Collider;
 
 class ItemActor : public FlipbookActor
 {
@@ -18,11 +19,6 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
-	// Collider - 아이템 범위 내로 들어오면 F키 나옴 (튕기기 X)
-	virtual void OnConponentBeginOverlap(Collider* collider, Collider* other);
-	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
-
-public:
 	int32 GetItemID() { return _itemID; }
 	void SetItemID(int32 id) { _itemID = id; }
 
@@ -33,6 +29,11 @@ public:
 	void SetFKeyState(FKeyState state) { _FkeyState = state; }
 	FKeyState GetFKeyState() { return _FkeyState; }
 
+	void SetItemState(ItemState state) { _itemState = state; }
+	ItemState GetItemState() { return _itemState; }
+
+	// 아이템 삭제 위해
+	Collider* GetCollider() const;
 protected:
 	Player* _owner = nullptr;
 
@@ -44,5 +45,6 @@ private:
 
 private:
 	FKeyState _FkeyState = FKeyState::Hidden;
+	ItemState _itemState = ItemState::Show;
 };
 

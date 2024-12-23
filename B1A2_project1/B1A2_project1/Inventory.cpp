@@ -99,12 +99,6 @@ void Inventory::Render(HDC hdc)
 				ITEM_SIZEX,
 				ITEM_SIZEY,
 				texture->GetTransparent());
-
-			// i == 4이면 줄 변경
-			if (i % 4 == 0)
-			{
-
-			}
 		}	
 	}
 	

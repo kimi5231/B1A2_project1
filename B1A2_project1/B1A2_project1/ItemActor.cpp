@@ -51,7 +51,8 @@ void ItemActor::Tick()
 
 void ItemActor::Render(HDC hdc)
 {
-	Super::Render(hdc);
+	if (_itemState == ItemState::Show)
+		Super::Render(hdc);
 
 	// F key
 	if (_FkeyState == FKeyState::Hidden)
@@ -80,10 +81,12 @@ void ItemActor::Render(HDC hdc)
 		texture->GetTransparent());
 }
 
-void ItemActor::OnConponentBeginOverlap(Collider* collider, Collider* other)
+Collider* ItemActor::GetCollider() const
 {
-}
-
-void ItemActor::OnComponentEndOverlap(Collider* collider, Collider* other)
-{
+	for (auto* component : _components)
+	{
+		if (auto* collider = dynamic_cast<Collider*>(component))
+			return collider;
+	}
+	return nullptr;
 }

@@ -34,6 +34,7 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_ITEM,		// 1
 	CLT_GROUND,		// 2
 	CLT_WALL,		// 3
+	CLT_NONE,
 };
 
 
@@ -69,6 +70,12 @@ enum class ItemType
 
 // F_key 
 enum class FKeyState
+{
+	Hidden,
+	Show,
+};
+
+enum class ItemState
 {
 	Hidden,
 	Show,

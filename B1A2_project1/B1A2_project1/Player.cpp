@@ -10,6 +10,7 @@
 #include "BoxCollider.h"
 #include "ItemActor.h"
 #include "Item.h"
+#include "CollisionManager.h"
 
 Player::Player()
 {
@@ -62,10 +63,18 @@ void Player::Tick()
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
 			{
 				_acquiredItems[_collideItem->GetItemID()]++;
+				
+				Collider* collider = _collideItem->GetCollider();
+				if (collider)
+				{
+					collider->SetCollisionLayer(CLT_NONE);
+				}
+			
+				_collideItem->SetFKeyState(FKeyState::Hidden);
+				_collideItem->SetItemState(ItemState::Hidden);
 			}
 		}
 	}
-
 
 	switch (_state)
 	{
