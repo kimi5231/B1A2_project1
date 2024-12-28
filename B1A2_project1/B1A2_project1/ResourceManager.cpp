@@ -146,9 +146,6 @@ Dialogue* ResourceManager::LoadDialogue(const std::wstring& key, const std::wstr
 
 PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)
 {
-	if (_playerStat)
-		return _playerStat;
-
 	std::filesystem::path fullpath = _resourcePath / path;
 
 	PlayerStat* playerStat = new PlayerStat();
