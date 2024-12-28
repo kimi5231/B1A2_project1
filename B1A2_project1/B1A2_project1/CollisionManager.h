@@ -14,6 +14,9 @@ public:
 	void AddCollider(Collider* collider);
 	void RemoveCollider(Collider* collider);
 
+	// 모든 _colliders 삭제
+	void ClearColliders();
+
 private:
 	std::vector<Collider*> _colliders;
 };

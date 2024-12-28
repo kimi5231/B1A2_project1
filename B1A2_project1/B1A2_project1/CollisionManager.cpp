@@ -74,3 +74,8 @@ void CollisionManager::RemoveCollider(Collider* collider)
 	auto it = std::remove(_colliders.begin(), _colliders.end(), collider);
 	_colliders.erase(it, _colliders.end());
 }
+
+void CollisionManager::ClearColliders()
+{
+	_colliders.clear();
+}

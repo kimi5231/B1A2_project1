@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "Panel.h"
 #include "Actor.h"
+#include "CollisionManager.h"
 
 Scene::Scene()
 {
@@ -11,6 +12,8 @@ Scene::Scene()
 
 Scene::~Scene()
 {
+	GET_SINGLE(CollisionManager)->ClearColliders();
+
 	for (const std::vector<Actor*>& actors : _actors)
 		for (Actor* actor : actors)
 			SAFE_DELETE(actor);

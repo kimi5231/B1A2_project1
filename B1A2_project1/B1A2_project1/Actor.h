@@ -1,6 +1,5 @@
 #pragma once
 
-// Collider는 나중에 추가하기
 class Component;
 class Collider;
 class DialogueComponent;
