@@ -73,21 +73,7 @@ void DialogueComponent::Render(HDC hdc)
 	}
 
 	// 폰트 생성
-	HFONT hfont = CreateFont(
-		-_fontSize * winSizeAdjustmemt.y,
-		0, 
-		0, 
-		0, 
-		FW_NORMAL, 
-		FALSE, 
-		FALSE, 
-		FALSE, 
-		DEFAULT_CHARSET, 
-		OUT_DEFAULT_PRECIS, 
-		CLIP_DEFAULT_PRECIS, 
-		DEFAULT_QUALITY, 
-		DEFAULT_PITCH | FF_SWISS, 
-		L"DungGeunMo");
+	HFONT hfont = Utils::MakeFont(_fontSize * winSizeAdjustmemt.y, L"DungGeunMo");
 
 	// 폰트 선택
 	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);

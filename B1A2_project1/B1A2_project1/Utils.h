@@ -8,4 +8,7 @@ public:
 	static void DrawCircle(HDC hdc, Vec2 pos, int32 radius);
 
 	static void DrawString(HDC hdc, const std::wstring& str, RECT rect);
+	static void DrawString(HDC hdc, const std::wstring& str, Vec2Int pos);
+
+	static HFONT MakeFont(int32 fontSize, LPCWSTR fontName);
 };

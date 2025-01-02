@@ -342,11 +342,11 @@ void DevScene::Init()
 		AddActor(player);
 		
 		// Start Dialogue
-		//{
-		//	std::vector<Actor*> actors;
-		//	actors.push_back(player);
-		//	GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
-		//}
+		{
+			std::vector<Actor*> actors;
+			actors.push_back(player);
+			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
+		}
 	}
 
 	// Item

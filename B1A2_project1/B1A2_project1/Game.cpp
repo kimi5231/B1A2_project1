@@ -84,7 +84,8 @@ void Game::Render()
 	{
 		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
 		std::wstring str = std::format(L"Mouse({0}, {1})", mousePos.x, mousePos.y);
-		::TextOut(_hdcBack, 20, 10, str.c_str(), static_cast<int32>(str.size()));
+		Utils::DrawString(_hdcBack, str, Vec2Int{ 20, 10 });
+		//::TextOut(_hdcBack, 20, 10, str.c_str(), static_cast<int32>(str.size()));
 	}
 
 	{

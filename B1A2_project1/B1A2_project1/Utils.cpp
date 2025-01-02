@@ -20,3 +20,27 @@ void Utils::DrawString(HDC hdc, const std::wstring& str, RECT rect)
 {
 	::DrawText(hdc, str.c_str(), -1, &rect, DT_LEFT);
 }
+
+void Utils::DrawString(HDC hdc, const std::wstring& str, Vec2Int pos)
+{
+	::TextOut(hdc, pos.x, pos.y, str.c_str(), static_cast<int32>(str.size()));
+}
+
+HFONT Utils::MakeFont(int32 fontSize, LPCWSTR fontName)
+{
+	return ::CreateFont(
+		-fontSize,
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		FALSE,
+		DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_SWISS,
+		fontName);
+}
