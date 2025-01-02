@@ -26,6 +26,11 @@ void Game::Init(HWND hwnd)
 	_resourcePath = std::filesystem::current_path().relative_path();
 	std::filesystem::path _resourcePath = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources";
 
+	// 폰트 경로
+	std::filesystem::path fullPath = _resourcePath / L"Font\\DungGeunMo.ttf";
+	// 폰트 추가
+	::AddFontResourceEx(fullPath.c_str(), FR_PRIVATE, NULL);
+
 	// 더블 버퍼링 코드
 	::GetClientRect(hwnd, &_rect);
 

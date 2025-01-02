@@ -63,15 +63,6 @@ void DialogueComponent::Render(HDC hdc)
 	const FlipbookInfo& info = flipbook->GetInfo();
 	Vec2Int size = info.size;
 
-	// 한 번만 하면 됨. 나중에 위치 옮길 것.
-	{
-		// 폰트 경로
-		std::filesystem::path fullPath = GET_SINGLE(ResourceManager)->GetResourcePath() / L"Font\\DungGeunMo.ttf";
-
-		// 폰트 추가
-		::AddFontResourceEx(fullPath.c_str(), FR_PRIVATE, NULL);
-	}
-
 	// 폰트 생성
 	HFONT hfont = Utils::MakeFont(_fontSize * winSizeAdjustmemt.y, L"DungGeunMo");
 
