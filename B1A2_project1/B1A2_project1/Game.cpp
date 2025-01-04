@@ -90,12 +90,11 @@ void Game::Render()
 		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
 		std::wstring str = std::format(L"Mouse({0}, {1})", mousePos.x, mousePos.y);
 		Utils::DrawString(_hdcBack, str, Vec2Int{ 20, 10 });
-		//::TextOut(_hdcBack, 20, 10, str.c_str(), static_cast<int32>(str.size()));
 	}
 
 	{
 		std::wstring str = std::format(L"FPS({0}), DT({1})", fps, deltaTime);
-		::TextOut(_hdcBack, 550, 10, str.c_str(), static_cast<int32>(str.size()));
+		Utils::DrawString(_hdcBack, str, Vec2Int{ 550, 10 });
 	}
 
 	// Double Buffering

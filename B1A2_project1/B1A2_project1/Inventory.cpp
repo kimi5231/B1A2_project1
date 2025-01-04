@@ -114,21 +114,8 @@ void Inventory::Render(HDC hdc)
 			// 출력할 위치
 			RECT rect = { boxX + 108, boxY, boxX + ITEM_SIZEX, boxY + 20 };
 
-			HFONT hfont = CreateFont(
-				-20.f * winSizeAdjustmemt.y,
-				0,
-				0,
-				0,
-				FW_NORMAL,
-				FALSE,
-				FALSE,
-				FALSE,
-				DEFAULT_CHARSET,
-				OUT_DEFAULT_PRECIS,
-				CLIP_DEFAULT_PRECIS,
-				DEFAULT_QUALITY,
-				DEFAULT_PITCH | FF_SWISS,
-				L"둥근모꼴");
+			// 폰트 생성
+			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y * winSizeAdjustmemt.y, L"DungGeunMo");
 
 			// 폰트 선택
 			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
@@ -192,21 +179,8 @@ void Inventory::Render(HDC hdc)
 			// 출력할 위치
 			RECT rect = { 81, 488, 507, 677 };
 
-			HFONT hfont = CreateFont(
-				-20.f * winSizeAdjustmemt.y,
-				0,
-				0,
-				0,
-				FW_NORMAL,
-				FALSE,
-				FALSE,
-				FALSE,
-				DEFAULT_CHARSET,
-				OUT_DEFAULT_PRECIS,
-				CLIP_DEFAULT_PRECIS,
-				DEFAULT_QUALITY,
-				DEFAULT_PITCH | FF_SWISS,
-				L"둥근모꼴");
+			// 폰트 생성
+			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y * winSizeAdjustmemt.y, L"DungGeunMo");
 
 			// 폰트 선택
 			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
