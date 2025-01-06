@@ -22,6 +22,8 @@ public:
 	Vec2 GetWinSizeAdjustment();
 	// 카메라 위치에 따른 보정값
 	Vec2 GetCameraPosAdjustment();
+	// 맵 크기 보정값
+	Vec2 GetMapSizeAdjustment();
 
 private:
 	// 윈도우 핸들
