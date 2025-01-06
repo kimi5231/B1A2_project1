@@ -75,6 +75,8 @@ void TilemapActor::Render(HDC hdc)
 	Sprite* spriteO = GET_SINGLE(ResourceManager)->GetSprite(L"TileO");
 	Sprite* spriteX = GET_SINGLE(ResourceManager)->GetSprite(L"TileX");
 
+	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
 	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
@@ -104,7 +106,7 @@ void TilemapActor::Render(HDC hdc)
 			{
 			case 0:
 				::TransparentBlt(hdc,
-					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.x + x * MAP_TILE_SIZEX) * winSizeAdjustment.x - cameraPosAdjustment.x,
 					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
 					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
 					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),

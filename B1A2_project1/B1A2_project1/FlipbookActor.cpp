@@ -54,8 +54,6 @@ void FlipbookActor::Render(HDC hdc)
 	const FlipbookInfo& info = _flipbook->GetInfo();
 	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
-	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
-	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
 
 	::TransparentBlt(hdc,
 		((int32)_pos.x - info.size.x / 2) * winSizeAdjustment.x - cameraPosAdjustment.x,

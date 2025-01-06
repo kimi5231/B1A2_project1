@@ -51,6 +51,7 @@ void ItemActor::Tick()
 
 void ItemActor::Render(HDC hdc)
 {
+	// Item 그리기
 	if (_itemState == ItemState::Show)
 		Super::Render(hdc);
 
@@ -63,16 +64,15 @@ void ItemActor::Render(HDC hdc)
 	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
 	// F key 위치 지정
-	Vec2 ItemPos = _pos * winSizeAdjustmemt - cameraPosAdjustmemt;
-	Vec2 pos = { ItemPos.x - 15.f, ItemPos.y - 70.f };
-	RECT rect = { pos.x, pos.y, pos.x + 30, pos.y + 30 };
+	Vec2 ItemPos = _pos;
+	ItemPos.y -= 50;
 
 	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
 	::TransparentBlt(hdc,
-		pos.x,
-		pos.y,
-		30,
-		30,
+		((int32)ItemPos.x - texture->GetSize().x / 2) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x,
+		((int32)ItemPos.y - texture->GetSize().y / 2) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+		texture->GetSize().x * winSizeAdjustmemt.x,
+		texture->GetSize().y * winSizeAdjustmemt.y,
 		texture->GetDC(),
 		0,
 		0,

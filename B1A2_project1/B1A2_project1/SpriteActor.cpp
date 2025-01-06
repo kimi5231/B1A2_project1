@@ -30,14 +30,14 @@ void SpriteActor::Render(HDC hdc)
 		return;
 
 	Vec2Int size = _sprite->GetSize();
-	Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
-	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
 	::TransparentBlt(hdc,
-		(((int32)_pos.x - size.x / 2) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2)),
-		(((int32)_pos.y - size.y / 2) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2)),
-		size.x * ((float)winSize.x / (float)DefaultWinSizeX),
-		size.y * ((float)winSize.y / (float)DefaultWinSizeY),
+		((int32)_pos.x - size.x / 2) * winSizeAdjustment.x - cameraPosAdjustment.x,
+		((int32)_pos.y - size.y / 2) * winSizeAdjustment.y - cameraPosAdjustment.y,
+		size.x * winSizeAdjustment.x,
+		size.y * winSizeAdjustment.y,
 		_sprite->GetDC(),
 		_sprite->GetPos().x,
 		_sprite->GetPos().y,
