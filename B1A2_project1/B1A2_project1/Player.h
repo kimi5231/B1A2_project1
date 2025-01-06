@@ -152,8 +152,8 @@ private:
 	int32 _gravity = 1000;
 	float _ySpeed = {};
 
-	bool _Ground = false;
-	bool _isInAir = false;
+	bool _isGround = false;
+	bool _isAir = false;
 
 	// 획득한 아이템
 	ItemActor* _collideItem = {};	// unordered map에 저장하기 위해, 충돌한 아이템을 담을 변수

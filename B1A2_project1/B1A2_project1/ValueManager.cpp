@@ -33,12 +33,3 @@ Vec2 ValueManager::GetCameraPosAdjustment()
 
 	return adjustment;
 }
-
-Vec2 ValueManager::GetMapSizeAdjustment()
-{
-	Vec2 adjustment{
-
-	};
-
-	return adjustment;
-}

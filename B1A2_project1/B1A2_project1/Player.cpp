@@ -157,11 +157,15 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 	{
-		if (_Ground)
-		{
-			_ySpeed = 500.f;
-			SetState(PlayerState::Jump);
-		}
+		// 이미 점프 중이면 리턴
+		if (!_isGround && _isAir)
+			return;
+
+		_isGround = false;
+		_isAir = true;
+
+		_ySpeed = -500.f;
+		SetState(PlayerState::Jump);
 	}
 	else
 	{
@@ -192,11 +196,15 @@ void Player::TickMove()
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 	{
-		if (_Ground) // 땅에 있을 때만 점프 가능
-		{
-			_ySpeed = 500.f; // 초기 점프 힘 설정
-			SetState(PlayerState::Jump);
-		}
+		// 이미 점프 중이면 리턴
+		if (!_isGround && _isAir)
+			return;
+
+		_isGround = false;
+		_isAir = true;
+
+		_ySpeed = -500.f;
+		SetState(PlayerState::Jump);
 	}
 }
 
@@ -224,17 +232,9 @@ void Player::TickJump()
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
 
-	// 땅에 닿으면 점프 종료
-	if (_Ground)
+	if (_isGround && !_isAir)
 	{
-		if (GET_SINGLE(InputManager)->GetButton(KeyType::A) || GET_SINGLE(InputManager)->GetButton(KeyType::D))
-		{
-			SetState(PlayerState::Move);
-		}
-		else
-		{
-			SetState(PlayerState::Idle);
-		}
+		SetState(PlayerState::Idle);
 	}
  }
 
@@ -324,7 +324,7 @@ void Player::UpdateAnimation()
 void Player::TickGravity()
 {
 	// 땅에 닿아있으면 중력 적용 X
-	if (_Ground)
+	if (_isGround)
 		return;
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
@@ -374,7 +374,8 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
 		_groundCollisionCount++;
-		_Ground = true;
+		_isGround = true;
+		_isAir = false;
 	}
 }
 
@@ -402,7 +403,8 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 		if (_groundCollisionCount <= 0)		// 충돌 끝: 땅에서 떨어짐
 		{
-			_Ground = false;
+			_isGround = false;
+			_isAir = true;
 			_groundCollisionCount = 0;
 		}
 	}
