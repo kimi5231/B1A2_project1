@@ -11,10 +11,6 @@ DialogueManager::~DialogueManager()
 {
 	SAFE_DELETE(_dialogue);
 
-	for (Actor* actor : _actors)
-		SAFE_DELETE(actor);
-	_actors.clear();
-
 	_event.clear();
 }
 
