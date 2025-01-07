@@ -86,9 +86,6 @@ void SettingScene::ChangeqHD()
 	GET_SINGLE(ValueManager)->SetWinSize({ 960, 540 });
 	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
 
-	// 맵 사이즈 변경
-	GET_SINGLE(ValueManager)->SetMapSize({ 4800, 1080 });
-
 	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
 	// 현재 창 스타일 가져오기
@@ -104,9 +101,6 @@ void SettingScene::ChangeHD()
 	// HD(1280*720) 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ 1280, 720 });
 	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	// 맵 사이즈 변경
-	GET_SINGLE(ValueManager)->SetMapSize({ 6400, 1440 });
 
 	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
@@ -124,9 +118,6 @@ void SettingScene::ChangeFullHD()
 	GET_SINGLE(ValueManager)->SetWinSize({ 1920, 1080 });
 	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
 
-	// 맵 사이즈 변경
-	GET_SINGLE(ValueManager)->SetMapSize({ 9600, 2160 });
-
 	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
 	// 현재 창 스타일 가져오기
@@ -142,10 +133,6 @@ void SettingScene::ChangeFullScreen()
 	// 화면 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) });
 	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	// 맵 사이즈 변경
-	float scaleFactor = size.x / DefaultWinSizeX;
-	GET_SINGLE(ValueManager)->SetMapSize({ (int32)(DefaultMapSizeX * scaleFactor), (int32)(DefaultMapSizeY * scaleFactor) });;
 
 	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
 
