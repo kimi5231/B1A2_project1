@@ -63,6 +63,15 @@
     <Filter Include="소스 파일\05. Component\Inventory">
       <UniqueIdentifier>{66d81370-f727-4fae-8c8a-f1711e9f9a3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03. Objects\Game\Creature">
+      <UniqueIdentifier>{11b3989e-502d-4e16-b828-41accb6210de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Objects\Game\Projectile">
+      <UniqueIdentifier>{e30abb87-4a91-4024-b723-d96d5c3c449f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Objects\Game\Effect">
+      <UniqueIdentifier>{3ee4b63f-b698-4db9-92dd-ba6e820572b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -146,9 +155,6 @@
     <ClInclude Include="StaticUI.h">
       <Filter>소스 파일\06. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>소스 파일\03. Objects\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClInclude>
@@ -224,6 +230,9 @@
     <ClInclude Include="DialogueManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -285,9 +294,6 @@
     </ClCompile>
     <ClCompile Include="StaticUI.cpp">
       <Filter>소스 파일\06. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일\03. Objects\Game</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
       <Filter>소스 파일\03. Objects\Unreal</Filter>
@@ -363,6 +369,9 @@
     </ClCompile>
     <ClCompile Include="DialogueManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
