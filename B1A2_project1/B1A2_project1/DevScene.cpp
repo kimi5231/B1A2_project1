@@ -431,6 +431,23 @@ void DevScene::SetSceneState()
 			_sceneState = SceneState::Play;
 		}
 	}
+	
+	if (_sceneState != SceneState::Play)
+		return;
+
+	// Player 이동 치트
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftAlt))
+	{
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+		{
+			Vec2 mousePos = GET_SINGLE(InputManager)->GetMousePos();
+			Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+
+			Vec2 movePos = mousePos + cameraPosAdjustment;
+
+			_actors[LAYER_PLAYER][0]->SetPos(movePos);
+		}
+	}
 }
 
 void DevScene::OnClickGoTitleButton()

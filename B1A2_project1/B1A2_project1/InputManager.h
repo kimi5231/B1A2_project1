@@ -13,6 +13,7 @@ enum class KeyType	// Å° ¹öÆ°
 	SpaceBar = VK_SPACE,
 	Esc = VK_ESCAPE,
 	Tab = VK_TAB,
+	LeftAlt = VK_LMENU,
 
 	KEY_1 = '1',
 	KEY_2 = '2',
