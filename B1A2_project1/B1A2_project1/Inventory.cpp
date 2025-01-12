@@ -42,7 +42,7 @@ void Inventory::Render(HDC hdc)
 
 	// 보정 변수 가져오기
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
-	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+	// Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
 	// 인벤토리 판
 	{
@@ -50,8 +50,8 @@ void Inventory::Render(HDC hdc)
 		::TransparentBlt(hdc,
 			0,
 			0,
-			texture->GetSize().x,
-			texture->GetSize().y,
+			(texture->GetSize().x) * winSizeAdjustmemt.x,
+			(texture->GetSize().y) * winSizeAdjustmemt.y,
 			texture->GetDC(),
 			0,
 			0,
@@ -84,7 +84,6 @@ void Inventory::Render(HDC hdc)
 			{
 			case 1001:
 				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInInventory"); break;
-				break;
 			case 1002:
 				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInInventory"); break;
 			case 1003:
@@ -95,10 +94,10 @@ void Inventory::Render(HDC hdc)
 			int32 boxY = ITEM_STARTY + (i / 5) * ITEM_SIZEY;
 
 			::TransparentBlt(hdc,
-				boxX,
-				boxY,
-				ITEM_SIZEX,
-				ITEM_SIZEY,
+				boxX * winSizeAdjustmemt.x,
+				boxY * winSizeAdjustmemt.y,
+				ITEM_SIZEX * winSizeAdjustmemt.x,
+				ITEM_SIZEY * winSizeAdjustmemt.y,
 				texture->GetDC(),
 				0,
 				0,
@@ -112,7 +111,7 @@ void Inventory::Render(HDC hdc)
 			std::wstring itemCountStr = std::to_wstring(itemCount);
 
 			// 출력할 위치
-			RECT rect = { boxX + 108, boxY, boxX + ITEM_SIZEX, boxY + 20 };
+			RECT rect = { (boxX + 108) * winSizeAdjustmemt.x, boxY * winSizeAdjustmemt.y, (boxX + ITEM_SIZEX) * winSizeAdjustmemt.x, (boxY + 20) * winSizeAdjustmemt.y };
 
 			// 폰트 생성
 			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y * winSizeAdjustmemt.y, L"DungGeunMo");
@@ -153,10 +152,10 @@ void Inventory::Render(HDC hdc)
 			}
 
 			::TransparentBlt(hdc,
-				81,
-				165,
-				426,
-				323,
+				81 * winSizeAdjustmemt.x,
+				165 * winSizeAdjustmemt.y,
+				426 * winSizeAdjustmemt.x,
+				323 * winSizeAdjustmemt.y,
 				texture->GetDC(),
 				0,
 				0,
@@ -177,10 +176,10 @@ void Inventory::Render(HDC hdc)
 				explain = it->second->explain;
 
 			// 출력할 위치
-			RECT rect = { 81, 488, 507, 677 };
+			RECT rect = { 81 * winSizeAdjustmemt.x, 488 * winSizeAdjustmemt.y, 507 * winSizeAdjustmemt.x, 677 * winSizeAdjustmemt.y };
 
 			// 폰트 생성
-			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y * winSizeAdjustmemt.y, L"DungGeunMo");
+			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y, L"DungGeunMo");
 
 			// 폰트 선택
 			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
@@ -213,10 +212,14 @@ void Inventory::SaveAcquireItems()
 void Inventory::MouseClick(POINT mousePos)
 {
 	int32 i = 0;
+
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+
 	for (const RECT& box : _itemBoxes)
 	{
-		if (mousePos.x >= box.left && mousePos.x <= box.right &&
-			mousePos.y >= box.top && mousePos.y <= box.bottom)
+		if (mousePos.x >= box.left * winSizeAdjustmemt.x && mousePos.x <= box.right * winSizeAdjustmemt.x &&
+			mousePos.y >= box.top * winSizeAdjustmemt.y && mousePos.y <= box.bottom * winSizeAdjustmemt.y)
 		{
 			if (i < _acquiredItems.size())
 			{
