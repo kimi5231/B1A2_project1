@@ -93,6 +93,19 @@ void Inventory::Render(HDC hdc)
 			int32 boxX = ITEM_STARTX + (i % 5) * ITEM_SIZEX;
 			int32 boxY = ITEM_STARTY + (i / 5) * ITEM_SIZEY;
 
+			// 선택된 아이템이 있으면 표시 - 텍스처의 시작점 지정
+			int32 textureStartY = 0;
+			
+			if (_clickedItemID == 0)
+			{
+				textureStartY = 0;
+			}
+			else
+			{
+				textureStartY = ITEM_SIZEX;
+			}
+				
+
 			::TransparentBlt(hdc,
 				boxX * winSizeAdjustmemt.x,
 				boxY * winSizeAdjustmemt.y,
@@ -100,7 +113,7 @@ void Inventory::Render(HDC hdc)
 				ITEM_SIZEY * winSizeAdjustmemt.y,
 				texture->GetDC(),
 				0,
-				0,
+				textureStartY,
 				ITEM_SIZEX,
 				ITEM_SIZEY,
 				texture->GetTransparent());
