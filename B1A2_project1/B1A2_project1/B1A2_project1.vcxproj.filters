@@ -233,6 +233,9 @@
     <ClInclude Include="TilemapActor.h">
       <Filter>소스 파일\03. Objects</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviorTree.h">
+      <Filter>소스 파일\03. Objects\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -372,6 +375,9 @@
     </ClCompile>
     <ClCompile Include="TilemapActor.cpp">
       <Filter>소스 파일\03. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree.cpp">
+      <Filter>소스 파일\03. Objects\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
