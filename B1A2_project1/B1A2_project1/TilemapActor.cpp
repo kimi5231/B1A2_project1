@@ -163,60 +163,51 @@ void TilemapActor::Render(HDC hdc)
 	}
 }
 
+Tile* TilemapActor::GetTile()
+{
+	// 월드 좌표계에서의 마우스 좌표
+	Vec2 pos = GET_SINGLE(ValueManager)->GetMousePosInWorld();
+
+	// 인덱스로 변환
+	int32 x = (int32)pos.x / MAP_TILE_SIZEX;
+	int32 y = (int32)pos.y / MAP_TILE_SIZEY;
+
+	Tile* tile = _tilemap->GetTileAt({ x, y });
+
+	return tile;
+}
+
 void TilemapActor::TickPicking()
 {
 	// 드래그 가능
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
-	{
-		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
-		
-		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-
-		// 카메라 좌표
-		int32 screenX = (int32)cameraPos.x - winSize.x / 2;
-		int32 screenY = (int32)cameraPos.y - winSize.y / 2;
-
-		// 월드 좌표
-		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
-
-		// 월드 좌표를 카메라 좌표로 변환
-		int32 posX = mousePos.x + screenX;
-		int32 posY = mousePos.y + screenY;
-
-		// 인덱스로 변환
-		int32 x = posX / MAP_TILE_SIZEX;
-		int32 y = posY / MAP_TILE_SIZEY;
-
-		Tile* tile = _tilemap->GetTileAt({x, y});
-
-		if (tile)
-			tile->value = TILE_X;
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftAlt))
+	{	
+		// LeftAlt + LeftMouse => X
+		// LeftAlt + RightMouse => O
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_X;
+		}
+		else if (GET_SINGLE(InputManager)->GetButton(KeyType::RightMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_O;
+		}
 	}
-
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::RightMouse))
+	else
 	{
-		Vec2 cameraPos = GET_SINGLE(SceneManager)->GetCameraPos();
-
-		Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-
-		// 카메라 좌표
-		int32 screenX = (int32)cameraPos.x - winSize.x / 2;
-		int32 screenY = (int32)cameraPos.y - winSize.y / 2;
-
-		// 월드 좌표
-		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
-
-		// 월드 좌표를 카메라 좌표로 변환
-		int32 posX = mousePos.x + screenX;
-		int32 posY = mousePos.y + screenY;
-
-		// 인덱스로 변환
-		int32 x = posX / MAP_TILE_SIZEX;
-		int32 y = posY / MAP_TILE_SIZEY;
-
-		Tile* tile = _tilemap->GetTileAt({ x, y });
-
-		if (tile)
-			tile->value = TILE_O;
+		// LeftMouse => W
+		// RightMouse => G
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_W;
+		}
+		else if (GET_SINGLE(InputManager)->GetButton(KeyType::RightMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_G;
+		}
 	}
 }

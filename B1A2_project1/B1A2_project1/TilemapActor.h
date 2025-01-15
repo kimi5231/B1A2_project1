@@ -2,6 +2,7 @@
 #include "Actor.h"
 
 class Tilemap;
+class Tile;
 
 // Tilemap을 출력&&수정하기 위한 클래스
 class TilemapActor : public Actor
@@ -18,6 +19,7 @@ public:
 public:
 	void SetTilemap(Tilemap* tilemap) { _tilemap = tilemap; }
 	Tilemap* GetTilemap() { return _tilemap; }
+	Tile* GetTile();
 	void SetShowDebug(bool show) { _showDebug = show; }
 
 	void TickPicking();

@@ -23,6 +23,9 @@ public:
 	// 카메라 위치에 따른 보정값
 	Vec2 GetCameraPosAdjustment();
 
+	// 월드 좌표계에서의 마우스 좌표
+	Vec2 GetMousePosInWorld();
+
 private:
 	// 윈도우 핸들
 	HWND _hwnd{};

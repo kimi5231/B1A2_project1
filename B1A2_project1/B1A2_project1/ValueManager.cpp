@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ValueManager.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 
 void ValueManager::Init(HWND hwnd)
 {
@@ -32,4 +33,17 @@ Vec2 ValueManager::GetCameraPosAdjustment()
 	};
 
 	return adjustment;
+}
+
+Vec2 ValueManager::GetMousePosInWorld()
+{
+	POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+	Vec2 cameraPosAdjustment = GetCameraPosAdjustment();
+
+	Vec2 pos{
+		mousePos.x + cameraPosAdjustment.x,
+		mousePos.y + cameraPosAdjustment.y,
+	};
+
+	return pos;
 }
