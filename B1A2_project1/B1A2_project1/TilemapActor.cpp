@@ -74,6 +74,8 @@ void TilemapActor::Render(HDC hdc)
 
 	Sprite* spriteO = GET_SINGLE(ResourceManager)->GetSprite(L"TileO");
 	Sprite* spriteX = GET_SINGLE(ResourceManager)->GetSprite(L"TileX");
+	Sprite* spriteG = GET_SINGLE(ResourceManager)->GetSprite(L"TileG");
+	Sprite* spriteW = GET_SINGLE(ResourceManager)->GetSprite(L"TileW");
 
 	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
@@ -129,6 +131,32 @@ void TilemapActor::Render(HDC hdc)
 					TILE_SIZEX,
 					TILE_SIZEY,
 					spriteX->GetTransparent());
+				break;
+			case 2:
+				::TransparentBlt(hdc,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
+					spriteG->GetDC(),
+					spriteG->GetPos().x,
+					spriteG->GetPos().y,
+					TILE_SIZEX,
+					TILE_SIZEY,
+					spriteG->GetTransparent());
+				break;
+			case 3:
+				::TransparentBlt(hdc,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
+					spriteW->GetDC(),
+					spriteW->GetPos().x,
+					spriteW->GetPos().y,
+					TILE_SIZEX,
+					TILE_SIZEY,
+					spriteW->GetTransparent());
 				break;
 			}
 		}

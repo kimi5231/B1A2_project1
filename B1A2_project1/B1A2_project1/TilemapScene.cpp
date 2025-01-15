@@ -20,19 +20,21 @@ TilemapScene::~TilemapScene()
 void TilemapScene::Init()
 {
 	// Texture
-	GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
+	GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage1.bmp");
 	GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(55, 255, 0));
 
 	// Sprite
 	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
 		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, mapSize.x, mapSize.y);
 	}
 	{
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Tile");
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileO", texture, 0, 0, 48, 48);
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileX", texture, 48, 0, 48, 48);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TileG", texture, 96, 0, 48, 48);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TileW", texture, 144, 0, 48, 48);
 	}
 
 	// Tilemap
@@ -40,7 +42,7 @@ void TilemapScene::Init()
 	
 	// Map
 	{
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
 		SpriteActor* map = new SpriteActor();
 		const Vec2Int size = sprite->GetSize();
 		map->SetPos(Vec2(size.x / 2, size.y / 2));

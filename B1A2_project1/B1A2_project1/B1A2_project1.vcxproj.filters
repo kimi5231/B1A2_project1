@@ -161,9 +161,6 @@
     <ClInclude Include="FlipbookActor.h">
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClInclude>
-    <ClInclude Include="TilemapActor.h">
-      <Filter>소스 파일\03. Objects\Unreal</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteActor.h">
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClInclude>
@@ -232,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapActor.h">
+      <Filter>소스 파일\03. Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -304,9 +304,6 @@
     <ClCompile Include="SpriteActor.cpp">
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClCompile>
-    <ClCompile Include="TilemapActor.cpp">
-      <Filter>소스 파일\03. Objects\Unreal</Filter>
-    </ClCompile>
     <ClCompile Include="Flipbook.cpp">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
@@ -372,6 +369,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="TilemapActor.cpp">
+      <Filter>소스 파일\03. Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

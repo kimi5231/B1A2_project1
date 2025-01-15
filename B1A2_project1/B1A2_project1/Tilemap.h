@@ -5,7 +5,8 @@ enum TILE_TYPE
 {
 	TILE_O,
 	TILE_X,
-	
+	TILE_G,
+	TILE_W,
 };
 
 struct Tile
