@@ -13,6 +13,14 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	void LoadMap();
+	void LoadPlayer();
+	void LoadDialogue();
+	void LoadItem();
+	void LoadInventory();
+	void LoadMenu();
+	void LoadSound();
+
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
 	
