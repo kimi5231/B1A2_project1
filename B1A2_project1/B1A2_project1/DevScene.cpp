@@ -7,7 +7,6 @@
 #include "Sprite.h"
 #include "SpriteActor.h"
 #include "Actor.h"
-#include "Flipbook.h"
 #include "Player.h"
 #include "SoundManager.h"
 #include "Sound.h"
@@ -15,7 +14,6 @@
 #include "TilemapActor.h"
 #include "ValueManager.h"
 #include "Scene.h"
-#include "Player.h"
 #include "Collider.h"
 #include "BoxCollider.h"
 #include "CollisionManager.h"
@@ -44,6 +42,7 @@ void DevScene::Init()
 	LoadItem();
 	LoadInventory();
 	LoadMenu();
+	// LoadSound();
 
 	// Player
 	{
