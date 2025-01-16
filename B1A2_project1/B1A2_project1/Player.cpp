@@ -11,6 +11,7 @@
 #include "ItemActor.h"
 #include "Item.h"
 #include "CollisionManager.h"
+#include "ValueManager.h"
 
 Player::Player()
 {
@@ -111,6 +112,10 @@ void Player::Tick()
 	}
 
 	TickGravity();
+
+	// 플레이어가 화면 밖으로 넘어가지 않도록
+	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
+	_pos.x = std::clamp(_pos.x, (float)(67 / 2), (float)mapSize.x);		// 67은 DevScene에서 설정한 Player collider 크기
 }
 
 void Player::Render(HDC hdc)
