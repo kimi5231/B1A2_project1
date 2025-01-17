@@ -42,7 +42,6 @@ void Inventory::Render(HDC hdc)
 
 	// 보정 변수 가져오기
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
-	// Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
 	// 인벤토리 판
 	{

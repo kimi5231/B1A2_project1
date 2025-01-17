@@ -146,6 +146,31 @@ void DevScene::Render(HDC hdc)
 	}
 	else if (_sceneState == SceneState::Menu)
 	{
+		Super::Render(hdc);
+
+		// Background
+		BLENDFUNCTION bf;
+		bf.AlphaFormat = 0; // 비트맵 종류로 일반 비트맵의 경우 0, 32비트 비트맵의 경우 AC_SRC_ALPHA
+		bf.BlendFlags = 0; // 무조건 0이어야 한다
+		bf.BlendOp = AC_SRC_OVER; // 무조건 AC_SRC_OVER이어야 하고 원본과 대상 이미지를 합친다는 의미
+		bf.SourceConstantAlpha = 170; // 투명도(투명 0 - 불투명 255)
+
+		Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"MenuBackground");
+			::AlphaBlend(hdc,
+				0,
+				0,
+				(texture->GetSize().x) * winSizeAdjustmemt.x,
+				(texture->GetSize().y) * winSizeAdjustmemt.y,
+				texture->GetDC(),
+				0,
+				0,
+				texture->GetSize().x,
+				texture->GetSize().y,
+				bf);
+		}
+
 		if (_menuPanel)
 			_menuPanel->Render(hdc);
 	}
@@ -385,6 +410,8 @@ void DevScene::LoadMenu()
 		_menuPanel->AddChild(button);
 	}
 
+	// Menu Background
+	GET_SINGLE(ResourceManager)->LoadTexture(L"MenuBackground", L"Sprite\\UI\\MenuBackground.bmp", RGB(0, 0, 0));
 }
 
 void DevScene::LoadSound()
