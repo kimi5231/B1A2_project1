@@ -25,19 +25,21 @@ enum class PlayerState
 
 struct PlayerStat
 {
-	int32 PlayerID = 0;
-	int32 healthPoint = 0;
-	int32 runSpeed = 0;
-	int32 crouchSpeed = 0;
-	int32 jumpHeight = 0;
-	int32 skillPoint = 0;
-	int32 nAtkRange = 0;
-	int32 nLongAtkDistance = 0;
-	int32 nAtkDamage = 0;
-	int32 skillDamage = 0;
-	int32 skillRange = 0;
-	int32 skillDuration = 0;
-	int32 skillStepDistance = 0;
+	int32 PlayerID = 0;	// A
+	int32 healthPoint = 0;	// B
+	float runSpeed = 0;	// C
+	float crouchSpeed = 0;	// D
+	float jumpSpeed = 0;	// E
+	int32 skillPoint = 0;	// F
+	int32 nAtkRange = 0;	// G
+	int32 nLongAtkDistance = 0;	// H
+	int32 knockBackDistance = 0;	// I
+	float strongAtkMultiplier = 0.f;	// J	
+	int32 nAtkDamage = 0;	// K
+	int32 skillDamage = 0;	// L
+	int32 skillRange = 0;	// M
+	float skillDuration = 0;	// N
+	int32 skillStepDistance = 0;	// O
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -56,19 +58,21 @@ struct PlayerStat
 			{
 				switch (column)
 				{
-				case 0:this->PlayerID = std::stoi(cell); break;
-				case 1: this->healthPoint = std::stoi(cell); break;
-				case 2: this->runSpeed = std::stoi(cell); break;
-				case 3: this->crouchSpeed = std::stoi(cell); break;
-				case 4: this->jumpHeight = std::stoi(cell); break;
-				case 5: this->skillPoint = std::stoi(cell); break;
-				case 6: this->nAtkRange = std::stoi(cell); break;
-				case 7: this->nLongAtkDistance = std::stoi(cell); break;
-				case 8: this->nAtkDamage = std::stoi(cell); break;
-				case 9: this->skillDamage = std::stoi(cell); break;
-				case 10: this->skillRange = std::stoi(cell); break;
-				case 11: this->skillDuration = std::stoi(cell); break;
-				case 12: this->skillStepDistance = std::stoi(cell); break;
+				case 0:this->PlayerID = std::stoi(cell); break;	// A
+				case 1: this->healthPoint = std::stoi(cell); break;	// B
+				case 2: this->runSpeed = std::stof(cell); break;	// C
+				case 3: this->crouchSpeed = std::stof(cell); break;	// D
+				case 4: this->jumpSpeed = std::stof(cell); break;	// E
+				case 5: this->skillPoint = std::stoi(cell); break;	// F
+				case 6: this->nAtkRange = std::stoi(cell); break;	// G
+				case 7: this->nLongAtkDistance = std::stoi(cell); break;	// H
+				case 8: this->knockBackDistance = std::stoi(cell); break;	// I
+				case 9: this->strongAtkMultiplier = std::stof(cell); break;	// J
+				case 10: this->nAtkDamage = std::stoi(cell); break;	// K
+				case 11: this->skillDamage = std::stoi(cell); break;	// L
+				case 12: this->skillRange = std::stoi(cell); break;	// M
+				case 13: this->skillDamage = std::stof(cell); break;	// N
+				case 14: this->skillStepDistance = std::stoi(cell); break;	// O
 				}
 				++column;
 			}

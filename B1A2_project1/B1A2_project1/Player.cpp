@@ -11,6 +11,7 @@
 #include "ItemActor.h"
 #include "Item.h"
 #include "CollisionManager.h"
+#include "ValueManager.h"
 
 Player::Player()
 {
@@ -111,6 +112,10 @@ void Player::Tick()
 	}
 
 	TickGravity();
+
+	// 플레이어가 화면 밖으로 넘어가지 않도록
+	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
+	_pos.x = std::clamp(_pos.x, (float)(67 / 2), (float)mapSize.x);		// 67은 DevScene에서 설정한 Player collider 크기
 }
 
 void Player::Render(HDC hdc)
@@ -123,19 +128,35 @@ void Player::CalPixelPerSecond()
 	float PIXEL_PER_METER = (10.0 / 0.3);
 		
 	// run
-	float RUN_SPEED_KMPH = _playerStat->runSpeed;
-	float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
-	float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
-	float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
+	{
+		float RUN_SPEED_KMPH = _playerStat->runSpeed;
+		float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
+		float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
+		float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
+
+		_playerStat->runSpeed = RUN_SPEED_PPS;
+	}
 
 	// crouch
-	float CROUCH_SPEED_KMPH = _playerStat->crouchSpeed;
-	float CROUCH_SPEED_MPM = (CROUCH_SPEED_KMPH * 1000.0 / 60.0);
-	float CROUCH_SPEED_MPS = (CROUCH_SPEED_MPM / 60.0);
-	float CROUCH_SPEED_PPS = (CROUCH_SPEED_MPS * PIXEL_PER_METER);
+	{
+		float CROUCH_SPEED_KMPH = _playerStat->crouchSpeed;
+		float CROUCH_SPEED_MPM = (CROUCH_SPEED_KMPH * 1000.0 / 60.0);
+		float CROUCH_SPEED_MPS = (CROUCH_SPEED_MPM / 60.0);
+		float CROUCH_SPEED_PPS = (CROUCH_SPEED_MPS * PIXEL_PER_METER);
+	
+		_playerStat->crouchSpeed = CROUCH_SPEED_PPS;
+	}
 
-	_playerStat->runSpeed = RUN_SPEED_PPS;
-	_playerStat->crouchSpeed = CROUCH_SPEED_PPS;
+	// jump
+	{
+		float JUMP_SPEED_KMPH = _playerStat->jumpSpeed;
+		float JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0);
+		float JUMP_SPEED_MPS = (JUMP_SPEED_MPM / 60.0);
+		float JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER);
+
+		_playerStat->jumpSpeed = JUMP_SPEED_PPS;
+	}
+	
 }
 
 void Player::TickIdle()
@@ -164,7 +185,7 @@ void Player::TickIdle()
 		_isGround = false;
 		_isAir = true;
 
-		_ySpeed = -500.f;
+		_ySpeed = -_playerStat->jumpSpeed;
 		SetState(PlayerState::Jump);
 	}
 	else
@@ -203,7 +224,7 @@ void Player::TickMove()
 		_isGround = false;
 		_isAir = true;
 
-		_ySpeed = -500.f;
+		_ySpeed = -_playerStat->jumpSpeed;
 		SetState(PlayerState::Jump);
 	}
 }
