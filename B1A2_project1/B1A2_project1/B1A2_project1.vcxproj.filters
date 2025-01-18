@@ -122,9 +122,6 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>소스 파일\01. Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>소스 파일\03. Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceBase.h">
       <Filter>소스 파일\04. Resources</Filter>
     </ClInclude>
@@ -245,6 +242,9 @@
     <ClInclude Include="TitlePanel.h">
       <Filter>소스 파일\06. UI\Game</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>소스 파일\03. Objects\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -270,9 +270,6 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>소스 파일\01. Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>소스 파일\03. Objects</Filter>
     </ClCompile>
     <ClCompile Include="ResourceBase.cpp">
       <Filter>소스 파일\04. Resources</Filter>
@@ -393,6 +390,9 @@
     </ClCompile>
     <ClCompile Include="TitlePanel.cpp">
       <Filter>소스 파일\06. UI\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>소스 파일\03. Objects\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

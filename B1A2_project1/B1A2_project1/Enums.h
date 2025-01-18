@@ -37,7 +37,6 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_NONE,
 };
 
-
 // 플레이어 방향
 enum Dir
 {
@@ -94,4 +93,10 @@ enum class SceneState
 	Play,
 	Menu,
 	Inventory,
+};
+
+// Object
+enum class ObjectState
+{
+	Idle,
 };
