@@ -270,13 +270,13 @@ void DevScene::Init()
 
 	// Map
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"TestMap", L"Sprite\\Map\\TestMap.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage1.bmp");
 
 		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TestMap");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"TestMap", texture, 0, 0, mapSize.x, mapSize.y);
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, mapSize.x, mapSize.y);
 
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"TestMap");
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
 		SpriteActor* map = new SpriteActor();
 		const Vec2Int size = sprite->GetSize();
 		map->SetPos(Vec2(size.x / 2, size.y / 2));
@@ -342,11 +342,11 @@ void DevScene::Init()
 		AddActor(player);
 		
 		// Start Dialogue
-		{
+		/*{
 			std::vector<Actor*> actors;
 			actors.push_back(player);
 			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
-		}
+		}*/
 	}
 
 	// Item
@@ -440,12 +440,14 @@ void DevScene::SetSceneState()
 	{
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
-			Vec2 mousePos = GET_SINGLE(InputManager)->GetMousePos();
-			Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+			Vec2 mousePosInWorld = GET_SINGLE(ValueManager)->GetMousePosInWorld();
+			Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
-			Vec2 movePos = mousePos + cameraPosAdjustment;
-
-			_actors[LAYER_PLAYER][0]->SetPos(movePos);
+			Vec2 pos = mousePosInWorld;
+				
+				//* winSizeAdjustment;
+	
+			_actors[LAYER_PLAYER][0]->SetPos(pos);
 		}
 	}
 }
