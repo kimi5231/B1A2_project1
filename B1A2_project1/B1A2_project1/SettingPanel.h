@@ -17,7 +17,4 @@ public:
 	void OnClickChangeHD();
 	void OnClickChangeFullHD();
 	void OnClickChangeFullScreen();
-
-private:
-	std::vector<UI*> _children;
 };

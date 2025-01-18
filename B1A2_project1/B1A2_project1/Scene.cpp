@@ -20,8 +20,12 @@ Scene::~Scene()
 
 	_actors->clear();
 
-	for (Panel* panel : _panels)
+	// 현재 스마트 포인터가 아니라 오류 생김
+	// => Panel에 있는 Button을 사용 중에 Panel을 지워 버림
+	/*for (Panel* panel : _panels)
 		SAFE_DELETE(panel);
+
+	_panels.clear();*/
 }
 
 void Scene::Init()

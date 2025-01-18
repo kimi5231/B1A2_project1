@@ -194,6 +194,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="TilemapActor.h" />
     <ClInclude Include="TilemapScene.h" />
     <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="TitlePanel.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="UI.h" />
@@ -249,6 +250,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="TilemapActor.cpp" />
     <ClCompile Include="TilemapScene.cpp" />
     <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="TitlePanel.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />

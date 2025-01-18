@@ -7,6 +7,7 @@ Panel::Panel()
 
 Panel::~Panel()
 {
+
 }
 
 void Panel::BeginPlay()
