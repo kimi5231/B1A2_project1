@@ -15,7 +15,15 @@ public:
 protected:
 	virtual void TickIdle() {};
 	virtual void TickMove() {};
+	virtual void TickDuckDown() {};
+	virtual void TickDuckDownMove() {};
+	virtual void TickJump() {};
+	virtual void TickNormalAttack() {};
 	virtual void TickSkill() {};
+	virtual void TickHang() {};
+	virtual void TickRelease() {};
+	virtual void TickHit() {};
+	virtual void TickDead() {};
 	virtual void UpdateAnimation() {};
 };
 
