@@ -6,8 +6,7 @@
 #include "SceneManager.h"
 #include "SpriteActor.h"
 #include "Sprite.h"
-#include "Panel.h"
-#include "Button.h"
+#include "SettingPanel.h"
 
 SettingScene::SettingScene()
 {
@@ -21,46 +20,10 @@ void SettingScene::Init()
 {
 	// 패널
 	{
-		Panel* ui = new Panel();
-		_panel = ui;
+		SettingPanel* ui = new SettingPanel();
+		AddPanel(ui);
 	}
 	
-	// qHD(960*540) 테스트용 버튼
-	{
-		Button* ui = new Button();
-		ui->SetPos({100, 100});
-		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeqHD);
-		_panel->AddChild(ui);
-	}
-
-	// HD(1280*720) 테스트용 버튼
-	{
-		Button* ui = new Button();
-		ui->SetPos({ 200, 100 });
-		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeHD);
-		_panel->AddChild(ui);
-	}
-
-	// FullHD(1920*1080) 테스트용 버튼
-	{
-		Button* ui = new Button();
-		ui->SetPos({ 300, 100 });
-		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeFullHD);
-		_panel->AddChild(ui);
-	}
-
-	// FullScreen 테스트용 버튼
-	{
-		Button* ui = new Button();
-		ui->SetPos({ 400, 100 });
-		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeFullScreen);
-		_panel->AddChild(ui);
-	}
-
 	Super::Init();
 }
 
@@ -77,69 +40,4 @@ void SettingScene::Update()
 void SettingScene::Render(HDC hdc)
 {
 	Super::Render(hdc);
-}
-
-// CallBack 함수
-void SettingScene::OnClickChangeqHD()
-{
-	// qHD(960*540) 크기로 설정하기
-	GET_SINGLE(ValueManager)->SetWinSize({ 960, 540 });
-	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
-
-	// 현재 창 스타일 가져오기
-	DWORD dwStyle = ::GetWindowLong(hwnd, GWL_STYLE);
-	// 창모드 스타일로 변환
-	::SetWindowLong(hwnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
-	// 창 크기 재설정
-	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
-}
-
-void SettingScene::OnClickChangeHD()
-{
-	// HD(1280*720) 크기로 설정하기
-	GET_SINGLE(ValueManager)->SetWinSize({ 1280, 720 });
-	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
-
-	// 현재 창 스타일 가져오기
-	DWORD dwStyle = ::GetWindowLong(hwnd, GWL_STYLE);
-	// 창모드 스타일로 변환
-	::SetWindowLong(hwnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
-	// 창 크기 재설정
-	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
-}
-
-void SettingScene::OnClickChangeFullHD()
-{
-	// FullHD(1920*1080) 크기로 설정하기
-	GET_SINGLE(ValueManager)->SetWinSize({ 1920, 1080 });
-	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
-
-	// 현재 창 스타일 가져오기
-	DWORD dwStyle = ::GetWindowLong(hwnd, GWL_STYLE);
-	// 창모드 스타일로 변환
-	::SetWindowLong(hwnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
-	// 창 크기 재설정
-	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
-}
-
-void SettingScene::OnClickChangeFullScreen()
-{
-	// 화면 크기로 설정하기
-	GET_SINGLE(ValueManager)->SetWinSize({ ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) });
-	Vec2Int size = GET_SINGLE(ValueManager)->GetWinSize();
-
-	HWND hwnd = GET_SINGLE(ValueManager)->GetHwnd();
-
-	// 현재 창 스타일 가져오기
-	DWORD dwStyle = ::GetWindowLong(hwnd, GWL_STYLE);
-	// 전체화면 스타일로 변환
-	::SetWindowLong(hwnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
-	// 창 크기 재설정
-	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
 }
