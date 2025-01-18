@@ -98,5 +98,15 @@ enum class SceneState
 // Object
 enum class ObjectState
 {
-	Idle,
+	Idle,	// 대기
+	Move,	// 달리기
+	DuckDown,	// 숙이기
+	DuckDownMove,	// 숙이면서 달리기
+	Jump,	// 점프
+	Hang,	// 매달리기
+	Release,	// 놓기
+	Skill,	// 스킬
+	AttackNormal,	// 기본 공격
+	Hit,	// 피격
+	Dead,	// 사망
 };
