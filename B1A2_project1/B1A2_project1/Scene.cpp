@@ -20,17 +20,18 @@ Scene::~Scene()
 
 	_actors->clear();
 
-	// * panel 삭제 코드 작성 필요
+	for (Panel* panel : _panels)
+		SAFE_DELETE(panel);
 }
 
 void Scene::Init()
 {
-	if (_panel)
-		_panel->BeginPlay();
-
 	for (const std::vector<Actor*>& actors : _actors)
 		for (Actor* actor : actors)
 			actor->BeginPlay();
+
+	for (Panel* panel : _panels)
+		panel->BeginPlay();
 }
 
 void Scene::Update()
@@ -42,8 +43,8 @@ void Scene::Update()
 		for (Actor* actor : actors)
 			actor->Tick();
 
-	if (_panel)
-		_panel->Tick();
+	for (Panel* panel : _panels)
+		panel->Tick();
 }
 
 void Scene::Render(HDC hdc)
@@ -52,8 +53,8 @@ void Scene::Render(HDC hdc)
 		for (Actor* actor : actors)
 			actor->Render(hdc);
 
-	if (_panel)
-		_panel->Render(hdc);
+	for (Panel* panel : _panels)
+		panel->Render(hdc);
 }
 
 void Scene::AddActor(Actor* actor)
@@ -71,4 +72,20 @@ void Scene::RemoveActor(Actor* actor)
 
 	std::vector<Actor*>& v = _actors[actor->GetLayer()];
 	v.erase(std::remove(v.begin(), v.end(), actor), v.end());
+}
+
+void Scene::AddPanel(Panel* panel)
+{
+	if (!panel)
+		return;
+
+	_panels.push_back(panel);
+}
+
+void Scene::RemovePanel(Panel* panel)
+{
+	if (!panel)
+		return;
+	
+	_panels.erase(std::remove(_panels.begin(), _panels.end(), panel), _panels.end());
 }

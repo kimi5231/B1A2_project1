@@ -30,5 +30,5 @@ public:
 	void OnClickSettingButton();
 
 private:
-	Panel* _menuPanel;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
+	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
 };

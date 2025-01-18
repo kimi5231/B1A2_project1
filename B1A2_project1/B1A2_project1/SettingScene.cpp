@@ -30,7 +30,7 @@ void SettingScene::Init()
 		Button* ui = new Button();
 		ui->SetPos({100, 100});
 		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::ChangeqHD);
+		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeqHD);
 		_panel->AddChild(ui);
 	}
 
@@ -39,7 +39,7 @@ void SettingScene::Init()
 		Button* ui = new Button();
 		ui->SetPos({ 200, 100 });
 		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::ChangeHD);
+		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeHD);
 		_panel->AddChild(ui);
 	}
 
@@ -48,7 +48,7 @@ void SettingScene::Init()
 		Button* ui = new Button();
 		ui->SetPos({ 300, 100 });
 		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::ChangeFullHD);
+		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeFullHD);
 		_panel->AddChild(ui);
 	}
 
@@ -57,7 +57,7 @@ void SettingScene::Init()
 		Button* ui = new Button();
 		ui->SetPos({ 400, 100 });
 		ui->SetSize({ 50, 50 });
-		ui->AddOnClickDelegate(this, &SettingScene::ChangeFullScreen);
+		ui->AddOnClickDelegate(this, &SettingScene::OnClickChangeFullScreen);
 		_panel->AddChild(ui);
 	}
 
@@ -80,7 +80,7 @@ void SettingScene::Render(HDC hdc)
 }
 
 // CallBack 함수
-void SettingScene::ChangeqHD()
+void SettingScene::OnClickChangeqHD()
 {
 	// qHD(960*540) 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ 960, 540 });
@@ -96,7 +96,7 @@ void SettingScene::ChangeqHD()
 	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
 }
 
-void SettingScene::ChangeHD()
+void SettingScene::OnClickChangeHD()
 {
 	// HD(1280*720) 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ 1280, 720 });
@@ -112,7 +112,7 @@ void SettingScene::ChangeHD()
 	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
 }
 
-void SettingScene::ChangeFullHD()
+void SettingScene::OnClickChangeFullHD()
 {
 	// FullHD(1920*1080) 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ 1920, 1080 });
@@ -128,7 +128,7 @@ void SettingScene::ChangeFullHD()
 	::SetWindowPos(hwnd, NULL, 0, 0, size.x, size.y, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
 }
 
-void SettingScene::ChangeFullScreen()
+void SettingScene::OnClickChangeFullScreen()
 {
 	// 화면 크기로 설정하기
 	GET_SINGLE(ValueManager)->SetWinSize({ ::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN) });

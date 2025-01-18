@@ -72,6 +72,9 @@
     <Filter Include="소스 파일\03. Objects\Game\Effect">
       <UniqueIdentifier>{3ee4b63f-b698-4db9-92dd-ba6e820572b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\06. UI\Game">
+      <UniqueIdentifier>{62b59c3e-42ae-4599-b549-30b56ebd26c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

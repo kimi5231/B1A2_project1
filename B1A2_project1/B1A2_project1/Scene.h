@@ -17,10 +17,13 @@ public:
 
 	void AddActor(Actor* actor);
 	void RemoveActor(Actor* actor);
+	void AddPanel(Panel* panel);
+	void RemovePanel(Panel* panel);
 
 protected:
 	Panel* _panel = nullptr;
 	std::vector<Actor*> _actors[LAYER_MAXCOUNT];
+	std::vector<Panel*> _panels;
 
 	Inventory* _inventory = nullptr;
 
