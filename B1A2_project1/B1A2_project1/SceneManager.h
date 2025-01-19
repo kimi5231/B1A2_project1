@@ -23,6 +23,7 @@ private:
 	SceneType _prevSceneType = SceneType::None;
 
 public:
+	SceneType GetPrevSceneType() { return _prevSceneType; }
 	Vec2 GetCameraPos() { return _cameraPos; }
 	void SetCameraPos(Vec2 pos) { _cameraPos = pos; }
 
