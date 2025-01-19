@@ -9,6 +9,12 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
+// Object Stat
+struct Stat
+{
+	int hp;
+};
+
 // 2Â÷¿ø º¤ÅÍ
 struct Vec2
 {

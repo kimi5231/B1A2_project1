@@ -25,5 +25,12 @@ protected:
 	virtual void TickHit() {};
 	virtual void TickDead() {};
 	virtual void UpdateAnimation() {};
+
+public:
+	void SetStat(Stat stat) { _stat = stat; }
+	Stat& GetStat() { return _stat; }
+
+protected:
+	Stat _stat;
 };
 
