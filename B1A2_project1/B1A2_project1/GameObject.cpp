@@ -12,6 +12,9 @@ GameObject::~GameObject()
 void GameObject::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 처음 상태 지정
+	SetState(ObjectState::Idle);
 }
 
 void GameObject::Tick()

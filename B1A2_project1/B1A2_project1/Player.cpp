@@ -6,7 +6,6 @@
 #include "CameraComponent.h"
 #include "DialogueComponent.h"
 #include "Dialogue.h"
-#include "Game.h"
 #include "BoxCollider.h"
 #include "ItemActor.h"
 #include "Item.h"
@@ -41,9 +40,6 @@ Player::~Player()
 void Player::BeginPlay()
 {	
 	Super::BeginPlay();
-
-	// 처음 상태 지정
-	SetState(PlayerState::Idle);
 }
 
 void Player::Tick()
@@ -77,40 +73,6 @@ void Player::Tick()
 		}
 	}
 
-	switch (_state)
-	{
-	case PlayerState::Idle:
-		TickIdle();
-		break;
-	case PlayerState::Move:
-		TickMove();
-		break;
-	//case PlayerState::DuckDown:
-	//	TickDuckDown();
-	//	break;
-	case PlayerState::Jump:
-		TickJump();
-		break;
-	//case PlayerState::Hang:
-	//	TickHang();
-	//	break;
-	//case PlayerState::Release:
-	//	TickRelease();
-	//	break;
-	//case PlayerState::Skill:
-	//	TickSkill();
-	//	break;
-	//case PlayerState::AttackNormal:
-	//	TickAttackNormal();
-	//	break;
-	//case PlayerState::Hit:
-	//	TickHit();
-	//	break;
-	//case PlayerState::Dead:
-	//	TickDead();
-	//	break;
-	}
-
 	//TickGravity();
 
 	// 플레이어가 화면 밖으로 넘어가지 않도록
@@ -123,42 +85,6 @@ void Player::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
-void Player::CalPixelPerSecond()
-{
-	float PIXEL_PER_METER = (10.0 / 0.3);
-		
-	// run
-	{
-		float RUN_SPEED_KMPH = _playerStat->runSpeed;
-		float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
-		float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
-		float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
-
-		_playerStat->runSpeed = RUN_SPEED_PPS;
-	}
-
-	// crouch
-	{
-		float CROUCH_SPEED_KMPH = _playerStat->crouchSpeed;
-		float CROUCH_SPEED_MPM = (CROUCH_SPEED_KMPH * 1000.0 / 60.0);
-		float CROUCH_SPEED_MPS = (CROUCH_SPEED_MPM / 60.0);
-		float CROUCH_SPEED_PPS = (CROUCH_SPEED_MPS * PIXEL_PER_METER);
-	
-		_playerStat->crouchSpeed = CROUCH_SPEED_PPS;
-	}
-
-	// jump
-	{
-		float JUMP_SPEED_KMPH = _playerStat->jumpSpeed;
-		float JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0);
-		float JUMP_SPEED_MPS = (JUMP_SPEED_MPM / 60.0);
-		float JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER);
-
-		_playerStat->jumpSpeed = JUMP_SPEED_PPS;
-	}
-	
-}
-
 void Player::TickIdle()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
@@ -168,13 +94,13 @@ void Player::TickIdle()
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
 		SetDir(DIR_LEFT);
-		SetState(PlayerState::Move);
+		SetState(ObjectState::Move);
 		
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
 	{
 		SetDir(DIR_RIGHT);
-		SetState(PlayerState::Move);
+		SetState(ObjectState::Move);
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 	{
@@ -186,12 +112,12 @@ void Player::TickIdle()
 		_isAir = true;
 
 		_ySpeed = -_playerStat->jumpSpeed;
-		SetState(PlayerState::Jump);
+		SetState(ObjectState::Jump);
 	}
 	else
 	{
 		_keyPressed = false;
-		if (_state == PlayerState::Idle)
+		if (_state == ObjectState::Idle)
 			UpdateAnimation();
 	}
 }
@@ -212,7 +138,7 @@ void Player::TickMove()
 	}
 	else
 	{
-		SetState(PlayerState::Idle); // 이동 키를 뗐을 때 Idle 상태로 변경
+		SetState(ObjectState::Idle); // 이동 키를 뗐을 때 Idle 상태로 변경
 	}
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
@@ -225,7 +151,7 @@ void Player::TickMove()
 		_isAir = true;
 
 		_ySpeed = -_playerStat->jumpSpeed;
-		SetState(PlayerState::Jump);
+		SetState(ObjectState::Jump);
 	}
 }
 
@@ -255,15 +181,11 @@ void Player::TickJump()
 
 	if (_isGround && !_isAir)
 	{
-		SetState(PlayerState::Idle);
+		SetState(ObjectState::Idle);
 	}
  }
 
-void Player::TickHang()
-{
-}
-
-void Player::TickRelease()
+void Player::TickNormalAttack()
 {
 }
 
@@ -271,7 +193,11 @@ void Player::TickSkill()
 {
 }
 
-void Player::TickAttackNormal()
+void Player::TickHang()
+{
+}
+
+void Player::TickRelease()
 {
 }
 
@@ -283,33 +209,17 @@ void Player::TickDead()
 {
 }
 
-
-void Player::SetState(PlayerState state)
-{
-	if (_state == state)
-		return;
-
-	_state = state;
-	UpdateAnimation();
-}
-
-void Player::SetDir(Dir dir)
-{
-	_dir = dir;
-	UpdateAnimation();
-}
-
 void Player::UpdateAnimation()
 {
 	switch (_state)
 	{
-	case PlayerState::Idle:
+	case ObjectState::Idle:
 		if (_keyPressed)
 			SetFlipbook(_flipbookPlayerMove[_dir]);
 		else
 			SetFlipbook(_flipbookPlayerMove[_dir]);		// IDLE 리소스 없어서, 리소스 생기면 Idle로 바꾸기
 		break;
-	case PlayerState::Move:
+	case ObjectState::Move:
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
 	//case PlayerState::DuckDown:
@@ -318,7 +228,7 @@ void Player::UpdateAnimation()
 	//case PlayerState::DuckDownMove:
 	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 	//	break;
-	case PlayerState::Jump:
+	case ObjectState::Jump:
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
 	//case PlayerState::Hang:
@@ -342,6 +252,42 @@ void Player::UpdateAnimation()
 	}
 }
 
+void Player::CalPixelPerSecond()
+{
+	float PIXEL_PER_METER = (10.0 / 0.3);
+
+	// run
+	{
+		float RUN_SPEED_KMPH = _playerStat->runSpeed;
+		float RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0);
+		float RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0);
+		float RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER);
+
+		_playerStat->runSpeed = RUN_SPEED_PPS;
+	}
+
+	// crouch
+	{
+		float CROUCH_SPEED_KMPH = _playerStat->crouchSpeed;
+		float CROUCH_SPEED_MPM = (CROUCH_SPEED_KMPH * 1000.0 / 60.0);
+		float CROUCH_SPEED_MPS = (CROUCH_SPEED_MPM / 60.0);
+		float CROUCH_SPEED_PPS = (CROUCH_SPEED_MPS * PIXEL_PER_METER);
+
+		_playerStat->crouchSpeed = CROUCH_SPEED_PPS;
+	}
+
+	// jump
+	{
+		float JUMP_SPEED_KMPH = _playerStat->jumpSpeed;
+		float JUMP_SPEED_MPM = (JUMP_SPEED_KMPH * 1000.0 / 60.0);
+		float JUMP_SPEED_MPS = (JUMP_SPEED_MPM / 60.0);
+		float JUMP_SPEED_PPS = (JUMP_SPEED_MPS * PIXEL_PER_METER);
+
+		_playerStat->jumpSpeed = JUMP_SPEED_PPS;
+	}
+
+}
+
 void Player::TickGravity()
 {
 	// 땅에 닿아있으면 중력 적용 X
@@ -358,7 +304,6 @@ void Player::TickGravity()
 	_ySpeed += _gravity * deltaTime;
 	_pos.y += _ySpeed * deltaTime;
 }
-
 
 void Player::RemoveItem(int32 id, int32 count)
 {

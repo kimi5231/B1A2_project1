@@ -88,7 +88,7 @@ void DialogueManager::ChangeSpeech()
 			{
 				// Actor Setting
 				Player* player = dynamic_cast<Player*>(actor);
-				player->SetState(static_cast<PlayerState>(_event[_eventCount].state));
+				player->SetState(static_cast<ObjectState>(_event[_eventCount].state));
 				player->SetDir(static_cast<Dir>(_event[_eventCount].dir));
 				// DialogueComponent Setting
 				_currentComponent = player->GetDialogue();

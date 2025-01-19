@@ -1,4 +1,5 @@
 #pragma once
+#include "Creature.h"
 #include "FlipbookActor.h"
 #include <fstream>
 #include <iostream>
@@ -7,21 +8,6 @@
 class Flipbook;
 class BoxCollider;
 class ItemActor;
-
-enum class PlayerState
-{
-	Idle,	// 대기
-	Move,	// 달리기
-	DuckDown,	// 숙이기
-	DuckDownMove,	// 숙이면서 달리기
-	Jump,	// 점프
-	Hang,	// 매달리기
-	Release,	// 놓기
-	Skill,	// 스킬
-	AttackNormal,	// 기본 공격
-	Hit,	// 피격
-	Dead	// 사망
-};
 
 struct PlayerStat
 {
@@ -81,10 +67,9 @@ struct PlayerStat
 	}
 };
 
-class Player : public FlipbookActor
+class Player : public Creature
 {
-	using Super = FlipbookActor;
-
+	using Super = Creature;
 public:
 	Player();
 	virtual ~Player() override;
@@ -93,32 +78,25 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
-public:
-	// Player Stat
-	PlayerStat* GetPlayerStat() { return _playerStat; }
-	void SetPlayerStat(PlayerStat* playerStat) { _playerStat = playerStat; }
-	void CalPixelPerSecond();	// 현실에서의 단위를 픽셀 단위로 바꿈
-
-public:
+private:
 	// Player State
-	virtual void TickIdle();
-	virtual void TickMove();
-	virtual void TickDuckDown();
-	virtual void TickDuckDownMove();
-	virtual void TickJump();
-	virtual void TickHang();
-	virtual void TickRelease();
-	virtual void TickSkill();
-	virtual void TickAttackNormal();
-	virtual void TickHit();
-	virtual void TickDead();
-
-	void SetState(PlayerState);
-	void SetDir(Dir dir);
-
-	void UpdateAnimation();
+	virtual void TickIdle() override;
+	virtual void TickMove() override;
+	virtual void TickDuckDown() override;
+	virtual void TickDuckDownMove() override;
+	virtual void TickJump() override;
+	virtual void TickNormalAttack() override;
+	virtual void TickSkill() override;
+	virtual void TickHang() override;
+	virtual void TickRelease() override;
+	virtual void TickHit() override;
+	virtual void TickDead() override;
+	virtual void UpdateAnimation() override;
 
 public: 
+	// 현실에서의 단위를 픽셀 단위로 바꿈
+	void CalPixelPerSecond();
+
 	// Collider
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
@@ -138,17 +116,17 @@ private:
 	Flipbook* _flipbookPlayerDuckDown[2] = {};
 	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
 	Flipbook* _flipbookPlayerJump[2] = {};
+	Flipbook* _flipbookPlayerSkill[2] = {};
+	Flipbook* _flipbookPlayerNormalAttack[2] = {};
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
-	Flipbook* _flipbookPlayerSkill[2] = {};
-	Flipbook* _flipbookPlayerAttackNormal[2] = {};
 	Flipbook* _flipbookPlayerHit[2] = {};
 	Flipbook* _flipbookPlayerDead[2] = {};
 
 private:
-	Dir _dir = DIR_RIGHT;
-	PlayerState _state;
 	bool _keyPressed = false;
+
+	// 수정 필요
 	PlayerStat* _playerStat = {};
 
 	// Jump
