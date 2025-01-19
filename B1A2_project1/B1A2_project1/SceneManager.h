@@ -20,6 +20,7 @@ public:
 private:
 	Scene* _scene;	// 현재 실행하고 있는 Scene
 	SceneType _sceneType = SceneType::None;
+	SceneType _prevSceneType = SceneType::None;
 
 public:
 	Vec2 GetCameraPos() { return _cameraPos; }

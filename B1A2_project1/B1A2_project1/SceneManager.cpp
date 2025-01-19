@@ -62,6 +62,9 @@ void SceneManager::ChangeScene(SceneType sceneType)
 
 	SAFE_DELETE(_scene);
 
+	// 이전 Scene이 무엇이었는지 저장
+	_prevSceneType = _sceneType;
+
 	_scene = newScene;
 	_sceneType = sceneType;
 
