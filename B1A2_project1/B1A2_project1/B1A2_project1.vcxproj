@@ -173,6 +173,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemActor.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
@@ -229,6 +230,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemActor.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -3,14 +3,14 @@
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "InputManager.h"
+#include "CollisionManager.h"
+#include "ValueManager.h"
 #include "CameraComponent.h"
 #include "DialogueComponent.h"
 #include "Dialogue.h"
 #include "BoxCollider.h"
 #include "ItemActor.h"
 #include "Item.h"
-#include "CollisionManager.h"
-#include "ValueManager.h"
 
 Player::Player()
 {

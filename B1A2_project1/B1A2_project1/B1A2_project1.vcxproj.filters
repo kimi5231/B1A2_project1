@@ -248,6 +248,9 @@
     <ClInclude Include="Creature.h">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -398,6 +401,9 @@
       <Filter>소스 파일\03. Objects\Game</Filter>
     </ClCompile>
     <ClCompile Include="Creature.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClCompile>
   </ItemGroup>
