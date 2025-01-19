@@ -39,10 +39,13 @@ Vec2 ValueManager::GetMousePosInWorld()
 {
 	POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
 	Vec2 cameraPosAdjustment = GetCameraPosAdjustment();
+	Vec2 winSizeAdjustment = GetWinSizeAdjustment();
 
+	// Screen 좌표계에서 Camera 좌표계로 바꾸는 것이기 때문에
+	// World 좌표계에서 Camera 좌표계로 바꾸는 연산을 반대로
 	Vec2 pos{
-		mousePos.x + cameraPosAdjustment.x,
-		mousePos.y + cameraPosAdjustment.y,
+		(mousePos.x / winSizeAdjustment.x) + cameraPosAdjustment.x,
+		(mousePos.y / winSizeAdjustment.y) + cameraPosAdjustment.y,
 	};
 
 	return pos;

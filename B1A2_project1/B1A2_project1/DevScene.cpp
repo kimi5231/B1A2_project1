@@ -36,7 +36,7 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
-	LoadMap();
+	//LoadMap();
 	LoadPlayer();
 	LoadDialogue();
 	LoadItem();
@@ -451,11 +451,8 @@ void DevScene::SetSceneState()
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
 			Vec2 mousePosInWorld = GET_SINGLE(ValueManager)->GetMousePosInWorld();
-			Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
 			Vec2 pos = mousePosInWorld;
-				
-				//* winSizeAdjustment;
 	
 			_actors[LAYER_PLAYER][0]->SetPos(pos);
 		}
