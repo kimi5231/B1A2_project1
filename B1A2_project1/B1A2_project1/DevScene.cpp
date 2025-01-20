@@ -44,6 +44,21 @@ void DevScene::Init()
 	LoadMenu();
 	// LoadSound();
 
+	// Tilemap
+	{
+		// Tilemap Load
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+
+		TilemapActor* actor = new TilemapActor();
+		actor->SetPos({ 0, 0 });
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+		actor->SetLayer(LAYER_TILEMAP);
+
+		AddActor(actor);
+	}
+
 	// Player
 	{
 		Player* player = new Player();
@@ -199,21 +214,6 @@ void DevScene::LoadMap()
 		map->SetLayer(LAYER_BACKGROUND);
 
 		AddActor(map);
-	}
-
-	// Tilemap
-	{
-		// Tilemap Load
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-
-		TilemapActor* actor = new TilemapActor();
-		actor->SetPos({ 0, 0 });
-		actor->SetShowDebug(false);
-		actor->SetTilemap(tm);
-		actor->SetLayer(LAYER_TILEMAP);
-
-		AddActor(actor);
 	}
 }
 

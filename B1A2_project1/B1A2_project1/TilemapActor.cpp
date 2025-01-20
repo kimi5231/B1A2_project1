@@ -30,20 +30,30 @@ void TilemapActor::BeginPlay()
 	{
 		for (int32 x = 0; x < mapSize.x; ++x)
 		{
-			if (tiles[y][x].value == 1)
+			if (tiles[y][x].value == 0)
+				continue;
+
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ MAP_TILE_SIZEX, MAP_TILE_SIZEY });
+			collider->SetPos({ (float)(x * MAP_TILE_SIZEX + MAP_TILE_SIZEX / 2),(float)(y * MAP_TILE_SIZEY + MAP_TILE_SIZEY / 2) });
+			
+			// flag reset
+			collider->ResetCollisionFlag();
+
+			switch (tiles[y][x].value)
 			{
-				BoxCollider* collider = new BoxCollider();
-				collider->SetSize({ MAP_TILE_SIZEX, MAP_TILE_SIZEY });
-				collider->SetPos({ (float)(x * MAP_TILE_SIZEX + MAP_TILE_SIZEX / 2),
-					(float)(y * MAP_TILE_SIZEY + MAP_TILE_SIZEY / 2) });
-				// flag reset
-				collider->ResetCollisionFlag();
-				collider->SetCollisionLayer(CLT_GROUND);
-				// Ãæµ¹ÇÒ °´Ã¼
-				collider->AddCollisionFlagLayer(CLT_PLAYER);
-				GET_SINGLE(CollisionManager)->AddCollider(collider);
-				AddComponent(collider);
+			case 1:		// ´êÀ¸¸é Á×´Â °÷
+				break;
+			case 2:
+				collider->SetCollisionLayer(CLT_GROUND); break;
+			case 3:
+				collider->SetCollisionLayer(CLT_WALL); break;
 			}
+			
+			// Ãæµ¹ÇÒ °´Ã¼
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
 		}
 	}
 }

@@ -73,7 +73,7 @@ void Player::Tick()
 		}
 	}
 
-	//TickGravity();
+	TickGravity();
 
 	// 플레이어가 화면 밖으로 넘어가지 않도록
 	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
