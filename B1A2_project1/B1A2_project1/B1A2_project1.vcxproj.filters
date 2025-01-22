@@ -254,7 +254,7 @@
     <ClInclude Include="Projectile.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="InGameUI.h">
+    <ClInclude Include="InGamePanel.h">
       <Filter>소스 파일\06. UI\Game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -415,7 +415,7 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="InGameUI.cpp">
+    <ClCompile Include="InGamePanel.cpp">
       <Filter>소스 파일\06. UI\Game</Filter>
     </ClCompile>
   </ItemGroup>

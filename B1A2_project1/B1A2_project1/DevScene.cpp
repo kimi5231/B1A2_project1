@@ -25,7 +25,7 @@
 #include "Panel.h"
 #include "FlipbookUI.h"
 #include "TitleScene.h"
-//#include "InGameUI.h"
+#include "InGamePanel.h"
 
 DevScene::DevScene()
 {
@@ -66,7 +66,7 @@ void DevScene::Init()
 		player->SetPos({ 400, 200 });
 		player->SetLayer(LAYER_PLAYER);
 		player->SetID(1);
-
+	
 		// Colider
 		{
 			BoxCollider* collider = new BoxCollider();
@@ -130,6 +130,10 @@ void DevScene::Init()
 		}
 		AddActor(item);
 	}
+
+	// InGame UI
+	InGamePanel* panel = new InGamePanel();
+	AddPanel(panel);
 
 	Super::Init();
 }

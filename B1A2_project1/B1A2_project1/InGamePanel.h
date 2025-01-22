@@ -1,12 +1,12 @@
 #pragma once
-#include "UI.h"
+#include "Panel.h"
 
-class InGameUI : public UI
+class InGamePanel : public Panel
 {
 	using Super = UI;
 public:
-	InGameUI();
-	virtual ~InGameUI() override;
+	InGamePanel();
+	virtual ~InGamePanel() override;
 
 	virtual void BeginPlay() override;
 	virtual void Tick() override;

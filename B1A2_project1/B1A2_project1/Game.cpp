@@ -86,11 +86,11 @@ void Game::Render()
 
 	GET_SINGLE(SceneManager)->Render(_hdcBack);
 
-	{
-		POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
-		std::wstring str = std::format(L"Mouse({0}, {1})", mousePos.x, mousePos.y);
-		Utils::DrawString(_hdcBack, str, Vec2Int{ 20, 10 });
-	}
+	//{
+	//	POINT mousePos = GET_SINGLE(InputManager)->GetMousePos();
+	//	std::wstring str = std::format(L"Mouse({0}, {1})", mousePos.x, mousePos.y);
+	//	Utils::DrawString(_hdcBack, str, Vec2Int{ 20, 10 });
+	//}
 
 	{
 		std::wstring str = std::format(L"FPS({0}), DT({1})", fps, deltaTime);
