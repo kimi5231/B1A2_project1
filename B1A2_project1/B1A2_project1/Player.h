@@ -93,6 +93,14 @@ private:
 	virtual void TickDead() override;
 	virtual void UpdateAnimation() override;
 
+public:
+	// Hp 바뀔 때
+	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입
+	void SetHealthObserver(std::function<void(int)> observer) { _healthObserver = observer; }
+	
+	void AddHealthPoint(int hp);
+	void SubtractHealthPoint(int hp);
+
 public: 
 	// 현실에서의 단위를 픽셀 단위로 바꿈
 	void CalPixelPerSecond();
@@ -127,6 +135,7 @@ private:
 	bool _keyPressed = false;
 
 	PlayerStat* _playerStat = {};
+	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
 
 	// Jump
 	int32 _groundCollisionCount = 0;	// 충돌중인 타일맵 개수 (0개일 때 _Ground = true)

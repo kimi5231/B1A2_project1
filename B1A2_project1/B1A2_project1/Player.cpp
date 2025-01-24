@@ -110,6 +110,8 @@ void Player::TickIdle()
 		if (!_isGround && _isAir)
 			return;
 
+		SubtractHealthPoint(3);		// 체력바 test
+
 		_isGround = false;
 		_isAir = true;
 
@@ -252,6 +254,28 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	//	break;
 	}
+}
+
+void Player::AddHealthPoint(int hp)
+{
+	if (_playerStat->healthPoint >= 100)
+		return;
+
+	_playerStat->healthPoint += hp;
+
+	// 관찰자에게 알림
+	_healthObserver(_playerStat->healthPoint);
+}
+
+void Player::SubtractHealthPoint(int hp)
+{
+	if (_playerStat->healthPoint <= 0)
+		return;
+
+	_playerStat->healthPoint -= hp;
+
+	// 관찰자에게 알림
+	_healthObserver(_playerStat->healthPoint);
 }
 
 void Player::CalPixelPerSecond()

@@ -4,9 +4,11 @@
 #include "ResourceManager.h"
 #include "ValueManager.h"
 #include "StaticUI.h"
+#include "Player.h"
 
 InGamePanel::InGamePanel()
 {
+
 }
 
 InGamePanel::~InGamePanel()
@@ -59,7 +61,7 @@ void InGamePanel::Render(HDC hdc)
 		::TransparentBlt(hdc,
 			34 * winSizeAdjustmemt.x,
 			15 * winSizeAdjustmemt.y,
-			hpPoint->GetSize().x * winSizeAdjustmemt.x,	
+			_hp * winSizeAdjustmemt.x,		// hp에 따라 변경
 			hpPoint->GetSize().y * winSizeAdjustmemt.y,	
 			hpPoint->GetDC(),
 			0,
@@ -76,8 +78,8 @@ void InGamePanel::Render(HDC hdc)
 		::TransparentBlt(hdc,
 			15 * winSizeAdjustmemt.x,
 			10 * winSizeAdjustmemt.y,
-			hpBar->GetSize().x * winSizeAdjustmemt.x,	// 바꿀까? 150
-			hpBar->GetSize().y * winSizeAdjustmemt.y,	//30
+			hpBar->GetSize().x * winSizeAdjustmemt.x,	
+			hpBar->GetSize().y * winSizeAdjustmemt.y,
 			hpBar->GetDC(),
 			0,
 			0,
@@ -85,4 +87,10 @@ void InGamePanel::Render(HDC hdc)
 			hpBar->GetSize().y,
 			hpBar->GetTransparent());
 	}
-} 
+}
+
+void InGamePanel::UpdateHealthPoint(int32 health)
+{
+	_hp = health;
+}
+

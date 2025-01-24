@@ -106,6 +106,14 @@ void DevScene::Init()
 			actors.push_back(player);
 			GET_SINGLE(DialogueManager)->StartDialogue(L"test1", actors);
 		}*/
+
+		// InGame UI
+		InGamePanel* panel = new InGamePanel();
+		panel->SetPlayer(player);
+		AddPanel(panel);
+
+		// player의 체력 변경 시 UI 업데이트 등록
+		player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
 	}
 
 	// Item
@@ -130,10 +138,6 @@ void DevScene::Init()
 		}
 		AddActor(item);
 	}
-
-	// InGame UI
-	InGamePanel* panel = new InGamePanel();
-	AddPanel(panel);
 
 	Super::Init();
 }
