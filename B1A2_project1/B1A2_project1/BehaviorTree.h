@@ -16,8 +16,7 @@ public:
 	Node();
 	virtual ~Node();
 
-	// = 0은 순수 가상 함수
-	virtual BehaviorState run() = 0;	// 노드의 동작 실행 후 결과 반환
+	virtual BehaviorState run() abstract;	// 노드의 동작 실행 후 결과 반환
 	virtual void reset() = 0;	// 노드 초기화
 	virtual void addChild(Node* node) {}
 	virtual void addChildren(const std::vector<Node*>& children) {}
