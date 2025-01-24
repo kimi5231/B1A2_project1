@@ -81,7 +81,7 @@ void DevScene::Init()
 			collider->AddCollisionFlagLayer(CLT_GROUND);	
 			collider->AddCollisionFlagLayer(CLT_WALL);
 
-			collider->SetSize({ 67, 70 });
+			collider->SetSize({ 23, 75 });
 			
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			player->AddComponent(collider);
@@ -238,11 +238,11 @@ void DevScene::LoadPlayer()
 		
 		// Right
 		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerIdleRight");
-		fb1->SetInfo({ texture, L"FB_PlayerIdleRight", {23, 85}, 0, 4, 0, 0.7f });
+		fb1->SetInfo({ texture, L"FB_PlayerIdleRight", {23, 75}, 0, 4, 0, 0.7f });
 
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerIdleLeft");
-		fb2->SetInfo({ texture, L"FB_PlayerIdleLeft", {23, 85}, 0, 4, 1, 0.7f });
+		fb2->SetInfo({ texture, L"FB_PlayerIdleLeft", {23, 75}, 0, 4, 1, 0.7f });
 	}
 
 	// Move

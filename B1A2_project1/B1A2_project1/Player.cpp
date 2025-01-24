@@ -115,12 +115,14 @@ void Player::TickIdle()
 		_isGround = false;
 		_isAir = true;
 
-		_ySpeed = -_playerStat->jumpSpeed;
 		SetState(ObjectState::Jump);
+
+		_ySpeed = -_playerStat->jumpSpeed;
 	}
 	else
 	{
 		_keyPressed = false;
+
 		if (_state == ObjectState::Idle)
 			UpdateAnimation();
 	}
@@ -154,8 +156,9 @@ void Player::TickMove()
 		_isGround = false;
 		_isAir = true;
 
-		_ySpeed = -_playerStat->jumpSpeed;
 		SetState(ObjectState::Jump);
+
+		_ySpeed = -_playerStat->jumpSpeed;
 	}
 }
 
@@ -183,9 +186,20 @@ void Player::TickJump()
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
 
-	if (_isGround && !_isAir)
+	if (_isGround && !_isAir)	// ¶¥¿¡ ´ê¾ÒÀ» ¶§
 	{
-		SetState(ObjectState::Idle);
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+		{
+			SetDir(DIR_LEFT);
+			SetState(ObjectState::Move);
+		}
+		else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+		{
+			SetDir(DIR_RIGHT);
+			SetState(ObjectState::Move);
+		}
+		else
+			SetState(ObjectState::Idle);
 	}
  }
 
@@ -215,17 +229,25 @@ void Player::TickDead()
 
 void Player::UpdateAnimation()
 {
+	BoxCollider* playerCollider = dynamic_cast<BoxCollider*>(this->GetCollider());
+
 	switch (_state)
 	{
 	case ObjectState::Idle:
+		playerCollider->SetSize({ 23, 75 });
+
 		if (_keyPressed)
 			SetFlipbook(_flipbookPlayerIdle[_dir]);
 		else
 			SetFlipbook(_flipbookPlayerIdle[_dir]);		
 		break;
+	
 	case ObjectState::Move:
+		playerCollider->SetSize({67, 70 });
+	
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
+
 	//case PlayerState::DuckDown:
 	//	SetFlipbook(_flipbookPlayerDuckDown[_dir]);
 	//	break;
@@ -233,8 +255,11 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 	//	break;
 	case ObjectState::Jump:
+		playerCollider->SetSize({ 67, 70 });
+
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
+
 	//case PlayerState::Hang:
 	//	SetFlipbook(_flipbookPlayerHang[_dir]);
 	//	break;
