@@ -110,7 +110,7 @@ public:
 	std::unordered_map<int32, int32>& GetAquireItems() { return _acquiredItems; }
 
 private:
-	// 마지 리소스
+	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};
 	Flipbook* _flipbookPlayerMove[2] = {};
 	Flipbook* _flipbookPlayerDuckDown[2] = {};
@@ -126,7 +126,6 @@ private:
 private:
 	bool _keyPressed = false;
 
-	// 수정 필요
 	PlayerStat* _playerStat = {};
 
 	// Jump

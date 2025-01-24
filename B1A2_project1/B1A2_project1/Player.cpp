@@ -20,11 +20,13 @@ Player::Player()
 	_playerStat = playerStat;
 	CalPixelPerSecond();
 	
-	// 마지
+	// Flipbook Sprite
+	_flipbookPlayerIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerIdleRight");
+	_flipbookPlayerIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerIdleLeft");
 	_flipbookPlayerMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveRight");
 	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveLeft");
 
-	// 카메라 컴포넌트
+	// Camera Component
 	CameraComponent* camera = new CameraComponent();
 	AddComponent(camera);
 
@@ -215,9 +217,9 @@ void Player::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		if (_keyPressed)
-			SetFlipbook(_flipbookPlayerMove[_dir]);
+			SetFlipbook(_flipbookPlayerIdle[_dir]);
 		else
-			SetFlipbook(_flipbookPlayerMove[_dir]);		// IDLE 리소스 없어서, 리소스 생기면 Idle로 바꾸기
+			SetFlipbook(_flipbookPlayerIdle[_dir]);		
 		break;
 	case ObjectState::Move:
 		SetFlipbook(_flipbookPlayerMove[_dir]);
