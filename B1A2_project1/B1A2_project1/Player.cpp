@@ -234,7 +234,7 @@ void Player::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::Idle:
-		playerCollider->SetSize({ 23, 75 });
+		playerCollider->SetSize({ 23, 85 });
 
 		if (_keyPressed)
 			SetFlipbook(_flipbookPlayerIdle[_dir]);
@@ -255,7 +255,7 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 	//	break;
 	case ObjectState::Jump:
-		playerCollider->SetSize({ 67, 70 });
+		playerCollider->SetSize({ 34, 55 });
 
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
@@ -279,6 +279,8 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	//	break;
 	}
+
+
 }
 
 void Player::AddHealthPoint(int hp)
