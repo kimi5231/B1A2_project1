@@ -30,6 +30,9 @@ public:
 	void SetStat(Stat stat) { _stat = stat; }
 	Stat& GetStat() { return _stat; }
 
+public:
+	virtual void OnDameged(int32 damage);
+	
 protected:
 	Stat _stat;
 };

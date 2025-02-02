@@ -12,7 +12,8 @@ using uint64 = unsigned __int64;
 // Object Stat
 struct Stat
 {
-	int hp;
+	int32 id;
+	int32 hp;
 };
 
 // 2Â÷¿ø º¤ÅÍ
