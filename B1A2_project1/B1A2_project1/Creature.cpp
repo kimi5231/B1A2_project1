@@ -26,7 +26,7 @@ void Creature::Render(HDC hdc)
 
 void Creature::OnDameged(int32 damage)
 {
-	Stat& stat = GetStat();
+	CommonStat& stat = GetStat();
 
 	if (damage <= 0)
 		return;

@@ -109,4 +109,6 @@ enum class ObjectState
 	Release,	// 놓기
 	Hit,	// 피격
 	Dead,	// 사망
+	Chase,	// 추적
+	Roaming,	// 배회
 };

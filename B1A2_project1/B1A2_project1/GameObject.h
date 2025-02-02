@@ -24,6 +24,8 @@ protected:
 	virtual void TickRelease() {};
 	virtual void TickHit() {};
 	virtual void TickDead() {};
+	virtual void TickChase() {};
+	virtual void TickRoaming() {};
 	virtual void UpdateAnimation() {};
 
 public:
