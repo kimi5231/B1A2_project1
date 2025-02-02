@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TiredOfficeWorker.h"
+#include "TimeManager.h"
 
 TiredOfficeWorker::TiredOfficeWorker()
 {
@@ -26,7 +27,18 @@ void TiredOfficeWorker::Render(HDC hdc)
 
 void TiredOfficeWorker::TickIdle()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
+	if (_sumTime >= _stat.idleTime)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Chase);
+	}
+	else
+	{
+		
+	}
 }
 
 void TiredOfficeWorker::TickNormalAttack()

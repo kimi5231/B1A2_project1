@@ -29,13 +29,13 @@ protected:
 	virtual void UpdateAnimation() override {};
 
 public:
-	void SetStat(CommonStat stat) { _stat = stat; }
-	CommonStat& GetStat() { return _stat; }
+	void SetCommonStat(CommonStat stat) { _commonStat = stat; }
+	CommonStat& GetCommonStat() { return _commonStat; }
 
 public:
 	virtual void OnDameged(int32 damage);
 	
 protected:
-	CommonStat _stat;
+	CommonStat _commonStat;
 };
 

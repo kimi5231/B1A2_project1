@@ -5,7 +5,7 @@ struct statTOW
 {
 	float speed;
 	float chaseSpeed;
-
+	float idleTime;
 };
 
 class TiredOfficeWorker : public Monster
@@ -29,5 +29,6 @@ private:
 	virtual void UpdateAnimation() override;
 
 private:
-	
+	statTOW _stat;
+	float _sumTime = 0.f;
 };
