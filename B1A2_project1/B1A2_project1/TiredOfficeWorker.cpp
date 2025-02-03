@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "TiredOfficeWorker.h"
 #include "TimeManager.h"
+#include "ResourceManager.h"
 
 TiredOfficeWorker::TiredOfficeWorker()
 {
+	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 }
 
 TiredOfficeWorker::~TiredOfficeWorker()
@@ -63,4 +66,13 @@ void TiredOfficeWorker::TickRoaming()
 
 void TiredOfficeWorker::UpdateAnimation()
 {
+	switch (_state)
+	{
+	case ObjectState::Idle:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::Chase:
+		SetFlipbook(_flipbookChase[_dir]);
+		break;
+	}
 }

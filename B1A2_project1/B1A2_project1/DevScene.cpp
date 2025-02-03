@@ -26,6 +26,7 @@
 #include "FlipbookUI.h"
 #include "TitleScene.h"
 #include "InGamePanel.h"
+#include "TiredOfficeWorker.h"
 
 DevScene::DevScene()
 {
@@ -137,6 +138,20 @@ void DevScene::Init()
 			item->AddComponent(collider);
 		}
 		AddActor(item);
+	}
+
+	// Monster
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
+		fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
+
+		TiredOfficeWorker* TOW = new TiredOfficeWorker();
+		TOW->SetPos({100, 100});
+
+		AddActor(TOW);
 	}
 
 	Super::Init();

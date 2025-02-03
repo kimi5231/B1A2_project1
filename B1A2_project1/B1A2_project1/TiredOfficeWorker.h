@@ -29,6 +29,15 @@ private:
 	virtual void UpdateAnimation() override;
 
 private:
+	// Flipbook
+	Flipbook* _flipbookIdle[2] = {};
+	Flipbook* _flipbookNormalAttack[2] = {};
+	Flipbook* _flipbookHit[2] = {};
+	Flipbook* _flipbookDead[2] = {};
+	Flipbook* _flipbookChase[2] = {};
+	Flipbook* _flipbookRoaming[2] = {};
+
+private:
 	statTOW _stat;
 	float _sumTime = 0.f;
 };
