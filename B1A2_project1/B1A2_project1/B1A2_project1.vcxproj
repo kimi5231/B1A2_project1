@@ -146,7 +146,9 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="AmateurFencer.h" />
+    <ClInclude Include="AmateurFencer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="B1A2_project1.h" />
     <ClInclude Include="BehaviorTree.h" />
     <ClInclude Include="BoxCollider.h" />
@@ -209,7 +211,9 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="AmateurFencer.cpp" />
+    <ClCompile Include="AmateurFencer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="B1A2_project1.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
     <ClCompile Include="BoxCollider.cpp" />

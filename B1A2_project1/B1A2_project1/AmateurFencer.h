@@ -1,16 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-enum class AFState
-{
-	Idle,
-	Hurt,
-	Chase,
-	CloseAtk,
-	LongAtk,
-	Die
-};
-
 class AmateurFencer : public Monster
 {
 	using Super = Monster;
@@ -43,7 +33,6 @@ public:
 	BehaviorState BackStep();	// Action
 	BehaviorState CloseAtk();	// State
 
-	bool isPcDistanceMoreThan320px();
 	BehaviorState Dash();	// Action
 
 	bool isCloseAtkMoreThanLongAtk();	// Con
