@@ -260,6 +260,9 @@
     <ClInclude Include="AmateurFencer.h">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClInclude>
+    <ClInclude Include="TiredOfficeWorker.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -422,6 +425,9 @@
       <Filter>소스 파일\06. UI\Game</Filter>
     </ClCompile>
     <ClCompile Include="AmateurFencer.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="TiredOfficeWorker.cpp">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClCompile>
   </ItemGroup>

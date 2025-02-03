@@ -10,9 +10,10 @@ using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
 // Object Stat
-struct Stat
+struct CommonStat
 {
-	int hp;
+	int32 id;
+	int32 hp;
 };
 
 // 2Â÷¿ø º¤ÅÍ

@@ -13,24 +13,29 @@ public:
 	virtual void Render(HDC hdc) override;
 
 protected:
-	virtual void TickIdle() {};
-	virtual void TickMove() {};
-	virtual void TickDuckDown() {};
-	virtual void TickDuckDownMove() {};
-	virtual void TickJump() {};
-	virtual void TickNormalAttack() {};
-	virtual void TickSkill() {};
-	virtual void TickHang() {};
-	virtual void TickRelease() {};
-	virtual void TickHit() {};
-	virtual void TickDead() {};
-	virtual void UpdateAnimation() {};
+	virtual void TickIdle() override {};
+	virtual void TickMove() override {};
+	virtual void TickDuckDown() override {};
+	virtual void TickDuckDownMove() override {};
+	virtual void TickJump() override {};
+	virtual void TickNormalAttack() override {};
+	virtual void TickSkill() override {};
+	virtual void TickHang() override {};
+	virtual void TickRelease() override {};
+	virtual void TickHit() override {};
+	virtual void TickDead() override {};
+	virtual void TickChase() override {};
+	virtual void TickRoaming() override {};
+	virtual void UpdateAnimation() override {};
 
 public:
-	void SetStat(Stat stat) { _stat = stat; }
-	Stat& GetStat() { return _stat; }
+	void SetCommonStat(CommonStat stat) { _commonStat = stat; }
+	CommonStat& GetCommonStat() { return _commonStat; }
 
+public:
+	virtual void OnDameged(int32 damage);
+	
 protected:
-	Stat _stat;
+	CommonStat _commonStat;
 };
 
