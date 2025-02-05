@@ -27,6 +27,7 @@
 #include "TitleScene.h"
 #include "InGamePanel.h"
 #include "TiredOfficeWorker.h"
+#include "BrokenCopyMachine.h"
 
 DevScene::DevScene()
 {
@@ -142,16 +143,31 @@ void DevScene::Init()
 
 	// Monster
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
-		fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
+			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
-		TiredOfficeWorker* TOW = new TiredOfficeWorker();
-		TOW->SetPos({100, 100});
+			TiredOfficeWorker* TOW = new TiredOfficeWorker();
+			TOW->SetPos({ 100, 100 });
 
-		AddActor(TOW);
+			AddActor(TOW);
+		}
+		
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
+			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
+
+			BrokenCopyMachine* BCM = new BrokenCopyMachine();
+			BCM->SetPos({ 200, 200 });
+
+			AddActor(BCM);
+		}
 	}
 
 	Super::Init();

@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "BrokenCopyMachine.h"
+#include "ResourceManager.h"
 
 BrokenCopyMachine::BrokenCopyMachine()
 {
+	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
 }
 
 BrokenCopyMachine::~BrokenCopyMachine()
@@ -44,4 +47,10 @@ void BrokenCopyMachine::TickDead()
 
 void BrokenCopyMachine::UpdateAnimation()
 {
+	switch (_state)
+	{
+	case ObjectState::Idle:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	}
 }

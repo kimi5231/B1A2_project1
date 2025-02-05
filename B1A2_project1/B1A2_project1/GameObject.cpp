@@ -14,6 +14,7 @@ void GameObject::BeginPlay()
 	Super::BeginPlay();
 
 	// 처음 상태 지정
+	SetState(ObjectState::Dead);
 	SetState(ObjectState::Idle);
 }
 
