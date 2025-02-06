@@ -97,7 +97,6 @@ void Player::TickIdle()
 	{
 		SetDir(DIR_LEFT);
 		SetState(ObjectState::Move);
-		
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
 	{
@@ -118,6 +117,18 @@ void Player::TickIdle()
 		SetState(ObjectState::Jump);
 
 		_ySpeed = -_playerStat->jumpSpeed;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S))
+	{
+		SetState(ObjectState::DuckDown);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+	{
+		SetState(ObjectState::NormalAttack);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
+	{
+		SetState(ObjectState::Skill);
 	}
 	else
 	{
@@ -160,14 +171,61 @@ void Player::TickMove()
 
 		_ySpeed = -_playerStat->jumpSpeed;
 	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S))
+	{
+		SetState(ObjectState::DuckDownMove);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))	// Normal Attack
+	{
+		SetState(ObjectState::NormalAttack);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))	// Skill
+	{
+		SetState(ObjectState::Skill);
+	}
 }
 
 void Player::TickDuckDown()
 {
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		SetState(ObjectState::DuckDownMove);
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		SetState(ObjectState::DuckDownMove);
+	}
+	else if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::S))	// 버튼을 뗐을 때
+	{
+		SetState(ObjectState::Idle);
+	}
 }
 
 void Player::TickDuckDownMove()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	}
+	else 
+	{
+		SetState(ObjectState::DuckDown);
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::S))
+	{
+		SetState(ObjectState::Move);
+	}
 }
 
 void Player::TickJump()
@@ -205,10 +263,46 @@ void Player::TickJump()
 
 void Player::TickNormalAttack()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	// 좌우 이동도 가능하도록 추가
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	}
+
+	// 공격 코드 작성
+	// ...
+
+	SetState(ObjectState::Idle);
 }
 
 void Player::TickSkill()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	// 좌우 이동도 가능하도록 추가
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	}
+
+	// 스킬 코드 작성
+	// ...
+
+	SetState(ObjectState::Idle);
 }
 
 void Player::TickHang()
@@ -235,52 +329,48 @@ void Player::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		playerCollider->SetSize({ 23, 85 });
-
 		if (_keyPressed)
 			SetFlipbook(_flipbookPlayerIdle[_dir]);
 		else
 			SetFlipbook(_flipbookPlayerIdle[_dir]);		
 		break;
-	
 	case ObjectState::Move:
 		playerCollider->SetSize({67, 70 });
-	
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
-
-	//case PlayerState::DuckDown:
-	//	SetFlipbook(_flipbookPlayerDuckDown[_dir]);
-	//	break;
-	//case PlayerState::DuckDownMove:
-	//	SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
-	//	break;
+	case ObjectState::DuckDown:
+		playerCollider->SetSize({67, 40});
+		//SetFlipbook(_flipbookPlayerDuckDown[_dir]);
+		break;
+	case ObjectState::DuckDownMove:
+		playerCollider->SetSize({ 67, 40 });
+		//SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
+		break;
 	case ObjectState::Jump:
 		playerCollider->SetSize({ 34, 55 });
-
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
-
-	//case PlayerState::Hang:
+	//case ObjectState::Hang:
 	//	SetFlipbook(_flipbookPlayerHang[_dir]);
 	//	break;
-	//case PlayerState::Release:
+	//case ObjectState::Release:
 	//	SetFlipbook(_flipbookPlayerRelease[_dir]);
 	//	break;
-	//case PlayerState::Skill:
-	//	SetFlipbook(_flipbookPlayerSkill[_dir]);
-	//	break;
-	//case PlayerState::AttackNormal:
-	//	SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
-	//	break;
-	//case PlayerState::Hit:
+	case ObjectState::Skill:
+		//playerCollider->SetSize({})
+		//SetFlipbook(_flipbookPlayerSkill[_dir]);
+		break;
+	case ObjectState::NormalAttack:
+		//playerCollider->SetSize({})
+		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+		break;
+	//case ObjectState::Hit:
 	//	SetFlipbook(_flipbookPlayerHit[_dir]);
 	//	break;
-	//case PlayerState::Dead:
+	//case ObjectState::Dead:
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	//	break;
 	}
-
-
 }
 
 void Player::AddHealthPoint(int hp)
