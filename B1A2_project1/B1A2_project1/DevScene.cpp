@@ -160,10 +160,7 @@ void DevScene::Init()
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
 			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
 
-			BrokenCopyMachine* BCM = new BrokenCopyMachine();
-			BCM->SetPos({ 200, 200 });
-
-			AddActor(BCM);
+			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 });
 		}
 	}
 
