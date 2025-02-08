@@ -150,10 +150,7 @@ void DevScene::Init()
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
 			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
-			TiredOfficeWorker* TOW = new TiredOfficeWorker();
-			TOW->SetPos({ 100, 100 });
-
-			AddActor(TOW);
+			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 100 });
 		}
 		
 		{
