@@ -55,7 +55,6 @@ void Dialogue::LoadFile(const std::wstring& path)
 		std::getline(wiss, id, L',');
 		info.speakerID = std::stoi(id);
 
-		// 문자열 정수로 변환
 		std::wstring state;
 		std::getline(wiss, state, L',');
 		info.state = std::stoi(state);
@@ -63,6 +62,17 @@ void Dialogue::LoadFile(const std::wstring& path)
 		std::wstring dir;
 		std::getline(wiss, dir, L',');
 		info.dir = std::stoi(dir);
+
+		std::getline(wiss, info.type, L',');
+
+		// 문자열 실수로 변환
+		std::wstring x;
+		std::getline(wiss, x, L',');
+		info.posX = std::stof(x);
+
+		std::wstring y;
+		std::getline(wiss, y, L',');
+		info.posY = std::stof(y);
 
 		std::getline(wiss, info.speech, L',');
 		// 개행문자 처리

@@ -7,6 +7,9 @@ struct LineInfo
 	int32 speakerID;
 	int32 state;
 	int32 dir;
+	std::wstring type;
+	float posX;
+	float posY;
 	std::wstring speech;
 };
 
