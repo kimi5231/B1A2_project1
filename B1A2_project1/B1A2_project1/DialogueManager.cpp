@@ -5,6 +5,7 @@
 #include "Dialogue.h"
 #include "Actor.h"
 #include "Player.h"
+#include "GameObject.h"
 #include "DialogueComponent.h"
 
 DialogueManager::~DialogueManager()
@@ -83,15 +84,14 @@ void DialogueManager::ChangeSpeech()
 		// 대사에 맞는 객체 찾기
 		if (_event[_eventCount].speakerID == actor->GetID())
 		{
-			// Actor Type에 따라 조건 추가 예정
-			if (dynamic_cast<Player*>(actor))
+			if (dynamic_cast<GameObject*>(actor))
 			{
 				// Actor Setting
-				Player* player = dynamic_cast<Player*>(actor);
-				player->SetState(static_cast<ObjectState>(_event[_eventCount].state));
-				player->SetDir(static_cast<Dir>(_event[_eventCount].dir));
+				GameObject* object = dynamic_cast<GameObject*>(actor);
+				object->SetState(static_cast<ObjectState>(_event[_eventCount].state));
+				object->SetDir(static_cast<Dir>(_event[_eventCount].dir));
 				// DialogueComponent Setting
-				_currentComponent = player->GetDialogue();
+				_currentComponent = object->GetDialogue();
 				_currentComponent->SetState(DialogueState::Running);
 				_currentComponent->SetSpeech(_event[_eventCount].speech);
 			}

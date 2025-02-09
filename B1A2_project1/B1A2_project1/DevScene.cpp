@@ -28,6 +28,7 @@
 #include "InGamePanel.h"
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
+#include "DialogueComponent.h"
 
 DevScene::DevScene()
 {
@@ -46,6 +47,8 @@ void DevScene::Init()
 	LoadInventory();
 	LoadMenu();
 	// LoadSound();
+
+	std::vector<Actor*> actors;
 
 	// Tilemap
 	{
@@ -101,13 +104,7 @@ void DevScene::Init()
 		}
 
 		AddActor(player);
-		
-		// Start Dialogue
-		{
-			std::vector<Actor*> actors;
-			actors.push_back(player);
-			GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-		}
+		actors.push_back(player);
 
 		// InGame UI
 		InGamePanel* panel = new InGamePanel();
@@ -116,6 +113,15 @@ void DevScene::Init()
 
 		// player의 체력 변경 시 UI 업데이트 등록
 		player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	}
+
+	// Announcemet
+	{
+		GameObject* object = SpawnObject<GameObject>({ 500, 500 });
+		object->SetID(0);
+		DialogueComponent* dialogueComponent = new DialogueComponent();
+		object->AddComponent(dialogueComponent);
+		actors.push_back(object);
 	}
 
 	// Item
@@ -162,6 +168,11 @@ void DevScene::Init()
 
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 });
 		}
+	}
+
+	// Start Dialogue
+	{
+		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
 	}
 
 	Super::Init();

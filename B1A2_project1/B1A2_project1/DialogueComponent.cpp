@@ -60,9 +60,18 @@ void DialogueComponent::Render(HDC hdc)
 	// owner 사이즈 가져오기
 	FlipbookActor* owner = dynamic_cast<FlipbookActor*>(_owner);
 	Flipbook* flipbook = owner->GetFlipbook();
-	const FlipbookInfo& info = flipbook->GetInfo();
-	Vec2Int size = info.size;
-
+	Vec2Int size;
+	if (flipbook)
+	{
+		const FlipbookInfo& info = flipbook->GetInfo();
+		size = info.size;
+	}
+	else
+	{
+		// flipbook이 없는 경우
+		size = { 0, 0 };
+	}
+	
 	// 폰트 생성
 	HFONT hfont = Utils::MakeFont(_fontSize * winSizeAdjustmemt.y, L"DungGeunMo");
 
