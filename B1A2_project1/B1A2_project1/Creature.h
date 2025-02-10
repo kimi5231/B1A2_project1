@@ -34,6 +34,7 @@ public:
 
 public:
 	virtual void OnDameged(int32 damage);
+	virtual void OnKnockback(int32 knockback);
 	
 protected:
 	CommonStat _commonStat;
