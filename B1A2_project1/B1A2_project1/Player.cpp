@@ -208,9 +208,6 @@ void Player::TickMove()
 
 void Player::TickDuckDown()
 {
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::A))
 	{
 		SetDir(DIR_LEFT);
@@ -236,9 +233,6 @@ void Player::TickDuckDown()
 
 void Player::TickDuckDownMove()
 {
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
@@ -272,9 +266,6 @@ void Player::TickDuckDownMove()
 
 void Player::TickJump()
 {
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
@@ -315,9 +306,6 @@ void Player::TickJump()
 
 void Player::TickNormalAttack()
 {
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
@@ -346,9 +334,6 @@ void Player::TickNormalAttack()
 
 void Player::TickSkill()
 {
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
