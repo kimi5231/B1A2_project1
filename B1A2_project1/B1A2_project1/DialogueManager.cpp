@@ -50,6 +50,9 @@ void DialogueManager::Update()
 		_sumTime = 0.f;
 		EndDialogue();
 	}
+
+	if (_isMove)
+		Move();
 }
 
 void DialogueManager::StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors)
@@ -83,13 +86,16 @@ void DialogueManager::ChangeSpeech()
 	{
 		// 대사에 맞는 객체 찾기
 		if (_event[_eventCount].speakerID == actor->GetID())
-		{
+		{ 
 			if (dynamic_cast<GameObject*>(actor))
 			{
 				// Actor Setting
 				GameObject* object = dynamic_cast<GameObject*>(actor);
 				object->SetState(static_cast<ObjectState>(_event[_eventCount].state));
 				object->SetDir(static_cast<Dir>(_event[_eventCount].dir));
+				// 객체가 대화 중 이동을 하는 경우 체크
+				if (_event[_eventCount].posX > 0)
+					StartMove(object);
 				// DialogueComponent Setting
 				_currentComponent = object->GetDialogue();
 				_currentComponent->SetState(DialogueState::Running);
@@ -103,4 +109,30 @@ void DialogueManager::ChangeSpeech()
 		DialogueComponent* component = actor->GetDialogue();
 		component->SetState(DialogueState::Hidden);
 	}
+}
+
+void DialogueManager::StartMove(GameObject* object)
+{
+	_isMove = true;
+	_movingObject = object;
+}
+
+void DialogueManager::EndMove()
+{
+	_isMove = false;
+	_eventCount++;
+	ChangeSpeech();
+}
+
+void DialogueManager::Move()
+{
+	if (_event[_eventCount].posX <= 0)
+		EndMove();
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	Vec2 currentPos = _movingObject->GetPos();
+	_movingObject->SetPos({currentPos.x - 50 * deltaTime, currentPos.y});
+
+	_event[_eventCount].posX -= 50 * deltaTime;
 }

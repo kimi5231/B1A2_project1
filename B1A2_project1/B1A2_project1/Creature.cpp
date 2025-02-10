@@ -40,3 +40,8 @@ void Creature::OnDameged(int32 damage)
 
 	SetState(ObjectState::Hit);
 }
+
+void Creature::OnKnockback(int32 knockback)
+{
+
+}

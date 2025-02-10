@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameObject.h"
+#include "DialogueManager.h"
 
 GameObject::GameObject()
 {
@@ -21,6 +22,9 @@ void GameObject::BeginPlay()
 void GameObject::Tick()
 {
 	Super::Tick();
+
+	if (GET_SINGLE(DialogueManager)->GetIsDialouge())
+		return;
 
 	switch (_state)
 	{
