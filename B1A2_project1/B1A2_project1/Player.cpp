@@ -89,6 +89,9 @@ void Player::Render(HDC hdc)
 
 void Player::TickIdle()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	
 	_keyPressed = true;
@@ -137,10 +140,19 @@ void Player::TickIdle()
 		if (_state == ObjectState::Idle)
 			UpdateAnimation();
 	}
+	
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
 }
 
 void Player::TickMove()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
@@ -183,16 +195,25 @@ void Player::TickMove()
 	{
 		SetState(ObjectState::Skill);
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
 }
 
 void Player::TickDuckDown()
 {
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::A))
 	{
 		SetDir(DIR_LEFT);
 		SetState(ObjectState::DuckDownMove);
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::D))
 	{
 		SetDir(DIR_RIGHT);
 		SetState(ObjectState::DuckDownMove);
@@ -201,10 +222,20 @@ void Player::TickDuckDown()
 	{
 		SetState(ObjectState::Idle);
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
+
 }
 
 void Player::TickDuckDownMove()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
@@ -217,7 +248,8 @@ void Player::TickDuckDownMove()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
-	else 
+	
+	if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::A) || GET_SINGLE(InputManager)->GetButtonUp(KeyType::D))
 	{
 		SetState(ObjectState::DuckDown);
 	}
@@ -226,10 +258,20 @@ void Player::TickDuckDownMove()
 	{
 		SetState(ObjectState::Move);
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
+
 }
 
 void Player::TickJump()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
@@ -259,10 +301,20 @@ void Player::TickJump()
 		else
 			SetState(ObjectState::Idle);
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
+
  }
 
 void Player::TickNormalAttack()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
@@ -276,6 +328,12 @@ void Player::TickNormalAttack()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
 
 	// 공격 코드 작성
 	// ...
@@ -285,6 +343,9 @@ void Player::TickNormalAttack()
 
 void Player::TickSkill()
 {
+	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	// 좌우 이동도 가능하도록 추가
@@ -298,6 +359,12 @@ void Player::TickSkill()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
 
 	// 스킬 코드 작성
 	// ...
@@ -315,10 +382,19 @@ void Player::TickRelease()
 
 void Player::TickHit()
 {
+	// 피격 코드 작성
+	// ...
+
+	if (_playerStat->healthPoint > 0)
+		SetState(ObjectState::Idle);
+	else
+		SetState(ObjectState::Dead);
 }
 
 void Player::TickDead()
 {
+	// 죽는 코드 작성
+	// ...
 }
 
 void Player::UpdateAnimation()
@@ -364,12 +440,12 @@ void Player::UpdateAnimation()
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
 		break;
-	//case ObjectState::Hit:
+	case ObjectState::Hit:
 	//	SetFlipbook(_flipbookPlayerHit[_dir]);
-	//	break;
-	//case ObjectState::Dead:
+	break;
+	case ObjectState::Dead:
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
-	//	break;
+	break;
 	}
 }
 
