@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "CollisionManager.h"
 #include "ValueManager.h"
+#include "DialogueManager.h"
 #include "CameraComponent.h"
 #include "DialogueComponent.h"
 #include "Dialogue.h"
@@ -50,8 +51,10 @@ void Player::Tick()
 
 	// 대화 중에는 조작할 수 없도록 상태 변화 스킵
 	// 이 코드의 위치는 추후 수정될 수 있음
-	if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+	if (GET_SINGLE(DialogueManager)->GetIsDialouge())
 		return;
+	/*if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
+		return;*/
 
 	// F key가 활성화되면 획득할 수 있음
 	// 획득 후 F key와 Item을 화면에서 지움

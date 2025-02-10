@@ -28,6 +28,9 @@ void DialogueComponent::BeginPlay()
 
 void DialogueComponent::TickComponent()
 {
+	if (_speech == L"")
+		_state = DialogueState::Hidden;
+
 	if (_state == DialogueState::Hidden || _state == DialogueState::Wait)
 		return;
 
