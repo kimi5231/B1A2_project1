@@ -11,8 +11,7 @@ class ItemActor;
 
 struct PlayerStat
 {
-	int32 PlayerID = 0;	// A
-	int32 healthPoint = 0;	// B
+	CommonStat commonStat{}; // A, B
 	float runSpeed = 0;	// C
 	float crouchSpeed = 0;	// D
 	float jumpSpeed = 0;	// E
@@ -44,8 +43,8 @@ struct PlayerStat
 			{
 				switch (column)
 				{
-				case 0:this->PlayerID = std::stoi(cell); break;	// A
-				case 1: this->healthPoint = std::stoi(cell); break;	// B
+				case 0:this->commonStat.id = std::stoi(cell); break;	// A
+				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
 				case 2: this->runSpeed = std::stof(cell); break;	// C
 				case 3: this->crouchSpeed = std::stof(cell); break;	// D
 				case 4: this->jumpSpeed = std::stof(cell); break;	// E

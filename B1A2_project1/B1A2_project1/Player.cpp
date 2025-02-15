@@ -375,7 +375,7 @@ void Player::TickHit()
 	// 피격 코드 작성
 	// ...
 
-	if (_playerStat->healthPoint > 0)
+	if (_playerStat->commonStat.hp > 0)
 		SetState(ObjectState::Idle);
 	else
 		SetState(ObjectState::Dead);
@@ -441,24 +441,24 @@ void Player::UpdateAnimation()
 
 void Player::AddHealthPoint(int hp)
 {
-	if (_playerStat->healthPoint >= 100)
+	if (_playerStat->commonStat.hp >= 100)
 		return;
 
-	_playerStat->healthPoint += hp;
+	_playerStat->commonStat.hp += hp;
 
 	// 관찰자에게 알림
-	_healthObserver(_playerStat->healthPoint);
+	_healthObserver(_playerStat->commonStat.hp);
 }
 
 void Player::SubtractHealthPoint(int hp)
 {
-	if (_playerStat->healthPoint <= 0)
+	if (_playerStat->commonStat.hp <= 0)
 		return;
 
-	_playerStat->healthPoint -= hp;
+	_playerStat->commonStat.hp -= hp;
 
 	// 관찰자에게 알림
-	_healthObserver(_playerStat->healthPoint);
+	_healthObserver(_playerStat->commonStat.hp);
 }
 
 void Player::CalPixelPerSecond()
