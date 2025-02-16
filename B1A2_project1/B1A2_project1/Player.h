@@ -1,9 +1,6 @@
 #pragma once
 #include "Creature.h"
 #include "FlipbookActor.h"
-#include <fstream>
-#include <iostream>
-#include <string>
 
 class Flipbook;
 class BoxCollider;

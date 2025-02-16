@@ -3,16 +3,51 @@
 
 struct TiredOfficeWorkerStat
 {
-	CommonStat commonStat;
-	float healtemDropRate;
-	float speed;
-	float chaseSpeed;
-	int32 playerDetectionX;
-	int32 playerDetectionY;
-	int32 knockBackDistance;
-	int32 attackRange;
-	int32 attack;
-	float idleTime;
+	CommonStat commonStat;	// A, B
+	float healtemDropRate;	// C
+	float speed;	// D
+	float chaseSpeed;	// E
+	int32 playerDetectionX;	// F
+	int32 playerDetectionY;	// G
+	int32 knockBackDistance; // H
+	int32 attackRange;	// I
+	int32 attack;	// J
+	float idleTime;	// K
+
+	void LoadFile(const std::wstring& path)
+	{
+		std::ifstream ifs;
+		ifs.open(path);
+
+		std::string line;
+
+		if (std::getline(ifs, line))
+		{
+			std::istringstream lineStream(line);
+			std::string cell;
+			int column = 0;
+
+			while (std::getline(lineStream, cell, ','))
+			{
+				switch (column)
+				{
+				case 0:this->commonStat.id = std::stoi(cell); break;	// A
+				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
+				case 2: this->healtemDropRate = std::stof(cell); break;	// C
+				case 3: this->speed = std::stof(cell); break;	// D
+				case 4: this->chaseSpeed = std::stof(cell); break;	// E
+				case 5: this->playerDetectionX = std::stoi(cell); break;	// F
+				case 6: this->playerDetectionY = std::stoi(cell); break;	// G
+				case 7: this->knockBackDistance = std::stoi(cell); break;	// H
+				case 8: this->attackRange = std::stoi(cell); break;	// I
+				case 9: this->attack = std::stoi(cell); break;	// J
+				case 10: this->idleTime = std::stof(cell); break;	// K
+				}
+				++column;
+			}
+		}
+		ifs.close();
+	}
 };
 
 class TiredOfficeWorker : public Monster
