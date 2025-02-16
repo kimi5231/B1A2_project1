@@ -80,6 +80,6 @@ private:
 	Flipbook* _flipbookRoaming[2] = {};
 
 private:
-	TiredOfficeWorkerStat _stat;
+	TiredOfficeWorkerStat* _stat;
 	float _sumTime = 0.f;
 };

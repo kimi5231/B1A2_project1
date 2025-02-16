@@ -7,8 +7,9 @@ class Sound;
 class Tilemap;
 class Dialogue;
 class LineInfo;
-struct PlayerStat;
 class Item;
+struct PlayerStat;
+struct TiredOfficeWorkerStat;
 
 class ResourceManager
 {
@@ -43,11 +44,14 @@ public:
 	Dialogue* GetDialogue(const std::wstring& key) { return _dialogues[key]; }
 	Dialogue* LoadDialogue(const std::wstring& key, const std::wstring& path);
 
+	Item* GetItem(const std::wstring& key) { return _items[key]; }
+	Item* LoadItem(const std::wstring& key, const std::wstring& path);
+
 	PlayerStat* GetPlayerStat() { return _playerStat; }
 	PlayerStat* LoadPlayerStat(const std::wstring& path);
 
-	Item* GetItem(const std::wstring& key) { return _items[key]; }
-	Item* LoadItem(const std::wstring& key, const std::wstring& path);
+	TiredOfficeWorkerStat* GetTiredOfficeWorkerStat() { return _tiredOfficeWorkerStat; }
+	TiredOfficeWorkerStat* LoadTiredOfficeWorkerStat(const std::wstring& path);
 
 private:
 	HWND _hwnd;
@@ -60,7 +64,8 @@ private:
 	std::unordered_map<std::wstring, Sound*> _sounds;
 	std::unordered_map<std::wstring, Tilemap*> _tilemaps;
 	std::unordered_map<std::wstring, Dialogue*> _dialogues;
-	PlayerStat* _playerStat;
 	std::unordered_map<std::wstring, Item*> _items;
+	PlayerStat* _playerStat;
+	TiredOfficeWorkerStat* _tiredOfficeWorkerStat;
 };
 
