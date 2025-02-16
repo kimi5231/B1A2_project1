@@ -1,10 +1,17 @@
 #pragma once
 #include "Monster.h"
 
-struct statTOW
+struct TiredOfficeWorkerStat
 {
+	CommonStat commonStat;
+	float healtemDropRate;
 	float speed;
 	float chaseSpeed;
+	int32 playerDetectionX;
+	int32 playerDetectionY;
+	int32 knockBackDistance;
+	int32 attackRange;
+	int32 attack;
 	float idleTime;
 };
 
@@ -38,6 +45,6 @@ private:
 	Flipbook* _flipbookRoaming[2] = {};
 
 private:
-	statTOW _stat;
+	TiredOfficeWorkerStat _stat;
 	float _sumTime = 0.f;
 };
