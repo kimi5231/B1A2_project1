@@ -62,10 +62,10 @@ void GameObject::Tick()
 		TickDead();
 		break;
 	case ObjectState::Chase:
-		TickDead();
+		TickChase();
 		break;
 	case ObjectState::Roaming:
-		TickDead();
+		TickRoaming();
 		break;
 	}
 }

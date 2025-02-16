@@ -64,6 +64,7 @@ void TiredOfficeWorker::TickDead()
 
 void TiredOfficeWorker::TickChase()
 {
+	_pos.x += _stat->speed;
 }
 
 void TiredOfficeWorker::TickRoaming()
