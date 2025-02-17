@@ -8,35 +8,39 @@ public:
 	AmateurFencer();
 	virtual ~AmateurFencer() override;
 
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() override;		// Build BT
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
 public:
-	bool isHpDecrease();	// Con
-	bool isHpLessThanZero();	// Con
-	BehaviorState Die();	// State
-	BehaviorState Hurt();	// State
+	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
+	// ...
 
-	bool isPcDistanceMoreThan320px();	// Con
-	bool isHurtOrAtkState();	// Con
-	BehaviorState Chase();	// State
+	// Idle Sequence
+	BehaviorState is_cur_state_Idle();
+	BehaviorState Idle();
 
-	bool isChaseState();	// Con
-	bool is3sPass();	// Con
-	BehaviorState Idle();	// State
+	// Attacked Sequence
+	BehaviorState is_cur_state_hit();
+	BehaviorState Hit();
 
-	bool isChaseStateorPcInside320px();	// Con
+	// Chase Sequence
+	BehaviorState is_cur_state_chase();
+	BehaviorState Chase();
 
-	bool isPcDistanceLessThanorEqual120px();	// Con
-	BehaviorState Stab();	// Action(찌르기)
-	BehaviorState BackStep();	// Action
-	BehaviorState CloseAtk();	// State
+	// Close Attack Sequence
+	BehaviorState is_cur_state_close_atk();
+	BehaviorState Close_atk();
 
-	BehaviorState Dash();	// Action
+	// Long Attack Sequence
+	BehaviorState is_cur_state_long_atk();
+	BehaviorState Long_atk();
+	BehaviorState is_cur_state_dash();
+	BehaviorState Dash();
 
-	bool isCloseAtkMoreThanLongAtk();	// Con
-	BehaviorState fireSword();	// Action
-	BehaviorState LongAtk();	// State
+	// 참고) 멤버 변수
+	//Vec2 _speed = {};
+	//Dir _dir = DIR_LEFT;
+	//ObjectState _state = ObjectState::Idle;
 };
 

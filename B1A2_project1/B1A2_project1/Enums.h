@@ -111,4 +111,7 @@ enum class ObjectState
 	Dead,	// 사망
 	Chase,	// 추적
 	Roaming,	// 배회
+	Dash,	// 대쉬
+	LongAttack,	// 장거리 공격
+	CloseAttack,	// 근거리 공격
 };
