@@ -7,8 +7,9 @@
 #include "Tilemap.h"
 #include "Dialogue.h"
 #include "SoundManager.h"
-#include "Player.h"
 #include "Item.h"
+#include "Player.h"
+#include "TiredOfficeWorker.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -144,17 +145,6 @@ Dialogue* ResourceManager::LoadDialogue(const std::wstring& key, const std::wstr
 	return dialogue;
 }
 
-PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)
-{
-	std::filesystem::path fullpath = _resourcePath / path;
-
-	PlayerStat* playerStat = new PlayerStat();
-	playerStat->LoadFile(fullpath);
-	_playerStat = playerStat;
-
-	return playerStat; 
-}
-
 Item* ResourceManager::LoadItem(const std::wstring& key, const std::wstring& path)
 {
 	if (_items[key])
@@ -167,4 +157,26 @@ Item* ResourceManager::LoadItem(const std::wstring& key, const std::wstring& pat
 	_items[key] = item;
 
 	return item;
+}
+
+PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)
+{
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	PlayerStat* playerStat = new PlayerStat();
+	playerStat->LoadFile(fullpath);
+	_playerStat = playerStat;
+
+	return playerStat;
+}
+
+TiredOfficeWorkerStat* ResourceManager::LoadTiredOfficeWorkerStat(const std::wstring& path)
+{
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	TiredOfficeWorkerStat* tiredOfficeWorkerStat = new TiredOfficeWorkerStat();
+	tiredOfficeWorkerStat->LoadFile(fullpath);
+	_tiredOfficeWorkerStat = tiredOfficeWorkerStat;
+
+	return tiredOfficeWorkerStat;
 }

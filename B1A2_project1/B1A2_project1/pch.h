@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <functional>
 #include <assert.h>
+#include <fstream>
+#include <iostream>
 
 #include "Types.h"
 #include "Defines.h"
