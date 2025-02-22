@@ -10,6 +10,7 @@ class LineInfo;
 class Item;
 struct PlayerStat;
 struct TiredOfficeWorkerStat;
+struct AmateurFencerStat;
 
 class ResourceManager
 {
@@ -53,6 +54,9 @@ public:
 	TiredOfficeWorkerStat* GetTiredOfficeWorkerStat() { return _tiredOfficeWorkerStat; }
 	TiredOfficeWorkerStat* LoadTiredOfficeWorkerStat(const std::wstring& path);
 
+	AmateurFencerStat* GetAmateurFencerStat() { return _amateurFencerStat; }
+	AmateurFencerStat* LoadAmateurFencerStat(const std::wstring& path);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -67,5 +71,6 @@ private:
 	std::unordered_map<std::wstring, Item*> _items;
 	PlayerStat* _playerStat;
 	TiredOfficeWorkerStat* _tiredOfficeWorkerStat;
+	AmateurFencerStat* _amateurFencerStat;
 };
 

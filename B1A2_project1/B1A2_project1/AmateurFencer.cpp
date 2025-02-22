@@ -82,7 +82,8 @@ BehaviorState AmateurFencer::Idle()
 	// 플립북 변경
 	// ...
 
-	float distance;	// 플레이어와의 거리 - 수정 필요!!!
+	// 수정 필요(플레이어와의 거리)
+	int distance = 0;
 
 	if (distance <= 320)
 	{
@@ -133,7 +134,8 @@ BehaviorState AmateurFencer::is_cur_state_chase()
 
 BehaviorState AmateurFencer::Chase()
 {
-	int distance;
+	// 수정 필요(플레이어와의 거리)
+	int distance = 0;
 
 	if (distance > 120 && distance <= 320)
 	{
@@ -162,7 +164,8 @@ BehaviorState AmateurFencer::is_cur_state_close_atk()
 
 BehaviorState AmateurFencer::Close_atk()
 {
-	int distance;
+	// 수정 필요(플레이어와의 거리)
+	int distance = 0;
 
 	if (distance <= 120)
 	{
@@ -191,7 +194,8 @@ BehaviorState AmateurFencer::is_cur_state_long_atk()
 
 BehaviorState AmateurFencer::Long_atk()
 {
-	int distance;
+	// 수정 필요(플레이어와의 거리)
+	int distance = 0;
 
 	//if (std::abs(distance - 근.공.사) > std::abs(distance - 원.공.사))
 	//{
@@ -209,6 +213,8 @@ BehaviorState AmateurFencer::Long_atk()
 		return BehaviorState::SUCCESS;
 	}
 
+	// 수정 필요
+	return BehaviorState();
 }
 
 BehaviorState AmateurFencer::is_cur_state_dash()
@@ -224,4 +230,7 @@ BehaviorState AmateurFencer::Dash()
 	// Dash 애니메이션 한 번 재생 후
 
 	_state = ObjectState::Chase;	// 변경할 수도!?
+
+	// 수정 필요
+	return BehaviorState();
 }
