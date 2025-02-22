@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"	// 상속 받으면 전방 선언 의미 없으므로, 무조건 include로 상속 객체 받아야 함.
 
-class GameObject;
+class Actor;
 
 class DevScene : public Scene
 {
@@ -18,6 +18,7 @@ public:
 public:
 	// Resource Load
 	void LoadMap();
+	void LoadTilemap();
 	void LoadPlayer();
 	void LoadDialogue();
 	void LoadItem();
@@ -36,15 +37,16 @@ public:
 public:
 	// template func
 	template<typename T>
-	T* SpawnObject(Vec2 pos)
+	T* SpawnObject(Vec2 pos, LAYER_TYPE layer)
 	{
-		// GameObject가 맞는지 확인
-		auto isGameObject = std::is_convertible_v<T*, GameObject*>;
-		assert(isGameObject);
+		// Actor가 맞는지 확인
+		auto isActor = std::is_convertible_v<T*, Actor*>;
+		assert(isActor);
 
 		// Object 생성
 		T* object = new T();
 		object->SetPos(pos);
+		object->SetLayer(layer);
 		AddActor(object);
 
 		return object;

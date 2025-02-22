@@ -41,6 +41,7 @@ DevScene::~DevScene()
 void DevScene::Init()
 {
 	//LoadMap();
+	LoadTilemap();
 	LoadPlayer();
 	LoadDialogue();
 	LoadItem();
@@ -52,128 +53,122 @@ void DevScene::Init()
 
 	// Tilemap
 	{
-		// Tilemap Load
-		GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
 
-		TilemapActor* actor = new TilemapActor();
-		actor->SetPos({ 0, 0 });
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
-		actor->SetLayer(LAYER_TILEMAP);
-
-		AddActor(actor);
 	}
 
-	// Player
-	{
-		Player* player = new Player();
-		player->SetPos({ 400, 200 });
-		player->SetLayer(LAYER_PLAYER);
-		player->SetID(1);
-	
-		// Colider
-		{
-			BoxCollider* collider = new BoxCollider();
-			// 리셋 안 하면 모두 충돌함
-			collider->ResetCollisionFlag();	
+	//// Player
+	//{
+	//	Player* player = new Player();
+	//	player->SetPos({ 400, 200 });
+	//	player->SetLayer(LAYER_PLAYER);
+	//	player->SetID(1);
+	//
+	//	// Colider
+	//	{
+	//		BoxCollider* collider = new BoxCollider();
+	//		// 리셋 안 하면 모두 충돌함
+	//		collider->ResetCollisionFlag();	
 
-			// 나 자신을 설정
-			 collider->SetCollisionLayer(CLT_PLAYER);
+	//		// 나 자신을 설정
+	//		 collider->SetCollisionLayer(CLT_PLAYER);
 
-			// 충돌하고 싶은 객체 설정
-			collider->AddCollisionFlagLayer(CLT_ITEM);
-			collider->AddCollisionFlagLayer(CLT_GROUND);	
-			collider->AddCollisionFlagLayer(CLT_WALL);
+	//		// 충돌하고 싶은 객체 설정
+	//		collider->AddCollisionFlagLayer(CLT_ITEM);
+	//		collider->AddCollisionFlagLayer(CLT_GROUND);	
+	//		collider->AddCollisionFlagLayer(CLT_WALL);
 
-			collider->SetSize({ 23, 75 });
-			
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			player->AddComponent(collider);
-		}
+	//		collider->SetSize({ 23, 75 });
+	//		
+	//		GET_SINGLE(CollisionManager)->AddCollider(collider);
+	//		player->AddComponent(collider);
+	//	}
 
-		// Inventory
-		{
-			Inventory* inventory = new Inventory();
-			player->AddComponent(inventory);
+	//	// Inventory
+	//	{
+	//		Inventory* inventory = new Inventory();
+	//		player->AddComponent(inventory);
 
-			inventory->SetOwner(player);
-			
-			// Update에서 inventory의 멤버 변수에 접근하기 위해
-			_inventory = inventory;
-		}
+	//		inventory->SetOwner(player);
+	//		
+	//		// Update에서 inventory의 멤버 변수에 접근하기 위해
+	//		_inventory = inventory;
+	//	}
 
-		AddActor(player);
-		actors.push_back(player);
+	//	AddActor(player);
+	//	actors.push_back(player);
 
-		// InGame UI
-		InGamePanel* panel = new InGamePanel();
-		panel->SetPlayer(player);
-		AddPanel(panel);
+	//	// InGame UI
+	//	InGamePanel* panel = new InGamePanel();
+	//	panel->SetPlayer(player);
+	//	AddPanel(panel);
 
-		// player의 체력 변경 시 UI 업데이트 등록
-		player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
-	}
+	//	// player의 체력 변경 시 UI 업데이트 등록
+	//	player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	//}
 
-	// Announcemet
-	{
-		GameObject* object = SpawnObject<GameObject>({ 500, 500 });
-		object->SetID(0);
-		DialogueComponent* dialogueComponent = new DialogueComponent();
-		object->AddComponent(dialogueComponent);
-		actors.push_back(object);
-	}
+	//// Announcemet
+	//{
+	//	GameObject* object = SpawnObject<GameObject>({ 500, 500 });
+	//	object->SetID(0);
+	//	DialogueComponent* dialogueComponent = new DialogueComponent();
+	//	object->AddComponent(dialogueComponent);
+	//	actors.push_back(object);
+	//}
 
-	// Item
-	{
-		ItemActor* item = new ItemActor(ItemType::Match);
-		item->SetPos({ 500, 290 });		// 적당한 y 좌표 : 370, 200
-		item->SetLayer(LAYER_ITEM);
-		item->SetID(1);
+	//// Item
+	//{
+	//	ItemActor* item = new ItemActor(ItemType::Match);
+	//	item->SetPos({ 500, 290 });		// 적당한 y 좌표 : 370, 200
+	//	item->SetLayer(LAYER_ITEM);
+	//	item->SetID(1);
 
-		// Collider
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			
-			collider->SetCollisionLayer(CLT_ITEM);
-			collider->AddCollisionFlagLayer(CLT_PLAYER);
+	//	// Collider
+	//	{
+	//		BoxCollider* collider = new BoxCollider();
+	//		collider->ResetCollisionFlag();
+	//		
+	//		collider->SetCollisionLayer(CLT_ITEM);
+	//		collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 120, 55 });	
+	//		collider->SetSize({ 120, 55 });	
 
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			item->AddComponent(collider);
-		}
-		AddActor(item);
-	}
+	//		GET_SINGLE(CollisionManager)->AddCollider(collider);
+	//		item->AddComponent(collider);
+	//	}
+	//	AddActor(item);
+	//}
 
-	// Monster
-	{
-		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
+	//// Monster
+	//{
+	//	{
+	//		GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
+	//		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
 
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
-			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
+	//		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
+	//		fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 100 });
-		}
-		
-		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
+	//		TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 100 });
+	//	}
+	//	
+	//	{
+	//		GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
+	//		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
 
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
-			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
+	//		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
+	//		fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
 
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 });
-		}
-	}
+	//		BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 });
+	//	}
+	//}
 
-	// Start Dialogue
-	{
-		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}
+	//// Start Dialogue
+	//{
+	//	GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
+	//}
 
 	Super::Init();
 }
@@ -260,6 +255,11 @@ void DevScene::LoadMap()
 
 		AddActor(map);
 	}
+}
+
+void DevScene::LoadTilemap()
+{
+	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
 }
 
 void DevScene::LoadPlayer()
