@@ -49,8 +49,6 @@ void DevScene::Init()
 	LoadMenu();
 	// LoadSound();
 
-	std::vector<Actor*> actors;
-
 	// Tilemap
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
@@ -96,8 +94,6 @@ void DevScene::Init()
 			_inventory = inventory;
 		}
 
-		actors.push_back(player);
-
 		// InGame UI
 		InGamePanel* panel = new InGamePanel();
 		panel->SetPlayer(player);
@@ -110,11 +106,11 @@ void DevScene::Init()
 	// Announcemet
 	{
 		// Layer 추후 수정 예정
-		Actor* actor = SpawnObject<Actor>({ 500, 500 }, LAYER_PLAYER);
+		GameObject* object = SpawnObject<GameObject>({ 500, 500 }, LAYER_PLAYER);
 
 		DialogueComponent* dialogueComponent = new DialogueComponent();
-		actor->AddComponent(dialogueComponent);
-		actors.push_back(actor);
+		object->AddComponent(dialogueComponent);
+		object->SetID(21);
 	}
 
 	// Item
@@ -122,7 +118,7 @@ void DevScene::Init()
 		ItemActor* item = new ItemActor(ItemType::Match);
 		item->SetPos({ 500, 290 });		// 적당한 y 좌표 : 370, 200
 		item->SetLayer(LAYER_ITEM);
-		item->SetID(1);
+		item->SetID(0);
 
 		// Collider
 		{
@@ -166,7 +162,10 @@ void DevScene::Init()
 
 	// Start Dialogue
 	{
-		//GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
+		std::vector<Actor*> actors;
+		actors.push_back(GetActor(1));
+		actors.push_back(GetActor(21));
+		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
 	}
 
 	Super::Init();

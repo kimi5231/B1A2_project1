@@ -61,6 +61,18 @@ void Scene::Render(HDC hdc)
 		panel->Render(hdc);
 }
 
+Actor* Scene::GetActor(int32 id)
+{
+	for (std::vector<Actor*> actors : _actors)
+	{
+		for (Actor* actor : actors)
+		{
+			if (actor->GetID() == id)
+				return actor;
+		}
+	}
+}
+
 void Scene::AddActor(Actor* actor)
 {
 	if (!actor)

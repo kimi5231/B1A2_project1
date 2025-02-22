@@ -15,6 +15,10 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
+public:
+	Actor* GetActor(int32 id);
+
+protected:
 	void AddActor(Actor* actor);
 	void RemoveActor(Actor* actor);
 	void AddPanel(Panel* panel);

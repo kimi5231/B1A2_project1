@@ -19,7 +19,6 @@ public:
 
 public:
 	void SetDialogue(Dialogue* dialogue) { _dialogue = dialogue; }
-
 	bool GetIsDialouge() { return _isDialogue; }
 
 public:
@@ -38,7 +37,7 @@ private:
 	int32 _eventCount = 0;
 	std::vector<Actor*> _actors;
 	DialogueComponent* _currentComponent;
-	//
+	
 	bool _isDialogue = false;
 
 	bool _isMove = false;

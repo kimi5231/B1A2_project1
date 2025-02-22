@@ -2,11 +2,13 @@
 #include "DialogueManager.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "SceneManager.h"
 #include "Dialogue.h"
 #include "Actor.h"
 #include "Player.h"
 #include "GameObject.h"
 #include "DialogueComponent.h"
+#include "Scene.h"
 
 DialogueManager::~DialogueManager()
 {
@@ -94,7 +96,7 @@ void DialogueManager::ChangeSpeech()
 				object->SetState(static_cast<ObjectState>(_event[_eventCount].state));
 				object->SetDir(static_cast<Dir>(_event[_eventCount].dir));
 				// 객체가 대화 중 이동을 하는 경우 체크
-				if (_event[_eventCount].posX > 0)
+				if (_event[_eventCount].posX > 0 || _event[_eventCount].posY > 0)
 					StartMove(object);
 				// DialogueComponent Setting
 				_currentComponent = object->GetDialogue();
