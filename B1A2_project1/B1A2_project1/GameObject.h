@@ -30,7 +30,9 @@ protected:
 
 public:
 	void SetState(ObjectState state);
+	
 	void SetDir(Dir dir);
+	Dir GetDir() { return _dir; }
 
 protected:
 	Vec2 _speed = {};

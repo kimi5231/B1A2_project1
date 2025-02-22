@@ -128,13 +128,35 @@ void DialogueManager::EndMove()
 
 void DialogueManager::Move()
 {
-	if (_event[_eventCount].posX <= 0)
+	if (_event[_eventCount].posX <= 0 && _event[_eventCount].posY <= 0)
 		EndMove();
+	
+	if (!_isMove)
+		return;
+		
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();		
 
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-
+	float moveDis = 50 * deltaTime;
 	Vec2 currentPos = _movingObject->GetPos();
-	_movingObject->SetPos({currentPos.x - 50 * deltaTime, currentPos.y});
 
-	_event[_eventCount].posX -= 50 * deltaTime;
+	// Move
+	if (_event[_eventCount].posX > 0)
+	{
+		if (_movingObject->GetDir() == DIR_RIGHT)
+			_movingObject->SetPos({ currentPos.x + moveDis, currentPos.y });
+		else
+			_movingObject->SetPos({ currentPos.x - moveDis, currentPos.y });
+
+		_event[_eventCount].posX -= moveDis;
+	}
+
+	if (_event[_eventCount].posY > 0)
+	{
+		if (_movingObject->GetDir() == DIR_DOWN)
+			_movingObject->SetPos({ currentPos.x, currentPos.y + moveDis });
+		else
+			_movingObject->SetPos({ currentPos.x, currentPos.y - moveDis });
+
+		_event[_eventCount].posY -= moveDis;
+	}
 }

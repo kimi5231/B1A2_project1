@@ -38,6 +38,7 @@ void Dialogue::LoadFile(const std::wstring& path)
 		if (eventName == L"end")
 		{
 			_lines[key] = infos;
+			infos.clear();
 			continue;
 		}
 		else if (!eventName.empty())

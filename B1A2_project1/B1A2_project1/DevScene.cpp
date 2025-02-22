@@ -110,7 +110,7 @@ void DevScene::Init()
 
 		DialogueComponent* dialogueComponent = new DialogueComponent();
 		object->AddComponent(dialogueComponent);
-		object->SetID(21);
+		object->SetID(20);
 	}
 
 	// Item
@@ -164,8 +164,8 @@ void DevScene::Init()
 	{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
-		actors.push_back(GetActor(21));
-		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
+		actors.push_back(GetActor(20));
+		GET_SINGLE(DialogueManager)->StartDialogue(L"stage1_powerOffZipline", actors);
 	}
 
 	Super::Init();
