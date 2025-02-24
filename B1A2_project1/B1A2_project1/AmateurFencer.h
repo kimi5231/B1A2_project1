@@ -99,9 +99,24 @@ public:
 	BehaviorState is_cur_state_dash();
 	BehaviorState Dash();
 
+	virtual void UpdateAnimation() override;
+
 	// 참고) 멤버 변수
 	//Vec2 _speed = {};
 	//Dir _dir = DIR_LEFT;
 	//ObjectState _state = ObjectState::Idle;
+
+private:
+	// Flipbook
+	Flipbook* _flipbookIdle[2] = {};
+	Flipbook* _flipbookHit[2] = {};
+	Flipbook* _flipbookChase[2] = {};
+	Flipbook* _flipbookCloseAtk[2] = {};
+	Flipbook* _flipbookLongAtk[2] = {};
+	Flipbook* _flipbookDash[2] = {};
+	Flipbook* _flipbookDie[2] = {};
+
+private:
+	AmateurFencerStat* _stat;
 };
 

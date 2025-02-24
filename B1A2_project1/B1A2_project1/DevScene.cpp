@@ -28,6 +28,7 @@
 #include "InGamePanel.h"
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
+#include "AmateurFencer.h"
 #include "DialogueComponent.h"
 
 DevScene::DevScene()
@@ -157,6 +158,16 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
 
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
+		}
+
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
+			fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
+
+			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 100 }, LAYER_PLAYER);
 		}
 	}
 

@@ -2,9 +2,20 @@
 #include "AmateurFencer.h"
 #include "BehaviorTree.h"
 #include "Player.h"
+#include "ResourceManager.h"
 
 AmateurFencer::AmateurFencer()
 {
+	// Stat
+	AmateurFencerStat* amateurFencerStat = new AmateurFencerStat();
+	amateurFencerStat = GET_SINGLE(ResourceManager)->LoadAmateurFencerStat(L"DataBase\\amateurFencerStat.csv");
+	_stat = amateurFencerStat;
+
+	// Flipbook
+	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 }
 
 AmateurFencer::~AmateurFencer()
@@ -13,6 +24,8 @@ AmateurFencer::~AmateurFencer()
 
 void AmateurFencer::BeginPlay()
 {
+	Super::BeginPlay();
+
 	// Idle Sequence
 	Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_Idle(); });
 	Action* a1 = new Action("Idle", [&]() {return Idle(); });
@@ -63,10 +76,12 @@ void AmateurFencer::BeginPlay()
 
 void AmateurFencer::Tick()
 {
+	Super::Tick();
 }
 
 void AmateurFencer::Render(HDC hdc)
 {
+	Super::Render(hdc);
 }
 
 BehaviorState AmateurFencer::is_cur_state_Idle()
@@ -233,4 +248,17 @@ BehaviorState AmateurFencer::Dash()
 
 	// 수정 필요
 	return BehaviorState();
+}
+
+void AmateurFencer::UpdateAnimation()
+{
+	switch (_state)
+	{
+	case ObjectState::Idle:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::Chase:
+		SetFlipbook(_flipbookChase[_dir]);
+		break;
+	}
 }

@@ -104,3 +104,10 @@ BehaviorState Condition::run()
     return func();
 }
 
+Node::Node()
+{
+}
+
+Node::~Node()
+{
+}
