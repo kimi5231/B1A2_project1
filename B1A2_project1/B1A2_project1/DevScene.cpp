@@ -112,7 +112,7 @@ void DevScene::Init()
 
 		DialogueComponent* dialogueComponent = new DialogueComponent();
 		object->AddComponent(dialogueComponent);
-		object->SetID(20);
+		object->SetID(21);
 	}
 
 	// Item
@@ -192,8 +192,8 @@ void DevScene::Init()
 	{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
-		actors.push_back(GetActor(20));
-		GET_SINGLE(DialogueManager)->StartDialogue(L"stage1_powerOffZipline", actors);
+		actors.push_back(GetActor(21));
+		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
 	}
 
 	Super::Init();
@@ -337,7 +337,7 @@ void DevScene::LoadPlayer()
 void DevScene::LoadDialogue()
 {
 	// Script
-	GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\Dialogues.csv");
+	GET_SINGLE(ResourceManager)->LoadDialogue(L"Dialogue", L"Script\\test.csv");
 	Dialogue* dialogue = GET_SINGLE(ResourceManager)->GetDialogue(L"Dialogue");
 	GET_SINGLE(DialogueManager)->SetDialogue(dialogue);
 
