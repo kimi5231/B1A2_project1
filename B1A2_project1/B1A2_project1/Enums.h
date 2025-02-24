@@ -62,6 +62,12 @@ enum class DialogueState
 	Hidden,
 };
 
+enum class DialogueType
+{
+	Bubble,
+	CutScene,
+};
+
 // Item Á¾·ù
 enum class ItemType
 {

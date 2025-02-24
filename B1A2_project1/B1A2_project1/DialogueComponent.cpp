@@ -58,6 +58,67 @@ void DialogueComponent::Render(HDC hdc)
 
 	// 보정 변수 가져오기
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+
+	// 폰트 생성
+	HFONT hfont = Utils::MakeFont(_fontSize * winSizeAdjustmemt.y, L"DungGeunMo");
+
+	// 폰트 선택
+	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
+
+	// 텍스트 색깔 설정
+	::SetTextColor(hdc, RGB(255, 255, 255));
+
+	// 텍스트 배경 투명화
+	::SetBkMode(hdc, TRANSPARENT);
+
+	if(_type == DialogueType::Bubble)
+		PrintBubble(hdc);
+	else if(_type == DialogueType::CutScene)
+		PrintCutScene(hdc);
+
+	::SetTextColor(hdc, RGB(0, 0, 0));
+	::SelectObject(hdc, oldFont);
+	::DeleteObject(hfont);
+}
+
+void DialogueComponent::SetSpeech(const std::wstring& speech)
+{
+	_speech = speech;
+	SetCurrentSpeech(L"");
+}
+
+Vec2Int DialogueComponent::GetDialogueRectSize(HDC hdc, const std::wstring& str)
+{
+	// 문자열 스트림 생성
+	std::wistringstream wiss(str);
+
+	std::wstring text;
+	std::vector<std::wstring> texts;
+
+	// 개행문자를 기준으로 문자열 분리
+	while (std::getline(wiss, text, L'\n'))
+		texts.push_back(text);
+
+	SIZE textSize;
+	int32 max = 0;
+
+	// 가장 길이가 긴 문자열 길이 저장하기
+	for (const std::wstring& text : texts)
+	{
+		::GetTextExtentPoint32(hdc, text.c_str(), text.length(), &textSize);
+		if (max < textSize.cx)
+			max = textSize.cx;
+	}
+
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
+	return Vec2Int{ max, (int32)texts.size() * (int32)(_fontSize * ((float)winSize.y / (float)DefaultWinSizeY)) };
+}
+
+void DialogueComponent::PrintBubble(HDC hdc)
+{
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
 	// owner 사이즈 가져오기
@@ -74,18 +135,6 @@ void DialogueComponent::Render(HDC hdc)
 		// flipbook이 없는 경우
 		size = { 0, 0 };
 	}
-	
-	// 폰트 생성
-	HFONT hfont = Utils::MakeFont(_fontSize * winSizeAdjustmemt.y, L"DungGeunMo");
-
-	// 폰트 선택
-	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
-
-	// 텍스트 색깔 설정
-	::SetTextColor(hdc, RGB(255, 255, 255));
-
-	// 텍스트 배경 투명화
-	::SetBkMode(hdc, TRANSPARENT);
 
 	// 텍스트 출력 범위 사이즈 얻어오기
 	Vec2Int rectSize = GetDialogueRectSize(hdc, _speech);
@@ -93,7 +142,7 @@ void DialogueComponent::Render(HDC hdc)
 	// DialogueComponent 위치 지정
 	Vec2 ownerPos = _owner->GetPos() * winSizeAdjustmemt - cameraPosAdjustmemt;
 	Vec2 pos = { (ownerPos.x - (float)rectSize.x / 2), (ownerPos.y - (((float)size.y / 2 + 21.f) * winSizeAdjustmemt.y) - (float)rectSize.y) };
-	RECT rect = { pos.x, pos.y, pos.x + rectSize.x, pos.y + rectSize.y};
+	RECT rect = { pos.x, pos.y, pos.x + rectSize.x, pos.y + rectSize.y };
 
 	// 말풍선 출력
 	{
@@ -103,7 +152,7 @@ void DialogueComponent::Render(HDC hdc)
 			BubbleTile tile{ sprite, {pos.x - (CORNER_SIZEX * winSizeAdjustmemt.x),
 				pos.y - (CORNER_SIZEY * winSizeAdjustmemt.y)},
 				{CORNER_SIZEX + 1, CORNER_SIZEY + 1} };
-			
+
 			_cornerTiles.push_back(tile);
 		}
 		// RightTop
@@ -121,14 +170,14 @@ void DialogueComponent::Render(HDC hdc)
 			BubbleTile tile{ sprite, {pos.x - (CORNER_SIZEX * winSizeAdjustmemt.x),
 				pos.y + rectSize.y},
 				{CORNER_SIZEX + 1, CORNER_SIZEY} };
-			
+
 			_cornerTiles.push_back(tile);
 		}
 		// RightBottom
 		{
 			Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"DialogueCornerRightBottom");
 			BubbleTile tile{ sprite, {pos.x + rectSize.x, pos.y + rectSize.y}, {CORNER_SIZEX, CORNER_SIZEY} };
-			
+
 			_cornerTiles.push_back(tile);
 		}
 
@@ -286,42 +335,30 @@ void DialogueComponent::Render(HDC hdc)
 
 	// 텍스트 출력
 	Utils::DrawString(hdc, _currentSpeech, rect);
-
-	::SetTextColor(hdc, RGB(0, 0, 0));
-	::SelectObject(hdc, oldFont);
-	::DeleteObject(hfont);
 }
 
-void DialogueComponent::SetSpeech(const std::wstring& speech)
+void DialogueComponent::PrintCutScene(HDC hdc)
 {
-	_speech = speech;
-	SetCurrentSpeech(L"");
-}
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
-Vec2Int DialogueComponent::GetDialogueRectSize(HDC hdc, const std::wstring& str)
-{
-	// 문자열 스트림 생성
-	std::wistringstream wiss(str);
-
-	std::wstring text;
-	std::vector<std::wstring> texts;
-
-	// 개행문자를 기준으로 문자열 분리
-	while (std::getline(wiss, text, L'\n'))
-		texts.push_back(text);
-
-	SIZE textSize;
-	int32 max = 0;
-
-	// 가장 길이가 긴 문자열 길이 저장하기
-	for (const std::wstring& text : texts)
+	// CutScene 출력
 	{
-		::GetTextExtentPoint32(hdc, text.c_str(), text.length(), &textSize);
-		if (max < textSize.cx)
-			max = textSize.cx;
+		Texture* cutScene = GET_SINGLE(ResourceManager)->GetTexture(_currentCutScene);
+		::TransparentBlt(hdc,
+			0,
+			0,
+			cutScene->GetSize().x * winSizeAdjustmemt.x,
+			cutScene->GetSize().y * winSizeAdjustmemt.y,
+			cutScene->GetDC(),
+			0,
+			0,
+			cutScene->GetSize().x,
+			cutScene->GetSize().y,
+			cutScene->GetTransparent());
 	}
 
-	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
-
-	return Vec2Int{ max, (int32)texts.size() * (int32)(_fontSize * ((float)winSize.y / (float)DefaultWinSizeY)) };
+	// 텍스트 출력
+	Vec2Int pos{ static_cast<int32>(100 * winSizeAdjustmemt.x), static_cast<int32>(600 * winSizeAdjustmemt.y) };
+	Utils::DrawString(hdc, _currentSpeech, pos);
 }

@@ -101,6 +101,13 @@ void DialogueManager::ChangeSpeech()
 				// DialogueComponent Setting
 				_currentComponent = object->GetDialogue();
 				_currentComponent->SetState(DialogueState::Running);
+				if (_event[_eventCount].type == L"C")
+				{
+					_currentComponent->SetCurrentCutScene(_event[_eventCount].cutScene);
+					_currentComponent->SetType(DialogueType::CutScene);
+				}
+				else if (_event[_eventCount].type == L"D")
+					_currentComponent->SetType(DialogueType::Bubble);
 				_currentComponent->SetSpeech(_event[_eventCount].speech);
 			}
 

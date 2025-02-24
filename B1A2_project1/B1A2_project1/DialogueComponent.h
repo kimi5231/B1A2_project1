@@ -39,23 +39,36 @@ public:
 public:
 	void SetSpeech(const std::wstring& speech);
 	const std::wstring& GetSpeech() { return _speech; }
+
 	void SetCurrentSpeech(const std::wstring& speech) { _currentSpeech = speech; }
+
+	void SetCurrentCutScene(const std::wstring& cutScene) { _currentCutScene = cutScene; }
 
 	void SetState(DialogueState state) { _state = state; }
 	DialogueState GetState() { return _state; }
 
+	void SetType(DialogueType type) { _type = type; }
+	DialogueType GetType() { return _type; }
+
 	Vec2Int GetDialogueRectSize(HDC hdc, const std::wstring& str);
+
+private:
+	void PrintBubble(HDC hdc);
+	void PrintCutScene(HDC hdc);
 
 private:
 	std::wstring _speech;
 	std::wstring _currentSpeech;
 	int32 _speechCount = 0;
 	DialogueState _state = DialogueState::Hidden;
+	DialogueType _type = DialogueType::Bubble;
 	float _fontSize{};
 
 	std::vector<BubbleTile> _cornerTiles;
 	std::vector<BubbleTile> _widthTiles;
 	std::vector<BubbleTile> _heightTiles;
+
+	std::wstring _currentCutScene;
 
 	float _sumTime = 0.f;
 };
