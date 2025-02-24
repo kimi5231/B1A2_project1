@@ -12,6 +12,15 @@ struct PlayerStat;
 struct TiredOfficeWorkerStat;
 struct AmateurFencerStat;
 
+struct SaveData
+{
+	int32 monsterCnt;
+	// 몬스터 체력 - 동적할당 하기!!
+	int32 playerHp;
+	int32 skillPoint;
+	std::unordered_map<int32, int32> acquiredItems;	// // [아이템 ID, 개수]
+};
+
 class ResourceManager
 {
 public:
@@ -57,6 +66,7 @@ public:
 	AmateurFencerStat* GetAmateurFencerStat() { return _amateurFencerStat; }
 	AmateurFencerStat* LoadAmateurFencerStat(const std::wstring& path);
 
+	void SaveCurData();
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;

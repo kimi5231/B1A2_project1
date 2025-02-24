@@ -35,7 +35,9 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_ITEM,		// 2
 	CLT_GROUND,		// 3
 	CLT_WALL,		// 4
-	CLT_NONE,		// 5
+	CLT_SAVE_POINT,	// 5
+
+	CLT_NONE,		
 };
 
 // 플레이어 방향

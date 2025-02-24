@@ -192,3 +192,16 @@ AmateurFencerStat* ResourceManager::LoadAmateurFencerStat(const std::wstring& pa
 
 	return amateurFencerStat;
 }
+
+void ResourceManager::SaveCurData()
+{
+	// 몬스터 수
+	
+	// 몬스터 체력
+	
+	// 플레이어 체력
+	
+	// 스킬 포인트
+	
+	// 소지 아이템
+}
