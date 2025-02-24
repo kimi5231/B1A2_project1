@@ -14,8 +14,21 @@ AmateurFencer::AmateurFencer()
 	// Flipbook
 	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
-	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
-	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+
+	//_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
+	//_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
+	//_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitRight");
+	//_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitLeft");
+	//_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseRight");
+	//_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseLeft");
+	//_flipbookCloseAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkRight");
+	//_flipbookCloseAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkLeft");
+	//_flipbookLongAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkRight");
+	//_flipbookLongAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkLeft");
+	//_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashRight");
+	//_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashLeft");
+	//_flipbookDie[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieRight");
+	//_flipbookDie[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieLeft");
 }
 
 AmateurFencer::~AmateurFencer()
@@ -54,9 +67,11 @@ void AmateurFencer::BeginPlay()
 	Sequence* CloseAtkSequence = new Sequence();
 	CloseAtkSequence->addChild(c4);
 	CloseAtkSequence->addChild(a4);
+	
 	// Long Atk Sequence
 	Condition* c5 = new Condition("is cur State LongAtk?", [&]() {return is_cur_state_long_atk(); });
 	Action* a5 = new Action("CloseAtk", [&]() {return Long_atk(); });
+	
 	// Dash Sequence
 	Condition* c6 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
 	Action* a6 = new Action("Dash", [&]() {return Dash(); });
@@ -72,11 +87,24 @@ void AmateurFencer::BeginPlay()
 	Selector* AttackSelector = new Selector();
 	AttackSelector->addChild(CloseAtkSequence);
 	AttackSelector->addChild(LongAtkSequence);
+
+	// rootNode ¼³Á¤
+	Selector* RootSelector = new Selector();
+	RootSelector->addChild(IdleSequence);
+	RootSelector->addChild(HitSequence);
+	RootSelector->addChild(ChaseSequence);
+	RootSelector->addChild(AttackSelector);
+	_rootNode = RootSelector;
 }
 
 void AmateurFencer::Tick()
 {
-	Super::Tick();
+	//Super::Tick();
+
+	if (_rootNode)
+	{
+		_rootNode->run();
+	}
 }
 
 void AmateurFencer::Render(HDC hdc)

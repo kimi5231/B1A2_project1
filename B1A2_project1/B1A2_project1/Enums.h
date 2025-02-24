@@ -31,10 +31,11 @@ enum class ColliderType
 enum COLLISION_LAYER_TYPE : uint8
 {
 	CLT_PLAYER,		// 0
-	CLT_ITEM,		// 1
-	CLT_GROUND,		// 2
-	CLT_WALL,		// 3
-	CLT_NONE,
+	CLT_MONSTER,	// 1
+	CLT_ITEM,		// 2
+	CLT_GROUND,		// 3
+	CLT_WALL,		// 4
+	CLT_NONE,		// 5
 };
 
 // 플레이어 방향

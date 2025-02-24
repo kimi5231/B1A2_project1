@@ -75,6 +75,7 @@ void DevScene::Init()
 
 			// 충돌하고 싶은 객체 설정
 			collider->AddCollisionFlagLayer(CLT_ITEM);
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
 			collider->AddCollisionFlagLayer(CLT_GROUND);	
 			collider->AddCollisionFlagLayer(CLT_WALL);
 
@@ -168,6 +169,22 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
 
 			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 100 }, LAYER_PLAYER);
+
+			// Collider
+			{
+				BoxCollider* collider = new BoxCollider();
+				collider->ResetCollisionFlag();
+				collider->SetCollisionLayer(CLT_MONSTER);
+
+				collider->AddCollisionFlagLayer(CLT_PLAYER);
+				collider->AddCollisionFlagLayer(CLT_GROUND);
+				collider->AddCollisionFlagLayer(CLT_WALL);
+
+				collider->SetSize({ 31, 77 });
+
+				GET_SINGLE(CollisionManager)->AddCollider(collider);
+				AF->AddComponent(collider);
+			}
 		}
 	}
 

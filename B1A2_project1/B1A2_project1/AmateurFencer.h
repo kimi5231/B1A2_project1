@@ -2,6 +2,7 @@
 #include "Monster.h"
 
 enum class BehaviorState;
+class Node;
 
 struct AmateurFencerStat
 {
@@ -118,5 +119,6 @@ private:
 
 private:
 	AmateurFencerStat* _stat;
+	Node* _rootNode;	// BT 최상위 노드
 };
 
