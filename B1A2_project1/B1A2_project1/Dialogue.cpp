@@ -66,6 +66,8 @@ void Dialogue::LoadFile(const std::wstring& path)
 
 		std::getline(wiss, info.type, L',');
 
+		std::getline(wiss, info.cutScene, L',');
+
 		// 문자열 실수로 변환
 		std::wstring x;
 		std::getline(wiss, x, L',');

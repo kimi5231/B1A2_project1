@@ -8,6 +8,7 @@ struct LineInfo
 	int32 state;
 	int32 dir;
 	std::wstring type;
+	std::wstring cutScene;
 	float posX;
 	float posY;
 	std::wstring speech;
