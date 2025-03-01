@@ -16,6 +16,33 @@ struct CommonStat
 	int32 hp;
 };
 
+struct MonsterStat
+{
+	int32 id;
+	int32 hp;
+	float healItemDropRate;
+	float speed;
+	int32 knockBackDistance;
+	int32 backStepDistance;
+	float dashSpeed;
+	int32 dashDistance;
+	float chaseSpeed;
+	float idleTime;
+	int32 playerDetectionX;
+	int32 playerDetectionY;
+	int32 closeAttackRange;
+	int32 closeAttack;
+	int32 longAttackRange;
+	int32 longAttack;
+	int32 projectileSpeed;
+	int32 projectileCount;
+	// 삭제 예정
+	std::wstring projectileTypeWidth;
+	std::wstring projectileTypeHighet;
+	float longAttackTime;
+	int32 slashAttack;
+};
+
 // 2차원 벡터
 struct Vec2
 {
