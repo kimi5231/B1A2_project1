@@ -546,7 +546,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// Save Point에 충돌하면 저장하기
 	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
 	{
-		GET_SINGLE(ResourceManager)->SaveCurData();
+		//GET_SINGLE(ResourceManager)->SaveCurData();
 	}
 
 	AdjustCollisionPos(b1, b2);

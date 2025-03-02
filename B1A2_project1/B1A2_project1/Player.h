@@ -97,6 +97,7 @@ public:
 	void AddHealthPoint(int hp);
 	void SubtractHealthPoint(int hp);
 
+	int32 GetHp() { return _playerStat->commonStat.hp; }
 public: 
 	// 현실에서의 단위를 픽셀 단위로 바꿈
 	void CalPixelPerSecond();

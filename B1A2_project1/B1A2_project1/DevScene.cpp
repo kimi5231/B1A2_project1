@@ -63,7 +63,8 @@ void DevScene::Init()
 	{
 		Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
 		player->SetID(1);
-	
+		_player = player;	
+
 		// Colider
 		{
 			BoxCollider* collider = new BoxCollider();
@@ -149,6 +150,10 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 100 }, LAYER_PLAYER);
+			
+			// 중간 저장할 데이터 
+			_monsterHp[TOW->GetCommonStat().id] = TOW->GetCommonStat().hp;
+			_monsterCnt++;
 		}
 		
 		{
@@ -159,6 +164,9 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
 
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
+
+			_monsterCnt++;
+			_monsterHp[BCM->GetCommonStat().id] = BCM->GetCommonStat().hp;
 		}
 
 		{
@@ -185,6 +193,9 @@ void DevScene::Init()
 				GET_SINGLE(CollisionManager)->AddCollider(collider);
 				AF->AddComponent(collider);
 			}
+
+			_monsterCnt++;
+			_monsterHp[AF->GetCommonStat().id] = AF->GetCommonStat().hp;
 		}
 	}
 
@@ -521,6 +532,42 @@ void DevScene::LoadSound()
 		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
 		sound->Play(true);
 	}
+}
+
+void DevScene::SaveCurData()
+{
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv";
+	std::ofstream file(path);
+
+	if (!file.is_open())
+	{
+		std::cerr << "파일을 열 수 없습니다...";
+		return;
+	}
+
+	// 플레이어 체력
+	file << _player->GetHp() << ",";
+
+	// 몬스터 수
+	file << _monsterCnt << ",";
+
+	// 몬스터 ID와 체력
+	for (const auto& pair : _monsterHp)
+	{
+		file << pair.first << "," << pair.second << ",";
+	}
+
+	// 스킬 포인트
+	file << _skillPoint << ",";
+
+	// 아이템 정보
+	for (const auto& [itemID, itemCount] : _player->GetAquireItems())
+	{
+		file << itemID << "," << itemCount << ",";
+	}
+	
+	file << "\n";
+	file.close();
 }
 
 void DevScene::SetSceneState()

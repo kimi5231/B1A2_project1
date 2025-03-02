@@ -26,6 +26,8 @@ public:
 	void LoadMenu();
 	void LoadSound();
 
+	// Save
+	void SaveCurData();
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
 
@@ -55,4 +57,9 @@ public:
 
 private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
+	
+	int32 _monsterCnt = 0;
+	std::unordered_map<int32, int32> _monsterHp;	// [ID, hp], 몬스터 죽으면 소멸자에서 벡터 내용 제거하기
+	int32 _skillPoint = 0;
+	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 };
