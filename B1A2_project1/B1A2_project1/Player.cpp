@@ -132,7 +132,10 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 	{
-		SetState(ObjectState::NormalAttack);
+		// if (거리 계산)
+		SetState(ObjectState::CloseAttack);
+
+		// SetState(ObjectState::LongAttack);
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
@@ -194,7 +197,7 @@ void Player::TickMove()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))	// Normal Attack
 	{
-		SetState(ObjectState::NormalAttack);
+		SetState(ObjectState::CloseAttack);
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))	// Skill
 	{
@@ -306,7 +309,35 @@ void Player::TickJump()
 
  }
 
-void Player::TickNormalAttack()
+void Player::TickCloseAttack()
+{
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	// 좌우 이동도 가능하도록 추가
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
+		SetDir(DIR_LEFT);
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
+		SetDir(DIR_RIGHT);
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	}
+
+	//if (공격 받음)
+	//{
+	//	SubtractHealthPoint(깎을hp);
+	//	SetState(ObjectState::Hit);
+	//}
+
+	// 공격 코드 작성
+	// ...
+
+	SetState(ObjectState::Idle);
+}
+
+void Player::TickLongAttack()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
@@ -426,10 +457,15 @@ void Player::UpdateAnimation()
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerSkill[_dir]);
 		break;
-	case ObjectState::NormalAttack:
+	case ObjectState::CloseAttack:
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
 		break;
+	case ObjectState::LongAttack:
+		//playerCollider->SetSize({})
+		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+		break;
+
 	case ObjectState::Hit:
 	//	SetFlipbook(_flipbookPlayerHit[_dir]);
 	break;

@@ -81,7 +81,8 @@ private:
 	virtual void TickDuckDown() override;
 	virtual void TickDuckDownMove() override;
 	virtual void TickJump() override;
-	virtual void TickNormalAttack() override;
+	virtual void TickCloseAttack() override;
+	virtual void TickLongAttack() override;
 	virtual void TickSkill() override;
 	virtual void TickHang() override;
 	virtual void TickRelease() override;
@@ -122,7 +123,8 @@ private:
 	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
 	Flipbook* _flipbookPlayerJump[2] = {};
 	Flipbook* _flipbookPlayerSkill[2] = {};
-	Flipbook* _flipbookPlayerNormalAttack[2] = {};
+	Flipbook* _flipbookPlayerCloseAttack[2] = {};
+	Flipbook* _flipbookPlayerLongAttack[2] = {};
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
 	Flipbook* _flipbookPlayerHit[2] = {};

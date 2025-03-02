@@ -33,7 +33,11 @@ void BrokenCopyMachine::TickIdle()
 {
 }
 
-void BrokenCopyMachine::TickNormalAttack()
+void BrokenCopyMachine::TickCloseAttack()
+{
+}
+
+void BrokenCopyMachine::TickLongAttack()
 {
 }
 

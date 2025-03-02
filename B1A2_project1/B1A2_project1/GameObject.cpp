@@ -43,8 +43,11 @@ void GameObject::Tick()
 	case ObjectState::Jump:
 		TickJump();
 		break;
-	case ObjectState::NormalAttack:
-		TickNormalAttack();
+	case ObjectState::CloseAttack:
+		TickCloseAttack();
+		break;
+	case ObjectState::LongAttack:
+		TickLongAttack();
 		break;
 	case ObjectState::Skill:
 		TickSkill();

@@ -114,7 +114,8 @@ enum class ObjectState
 	DuckDown,	// 숙이기
 	DuckDownMove,	// 숙이면서 달리기
 	Jump,	// 점프
-	NormalAttack,	// 기본 공격
+	CloseAttack,	// 기본 공격
+	LongAttack,
 	Skill,	// 스킬
 	Hang,	// 매달리기
 	Release,	// 놓기
@@ -123,6 +124,4 @@ enum class ObjectState
 	Chase,	// 추적
 	Roaming,	// 배회
 	Dash,	// 대쉬
-	LongAttack,	// 장거리 공격
-	CloseAttack,	// 근거리 공격
 };

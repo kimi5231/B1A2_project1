@@ -50,7 +50,11 @@ void TiredOfficeWorker::TickIdle()
 	}
 }
 
-void TiredOfficeWorker::TickNormalAttack()
+void TiredOfficeWorker::TickCloseAttack()
+{
+}
+
+void TiredOfficeWorker::TickLongAttack()
 {
 }
 

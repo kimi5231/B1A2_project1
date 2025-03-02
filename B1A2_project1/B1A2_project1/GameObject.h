@@ -18,7 +18,8 @@ protected:
 	virtual void TickDuckDown() {};
 	virtual void TickDuckDownMove() {};
 	virtual void TickJump() {};
-	virtual void TickNormalAttack() {};
+	virtual void TickCloseAttack() {};
+	virtual void TickLongAttack() {};
 	virtual void TickSkill() {};
 	virtual void TickHang() {};
 	virtual void TickRelease() {};

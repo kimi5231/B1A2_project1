@@ -16,7 +16,8 @@ protected:
 	virtual void TickIdle() override {};
 	virtual void TickMove() override {};
 	virtual void TickJump() override {};
-	virtual void TickNormalAttack() override {};
+	virtual void TickCloseAttack() override {};
+	virtual void TickLongAttack() override {};
 	virtual void TickSkill() override {};
 	virtual void TickHit() override {};
 	virtual void TickDead() override {};
