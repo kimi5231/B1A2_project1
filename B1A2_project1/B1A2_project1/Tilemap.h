@@ -3,10 +3,11 @@
 
 enum TILE_TYPE
 {
-	TILE_O,
-	TILE_X,
-	TILE_G,
-	TILE_W,
+	TILE_O,		// 갈 수 있는 곳
+	TILE_X,		// 닿으면 죽는 곳
+	TILE_G,		// Ground
+	TILE_W,		// Wall
+	TILE_S,		// Save Point
 };
 
 struct Tile

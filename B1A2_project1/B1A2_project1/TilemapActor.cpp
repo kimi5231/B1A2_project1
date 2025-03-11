@@ -48,6 +48,8 @@ void TilemapActor::BeginPlay()
 				collider->SetCollisionLayer(CLT_GROUND); break;
 			case 3:
 				collider->SetCollisionLayer(CLT_WALL); break;
+			case 4:		// 세이브 포인트
+				break;
 			}
 			
 			// 충돌할 객체
@@ -86,6 +88,7 @@ void TilemapActor::Render(HDC hdc)
 	Sprite* spriteX = GET_SINGLE(ResourceManager)->GetSprite(L"TileX");
 	Sprite* spriteG = GET_SINGLE(ResourceManager)->GetSprite(L"TileG");
 	Sprite* spriteW = GET_SINGLE(ResourceManager)->GetSprite(L"TileW");
+	Sprite* spriteS = GET_SINGLE(ResourceManager)->GetSprite(L"TileS");
 
 	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
@@ -168,6 +171,19 @@ void TilemapActor::Render(HDC hdc)
 					TILE_SIZEY,
 					spriteW->GetTransparent());
 				break;
+			case 4:
+				::TransparentBlt(hdc,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
+					spriteS->GetDC(),
+					spriteS->GetPos().x,
+					spriteS->GetPos().y,
+					TILE_SIZEX,
+					TILE_SIZEY,
+					spriteS->GetTransparent());
+				break;
 			}
 		}
 	}
@@ -203,6 +219,15 @@ void TilemapActor::TickPicking()
 		{
 			if (GetTile())
 				GetTile()->value = TILE_O;
+		}
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftCtrl))
+	{
+		// LeftAlt + LeftMouse => S
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_S;
 		}
 	}
 	else
