@@ -42,13 +42,15 @@ void TilemapActor::BeginPlay()
 
 			switch (tiles[y][x].value)
 			{
-			case 1:		// 닿으면 죽는 곳
+			case 1:		
+				collider->SetCollisionLayer(CLT_GAME_OVER); break;
 				break;
 			case 2:
 				collider->SetCollisionLayer(CLT_GROUND); break;
 			case 3:
 				collider->SetCollisionLayer(CLT_WALL); break;
-			case 4:		// 세이브 포인트
+			case 4:		
+				collider->SetCollisionLayer(CLT_SAVE_POINT); break;
 				break;
 			}
 			
