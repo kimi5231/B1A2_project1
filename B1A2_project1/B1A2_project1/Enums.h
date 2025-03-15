@@ -71,14 +71,6 @@ enum class DialogueType
 	CutScene,
 };
 
-// Item Á¾·ù
-enum class ItemType
-{
-	Pencil,
-	Match,
-	Key,
-};
-
 // F_key 
 enum class FKeyState
 {

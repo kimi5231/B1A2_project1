@@ -1,17 +1,19 @@
 #pragma once
+#include <unordered_map>
 #include "ItemActor.h"
 #include "FlipbookActor.h"
 
 class Player;
 class Item;
 class Collider;
+struct ItemInfo;
 
 class ItemActor : public FlipbookActor
 {
 	using Super = FlipbookActor;
 
 public:
-	ItemActor(ItemType itemType);
+	ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& items);
 	virtual ~ItemActor() override;
 
 	virtual void BeginPlay() override;

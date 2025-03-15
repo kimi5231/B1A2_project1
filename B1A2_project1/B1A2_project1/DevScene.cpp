@@ -20,6 +20,7 @@
 #include "DialogueManager.h"
 #include "SceneManager.h"
 #include "ItemActor.h"
+#include "Item.h"
 #include "Inventory.h"
 #include "Button.h"
 #include "Panel.h"
@@ -117,11 +118,12 @@ void DevScene::Init()
 	}
 
 	// Item
+	Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 	{
-		ItemActor* item = new ItemActor(ItemType::Match);
+		ItemActor* item = new ItemActor(300100, itemData->GetItems());
 		item->SetPos({ 500, 290 });		// Àû´çÇÑ y ÁÂÇ¥ : 370, 200
 		item->SetLayer(LAYER_ITEM);
-		item->SetID(0);
+		// item->SetID(0);
 
 		// Collider
 		{

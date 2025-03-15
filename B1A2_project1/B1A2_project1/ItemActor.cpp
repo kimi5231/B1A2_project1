@@ -10,23 +10,51 @@
 #include "Item.h"
 #include "InputManager.h"
 
-ItemActor::ItemActor(ItemType itemType)
+ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& items)
 {
-	// Item
-	if (itemType == ItemType::Key)
+	// items에서 item 정보 찾기
+	auto it = items.find(itemID);
+	if (it != items.end())
 	{
-		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
-		_itemID = 1001;
-	}
-	else if (itemType == ItemType::Pencil)
-	{
-		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");
-		_itemID = 1002;
-	}
-	else if (itemType == ItemType::Match)
-	{
-		_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_matchInMap");
-		_itemID = 1003;
+		ItemInfo* itemInfo = it->second;
+
+		// 플립북 설정
+		switch (itemID)
+		{
+		case 300100:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
+			break;
+		case 310100:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");
+			break;
+		//case 310200:
+		//	break;
+		//case 320100:
+		//	break;
+		//case 320001:
+		//	break;
+		//case 320002:
+		//	break;
+		//case 320003:
+		//	break;
+		//case 320004:
+		//	break;
+		//case 320005:
+		//	break;
+		//case 320006:
+		//	break;
+		//case 320007:
+		//	break;
+		//case 320008:
+		//	break;
+		//case 320009:
+		//	break;
+		//case 320010:
+		//	break;
+		//case 320011:
+		//	break;
+
+		}
 	}
 
 	// F_key
