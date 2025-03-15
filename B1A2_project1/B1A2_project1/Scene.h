@@ -28,7 +28,5 @@ protected:
 	std::vector<Actor*> _actors[LAYER_MAXCOUNT];
 	std::vector<Panel*> _panels;
 
-	Inventory* _inventory = nullptr;
-
 	SceneState _sceneState = SceneState::Play;
 };

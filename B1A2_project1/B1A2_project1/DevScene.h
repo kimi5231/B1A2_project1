@@ -57,7 +57,8 @@ public:
 
 private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
-	
+	Inventory* _inventory = nullptr;
+
 	int32 _monsterCnt = 0;
 	std::unordered_map<int32, int32> _monsterHp;	// [ID, hp], 몬스터 죽으면 소멸자에서 벡터 내용 제거하기
 	int32 _skillPoint = 0;
