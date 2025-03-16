@@ -71,6 +71,9 @@ private:
 	virtual void UpdateAnimation() override;
 
 private:
+	void CalPixelPerSecond();
+
+private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
 	Flipbook* _flipbookNormalAttack[2] = {};
@@ -81,5 +84,7 @@ private:
 
 private:
 	TiredOfficeWorkerStat* _stat;
+	float _moveDistance;
+	float _currentMoveDistance;
 	float _sumTime = 0.f;
 };

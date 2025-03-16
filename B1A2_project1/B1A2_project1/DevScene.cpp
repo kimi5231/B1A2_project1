@@ -202,12 +202,12 @@ void DevScene::Init()
 	}
 
 	// Start Dialogue
-	{
+	/*{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
 		actors.push_back(GetActor(21));
 		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}
+	}*/
 
 	Super::Init();
 }
