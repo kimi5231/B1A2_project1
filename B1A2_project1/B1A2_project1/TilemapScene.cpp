@@ -56,7 +56,7 @@ void TilemapScene::Init()
 	// TilemapActor
 	{
 		Tilemap* tilemap = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-		tilemap->SetMapSize({ 160, 36 });
+		tilemap->SetMapSize({ 155, 36 });
 		TilemapActor* actor = new TilemapActor();
 		actor->SetPos({ 0, 0 });
 		actor->SetShowDebug(true);
