@@ -37,6 +37,6 @@ public:
 
 protected:
 	Vec2 _speed = {};
-	Dir _dir = DIR_LEFT;
+	Dir _dir = DIR_RIGHT;
 	ObjectState _state = ObjectState::Idle;
 };

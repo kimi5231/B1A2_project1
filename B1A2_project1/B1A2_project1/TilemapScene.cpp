@@ -20,7 +20,7 @@ TilemapScene::~TilemapScene()
 void TilemapScene::Init()
 {
 	// Texture
-	GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage2.bmp");
+	GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage3.bmp");
 	GET_SINGLE(ResourceManager)->LoadTexture(L"Tile", L"Sprite\\Map\\Tile.bmp", RGB(55, 255, 0));
 
 	// Sprite
@@ -56,7 +56,7 @@ void TilemapScene::Init()
 	// TilemapActor
 	{
 		Tilemap* tilemap = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-		tilemap->SetMapSize({ 222, 43 });
+		tilemap->SetMapSize({ 77, 49 });
 		TilemapActor* actor = new TilemapActor();
 		actor->SetPos({ 0, 0 });
 		actor->SetShowDebug(true);

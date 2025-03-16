@@ -3,12 +3,12 @@
 
 struct TiredOfficeWorkerStat
 {
-	CommonStat commonStat;	// A, B
+	int32 id;	// A
+	int32 hp;	// B
 	float healtemDropRate;	// C
 	float speed;	// D
 	float chaseSpeed;	// E
-	int32 playerDetectionX;	// F
-	int32 playerDetectionY;	// G
+	Vec2Int playerDetection;	// F, G
 	int32 knockBackDistance; // H
 	int32 attackRange;	// I
 	int32 attack;	// J
@@ -31,13 +31,13 @@ struct TiredOfficeWorkerStat
 			{
 				switch (column)
 				{
-				case 0:this->commonStat.id = std::stoi(cell); break;	// A
-				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
+				case 0:this->id = std::stoi(cell); break;	// A
+				case 1: this->hp = std::stoi(cell); break;	// B
 				case 2: this->healtemDropRate = std::stof(cell); break;	// C
 				case 3: this->speed = std::stof(cell); break;	// D
 				case 4: this->chaseSpeed = std::stof(cell); break;	// E
-				case 5: this->playerDetectionX = std::stoi(cell); break;	// F
-				case 6: this->playerDetectionY = std::stoi(cell); break;	// G
+				case 5: this->playerDetection.x = std::stoi(cell); break;	// F
+				case 6: this->playerDetection.y = std::stoi(cell); break;	// G
 				case 7: this->knockBackDistance = std::stoi(cell); break;	// H
 				case 8: this->attackRange = std::stoi(cell); break;	// I
 				case 9: this->attack = std::stoi(cell); break;	// J
@@ -64,12 +64,14 @@ public:
 private:
 	virtual void TickIdle() override;
 	virtual void TickCloseAttack() override;
-	virtual void TickLongAttack() override;
 	virtual void TickHit() override;
 	virtual void TickDead() override;
 	virtual void TickChase() override;
 	virtual void TickRoaming() override;
 	virtual void UpdateAnimation() override;
+
+private:
+	void CalPixelPerSecond();
 
 private:
 	// Flipbook
@@ -82,5 +84,7 @@ private:
 
 private:
 	TiredOfficeWorkerStat* _stat;
+	float _moveDistance;
+	float _currentMoveDistance;
 	float _sumTime = 0.f;
 };
