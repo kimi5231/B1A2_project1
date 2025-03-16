@@ -499,7 +499,7 @@ void Player::SubtractHealthPoint(int hp)
 
 void Player::CalPixelPerSecond()
 {
-	float PIXEL_PER_METER = (10.0 / 0.3);
+	float PIXEL_PER_METER = (10.0 / 0.2);
 
 	// run
 	{
