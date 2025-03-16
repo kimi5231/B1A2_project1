@@ -584,6 +584,72 @@ void DevScene::SaveCurData()
 
 void DevScene::LoadGameData()
 {
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1/Resources/Database/SaveData.csv";
+
+	std::ifstream file(path);
+
+	if (!file.is_open())
+	{
+		std::cerr << "파일을 열 수 없습니다: " << path << std::endl;
+		return;
+	}
+
+	std::string line;
+	if (!std::getline(file, line))
+	{
+		std::cerr << "파일이 비어 있거나 데이터를 읽을 수 없습니다." << std::endl;
+		return;
+	}
+
+	// ',' 기준으로 데이터 분할
+	std::stringstream ss(line);
+	std::vector<std::string> tokens;
+	std::string token;
+
+	while (std::getline(ss, token, ','))
+	{
+		tokens.push_back(token);
+	}
+
+	size_t index = 0;
+
+	// 현재 스테이지 번호
+	_curStageNum = std::stoi(tokens[index++]);
+
+	// 플레이어 체력
+	_player->SetHp(std::stoi(tokens[index++]));
+
+	// 몬스터 ID와 체력 읽기
+	_monsterHpData.clear();
+	while (index < tokens.size() - 2) // 최소한 스킬포인트와 아이템 한 개가 남아야 함
+	{
+		int32 monsterID = std::stoi(tokens[index++]);
+		int32 monsterHp = std::stoi(tokens[index++]);
+		_monsterHpData[monsterID] = monsterHp;
+	}
+
+	// 스킬 포인트
+	_skillPoint = std::stoi(tokens[index++]);
+
+	// 아이템 정보 읽기
+	if (std::stoi(tokens[index++]) == 0)
+	{
+		_player->ClearAcquireItems();
+	}
+	else
+	{
+		std::unordered_map<int32, int32> tempItems;
+		while (index < tokens.size())
+		{
+			int32 itemID = std::stoi(tokens[index++]);
+			int32 itemCount = std::stoi(tokens[index++]);
+			tempItems[itemID] = itemCount;
+		}
+		_player->SetAcquireItems(tempItems);
+	}
+
+	file.close();
+
 }
 
 void DevScene::SetSceneState()
@@ -592,6 +658,7 @@ void DevScene::SetSceneState()
 	{
 		if (_sceneState == SceneState::Play)
 		{
+			LoadGameData();
 			_sceneState = SceneState::Menu;
 		}
 		else if (_sceneState == SceneState::Menu)

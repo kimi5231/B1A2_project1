@@ -99,6 +99,7 @@ public:
 	void SubtractHealthPoint(int hp);
 
 	int32 GetHp() { return _playerStat->commonStat.hp; }
+	void SetHp(int32 hp) { _playerStat->commonStat.hp = hp; }
 public: 
 	// 현실에서의 단위를 픽셀 단위로 바꿈
 	void CalPixelPerSecond();
@@ -114,7 +115,8 @@ public:
 	// Item
 	void RemoveItem(int32 id, int32 count);
 	std::unordered_map<int32, int32>& GetAquireItems() { return _acquiredItems; }
-
+	void SetAcquireItems(const std::unordered_map<int32, int32>& items) { _acquiredItems = items; }		// 저장 데이터 불러올 때 사용
+	void ClearAcquireItems() { _acquiredItems.clear(); }
 private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};
