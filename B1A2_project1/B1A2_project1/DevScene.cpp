@@ -51,6 +51,9 @@ void DevScene::Init()
 	LoadMenu();
 	// LoadSound();
 
+	// 현재 스테이지 번호
+	_curStageNum = 1;
+
 	// Tilemap
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
@@ -153,9 +156,9 @@ void DevScene::Init()
 
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 100 }, LAYER_PLAYER);
 			
-			// 중간 저장할 데이터 
-			_monsterHp[TOW->GetCommonStat().id] = TOW->GetCommonStat().hp;
-			_monsterCnt++;
+			// 중간 저장할 데이터, hp는 중간에 업데이트 필요
+			// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
+			_monsterHpData[20101] = 100;
 		}
 		
 		{
@@ -167,8 +170,7 @@ void DevScene::Init()
 
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
 
-			_monsterCnt++;
-			_monsterHp[BCM->GetCommonStat().id] = BCM->GetCommonStat().hp;
+			_monsterHpData[20201] = 100;
 		}
 
 		{
@@ -196,8 +198,7 @@ void DevScene::Init()
 				AF->AddComponent(collider);
 			}
 
-			_monsterCnt++;
-			_monsterHp[AF->GetCommonStat().id] = AF->GetCommonStat().hp;
+			_monsterHpData[20301] = 100;
 		}
 	}
 
@@ -547,29 +548,42 @@ void DevScene::SaveCurData()
 		return;
 	}
 
+	// 현재 스테이지 번호
+	file << _curStageNum << ",";
+
+
 	// 플레이어 체력
 	file << _player->GetHp() << ",";
 
-	// 몬스터 수
-	file << _monsterCnt << ",";
 
 	// 몬스터 ID와 체력
-	for (const auto& pair : _monsterHp)
+	for (const auto& [monsterID, monsterHp] : _monsterHpData )
 	{
-		file << pair.first << "," << pair.second << ",";
+		file << monsterID << "," << monsterHp << ",";
 	}
 
 	// 스킬 포인트
 	file << _skillPoint << ",";
 
-	// 아이템 정보
-	for (const auto& [itemID, itemCount] : _player->GetAquireItems())
+	// 아이템 정보 - 없으면 0 저장
+	if (_player->GetAquireItems().empty())
 	{
-		file << itemID << "," << itemCount << ",";
+		file << 0 << ",";
+	}
+	else
+	{
+		for (const auto& [itemID, itemCount] : _player->GetAquireItems())
+		{
+			file << itemID << "," << itemCount << ",";
+		}
 	}
 	
 	file << "\n";
 	file.close();
+}
+
+void DevScene::LoadGameData()
+{
 }
 
 void DevScene::SetSceneState()

@@ -28,6 +28,7 @@ public:
 
 	// Save
 	void SaveCurData();
+	void LoadGameData();
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
 
@@ -59,8 +60,13 @@ private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
 	Inventory* _inventory = nullptr;
 
-	int32 _monsterCnt = 0;
-	std::unordered_map<int32, int32> _monsterHp;	// [ID, hp], 몬스터 죽으면 소멸자에서 벡터 내용 제거하기
+	// 현재 스테이지
+	int32 _curStageNum;
+
+	// 몬스터 수: stage1 - BCM 2, TOW 4, stage2 - BCM 3, TOW 6, AF 3, stage3 - BCM 2, TOW 6, AF 4
+	std::unordered_map<int32, int32> _monsterHpData;	// [몬스터 ID, 몬스터 hp]
+
 	int32 _skillPoint = 0;
+	
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 };
