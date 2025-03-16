@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "TiredOfficeWorker.h"
+#include "BoxCollider.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
+#include "CollisionManager.h"
 
 TiredOfficeWorker::TiredOfficeWorker()
 {
@@ -13,6 +15,22 @@ TiredOfficeWorker::TiredOfficeWorker()
 	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+
+	// Collider Component
+	{
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_MONSTER);
+
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+		collider->AddCollisionFlagLayer(CLT_GROUND);
+		collider->AddCollisionFlagLayer(CLT_WALL);
+
+		collider->SetSize({ 31, 77 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
 }
 
 TiredOfficeWorker::~TiredOfficeWorker()
@@ -51,10 +69,6 @@ void TiredOfficeWorker::TickIdle()
 }
 
 void TiredOfficeWorker::TickCloseAttack()
-{
-}
-
-void TiredOfficeWorker::TickLongAttack()
 {
 }
 
