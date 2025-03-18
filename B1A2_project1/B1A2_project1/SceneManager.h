@@ -15,7 +15,7 @@ public:
 
 public:
 	void ChangeScene(SceneType sceneType);	// 원하는 Scene으로 바꿈
-	//Scene* GetCurrentScene() { return _scene; }
+	Scene* GetCurrentScene() { return _scene; }
 
 private:
 	Scene* _scene;	// 현재 실행하고 있는 Scene

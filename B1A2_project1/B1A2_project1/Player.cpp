@@ -12,6 +12,7 @@
 #include "BoxCollider.h"
 #include "ItemActor.h"
 #include "Item.h"
+#include "DevScene.h"
 
 Player::Player()
 {
@@ -38,6 +39,8 @@ Player::Player()
 	// Dialogue Component
 	DialogueComponent* dialogueComponent = new DialogueComponent();
 	AddComponent(dialogueComponent);
+
+	// CurrentScene
 }
 
 Player::~Player()
@@ -581,10 +584,12 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	// Save Point에 충돌하면 저장하기
+	// Save Point에 충돌하면 저장하기(밀어내기 X)
 	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
 	{
-		//GET_SINGLE(ResourceManager)->SaveCurData();
+		_devScene->SaveCurData();
+
+		return;
 	}
 
 	AdjustCollisionPos(b1, b2);

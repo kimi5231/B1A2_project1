@@ -83,6 +83,7 @@ void DevScene::Init()
 			collider->AddCollisionFlagLayer(CLT_MONSTER);
 			collider->AddCollisionFlagLayer(CLT_GROUND);	
 			collider->AddCollisionFlagLayer(CLT_WALL);
+			collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 
 			collider->SetSize({ 23, 75 });
 			
@@ -108,6 +109,9 @@ void DevScene::Init()
 
 		// player의 체력 변경 시 UI 업데이트 등록
 		player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+
+		// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
+		player->SetCurrentScene(this);
 	}
 
 	// Announcemet

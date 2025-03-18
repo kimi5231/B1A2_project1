@@ -6,6 +6,8 @@ class Flipbook;
 class BoxCollider;
 class ItemActor;
 
+class DevScene;
+
 struct PlayerStat
 {
 	CommonStat commonStat{}; // A, B
@@ -100,6 +102,11 @@ public:
 
 	int32 GetHp() { return _playerStat->commonStat.hp; }
 	void SetHp(int32 hp) { _playerStat->commonStat.hp = hp; }
+
+public:
+	// Player가 Save Point에 충돌했을 때 스테이지 정보 저장을 위해 씬 정보가 필요함, 다른 씬 추가 시 수정 필요
+	void SetCurrentScene(DevScene* devScene) { _devScene = devScene; }
+
 public: 
 	// 현실에서의 단위를 픽셀 단위로 바꿈
 	void CalPixelPerSecond();
@@ -136,6 +143,7 @@ private:
 	bool _keyPressed = false;
 
 	PlayerStat* _playerStat = {};
+
 	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
 
 	// Jump
@@ -149,5 +157,7 @@ private:
 	// 획득한 아이템
 	ItemActor* _collideItem = {};	// unordered map에 저장하기 위해, 충돌한 아이템을 담을 변수
 	std::unordered_map<int32, int32> _acquiredItems;		// [아이템 ID, 개수]
+
+	DevScene* _devScene = nullptr;	// 현재 씬 데이터 정보 저장을 위해 필요, 다른 게임 Scene 추가시 수정 필요
 };
 
