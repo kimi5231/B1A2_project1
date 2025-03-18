@@ -66,7 +66,6 @@ private:
 	
 	// 몬스터 수: stage1 - BCM 2, TOW 4, stage2 - BCM 3, TOW 6, AF 3, stage3 - BCM 2, TOW 6, AF 4
 	std::unordered_map<int32, int32> _monsterHpData;	// [몬스터 ID, 몬스터 hp]
-	int32 _skillPoint = 0;
 	
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 };

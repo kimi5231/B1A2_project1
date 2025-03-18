@@ -573,15 +573,14 @@ void DevScene::SaveCurData()
 	// 플레이어 체력
 	file << _player->GetHp() << ",";
 
+	// 스킬 포인트
+	file << _player->GetSkillPoint() << ",";
 
 	// 몬스터 ID와 체력
 	for (const auto& [monsterID, monsterHp] : _monsterHpData )
 	{
 		file << monsterID << "," << monsterHp << ",";
 	}
-
-	// 스킬 포인트
-	file << _skillPoint << ",";
 
 	// 아이템 정보 - 없으면 0 저장
 	if (_player->GetAquireItems().empty())
@@ -637,6 +636,9 @@ void DevScene::LoadGameData()
 	// 플레이어 체력
 	_player->SetHp(std::stoi(tokens[index++]));
 
+	// 스킬 포인트
+	_player->SetSkillPoint(std::stoi(tokens[index++]));
+
 	// 몬스터 ID와 체력 읽기
 	_monsterHpData.clear();
 	while (index < tokens.size() - 2) // 최소한 스킬포인트와 아이템 한 개가 남아야 함
@@ -645,9 +647,6 @@ void DevScene::LoadGameData()
 		int32 monsterHp = std::stoi(tokens[index++]);
 		_monsterHpData[monsterID] = monsterHp;
 	}
-
-	// 스킬 포인트
-	_skillPoint = std::stoi(tokens[index++]);
 
 	// 아이템 정보 읽기
 	if (std::stoi(tokens[index++]) == 0)
@@ -676,7 +675,6 @@ void DevScene::SetSceneState()
 	{
 		if (_sceneState == SceneState::Play)
 		{
-			LoadGameData();
 			_sceneState = SceneState::Menu;
 		}
 		else if (_sceneState == SceneState::Menu)
