@@ -16,7 +16,8 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 	auto it = items.find(itemID);
 	if (it != items.end())
 	{
-		ItemInfo* itemInfo = it->second;
+		_itemInfo = it->second;
+		//_itemInfo->ID = itemID;
 
 		// ÇÃ¸³ºÏ ¼³Á¤
 		switch (itemID)

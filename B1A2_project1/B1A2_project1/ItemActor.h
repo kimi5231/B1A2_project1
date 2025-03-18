@@ -2,11 +2,10 @@
 #include <unordered_map>
 #include "ItemActor.h"
 #include "FlipbookActor.h"
+#include "Item.h"
 
 class Player;
-class Item;
 class Collider;
-struct ItemInfo;
 
 class ItemActor : public FlipbookActor
 {
@@ -21,8 +20,8 @@ public:
 	virtual void Render(HDC hdc) override;
 
 public:
-	int32 GetItemID() { return _itemID; }
-	void SetItemID(int32 id) { _itemID = id; }
+	int32 GetItemID() { return _itemInfo->ID; }
+	void SetItemID(int32 id) { _itemInfo->ID = id; }
 
 	Player* GetOwner() { return _owner; }
 	void SetOwner(Player* player) { _owner = player; }
@@ -40,7 +39,7 @@ protected:
 	Player* _owner = nullptr;
 
 private:
-	int32 _itemID = {};
+	ItemInfo* _itemInfo = nullptr;
 
 	Flipbook* _flipbookItemInMap = {};
 	Flipbook* _flipbookFKey = {};
