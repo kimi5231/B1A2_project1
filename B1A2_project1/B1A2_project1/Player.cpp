@@ -28,6 +28,8 @@ Player::Player()
 	_flipbookPlayerMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerMoveLeft");
 	_flipbookPlayerJump[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerJumpRight");
 	_flipbookPlayerJump[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerJumpLeft");
+	_flipbookPlayerDuckDown[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDuckDownRight");
+	_flipbookPlayerDuckDown[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDuckDownLeft");
 
 	// Camera Component
 	CameraComponent* camera = new CameraComponent();
@@ -436,12 +438,12 @@ void Player::UpdateAnimation()
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
 	case ObjectState::DuckDown:
-		playerCollider->SetSize({67, 40});
-		//SetFlipbook(_flipbookPlayerDuckDown[_dir]);
+		playerCollider->SetSize({35, 45});
+		SetFlipbook(_flipbookPlayerDuckDown[_dir]);
 		break;
 	case ObjectState::DuckDownMove:
 		playerCollider->SetSize({ 67, 40 });
-		//SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
+		SetFlipbook(_flipbookPlayerDuckDown[_dir]);
 		break;
 	case ObjectState::Jump:
 		playerCollider->SetSize({ 34, 55 });
