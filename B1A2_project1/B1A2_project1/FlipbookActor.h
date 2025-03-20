@@ -19,6 +19,8 @@ public:
 	Flipbook* GetFlipbook() { return _flipbook; }
 	void Reset();
 
+	int32 GetIdx() { return _idx; }
+
 private:
 	Flipbook* _flipbook = nullptr;
 	float _sumTime = 0.f;

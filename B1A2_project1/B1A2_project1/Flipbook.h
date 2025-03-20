@@ -24,6 +24,8 @@ public:
 	void SetInfo(const FlipbookInfo& info) { _info = info; }
 	const FlipbookInfo& GetInfo() { return _info; }
 
+	int32 GetFlipbookEndNum() { return _info.end; }
+
 private:
 	FlipbookInfo _info;
 };

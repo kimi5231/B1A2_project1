@@ -64,55 +64,53 @@ void DevScene::Init()
 	}
 
 	// Player
+	Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+	player->SetID(1);
+	_player = player;	
+
+	// Colider
 	{
-		Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
-		player->SetID(1);
-		_player = player;	
+		BoxCollider* collider = new BoxCollider();
+		// 리셋 안 하면 모두 충돌함
+		collider->ResetCollisionFlag();	
 
-		// Colider
-		{
-			BoxCollider* collider = new BoxCollider();
-			// 리셋 안 하면 모두 충돌함
-			collider->ResetCollisionFlag();	
+		// 나 자신을 설정
+			collider->SetCollisionLayer(CLT_PLAYER);
 
-			// 나 자신을 설정
-			 collider->SetCollisionLayer(CLT_PLAYER);
+		// 충돌하고 싶은 객체 설정
+		collider->AddCollisionFlagLayer(CLT_ITEM);
+		collider->AddCollisionFlagLayer(CLT_MONSTER);
+		collider->AddCollisionFlagLayer(CLT_GROUND);	
+		collider->AddCollisionFlagLayer(CLT_WALL);
+		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 
-			// 충돌하고 싶은 객체 설정
-			collider->AddCollisionFlagLayer(CLT_ITEM);
-			collider->AddCollisionFlagLayer(CLT_MONSTER);
-			collider->AddCollisionFlagLayer(CLT_GROUND);	
-			collider->AddCollisionFlagLayer(CLT_WALL);
-			collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
-
-			collider->SetSize({ 23, 75 });
+		collider->SetSize({ 23, 75 });
 			
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			player->AddComponent(collider);
-		}
-
-		// Inventory
-		{
-			Inventory* inventory = new Inventory();
-			player->AddComponent(inventory);
-
-			inventory->SetOwner(player);
-			
-			// Update에서 inventory의 멤버 변수에 접근하기 위해
-			_inventory = inventory;
-		}
-
-		// InGame UI
-		InGamePanel* panel = new InGamePanel();
-		panel->SetPlayer(player);
-		AddPanel(panel);
-
-		// player의 체력 변경 시 UI 업데이트 등록
-		player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
-
-		// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
-		player->SetCurrentScene(this);
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		player->AddComponent(collider);
 	}
+
+	// Inventory
+	{
+		Inventory* inventory = new Inventory();
+		player->AddComponent(inventory);
+
+		inventory->SetOwner(player);
+			
+		// Update에서 inventory의 멤버 변수에 접근하기 위해
+		_inventory = inventory;
+	}
+
+	// InGame UI
+	InGamePanel* panel = new InGamePanel();
+	panel->SetPlayer(player);
+	AddPanel(panel);
+
+	// player의 체력 변경 시 UI 업데이트 등록
+	player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+
+	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
+	player->SetCurrentScene(this);
 
 	// Announcemet
 	{
@@ -181,26 +179,21 @@ void DevScene::Init()
 			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
 
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
-			fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
-
-			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 100 }, LAYER_PLAYER);
-
-			// Collider
 			{
-				BoxCollider* collider = new BoxCollider();
-				collider->ResetCollisionFlag();
-				collider->SetCollisionLayer(CLT_MONSTER);
-
-				collider->AddCollisionFlagLayer(CLT_PLAYER);
-				collider->AddCollisionFlagLayer(CLT_GROUND);
-				collider->AddCollisionFlagLayer(CLT_WALL);
-
-				collider->SetSize({ 31, 77 });
-
-				GET_SINGLE(CollisionManager)->AddCollider(collider);
-				AF->AddComponent(collider);
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
+				fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
 			}
+
+			// Dash
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDashRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerDashRight", {31, 77}, 0, 0, 0, 0.7f, false });
+			}
+
+			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
+
+			// Player 설정
+			AF->_player = player;
 
 			_monsterHpData[20301] = 100;
 		}

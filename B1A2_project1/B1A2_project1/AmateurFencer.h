@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "Player.h"
 
 enum class BehaviorState;
 class Node;
@@ -63,6 +64,11 @@ struct AmateurFencerStat
 	}
 };
 
+//struct PlayerCurDir
+//{
+//
+//};
+
 class AmateurFencer : public Monster
 {
 	using Super = Monster;
@@ -74,6 +80,9 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
+public:
+	void CalPixelPerSecond();
+	
 public:
 	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
 	// ...
@@ -100,12 +109,14 @@ public:
 	BehaviorState is_cur_state_dash();
 	BehaviorState Dash();
 
-	virtual void UpdateAnimation() override;
-
 	// 참고) 멤버 변수
 	//Vec2 _speed = {};
 	//Dir _dir = DIR_LEFT;
 	//ObjectState _state = ObjectState::Idle;
+
+public:
+	float GetFromPlayerXDistance();
+	float GetAbsFromPlayerXDisatance();
 
 private:
 	// Flipbook
@@ -120,5 +131,9 @@ private:
 private:
 	AmateurFencerStat* _stat;
 	Node* _rootNode;	// BT 최상위 노드
+
+public:
+	Player* _player;
+	float _distance;
 };
 

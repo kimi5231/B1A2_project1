@@ -3,6 +3,10 @@
 #include "BehaviorTree.h"
 #include "Player.h"
 #include "ResourceManager.h"
+#include "CollisionManager.h"
+#include "BoxCollider.h"
+#include "Flipbook.h"
+#include "TimeManager.h"
 
 AmateurFencer::AmateurFencer()
 {
@@ -11,24 +15,53 @@ AmateurFencer::AmateurFencer()
 	amateurFencerStat = GET_SINGLE(ResourceManager)->LoadAmateurFencerStat(L"DataBase\\amateurFencerStat.csv");
 	_stat = amateurFencerStat;
 
+	CalPixelPerSecond();
+
 	// Flipbook
 	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookCloseAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookCloseAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookLongAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookLongAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookDie[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
+	_flipbookDie[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 
-	//_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
-	//_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
-	//_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitRight");
-	//_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitLeft");
-	//_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseRight");
-	//_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseLeft");
-	//_flipbookCloseAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkRight");
-	//_flipbookCloseAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkLeft");
-	//_flipbookLongAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkRight");
-	//_flipbookLongAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkLeft");
-	//_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashRight");
-	//_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashLeft");
-	//_flipbookDie[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieRight");
-	//_flipbookDie[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieLeft");
+	/*_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
+	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerIdle");
+	_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitRight");
+	_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerHitLeft");
+	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseRight");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerChaseLeft");
+	_flipbookCloseAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkRight");
+	_flipbookCloseAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerCloseAtkLeft");
+	_flipbookLongAtk[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkRight");
+	_flipbookLongAtk[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerLongAtkLeft");
+	_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashRight");
+	_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDashLeft");
+	_flipbookDie[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieRight");
+	_flipbookDie[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencerDieLeft");*/
+
+	{
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_MONSTER);
+
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+		collider->AddCollisionFlagLayer(CLT_GROUND);
+		collider->AddCollisionFlagLayer(CLT_WALL);
+
+		collider->SetSize({ 31, 77 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
 }
 
 AmateurFencer::~AmateurFencer()
@@ -99,7 +132,12 @@ void AmateurFencer::BeginPlay()
 
 void AmateurFencer::Tick()
 {
-	//Super::Tick();
+	Super::Tick();
+
+	if (GetFromPlayerXDistance() >= 0)
+		SetDir(DIR_LEFT);
+	else
+		SetDir(DIR_RIGHT);
 
 	if (_rootNode)
 	{
@@ -112,6 +150,31 @@ void AmateurFencer::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
+void AmateurFencer::CalPixelPerSecond()
+{
+	float PIXEL_PER_METER = (10.0 / 0.2);
+
+	// Move
+	{
+		float MOVE_SPEED_KMPH = _stat->speed;
+		float MOVE_SPEED_MPM = (MOVE_SPEED_KMPH * 1000.0 / 60.0);
+		float MOVE_SPEED_MPS = (MOVE_SPEED_MPM / 60.0);
+		float MOVE_SPEED_PPS = (MOVE_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->speed = MOVE_SPEED_PPS;
+	}
+
+	// Dash
+	{
+		float DASH_SPEED_KMPH = _stat->dashSpeed;
+		float DASH_SPEED_MPM = (DASH_SPEED_KMPH * 1000.0 / 60.0);
+		float DASH_SPEED_MPS = (DASH_SPEED_MPM / 60.0);
+		float DASH_SPEED_PPS = (DASH_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->dashSpeed = DASH_SPEED_PPS;
+	}
+}
+
 BehaviorState AmateurFencer::is_cur_state_Idle()
 {
 	if (_state == ObjectState::Idle)
@@ -122,13 +185,9 @@ BehaviorState AmateurFencer::is_cur_state_Idle()
 
 BehaviorState AmateurFencer::Idle()
 {
-	// 플립북 변경
-	// ...
+	SetFlipbook(_flipbookIdle[_dir]);
 
-	// 수정 필요(플레이어와의 거리)
-	int distance = 0;
-
-	if (distance <= 320)
+	if (std::abs(GetFromPlayerXDistance()) <= 320.f)
 	{
 		_state = ObjectState::LongAttack;
 		return BehaviorState::SUCCESS;
@@ -147,24 +206,19 @@ BehaviorState AmateurFencer::is_cur_state_hit()
 
 BehaviorState AmateurFencer::Hit()
 {
-	// 플립북 변경
-	// ...
+	SetFlipbook(_flipbookHit[_dir]);
 
-	//if (attacked 플립북이 끝남)
-	//{
-	//	if (_commonStat.hp <= 0)
-	//	{
-	//		_state = ObjectState::Dead;
-	//		// 죽는 애니메이션 플립북 1번 재생 후
-	//		// 소멸시키기
-	//	}
-	//	_state = ObjectState::Idle;
-	//	return BehaviorState::SUCCESS;
-	//}
-	//else
-	//	return BehaviorState::RUNNING;
+	if (this->GetIdx() == _flipbookHit[_dir]->GetFlipbookEndNum())
+	{
+		if (_commonStat.hp <= 0)
+			_state = ObjectState::Dead;
+		else
+			_state = ObjectState::Idle;
 
-	return BehaviorState();
+		return BehaviorState::SUCCESS;
+	}
+	else
+		return BehaviorState::RUNNING;
 }
 
 BehaviorState AmateurFencer::is_cur_state_chase()
@@ -177,24 +231,29 @@ BehaviorState AmateurFencer::is_cur_state_chase()
 
 BehaviorState AmateurFencer::Chase()
 {
-	// 수정 필요(플레이어와의 거리)
-	int distance = 0;
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	if (distance > 120 && distance <= 320)
+	SetFlipbook(_flipbookChase[_dir]);
+
+	if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= 320)
 	{
-		// 쫓아가는 코드
+		if (_dir == DIR_RIGHT)
+			_pos.x += _stat->speed * deltaTime;
+		else
+			_pos.x -= _stat->speed * deltaTime;
+
 		return BehaviorState::RUNNING;
 	}
-	else if (distance <= 120)
-	{
-		_state = ObjectState::CloseAttack;
-		return BehaviorState::SUCCESS;
-	}
-	/*else if (std::abs(distance - 근.공.사) > std::abs(distance - 원.공.사))
-	{
-		_state = ObjectState::LongAttack;
-		return BehaviorState::SUCCESS;
-	}*/
+	//else if (GetAbsFromPlayerXDisatance() <= 120)
+	//{
+	//	_state = ObjectState::CloseAttack;
+	//	return BehaviorState::SUCCESS;
+	//}
+	//else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRange) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+	//{
+	//	_state = ObjectState::LongAttack;
+	//	return BehaviorState::SUCCESS;
+	//}
 }
 
 BehaviorState AmateurFencer::is_cur_state_close_atk()
@@ -207,24 +266,25 @@ BehaviorState AmateurFencer::is_cur_state_close_atk()
 
 BehaviorState AmateurFencer::Close_atk()
 {
-	// 수정 필요(플레이어와의 거리)
-	int distance = 0;
+	SetFlipbook(_flipbookCloseAtk[_dir]);
 
-	if (distance <= 120)
+	if (GetAbsFromPlayerXDisatance() <= 120)
 	{
-		// 근거리 공격 코드
+		// 근거리 공격 코드 작성
+		// ...
+
 		return BehaviorState::RUNNING;
 	}
-	else if (distance > 120 && distance <= 320)
+	else if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= 320)
 	{
 		_state = ObjectState::CloseAttack;
 		return BehaviorState::SUCCESS;
 	}
-	/*else if (std::abs(distance - 근.공.사) > std::abs(distance - 원.공.사))
+	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkDamage) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))
 	{
 		_state = ObjectState::LongAttack;
 		return BehaviorState::SUCCESS;
-	}*/
+	}
 }
 
 BehaviorState AmateurFencer::is_cur_state_long_atk()
@@ -237,27 +297,26 @@ BehaviorState AmateurFencer::is_cur_state_long_atk()
 
 BehaviorState AmateurFencer::Long_atk()
 {
-	// 수정 필요(플레이어와의 거리)
-	int distance = 0;
+	SetFlipbook(_flipbookLongAtk[_dir]);
 
-	//if (std::abs(distance - 근.공.사) > std::abs(distance - 원.공.사))
-	//{
-	//	원거리 공격 코드	
-	//	return BehaviorState::RUNNING;
-	//}
-	if (distance <= 120)
+	if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkDamage) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))
+	{
+		// 원거리 공격 코드 작성
+		// ...
+
+		return BehaviorState::RUNNING;
+	}
+
+	if (GetAbsFromPlayerXDisatance() <= 120)
 	{
 		_state = ObjectState::CloseAttack;
 		return BehaviorState::SUCCESS;
 	}
-	else if (distance > 120 && distance <= 320)
+	else if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= 320)
 	{
 		_state = ObjectState::Chase;
 		return BehaviorState::SUCCESS;
 	}
-
-	// 수정 필요
-	return BehaviorState();
 }
 
 BehaviorState AmateurFencer::is_cur_state_dash()
@@ -270,23 +329,24 @@ BehaviorState AmateurFencer::is_cur_state_dash()
 
 BehaviorState AmateurFencer::Dash()
 {
-	// Dash 애니메이션 한 번 재생 후
+	SetFlipbook(_flipbookDash[_dir]);
 
-	_state = ObjectState::Chase;	// 변경할 수도!?
+	if (this->GetIdx() == _flipbookDash[_dir]->GetFlipbookEndNum())		// Dash 애니메이션 한 번 재생
+	{
+		_state = ObjectState::Chase;	// 변경할 수도??
 
-	// 수정 필요
-	return BehaviorState();
+		return BehaviorState::SUCCESS;
+	}
+	
+	return BehaviorState::RUNNING;
 }
 
-void AmateurFencer::UpdateAnimation()
+float AmateurFencer::GetFromPlayerXDistance()
 {
-	switch (_state)
-	{
-	case ObjectState::Idle:
-		SetFlipbook(_flipbookIdle[_dir]);
-		break;
-	case ObjectState::Chase:
-		SetFlipbook(_flipbookChase[_dir]);
-		break;
-	}
+	return this->GetPos().x - _player->GetPos().x;	// 양수 → 플레이어보다 오른쪽에, 음수 → 플레이어보다 왼쪽에
+}
+
+float AmateurFencer::GetAbsFromPlayerXDisatance()
+{
+	return std::abs(GetFromPlayerXDistance());
 }
