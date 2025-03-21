@@ -118,6 +118,9 @@ public:
 	float GetFromPlayerXDistance();
 	float GetAbsFromPlayerXDisatance();
 
+public:
+	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };
+
 private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
