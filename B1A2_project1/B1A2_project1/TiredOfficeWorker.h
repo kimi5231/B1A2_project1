@@ -70,6 +70,10 @@ private:
 	virtual void TickRoaming() override;
 	virtual void UpdateAnimation() override;
 
+public:
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+
 private:
 	void CalPixelPerSecond();
 
