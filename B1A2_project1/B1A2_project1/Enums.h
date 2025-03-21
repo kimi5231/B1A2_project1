@@ -32,11 +32,15 @@ enum COLLISION_LAYER_TYPE : uint8
 {
 	CLT_PLAYER,		// 0
 	CLT_MONSTER,	// 1
+
 	CLT_ITEM,		// 2
+	
 	CLT_GROUND,		// 3
 	CLT_WALL,		// 4
 	CLT_SAVE_POINT,	// 5
 	CLT_GAME_OVER,	// 6
+
+	CLT_DETECT,		// 7
 
 	CLT_NONE,		
 };

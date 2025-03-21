@@ -23,18 +23,31 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 	// Collider Component
 	{
-		BoxCollider* collider = new BoxCollider();
-		collider->ResetCollisionFlag();
-		collider->SetCollisionLayer(CLT_MONSTER);
+		// Monster Collider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER);
 
-		collider->AddCollisionFlagLayer(CLT_PLAYER);
-		collider->AddCollisionFlagLayer(CLT_GROUND);
-		collider->AddCollisionFlagLayer(CLT_WALL);
+			collider->SetSize({ 31, 77 });
 
-		collider->SetSize({ 31, 77 });
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+		
+		// Monster Detection Collider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_DETECT);
 
-		GET_SINGLE(CollisionManager)->AddCollider(collider);
-		AddComponent(collider);
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 31, 77 });
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
 	}
 }
 
@@ -127,6 +140,12 @@ void TiredOfficeWorker::UpdateAnimation()
 
 void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = static_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = static_cast<BoxCollider*>(collider);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
 
 }
 
