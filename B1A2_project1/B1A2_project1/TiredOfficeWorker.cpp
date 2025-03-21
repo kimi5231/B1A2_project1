@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TiredOfficeWorker.h"
 #include "BoxCollider.h"
+#include "Player.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
@@ -18,6 +19,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	_flipbookRoaming[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	_flipbookRoaming[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 
@@ -43,7 +46,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 31, 77 });
+			collider->SetSize({ float(_stat->playerDetection.x), float(_stat->playerDetection.y) });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
@@ -100,6 +103,20 @@ void TiredOfficeWorker::TickDead()
 
 void TiredOfficeWorker::TickChase()
 {
+	if (_target->GetPos().x - _pos.x < 0)
+		SetDir(DIR_LEFT);
+	else
+		SetDir(DIR_RIGHT);
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (_dir == DIR_RIGHT)
+		_pos.x += _stat->chaseSpeed * deltaTime;
+	else
+		_pos.x -= _stat->chaseSpeed * deltaTime;
+
+	// 놓치기
+
 }
 
 void TiredOfficeWorker::TickRoaming()
@@ -132,6 +149,9 @@ void TiredOfficeWorker::UpdateAnimation()
 	case ObjectState::Idle:
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
+	case ObjectState::Chase:
+		SetFlipbook(_flipbookChase[_dir]);
+		break;
 	case ObjectState::Roaming:
 		SetFlipbook(_flipbookRoaming[_dir]);
 		break;
@@ -140,17 +160,41 @@ void TiredOfficeWorker::UpdateAnimation()
 
 void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
-	BoxCollider* b1 = static_cast<BoxCollider*>(collider);
-	BoxCollider* b2 = static_cast<BoxCollider*>(collider);
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
 
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-
+	// 부딪힌 자신의 collider가 CLT_DETECT일 때
+	if (b1->GetCollisionLayer() == CLT_DETECT)
+	{
+		// Player와 충돌
+		if (b2->GetCollisionLayer() == CLT_PLAYER)
+		{
+			SetState(ObjectState::Chase);
+			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
+		}
+	}
 }
 
 void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	// 부딪힌 자신의 collider가 CLT_DETECT일 때
+	if (b1->GetCollisionLayer() == CLT_DETECT)
+	{
+		// Player와 충돌
+		if (b2->GetCollisionLayer() == CLT_PLAYER)
+		{
+			// 시간 재는 코드 추가 예정
+		}
+	}
 }
 
 void TiredOfficeWorker::CalPixelPerSecond()
@@ -174,6 +218,6 @@ void TiredOfficeWorker::CalPixelPerSecond()
 		float CHASE_SPEED_MPS = (CHASE_SPEED_MPM / 60.0);
 		float CHASE_SPEED_PPS = (CHASE_SPEED_MPS * PIXEL_PER_METER);
 
-		_stat->speed = CHASE_SPEED_PPS;
+		_stat->chaseSpeed = CHASE_SPEED_PPS;
 	}
 }

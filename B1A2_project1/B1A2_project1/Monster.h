@@ -1,6 +1,8 @@
 #pragma once
 #include "Creature.h"
 
+class Player;
+
 class Monster : public Creature
 {
 	using Super = Creature;
@@ -24,4 +26,12 @@ protected:
 	virtual void TickChase() override {};
 	virtual void TickRoaming() override {};
 	virtual void UpdateAnimation() override {};
+
+public:
+	virtual Vec2Int GetPlayerDetection() = 0;
+
+	void SetTarget(Player* player) { _target = player; }
+
+protected:
+	Player* _target = nullptr;
 };

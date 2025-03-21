@@ -5,6 +5,7 @@
 #include "ValueManager.h"
 #include "Actor.h"
 #include "TilemapActor.h"
+#include "Monster.h"
 
 BoxCollider::BoxCollider() : Collider(ColliderType::Box)
 {
@@ -20,16 +21,38 @@ void BoxCollider::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!dynamic_cast<TilemapActor*>(_owner))
-		_pos = _owner->GetPos();
+	if (!dynamic_cast<TilemapActor*>(GetOwner()))
+		_pos = GetOwner()->GetPos();
+	
+	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Monster*>(GetOwner()))
+	{
+		Monster* owner = dynamic_cast<Monster*>(GetOwner());
+		Vec2Int playerDetection = owner->GetPlayerDetection();
+
+		if(owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + playerDetection.x / 2;
+		else
+			_pos.x = owner->GetPos().x - playerDetection.x / 2;
+	}
 }
 
 void BoxCollider::TickComponent()
 {
 	Super::TickComponent();
 
-	if (!dynamic_cast<TilemapActor*>(_owner))
-		_pos = _owner->GetPos();
+	if (!dynamic_cast<TilemapActor*>(GetOwner()))
+		_pos = GetOwner()->GetPos();
+
+	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Monster*>(GetOwner()))
+	{
+		Monster* owner = dynamic_cast<Monster*>(GetOwner());
+		Vec2Int playerDetection = owner->GetPlayerDetection();
+		
+		if (owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + playerDetection.x / 2;
+		else
+			_pos.x = owner->GetPos().x - playerDetection.x / 2;
+	}
 }
 
 void BoxCollider::Render(HDC hdc)

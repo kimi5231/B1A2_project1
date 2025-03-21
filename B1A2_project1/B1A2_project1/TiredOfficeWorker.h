@@ -74,6 +74,9 @@ public:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
+public:
+	virtual Vec2Int GetPlayerDetection() { return _stat->playerDetection; };
+
 private:
 	void CalPixelPerSecond();
 
