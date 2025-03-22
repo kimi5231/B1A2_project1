@@ -93,6 +93,8 @@ private:
 	virtual void UpdateAnimation() override;
 
 public:
+	virtual int32 GetAttack() override;
+
 	// Hp 바뀔 때
 	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입
 	void SetHealthObserver(std::function<void(int)> observer) { _healthObserver = observer; }
@@ -100,7 +102,7 @@ public:
 	void AddHealthPoint(int hp);
 	void SubtractHealthPoint(int hp);
 
-	int32 GetHp() { return _playerStat->commonStat.hp; }
+	int32& GetHp() { return _playerStat->commonStat.hp; }
 	void SetHp(int32 hp) { _playerStat->commonStat.hp = hp; }
 
 	int32 GetSkillPoint() { return _playerStat->skillPoint; }
@@ -129,6 +131,7 @@ public:
 	std::unordered_map<int32, int32>& GetAquireItems() { return _acquiredItems; }
 	void SetAcquireItems(const std::unordered_map<int32, int32>& items) { _acquiredItems = items; }		// 저장 데이터 불러올 때 사용
 	void ClearAcquireItems() { _acquiredItems.clear(); }
+
 private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};

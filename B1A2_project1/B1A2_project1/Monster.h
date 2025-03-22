@@ -29,6 +29,8 @@ protected:
 	virtual void UpdateAnimation() override {};
 
 public:
+	virtual int32 GetAttack() = 0;
+	virtual int32& GetHp() = 0;
 	virtual Vec2Int GetPlayerDetection() = 0;
 
 	void SetTarget(Player* player) { _target = player; }

@@ -80,6 +80,7 @@ void DevScene::Init()
 		// 충돌하고 싶은 객체 설정
 		collider->AddCollisionFlagLayer(CLT_ITEM);
 		collider->AddCollisionFlagLayer(CLT_DETECT);
+		collider->AddCollisionFlagLayer(CLT_MONSTER);
 		collider->AddCollisionFlagLayer(CLT_GROUND);	
 		collider->AddCollisionFlagLayer(CLT_WALL);
 		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
@@ -167,7 +168,7 @@ void DevScene::Init()
 			_monsterHpData[20101] = 100;
 		}
 		
-		{
+		/*{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
 
@@ -200,7 +201,7 @@ void DevScene::Init()
 			AF->_player = player;
 
 			_monsterHpData[20301] = 100;
-		}
+		}*/
 	}
 
 	// Start Dialogue

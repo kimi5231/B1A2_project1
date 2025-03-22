@@ -34,9 +34,11 @@ public:
 	void SetCommonStat(CommonStat stat) { _commonStat = stat; }
 	CommonStat& GetCommonStat() { return _commonStat; }
 
-public:
-	virtual void OnDameged(int32 damage);
-	virtual void OnKnockback(int32 knockback);
+	virtual int32 GetAttack() = 0;
+	virtual int32& GetHp() = 0;
+
+protected:
+	virtual void OnDamaged(Creature* other);
 	
 protected:
 	CommonStat _commonStat;

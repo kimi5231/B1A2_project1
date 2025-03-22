@@ -24,24 +24,20 @@ void Creature::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
-void Creature::OnDameged(int32 damage)
+void Creature::OnDamaged(Creature* other)
 {
-	CommonStat& stat = GetCommonStat();
+	int32 damage = other->GetAttack();
 
 	if (damage <= 0)
 		return;
 
-	stat.hp = max(0, stat.hp - damage);
+	int32& hp = GetHp();
+	hp = max(0, hp - damage);
 
-	if (stat.hp == 0)
+	/*if (hp == 0)
 	{
 		SetState(ObjectState::Dead);
 	}
 
-	SetState(ObjectState::Hit);
-}
-
-void Creature::OnKnockback(int32 knockback)
-{
-
+	SetState(ObjectState::Hit);*/
 }

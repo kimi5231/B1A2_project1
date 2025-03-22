@@ -482,6 +482,25 @@ void Player::UpdateAnimation()
 	}
 }
 
+int32 Player::GetAttack()
+{
+	// damage 수정 예정
+	switch (_state)
+	{
+	case ObjectState::CloseAttack:
+		return _playerStat->nAtkDamage;
+		break;
+	case ObjectState::LongAttack:
+		return _playerStat->nAtkDamage;
+		break;
+	case ObjectState::Skill:
+		return _playerStat->skillDamage;
+		break;
+	}
+
+	return 50;
+}
+
 void Player::AddHealthPoint(int hp)
 {
 	if (_playerStat->commonStat.hp >= 100)

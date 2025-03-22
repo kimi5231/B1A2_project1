@@ -105,10 +105,20 @@ void TiredOfficeWorker::TickCloseAttack()
 
 void TiredOfficeWorker::TickHit()
 {
+	// knockback
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _stat->knockBackDistance;
+	else
+		_pos.x += _stat->knockBackDistance;
+
+	// 체력이 다 닳면 사망
+	if (_stat->hp == 0)
+		SetState(ObjectState::Dead);
 }
 
 void TiredOfficeWorker::TickDead()
 {
+	// 아이템 드랍
 }
 
 void TiredOfficeWorker::TickChase()
@@ -245,6 +255,26 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
+	// 피격 >> 추적
+
+	// 부딪힌 자신의 collider가 CLT_MONSTER일 때
+	if (b1->GetCollisionLayer() == CLT_MONSTER)
+	{
+		// Player Attack과 충돌
+		// 추후 CLT_PLAYER_ATTACK로 변경할 예정
+		if (b2->GetCollisionLayer() == CLT_PLAYER)
+		{
+			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+			OnDamaged(otherOwner);
+			// Idle, Chase 상태에서 초기화되지 않을 경우 대비
+			_sumTime = 0.f;
+
+			SetState(ObjectState::Hit);
+		}
+
+		return;
+	}
+
 	// 부딪힌 자신의 collider가 CLT_DETECT일 때
 	if (b1->GetCollisionLayer() == CLT_DETECT)
 	{
@@ -296,6 +326,11 @@ void TiredOfficeWorker::SetMoveDistance(float distance)
 {
 	_moveDistance = distance;
 	_currentMoveDistance = _moveDistance;
+}
+
+int32 TiredOfficeWorker::GetAttack()
+{
+	return int32();
 }
 
 void TiredOfficeWorker::CalPixelPerSecond()
