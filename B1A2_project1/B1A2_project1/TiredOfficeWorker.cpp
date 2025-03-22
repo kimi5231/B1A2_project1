@@ -12,9 +12,6 @@ TiredOfficeWorker::TiredOfficeWorker()
 	tiredOfficeWorkerStat = GET_SINGLE(ResourceManager)->LoadTiredOfficeWorkerStat(L"DataBase\\tiredOfficeWorkerStat.csv");
 	_stat = tiredOfficeWorkerStat;
 
-	_moveDistance = 440.f;
-	_currentMoveDistance = _moveDistance;
-
 	CalPixelPerSecond();
 
 	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
@@ -195,6 +192,18 @@ void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* othe
 			// 시간 재는 코드 추가 예정
 		}
 	}
+}
+
+void TiredOfficeWorker::SetSpawnPos(Vec2 pos)
+{
+	_spawnPos = pos;
+	_pos = _spawnPos;
+}
+
+void TiredOfficeWorker::SetMoveDistance(float distance)
+{
+	_moveDistance = distance;
+	_currentMoveDistance = _moveDistance;
 }
 
 void TiredOfficeWorker::CalPixelPerSecond()

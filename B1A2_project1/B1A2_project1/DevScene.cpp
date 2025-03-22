@@ -157,7 +157,10 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
-			
+			TOW->SetDir(DIR_RIGHT);
+			TOW->SetMoveDistance(580.f);
+			TOW->SetMovementLimit({ 0, 500 });
+
 			// 중간 저장할 데이터, hp는 중간에 업데이트 필요
 			// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
 			_monsterHpData[20101] = 100;

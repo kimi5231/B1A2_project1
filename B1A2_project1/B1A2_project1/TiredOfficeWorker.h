@@ -75,6 +75,10 @@ public:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 public:
+	void SetSpawnPos(Vec2 pos);
+	void SetMoveDistance(float distance);
+	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
+
 	virtual Vec2Int GetPlayerDetection() { return _stat->playerDetection; };
 
 private:
@@ -91,7 +95,10 @@ private:
 
 private:
 	TiredOfficeWorkerStat* _stat;
+	Vec2 _spawnPos;
 	float _moveDistance;
+	Vec2 _movementLimit;
+
 	float _currentMoveDistance;
 	float _sumTime = 0.f;
 };
