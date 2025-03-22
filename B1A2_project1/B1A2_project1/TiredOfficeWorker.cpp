@@ -153,7 +153,30 @@ void TiredOfficeWorker::TickRoaming()
 
 void TiredOfficeWorker::TickReturn()
 {
+	if (_pos.x > _spawnPos.x)
+		SetDir(DIR_LEFT);
+	else
+		SetDir(DIR_RIGHT);
 
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (_dir == DIR_RIGHT)
+		_pos.x += _stat->speed * deltaTime;
+	else
+		_pos.x -= _stat->speed * deltaTime;
+
+	// 위치 확인
+	if (_dir == DIR_LEFT)
+		_pos.x = max(_spawnPos.x, _pos.x);
+	else
+		_pos.x = min(_pos.x, _spawnPos.x);
+
+	if (_pos.x == _spawnPos.x)
+	{
+		SetState(ObjectState::Idle);
+		SetPos(_spawnPos);
+		SetDir(_spawnDir);
+	}
 }
 
 void TiredOfficeWorker::UpdateAnimation()
@@ -218,7 +241,13 @@ void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* othe
 void TiredOfficeWorker::SetSpawnPos(Vec2 pos)
 {
 	_spawnPos = pos;
-	_pos = _spawnPos;
+	SetPos(_spawnPos);
+}
+
+void TiredOfficeWorker::SetSpawnDir(Dir dir)
+{
+	_spawnDir = dir;
+	SetDir(dir);
 }
 
 void TiredOfficeWorker::SetMoveDistance(float distance)

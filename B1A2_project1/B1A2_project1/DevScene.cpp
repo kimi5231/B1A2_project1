@@ -157,7 +157,8 @@ void DevScene::Init()
 			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
 
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
-			TOW->SetDir(DIR_RIGHT);
+			TOW->SetSpawnDir(DIR_RIGHT);
+			TOW->SetSpawnPos({ 100, 300 });
 			TOW->SetMoveDistance(580.f);
 			TOW->SetMovementLimit({ 0, 500 });
 

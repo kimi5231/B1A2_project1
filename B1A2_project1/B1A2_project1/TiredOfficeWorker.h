@@ -77,6 +77,7 @@ public:
 
 public:
 	void SetSpawnPos(Vec2 pos);
+	void SetSpawnDir(Dir dir);
 	void SetMoveDistance(float distance);
 	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
 
@@ -97,6 +98,7 @@ private:
 private:
 	TiredOfficeWorkerStat* _stat;
 	Vec2 _spawnPos;
+	Dir _spawnDir;
 	float _moveDistance;
 	Vec2 _movementLimit;
 
