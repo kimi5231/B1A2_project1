@@ -178,7 +178,7 @@ void DevScene::Init()
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
 
 			_monsterHpData[20201] = 100;
-		}
+		}*/
 
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
@@ -201,7 +201,7 @@ void DevScene::Init()
 			AF->_player = player;
 
 			_monsterHpData[20301] = 100;
-		}*/
+		}
 	}
 
 	// Start Dialogue

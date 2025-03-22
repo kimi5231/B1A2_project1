@@ -119,6 +119,9 @@ public:
 	float GetAbsFromPlayerXDisatance();
 
 public:
+	// 수정 필요
+	virtual int32 GetAttack() { return 1; }
+	virtual int32& GetHp() { return _stat->backStaepDistance; }
 	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };
 
 private:
