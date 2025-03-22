@@ -68,6 +68,7 @@ private:
 	virtual void TickDead() override;
 	virtual void TickChase() override;
 	virtual void TickRoaming() override;
+	virtual void TickReturn() override;
 	virtual void UpdateAnimation() override;
 
 public:
@@ -79,7 +80,7 @@ public:
 	void SetMoveDistance(float distance);
 	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
 
-	virtual Vec2Int GetPlayerDetection() { return _stat->playerDetection; };
+	virtual Vec2Int GetPlayerDetection() override { return _stat->playerDetection; };
 
 private:
 	void CalPixelPerSecond();
@@ -100,5 +101,6 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
+
 	float _sumTime = 0.f;
 };

@@ -121,4 +121,5 @@ enum class ObjectState
 	Chase,	// 추적
 	Roaming,	// 배회
 	Dash,	// 대쉬
+	Return,		// 복귀
 };

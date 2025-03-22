@@ -100,6 +100,7 @@ void TiredOfficeWorker::TickDead()
 
 void TiredOfficeWorker::TickChase()
 {
+	// 추적
 	if (_target->GetPos().x - _pos.x < 0)
 		SetDir(DIR_LEFT);
 	else
@@ -112,8 +113,19 @@ void TiredOfficeWorker::TickChase()
 	else
 		_pos.x -= _stat->chaseSpeed * deltaTime;
 
-	// 놓치기
+	// 추적 중 놓쳤을 때
+	if (_sumTime != 0.f)
+	{
+		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+		_sumTime += deltaTime;
 
+		// 3초가 지니면 복귀
+		if (_sumTime >= 3.0f)
+		{
+			_sumTime = 0.f;
+			SetState(ObjectState::Return);
+		}
+	}
 }
 
 void TiredOfficeWorker::TickRoaming()
@@ -137,6 +149,11 @@ void TiredOfficeWorker::TickRoaming()
 		else
 			SetDir(DIR_RIGHT);
 	}
+}
+
+void TiredOfficeWorker::TickReturn()
+{
+
 }
 
 void TiredOfficeWorker::UpdateAnimation()
@@ -169,6 +186,9 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		// Player와 충돌
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
+			// Idle 상태에서 초기화되지 않을 경우 대비
+			_sumTime = 0.f;
+
 			SetState(ObjectState::Chase);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
 		}
@@ -189,7 +209,8 @@ void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* othe
 		// Player와 충돌
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
-			// 시간 재는 코드 추가 예정
+ 			float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+			_sumTime += deltaTime;
 		}
 	}
 }

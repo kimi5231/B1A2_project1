@@ -25,6 +25,7 @@ protected:
 	virtual void TickDead() override {};
 	virtual void TickChase() override {};
 	virtual void TickRoaming() override {};
+	virtual void TickReturn() override {};
 	virtual void UpdateAnimation() override {};
 
 public:

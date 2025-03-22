@@ -70,6 +70,9 @@ void GameObject::Tick()
 	case ObjectState::Roaming:
 		TickRoaming();
 		break;
+	case ObjectState::Return:
+		TickReturn();
+		break;
 	}
 }
 
