@@ -80,10 +80,6 @@ void TiredOfficeWorker::TickIdle()
 		_sumTime = 0.f;
 		SetState(ObjectState::Roaming);
 	}
-	else
-	{
-		
-	}
 }
 
 void TiredOfficeWorker::TickCloseAttack()
@@ -100,6 +96,14 @@ void TiredOfficeWorker::TickDead()
 
 void TiredOfficeWorker::TickChase()
 {
+	// 범위 체크
+	if (_pos.x > _movementLimit.y || _pos.x < _movementLimit.x)
+	{
+		_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
+		_sumTime = 0.f;
+		SetState(ObjectState::Return);
+	}
+
 	// 추적
 	if (_target->GetPos().x - _pos.x < 0)
 		SetDir(DIR_LEFT);

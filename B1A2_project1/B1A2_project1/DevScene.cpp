@@ -160,7 +160,7 @@ void DevScene::Init()
 			TOW->SetSpawnDir(DIR_RIGHT);
 			TOW->SetSpawnPos({ 100, 300 });
 			TOW->SetMoveDistance(580.f);
-			TOW->SetMovementLimit({ 0, 500 });
+			TOW->SetMovementLimit({ 0, 700 });
 
 			// 중간 저장할 데이터, hp는 중간에 업데이트 필요
 			// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
