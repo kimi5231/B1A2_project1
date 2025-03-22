@@ -84,6 +84,23 @@ void TiredOfficeWorker::TickIdle()
 
 void TiredOfficeWorker::TickCloseAttack()
 {
+	int32 idx = GetIdx();
+
+	// 마지막 공격 모션일 때
+	if (idx == 0)
+	{
+		// 공격 범위 체크
+		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+			SetState(ObjectState::CloseAttack);
+		else
+		{
+			// collider 삭제
+			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+			RemoveComponent(_attackCollider);
+
+			SetState(ObjectState::Chase);
+		}
+	}
 }
 
 void TiredOfficeWorker::TickHit()
@@ -120,7 +137,6 @@ void TiredOfficeWorker::TickChase()
 	// 추적 중 놓쳤을 때
 	if (_sumTime != 0.f)
 	{
-		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 		_sumTime += deltaTime;
 
 		// 3초가 지니면 복귀
@@ -129,6 +145,28 @@ void TiredOfficeWorker::TickChase()
 			_sumTime = 0.f;
 			SetState(ObjectState::Return);
 		}
+	}
+
+	// 공격 범위 체크
+	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+	{
+		// Monster Attack Collider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 50, 50 });
+
+			_attackCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+
+		SetState(ObjectState::CloseAttack);
 	}
 }
 

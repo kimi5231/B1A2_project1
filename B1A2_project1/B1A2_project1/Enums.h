@@ -41,6 +41,7 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_GAME_OVER,	// 6
 
 	CLT_DETECT,		// 7
+	CLT_MONSTER_ATTACK,	// 8
 
 	CLT_NONE,		
 };
