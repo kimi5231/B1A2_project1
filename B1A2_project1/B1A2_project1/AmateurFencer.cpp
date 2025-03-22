@@ -211,6 +211,11 @@ void AmateurFencer::CalPixelPerSecond()
 	}
 }
 
+int32 AmateurFencer::GetAttack()
+{
+	return int32();
+}
+
 BehaviorState AmateurFencer::is_cur_state_Idle()
 {
 	if (_state == ObjectState::Idle)
