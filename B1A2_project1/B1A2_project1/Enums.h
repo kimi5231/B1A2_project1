@@ -42,7 +42,7 @@ enum COLLISION_LAYER_TYPE : uint8
 
 	CLT_DETECT,		// 7
 	CLT_MONSTER_ATTACK,	// 8
-	CLT_PLAYER_ATTACK,	// 9
+	CLT_PLAYER_ATTACK,	// 9 
 
 	CLT_NONE,		
 };
@@ -115,6 +115,9 @@ enum class ObjectState
 	Jump,	// 점프
 	CloseAttack,	// 기본 공격
 	LongAttack,
+	Thrust,		// 찌르기
+	BackStep,	// 백스텝
+	SlashWave,	// 검기 날리기
 	Skill,	// 스킬
 	Hang,	// 매달리기
 	Release,	// 놓기

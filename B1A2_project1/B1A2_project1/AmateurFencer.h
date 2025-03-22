@@ -10,10 +10,9 @@ struct AmateurFencerStat
 	CommonStat commonStat;	// A, B
 	float healtemDropRate;	// C
 	float speed;	// D
-	int32 playerDetectionX;	// E
-	int32 playerDetectionY;	// F
+	Vec2Int playerDetection;	// E, F
 	int32 knockBackDistance; // G
-	int32 backStaepDistance;	// H
+	int32 backStepDistance;	// H
 	int32 closeAtkRange;	// I
 	int32 closeAtkDamage;	// J
 	int32 dashSpeed;	// K
@@ -44,10 +43,10 @@ struct AmateurFencerStat
 				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
 				case 2: this->healtemDropRate = std::stof(cell); break;	// C
 				case 3: this->speed = std::stof(cell); break;	// D
-				case 4: this->playerDetectionX = std::stoi(cell); break;	// E
-				case 5: this->playerDetectionY = std::stoi(cell); break;	// F
+				case 4: this->playerDetection.x = std::stoi(cell); break;	// E
+				case 5: this->playerDetection.y = std::stoi(cell); break;	// F
 				case 6: this->knockBackDistance = std::stoi(cell); break;	// G
-				case 7: this->backStaepDistance = std::stoi(cell); break;	// H
+				case 7: this->backStepDistance = std::stoi(cell); break;	// H
 				case 8: this->closeAtkRange = std::stoi(cell); break;	// I
 				case 9: this->closeAtkDamage = std::stoi(cell); break;	// J
 				case 10: this->dashSpeed = std::stoi(cell); break;	// K
@@ -64,11 +63,6 @@ struct AmateurFencerStat
 	}
 };
 
-//struct PlayerCurDir
-//{
-//
-//};
-
 class AmateurFencer : public Monster
 {
 	using Super = Monster;
@@ -80,9 +74,10 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
+	virtual void UpdateAnimation() override;
 public:
 	void CalPixelPerSecond();
-	
+
 public:
 	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
 	// ...
@@ -100,12 +95,14 @@ public:
 	BehaviorState Chase();
 
 	// Close Attack Sequence
-	BehaviorState is_cur_state_close_atk();
-	BehaviorState Close_atk();
+	BehaviorState is_cur_state_thrust();
+	BehaviorState Thrust();
+	BehaviorState is_cur_state_backstep();
+	BehaviorState BackStep();
 
 	// Long Attack Sequence
-	BehaviorState is_cur_state_long_atk();
-	BehaviorState Long_atk();
+	BehaviorState is_cur_state_slashwave();
+	BehaviorState SlashWave();
 	BehaviorState is_cur_state_dash();
 	BehaviorState Dash();
 
@@ -113,33 +110,45 @@ public:
 	//Vec2 _speed = {};
 	//Dir _dir = DIR_LEFT;
 	//ObjectState _state = ObjectState::Idle;
-
 public:
 	float GetFromPlayerXDistance();
 	float GetAbsFromPlayerXDisatance();
 
+	void SetSpawnPos(Vec2 pos);
+	void SetSpawnDir(Dir dir);
+	void SetMoveDistance(float distance);
+	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
+
+	virtual Vec2Int GetPlayerDetection() override { return _stat->playerDetection; };
+
 public:
-	// 수정 필요
-	virtual int32 GetAttack() { return 1; }
-	virtual int32& GetHp() { return _stat->backStaepDistance; }
-	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
 	Flipbook* _flipbookHit[2] = {};
 	Flipbook* _flipbookChase[2] = {};
-	Flipbook* _flipbookCloseAtk[2] = {};
-	Flipbook* _flipbookLongAtk[2] = {};
+	Flipbook* _flipbookThrust[2] = {};
+	Flipbook* _flipbookBackStep[2] = {};
+	Flipbook* _flipbookSlashWave[2] = {};
 	Flipbook* _flipbookDash[2] = {};
-	Flipbook* _flipbookDie[2] = {};
+	Flipbook* _flipbookDead[2] = {};
 
 private:
 	AmateurFencerStat* _stat;
 	Node* _rootNode;	// BT 최상위 노드
 
+	Vec2 _spawnPos;
+	Dir _spawnDir;
+	float _moveDistance;
+	Vec2 _movementLimit;
+
+	float _currentMoveDistance;
+	Collider* _attackCollider;
+
 public:
 	Player* _player;
-	float _distance;
 };
 

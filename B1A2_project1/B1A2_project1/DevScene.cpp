@@ -184,18 +184,14 @@ void DevScene::Init()
 			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
 
-			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
-				fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
-			}
-
-			// Dash
-			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDashRight");
-				fb->SetInfo({ texture, L"FB_AmateurFencerDashRight", {31, 77}, 0, 0, 0, 0.7f, false });
-			}
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
+			fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
 
 			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
+			AF->SetSpawnDir(DIR_RIGHT);
+			AF->SetSpawnPos({ 1200, 300 });
+			//AF->SetMoveDistance();
+			// AF->SetMovementLimit({})
 
 			// Player ¼³Á¤
 			AF->_player = player;
