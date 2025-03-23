@@ -1,12 +1,12 @@
 #pragma once
-#include "GameObject.h"
+#include "Projectile.h"
 
-class Projectile : public GameObject
+class Paper : public Projectile
 {
-	using Super = GameObject;
+	using Super = Projectile;
 public:
-	Projectile();
-	virtual ~Projectile() override;
+	Paper();
+	virtual ~Paper() override;
 
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
@@ -16,4 +16,3 @@ protected:
 	virtual void TickMove() {};
 	virtual void UpdateAnimation() {};
 };
-

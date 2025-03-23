@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BrokenCopyMachine.h"
 #include "ResourceManager.h"
+#include "TimeManager.h"
 
 BrokenCopyMachine::BrokenCopyMachine()
 {
@@ -24,25 +25,30 @@ void BrokenCopyMachine::BeginPlay()
 void BrokenCopyMachine::Tick()
 {
 	Super::Tick();
-
 }
 
 void BrokenCopyMachine::Render(HDC hdc)
 {
 	Super::Render(hdc);
-
 }
 
 void BrokenCopyMachine::TickIdle()
 {
-}
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-void BrokenCopyMachine::TickCloseAttack()
-{
+	if (_sumTime >= _stat->attackCoolTime)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::LongAttack);
+	}
 }
 
 void BrokenCopyMachine::TickLongAttack()
 {
+	// 투사체 생성
+
+	SetState(ObjectState::Idle);
 }
 
 void BrokenCopyMachine::TickHit()
