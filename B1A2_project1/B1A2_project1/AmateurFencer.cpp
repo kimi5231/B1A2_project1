@@ -65,6 +65,20 @@ AmateurFencer::AmateurFencer()
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
+
+		// Attack
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
 	}
 
 }
@@ -272,7 +286,7 @@ BehaviorState AmateurFencer::Chase()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
 	{
 		if (_dir == DIR_RIGHT)
 			_pos.x += _stat->speed * deltaTime;
@@ -281,7 +295,7 @@ BehaviorState AmateurFencer::Chase()
 
 		return BehaviorState::RUNNING;
 	}
-	else if (GetAbsFromPlayerXDisatance() <= 120)
+	else if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
 	{
 		_state = ObjectState::CloseAttack;
 		return BehaviorState::SUCCESS;
@@ -306,15 +320,13 @@ BehaviorState AmateurFencer::is_cur_state_thrust()
 		return BehaviorState::FAIL;
 }
 
-BehaviorState AmateurFencer::Thrust()
-{
+BehaviorState AmateurFencer::Thrust()	// 찌르기
+{	
 	if (this->GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
 	{
 		SetState(ObjectState::BackStep);
 		return BehaviorState::SUCCESS;
 	}
-
-	
 }
 
 BehaviorState AmateurFencer::is_cur_state_backstep()
@@ -330,14 +342,7 @@ BehaviorState AmateurFencer::BackStep()
 	return BehaviorState();
 }
 
-//BehaviorState AmateurFencer::is_cur_state_close_atk()
-//{
-//	if (_state == ObjectState::CloseAttack)
-//		return BehaviorState::SUCCESS;
-//	else
-//		return BehaviorState::FAIL;
-//}
-//
+
 //BehaviorState AmateurFencer::Close_atk()
 //{
 //	SetFlipbook(_flipbookCloseAtk[_dir]);
@@ -481,9 +486,4 @@ void AmateurFencer::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 void AmateurFencer::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
-	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
-	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
-
-	if (b1 == nullptr || b2 == nullptr)
-		return;
 }
