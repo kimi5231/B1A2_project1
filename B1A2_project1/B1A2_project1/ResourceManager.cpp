@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Player.h"
 #include "TiredOfficeWorker.h"
+#include "BrokenCopyMachine.h"
 #include "AmateurFencer.h"
 
 ResourceManager::~ResourceManager()
@@ -180,6 +181,17 @@ TiredOfficeWorkerStat* ResourceManager::LoadTiredOfficeWorkerStat(const std::wst
 	_tiredOfficeWorkerStat = tiredOfficeWorkerStat;
 
 	return tiredOfficeWorkerStat;
+}
+
+BrokenCopyMachineStat* ResourceManager::LoadBrokenCopyMachineStat(const std::wstring& path)
+{
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	BrokenCopyMachineStat* brokenCopyMachineStat = new BrokenCopyMachineStat();
+	brokenCopyMachineStat->LoadFile(fullpath);
+	_brokenCopyMachineStat = brokenCopyMachineStat;
+
+	return brokenCopyMachineStat;
 }
 
 AmateurFencerStat* ResourceManager::LoadAmateurFencerStat(const std::wstring& path)

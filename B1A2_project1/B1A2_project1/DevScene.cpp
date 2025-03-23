@@ -168,7 +168,7 @@ void DevScene::Init()
 			_monsterHpData[20101] = 100;
 		}
 		
-		/*{
+		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
 
@@ -177,8 +177,9 @@ void DevScene::Init()
 
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
 
+
 			_monsterHpData[20201] = 100;
-		}*/
+		}
 
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
