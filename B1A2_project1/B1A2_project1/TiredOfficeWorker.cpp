@@ -114,6 +114,9 @@ void TiredOfficeWorker::TickHit()
 	// Ã¼·ÂÀÌ ´Ù ´â¸é »ç¸Á
 	if (_stat->hp == 0)
 		SetState(ObjectState::Dead);
+
+	// Idle, Chase, Attack
+	SetState(ObjectState::Idle);
 }
 
 void TiredOfficeWorker::TickDead()
