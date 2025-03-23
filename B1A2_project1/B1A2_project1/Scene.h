@@ -18,7 +18,7 @@ public:
 public:
 	Actor* GetActor(int32 id);
 
-protected:
+public:
 	void AddActor(Actor* actor);
 	void RemoveActor(Actor* actor);
 	void AddPanel(Panel* panel);

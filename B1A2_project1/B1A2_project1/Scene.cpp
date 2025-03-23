@@ -42,10 +42,14 @@ void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	// 거리 = 시간 * 속도
-	for (const std::vector<Actor*>& actors : _actors)
+	std::vector<Actor*> actorsCopy[LAYER_MAXCOUNT];
+	for (int i = 0; i < LAYER_MAXCOUNT; ++i)
+		actorsCopy[i] = _actors[i];
+
+	for (const std::vector<Actor*>& actors : actorsCopy) {
 		for (Actor* actor : actors)
 			actor->Tick();
+	}
 
 	for (Panel* panel : _panels)
 		panel->Tick();

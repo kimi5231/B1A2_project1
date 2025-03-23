@@ -69,6 +69,11 @@ public:
 	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };
 
 private:
+	void CalPixelPerSecond();
+
+	void CreateProjectile();
+
+private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
 	Flipbook* _flipbookNormalAttack[2] = {};
@@ -78,5 +83,6 @@ private:
 private:
 	BrokenCopyMachineStat* _stat;
 
+	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
 };

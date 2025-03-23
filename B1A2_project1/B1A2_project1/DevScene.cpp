@@ -179,6 +179,15 @@ void DevScene::Init()
 
 
 			_monsterHpData[20201] = 100;
+
+			// Projectile
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
+				fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+			}
 		}
 
 		{

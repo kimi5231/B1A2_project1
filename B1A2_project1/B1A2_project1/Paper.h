@@ -13,6 +13,10 @@ public:
 	virtual void Render(HDC hdc) override;
 
 protected:
-	virtual void TickMove() {};
-	virtual void UpdateAnimation() {};
+	virtual void TickMove();
+	virtual void UpdateAnimation();
+
+private:
+	// Flipbook
+	Flipbook* _flipbookMove[2] = {};
 };

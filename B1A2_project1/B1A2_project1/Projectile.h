@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class Creature;
+
 class Projectile : public GameObject
 {
 	using Super = GameObject;
@@ -15,5 +17,17 @@ public:
 protected:
 	virtual void TickMove() {};
 	virtual void UpdateAnimation() {};
+
+public:
+	void SetSpeed(float speed) { _speed = speed; }
+	void SetAttack(int32 attack) { _attack = attack; }
+	void SetRange(int32 range) { _range = range; }
+	void SetOwner(Creature* owner) { _owner = owner; }
+
+protected:
+	float _speed;
+	int32 _attack;
+	int32 _range;
+	Creature* _owner;
 };
 
