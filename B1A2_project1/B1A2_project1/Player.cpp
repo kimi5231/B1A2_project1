@@ -480,6 +480,8 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	break;
 	}
+
+	// CheckCollisionAfterResize();	// Collider 크기 변경 후 충돌 검사하기
 }
 
 int32 Player::GetAttack()
@@ -613,14 +615,42 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	AdjustCollisionPos(b1, b2);
+	// 벽 충돌하면 밀어내기
+	if (b2->GetCollisionLayer() == CLT_WALL)
+	{
+		AdjustCollisionPos(b1, b2);
+		return;
+	}
 
-	// 충돌 시작 : 땅에 닿음
+	// 땅과 충돌 - 상하좌우 확인
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
 		_groundCollisionCount++;
 		_isGround = true;
 		_isAir = false;
+	
+		//RECT r1 = b1->GetRect();	// Player 충돌 영역
+		//RECT r2 = b2->GetRect();	// Tilemap 충돌 영역
+		//RECT intersect = {};      // 충돌된 영역
+
+		//if (::IntersectRect(&intersect, &r1, &r2))
+		//{
+		//	int32 intersectWidth = intersect.right - intersect.left;
+		//	int32 intersectHeight = intersect.bottom - intersect.top;
+
+		//	if (intersectWidth < intersectHeight)	// 좌우 충돌(벽)
+		//	{
+		//		AdjustCollisionPos(b1, b2);	// 벽 밀어내기
+		//	}
+		//	else if (intersectWidth >= intersectHeight)
+		//	{
+		//		_groundCollisionCount++;
+		//		_isGround = true;
+		//		_isAir = false;
+
+		//		AdjustCollisionPos(b1, b2);	// 위아래 밀어내기
+		//	}
+		//}
 	}
 }
 
@@ -646,12 +676,31 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	{
 		_groundCollisionCount--;
 
-		if (_groundCollisionCount <= 0)		// 충돌 끝: 땅에서 떨어짐
+		if (_groundCollisionCount <= 0)		// 타일과 완전히 떨어졌을 때 중력 적용하기
 		{
 			_isGround = false;
 			_isAir = true;
 			_groundCollisionCount = 0;
 		}
+		//if (b2->GetCollisionLayer() == CLT_GROUND)
+		//{
+		//	for (Collider* overlap : GetOverlappingColliders())	// 현재 위치에서 여전히 타일과 겹쳐 있는지 확인함
+		//	{
+		//		if (overlap == b2)
+		//		{
+		//			return;	// 아직 겹쳐있으면 중력 적용 X
+		//		}
+		//	}
+
+		//	_groundCollisionCount--;	
+
+		//	if (_groundCollisionCount <= 0)		// 타일과 완전히 떨어졌을 때 중력 적용하기
+		//	{
+		//		_isGround = false;
+		//		_isAir = true;
+		//		_groundCollisionCount = 0;
+		//	}
+		//}
 	}
 }
 
@@ -661,8 +710,8 @@ void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
 	RECT r2 = b2->GetRect();
 
 	Vec2 pos = GetPos();
-
 	RECT intersect = {};	// 충돌된 범위
+
 	if (::IntersectRect(&intersect, &r1, &r2))
 	{
 		int32 w = intersect.right - intersect.left;
