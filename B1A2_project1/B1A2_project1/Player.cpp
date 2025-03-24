@@ -503,6 +503,19 @@ int32 Player::GetAttack()
 	return 50;
 }
 
+float Player::GetSpeed()
+{
+	switch (_state)
+	{
+	case ObjectState::Move:
+		return _playerStat->runSpeed;
+		break;
+	case ObjectState::DuckDownMove:
+		return _playerStat->crouchSpeed;
+		break;
+	}
+}
+
 void Player::AddHealthPoint(int hp)
 {
 	if (_playerStat->commonStat.hp >= 100)

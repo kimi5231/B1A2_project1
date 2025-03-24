@@ -32,6 +32,9 @@ protected:
 	virtual void UpdateAnimation() {};
 
 public:
+	virtual float GetSpeed() = 0;
+
+public:
 	void SetState(ObjectState state);
 	
 	void SetDir(Dir dir);

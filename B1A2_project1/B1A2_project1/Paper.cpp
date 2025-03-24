@@ -78,6 +78,12 @@ void Paper::UpdateAnimation()
 	}
 }
 
+float Paper::GetSpeed()
+{
+	// 추후 수정 예정
+	return 0.0f;
+}
+
 void Paper::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);

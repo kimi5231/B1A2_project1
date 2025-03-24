@@ -92,26 +92,27 @@ void DialogueManager::SetSpeech()
 		{ 
 			if (dynamic_cast<GameObject*>(actor))
 			{
-				// Actor Setting
+				// Object Setting
 				GameObject* object = dynamic_cast<GameObject*>(actor);
 				object->SetState(static_cast<ObjectState>(_event[_LineCount].state));
 				object->SetDir(static_cast<Dir>(_event[_LineCount].dir));
+				
 				// 객체가 대화 중 이동을 하는 경우 체크
 				if (_event[_LineCount].moveDistance.x > 0 || _event[_LineCount].moveDistance.y > 0)
 					StartMove(object);
-
-				// DialogueComponent Setting
-				_currentComponent = object->GetDialogue();
-				_currentComponent->SetState(DialogueState::Running);
-				if (_event[_LineCount].type == L"C")
-				{
-					_currentComponent->SetCurrentCutScene(_event[_LineCount].cutScene);
-					_currentComponent->SetType(DialogueType::CutScene);
-				}
-				else if (_event[_LineCount].type == L"D")
-					_currentComponent->SetType(DialogueType::Bubble);
-				_currentComponent->SetSpeech(_event[_LineCount].speech);
 			}
+			
+			// DialogueComponent Setting
+			_currentComponent = actor->GetDialogue();
+			_currentComponent->SetState(DialogueState::Running);
+			if (_event[_LineCount].type == L"C")
+			{
+				_currentComponent->SetCurrentCutScene(_event[_LineCount].cutScene);
+				_currentComponent->SetType(DialogueType::CutScene);
+			}
+			else if (_event[_LineCount].type == L"D")
+				_currentComponent->SetType(DialogueType::Bubble);
+			_currentComponent->SetSpeech(_event[_LineCount].speech);
 
 			continue;
 		}
@@ -145,7 +146,7 @@ void DialogueManager::Move()
 		
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();		
 
-	float moveDis = 50 * deltaTime;
+	float moveDis = _movingObject->GetSpeed() * deltaTime;
 	Vec2 currentPos = _movingObject->GetPos();
 
 	// Move

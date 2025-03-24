@@ -122,11 +122,13 @@ void DialogueComponent::PrintBubble(HDC hdc)
 	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
 	// owner 사이즈 가져오기
-	FlipbookActor* owner = dynamic_cast<FlipbookActor*>(_owner);
-	Flipbook* flipbook = owner->GetFlipbook();
 	Vec2Int size;
-	if (flipbook)
+
+	if (dynamic_cast<FlipbookActor*>(_owner))
 	{
+		FlipbookActor* owner = dynamic_cast<FlipbookActor*>(_owner);
+		Flipbook* flipbook = owner->GetFlipbook();
+		
 		const FlipbookInfo& info = flipbook->GetInfo();
 		size = info.size;
 	}
