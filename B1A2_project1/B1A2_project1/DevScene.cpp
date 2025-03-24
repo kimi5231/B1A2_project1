@@ -78,12 +78,13 @@ void DevScene::Init()
 			collider->SetCollisionLayer(CLT_PLAYER);
 
 		// 충돌하고 싶은 객체 설정
+		collider->AddCollisionFlagLayer(CLT_MONSTER);	// 추후 MONSTER_ATTACK으로 변경 예정
+		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
 		collider->AddCollisionFlagLayer(CLT_ITEM);
-		collider->AddCollisionFlagLayer(CLT_DETECT);
-		collider->AddCollisionFlagLayer(CLT_MONSTER);
 		collider->AddCollisionFlagLayer(CLT_GROUND);	
 		collider->AddCollisionFlagLayer(CLT_WALL);
 		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
+		collider->AddCollisionFlagLayer(CLT_DETECT);
 
 		collider->SetSize({ 23, 75 });
 			

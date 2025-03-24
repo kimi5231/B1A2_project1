@@ -17,6 +17,10 @@ protected:
 	virtual void UpdateAnimation();
 
 private:
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+
+private:
 	// Flipbook
 	Flipbook* _flipbookMove[2];
 };

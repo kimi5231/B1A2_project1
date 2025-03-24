@@ -77,3 +77,25 @@ void Paper::UpdateAnimation()
 		break;
 	}
 }
+
+void Paper::OnComponentBeginOverlap(Collider* collider, Collider* other)
+{
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	// Player 충돌
+	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		// 추후 GameScene으로 변경
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		// 투사체 삭제
+		scene->RemoveActor(this);
+	}
+}
+
+void Paper::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
+}
