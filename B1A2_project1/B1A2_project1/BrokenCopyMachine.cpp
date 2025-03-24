@@ -16,8 +16,17 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 	CalPixelPerSecond();
 
-	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+	// SetFlipbook
+	{
+		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookLongAttack[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookLongAttack[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+	}
 
 	// Collider Component
 	{
@@ -83,7 +92,6 @@ void BrokenCopyMachine::TickLongAttack()
 		_sumTime = 0.f;
 		SetState(ObjectState::Idle);
 		_currentProjectileCount = 0;
-		return;
 	}
 }
 
@@ -95,7 +103,8 @@ void BrokenCopyMachine::TickHit()
 		SetState(ObjectState::Dead);
 		return;
 	}
-		
+	
+	_sumTime = 0.f;
 	SetState(ObjectState::Idle);
 }
 
@@ -110,6 +119,15 @@ void BrokenCopyMachine::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::LongAttack:
+		SetFlipbook(_flipbookLongAttack[_dir]);
+		break;
+	case ObjectState::Hit:
+		SetFlipbook(_flipbookHit[_dir]);
+		break;
+	case ObjectState::Dead:
+		SetFlipbook(_flipbookDead[_dir]);
 		break;
 	}
 }
@@ -166,7 +184,7 @@ void BrokenCopyMachine::CreateProjectile()
 	// 추후 GameScene으로 변경
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	// 추후 Layer 변경 예정
+	// 추후 Layer, Pos 변경 예정
 	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y}, LAYER_PLAYER);
 	paper->SetSpeed(_stat->projectileSpeed);
 	paper->SetAttack(_stat->projectileAttack);

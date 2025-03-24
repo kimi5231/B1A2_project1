@@ -79,10 +79,10 @@ private:
 
 private:
 	// Flipbook
-	Flipbook* _flipbookIdle[2] = {};
-	Flipbook* _flipbookNormalAttack[2] = {};
-	Flipbook* _flipbookHit[2] = {};
-	Flipbook* _flipbookDead[2] = {};
+	Flipbook* _flipbookIdle[2]{};
+	Flipbook* _flipbookLongAttack[2]{};
+	Flipbook* _flipbookHit[2]{};
+	Flipbook* _flipbookDead[2]{};
 
 private:
 	BrokenCopyMachineStat* _stat;

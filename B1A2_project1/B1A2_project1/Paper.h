@@ -18,5 +18,5 @@ protected:
 
 private:
 	// Flipbook
-	Flipbook* _flipbookMove[2] = {};
+	Flipbook* _flipbookMove[2];
 };

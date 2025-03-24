@@ -2,14 +2,31 @@
 #include "Paper.h"
 #include "DevScene.h"
 #include "Creature.h"
+#include "BoxCollider.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "CollisionManager.h"
 
 Paper::Paper()
 {
 	_flipbookMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_Paper");
 	_flipbookMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_Paper");
+
+	// Collider Component
+	{
+		// Projectile Collider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_PROJECTILE);
+
+			collider->SetSize({ 10, 5 });
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
 
 	SetState(ObjectState::Move);
 }

@@ -18,11 +18,13 @@ public:
 public:
 	Actor* GetActor(int32 id);
 
-public:
+protected:
 	void AddActor(Actor* actor);
-	void RemoveActor(Actor* actor);
 	void AddPanel(Panel* panel);
 	void RemovePanel(Panel* panel);
+
+public:
+	void RemoveActor(Actor* actor);
 
 protected:
 	std::vector<Actor*> _actors[LAYER_MAXCOUNT];
