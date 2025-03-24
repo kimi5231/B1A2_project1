@@ -269,6 +269,9 @@
     <ClInclude Include="Paper.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="SlashWave.h">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -440,6 +443,9 @@
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClCompile>
     <ClCompile Include="Paper.cpp">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashWave.cpp">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClCompile>
   </ItemGroup>

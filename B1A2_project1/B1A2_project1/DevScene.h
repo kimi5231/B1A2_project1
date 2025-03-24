@@ -20,6 +20,8 @@ public:
 	void LoadMap();
 	void LoadTilemap();
 	void LoadPlayer();
+	void LoadMonster();
+	void LoadProjectile();
 	void LoadDialogue();
 	void LoadItem();
 	void LoadInventory();

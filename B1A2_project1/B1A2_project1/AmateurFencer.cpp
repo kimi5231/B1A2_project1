@@ -2,11 +2,14 @@
 #include "AmateurFencer.h"
 #include "BehaviorTree.h"
 #include "Player.h"
-#include "ResourceManager.h"
-#include "CollisionManager.h"
+#include "SlashWave.h"
+#include "DevScene.h"
 #include "BoxCollider.h"
-#include "Flipbook.h"
+#include "ResourceManager.h"
 #include "TimeManager.h"
+#include "SceneManager.h"
+#include "CollisionManager.h"
+#include "Flipbook.h"
 
 AmateurFencer::AmateurFencer()
 {
@@ -35,6 +38,7 @@ AmateurFencer::AmateurFencer()
 	_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 	_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_AmateurFencer");
 
+	// Collider
 	{
 		// AF
 		{
@@ -61,20 +65,6 @@ AmateurFencer::AmateurFencer()
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
 			collider->SetSize({ float(_stat->playerDetection.x), float(_stat->playerDetection.y) });
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
-		}
-
-		// Attack
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
-
-			collider->AddCollisionFlagLayer(CLT_PLAYER);
-
-			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
@@ -147,6 +137,8 @@ void AmateurFencer::BeginPlay()
 	RootSelector->addChild(ChaseSequence);
 	RootSelector->addChild(AttackSelector);
 	_rootNode = RootSelector;
+
+	SetState(ObjectState::Idle);
 }
 
 void AmateurFencer::Tick()
@@ -157,6 +149,8 @@ void AmateurFencer::Tick()
 		SetDir(DIR_LEFT);
 	else
 		SetDir(DIR_RIGHT);
+
+	_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
 
 	if (_rootNode)
 	{
@@ -223,6 +217,16 @@ void AmateurFencer::CalPixelPerSecond()
 
 		_stat->dashSpeed = DASH_SPEED_PPS;
 	}
+
+	// LongAtk Projectile 
+	{
+		float PROJECTILE_SPEED_KMPH = _stat->dashSpeed;
+		float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+		float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+		float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->longAtkProjectileSpeed = PROJECTILE_SPEED_PPS;
+	}
 }
 
 int32 AmateurFencer::GetAttack()
@@ -245,14 +249,6 @@ BehaviorState AmateurFencer::is_cur_state_Idle()
 
 BehaviorState AmateurFencer::Idle()
 {
-	SetFlipbook(_flipbookIdle[_dir]);
-
-	if (std::abs(GetFromPlayerXDistance()) <= _stat->playerDetection.x)
-	{
-		SetState(ObjectState::Chase);
-		return BehaviorState::SUCCESS;
-	}
-
 	return BehaviorState::RUNNING;
 }
 
@@ -266,17 +262,22 @@ BehaviorState AmateurFencer::is_cur_state_hit()
 
 BehaviorState AmateurFencer::Hit()
 {
-	if (this->GetIdx() == 0)	// _flipbookHit[_dir]->GetFlipbookEndNum()
-	{
-		if (_commonStat.hp <= 0)
-			SetState(ObjectState::Dead);
-		else
-			SetState(ObjectState::Idle);
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _stat->knockBackDistance;
+	else
+		_pos.x += _stat->knockBackDistance;
 
-		return BehaviorState::SUCCESS;
+	if (_stat->commonStat.hp <= 0)
+	{
+		//SetState(ObjectState::Dead);
+		SetState(ObjectState::Chase);
 	}
 	else
-		return BehaviorState::RUNNING;
+	{
+		SetState(ObjectState::Chase);
+	}
+
+	return BehaviorState::SUCCESS;
 }
 
 BehaviorState AmateurFencer::is_cur_state_chase()
@@ -290,31 +291,36 @@ BehaviorState AmateurFencer::is_cur_state_chase()
 BehaviorState AmateurFencer::Chase()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-
+	float xDistance = GetAbsFromPlayerXDisatance();
+	float yDistance = GetAbsFromPlayerYDistance();
+	
+	// Chase 유지
 	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
 	{
-		if (_dir == DIR_RIGHT)
-			_pos.x += _stat->speed * deltaTime;
-		else
-			_pos.x -= _stat->speed * deltaTime;
+		if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
+		{
+			if (_dir == DIR_RIGHT)
+				_pos.x += _stat->speed * deltaTime;
+			else
+				_pos.x -= _stat->speed * deltaTime;
+		}
 
 		return BehaviorState::RUNNING;
 	}
-	else if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
+	
+	// 근거리 or 원거리 공격
+	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
 	{
-		_state = ObjectState::CloseAttack;
+		SetState(ObjectState::Thrust);
 		return BehaviorState::SUCCESS;
 	}
 	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRange) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
 	{
-		_state = ObjectState::LongAttack;
+		SetState(ObjectState::SlashWave);
 		return BehaviorState::SUCCESS;
 	}
-	else if (GetAbsFromPlayerXDisatance() > _stat->playerDetection.x)
-	{
-		_state = ObjectState::Idle;
-		return BehaviorState::SUCCESS;
-	}
+
+	// Idle 상태 변경은 Detection Collision 충돌이 끝났을 때 호출됨
 }
 
 BehaviorState AmateurFencer::is_cur_state_thrust()
@@ -327,7 +333,25 @@ BehaviorState AmateurFencer::is_cur_state_thrust()
 
 BehaviorState AmateurFencer::Thrust()	// 찌르기
 {	
-	if (this->GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
+	if (!_attackCollider)
+	{
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
+
+			_attackCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+			}
+	}
+
+	if (GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
 	{
 		SetState(ObjectState::BackStep);
 		return BehaviorState::SUCCESS;
@@ -344,40 +368,39 @@ BehaviorState AmateurFencer::is_cur_state_backstep()
 
 BehaviorState AmateurFencer::BackStep()
 {
-	return BehaviorState();
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _stat->backStepDistance;
+	else
+		_pos.x += _stat->backStepDistance;
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	float xDistance = GetAbsFromPlayerXDisatance();
+	float yDistance = GetAbsFromPlayerYDistance();
+
+	// Chase
+	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+	{
+		if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
+		{
+			SetState(ObjectState::Chase);
+		}
+
+		return BehaviorState::SUCCESS;
+	}
+
+	// 근거리 or 원거리 공격
+	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
+	{
+		SetState(ObjectState::Thrust);
+		return BehaviorState::SUCCESS;
+	}
+	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRange) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+	{
+		SetState(ObjectState::SlashWave);
+		return BehaviorState::SUCCESS;
+	}
+
 }
-
-
-//BehaviorState AmateurFencer::Close_atk()
-//{
-//	SetFlipbook(_flipbookCloseAtk[_dir]);
-//
-//	if (GetAbsFromPlayerXDisatance() <= 120)
-//	{
-//		// 근거리 공격 코드 작성
-//		// ...
-//
-//		return BehaviorState::RUNNING;
-//	}
-//	else if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= 320)
-//	{
-//		_state = ObjectState::CloseAttack;
-//		return BehaviorState::SUCCESS;
-//	}
-//	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkDamage) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))
-//	{
-//		_state = ObjectState::LongAttack;
-//		return BehaviorState::SUCCESS;
-//	}
-//}
-//
-//BehaviorState AmateurFencer::is_cur_state_long_atk()
-//{
-//	if (_state == ObjectState::LongAttack)
-//		return BehaviorState::SUCCESS;
-//	else
-//		return BehaviorState::FAIL;
-//}
 
 BehaviorState AmateurFencer::is_cur_state_slashwave()
 {
@@ -389,32 +412,12 @@ BehaviorState AmateurFencer::is_cur_state_slashwave()
 
 BehaviorState AmateurFencer::SlashWave()
 {
-	return BehaviorState();
-}
+	// 검기 날림 코드
 
-//BehaviorState AmateurFencer::Long_atk()
-//{
-//	SetFlipbook(_flipbookLongAtk[_dir]);
-//
-//	if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkDamage) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))
-//	{
-//		 원거리 공격 코드 작성
-//		 ...
-//
-//		return BehaviorState::RUNNING;
-//	}
-//
-//	if (GetAbsFromPlayerXDisatance() <= 120)
-//	{
-//		_state = ObjectState::CloseAttack;
-//		return BehaviorState::SUCCESS;
-//	}
-//	else if (GetAbsFromPlayerXDisatance() > 120 && GetAbsFromPlayerXDisatance() <= 320)
-//	{
-//		_state = ObjectState::Chase;
-//		return BehaviorState::SUCCESS;
-//	}
-//}
+	SetState(ObjectState::Dash);
+
+	return BehaviorState::SUCCESS;
+}
 
 BehaviorState AmateurFencer::is_cur_state_dash()
 {
@@ -426,12 +429,14 @@ BehaviorState AmateurFencer::is_cur_state_dash()
 
 BehaviorState AmateurFencer::Dash()
 {
-	SetFlipbook(_flipbookDash[_dir]);
+	if (_dir == DIR_RIGHT)
+		_pos.x += _stat->dashDistance;
+	else
+		_pos.x -= _stat->dashDistance;
 
-	if (this->GetIdx() == _flipbookDash[_dir]->GetFlipbookEndNum())		// Dash 애니메이션 한 번 재생
+	if (GetIdx() == 0)		//if (GetIdx() == _flipbookDash[_dir]->GetFlipbookEndNum())		// Dash 애니메이션 한 번 재생
 	{
-		_state = ObjectState::Chase;	// 변경할 수도??
-
+		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
 	}
 	
@@ -446,6 +451,16 @@ float AmateurFencer::GetFromPlayerXDistance()
 float AmateurFencer::GetAbsFromPlayerXDisatance()
 {
 	return std::abs(GetFromPlayerXDistance());
+}
+
+float AmateurFencer::GetFromPlayerYDistance()
+{
+	return this->GetPos().x - _player->GetPos().y;
+}
+
+float AmateurFencer::GetAbsFromPlayerYDistance()
+{
+	return std::abs(GetFromPlayerYDistance());
 }
 
 void AmateurFencer::SetSpawnPos(Vec2 pos)
@@ -483,12 +498,52 @@ void AmateurFencer::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		}
 	}
 
-	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
+	if (b1->GetCollisionLayer() == CLT_MONSTER)
 	{
-		SetState(ObjectState::Hit);
+		if (b2->GetCollisionLayer() == CLT_PLAYER)	// CLT_PLAYER_ATTACK으로 수정
+		{
+			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+			OnDamaged(otherOwner);
+			SetState(ObjectState::Hit);
+		}
 	}
 }
 
 void AmateurFencer::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b1->GetCollisionLayer() == CLT_DETECT)
+	{
+		if (b2->GetCollisionLayer() == CLT_PLAYER)
+		{
+			SetState(ObjectState::Idle);
+			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
+		}
+	}
+
+	if (b1->GetCollisionLayer() == CLT_MONSTER)
+	{
+		if (b2->GetCollisionLayer() == CLT_PLAYER)	// CLT_PLAYER_ATTACK으로 수정
+		{
+			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+			OnDamaged(otherOwner);
+			SetState(ObjectState::Chase);
+		}
+	}
+}
+
+void AmateurFencer::CreateProjectile()
+{
+	//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	//SlashWave* slashWave = scene->SpawnObject<SlashWave>({ _pos.x, _pos.y }, LAYER_PLAYER);
+	//slashWave->SetSpeed(_stat->longAtkProjectileSpeed);
+	//slashWave->SetOwner(this);
+
+	//_currentProjectileCount++;
 }
