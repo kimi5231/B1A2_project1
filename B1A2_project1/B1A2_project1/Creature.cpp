@@ -34,10 +34,12 @@ void Creature::OnDamaged(Creature* other)
 	int32& hp = GetHp();
 	hp = max(0, hp - damage);
 
-	/*if (hp == 0)
+	// Ã¼·ÂÀÌ ´Ù ´â¸é »ç¸Á
+	if (hp == 0)
 	{
 		SetState(ObjectState::Dead);
+		return;
 	}
 
-	SetState(ObjectState::Hit);*/
+	SetState(ObjectState::Hit);
 }

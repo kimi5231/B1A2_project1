@@ -119,11 +119,11 @@ void DevScene::Init()
 	// Announcemet
 	{
 		// Layer 추후 수정 예정
-		GameObject* object = SpawnObject<GameObject>({ 500, 500 }, LAYER_PLAYER);
+		Actor* actor = SpawnObject<Actor>({ 500, 500 }, LAYER_PLAYER);
 
 		DialogueComponent* dialogueComponent = new DialogueComponent();
-		object->AddComponent(dialogueComponent);
-		object->SetID(21);
+		actor->AddComponent(dialogueComponent);
+		actor->SetID(21);
 	}
 
 	// Item
@@ -151,7 +151,7 @@ void DevScene::Init()
 	}
 
 	// Monster
-	{
+	/* {
 		// Layer 추후 수정 예정
 		{
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
@@ -192,15 +192,15 @@ void DevScene::Init()
 
 			_monsterHpData[20301] = 100;
 		}
-	}
+	}*/
 
 	// Start Dialogue
-	/*{
+	{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
 		actors.push_back(GetActor(21));
 		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}*/
+	}
 
 	Super::Init();
 }

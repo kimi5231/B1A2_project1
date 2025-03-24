@@ -2,9 +2,11 @@
 #include "TiredOfficeWorker.h"
 #include "BoxCollider.h"
 #include "Player.h"
+#include "DevScene.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
+#include "SceneManager.h"
 
 TiredOfficeWorker::TiredOfficeWorker()
 {
@@ -28,6 +30,10 @@ TiredOfficeWorker::TiredOfficeWorker()
 		_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 		_flipbookRoaming[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 		_flipbookRoaming[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturn[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturn[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturnIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturnIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	}
 
 	// Collider Component
@@ -96,6 +102,7 @@ void TiredOfficeWorker::TickIdle()
 
 	if (_sumTime >= _stat->idleTime)
 	{
+		_currentMoveDistance = _moveDistance;
 		SetState(ObjectState::Roaming);
 	}
 }
@@ -141,19 +148,27 @@ void TiredOfficeWorker::TickHit()
 	else
 		_pos.x += _stat->knockBackDistance;
 
-	// 체력이 다 닳면 사망
-	if (_stat->hp == 0)
-	{
-		SetState(ObjectState::Dead);
-		return;
-	}
-
-	SetState(ObjectState::Idle);
+	_sumTime = 0.f;
+	SetState(ObjectState::Chase);
 }
 
 void TiredOfficeWorker::TickDead()
 {
+	// 난수 생성
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	std::uniform_real_distribution urd{ 0.f, 1.f };
+
 	// 아이템 드랍
+	if (urd(dre) <= _stat->healtemDropRate)
+	{
+		// 힐템 생성 코드 추가 예정
+	}
+
+	// 객체 제거
+	// 추후 GameScene로 변경할 예정
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	scene->RemoveActor(this);
 }
 
 void TiredOfficeWorker::TickChase()
@@ -162,7 +177,8 @@ void TiredOfficeWorker::TickChase()
 	if (_pos.x > _movementLimit.y || _pos.x < _movementLimit.x)
 	{
 		_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
-		SetState(ObjectState::Return);
+		_sumTime = 0.f;
+		SetState(ObjectState::ReturnIdle);
 	}
 
 	// 추적
@@ -185,10 +201,7 @@ void TiredOfficeWorker::TickChase()
 
 		// 3초가 지니면 복귀
 		if (_sumTime >= 3.0f)
-		{
-			// 대기 후 복귀
 			SetState(ObjectState::Return);
-		}
 	}
 
 	// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
@@ -209,7 +222,6 @@ void TiredOfficeWorker::TickRoaming()
 
 	if (_currentMoveDistance <= 0.f)
 	{
-		_currentMoveDistance = _moveDistance;
 		_sumTime = 0.f;
 		SetState(ObjectState::Idle);
 
@@ -250,6 +262,15 @@ void TiredOfficeWorker::TickReturn()
 	}
 }
 
+void TiredOfficeWorker::TickReturnIdle()
+{
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= _stat->idleTime)
+		SetState(ObjectState::Return);
+}
+
 void TiredOfficeWorker::UpdateAnimation()
 {
 	switch (_state)
@@ -271,6 +292,12 @@ void TiredOfficeWorker::UpdateAnimation()
 		break;
 	case ObjectState::Roaming:
 		SetFlipbook(_flipbookRoaming[_dir]);
+		break;
+	case ObjectState::Return:
+		SetFlipbook(_flipbookReturn[_dir]);
+		break;
+	case ObjectState::ReturnIdle:
+		SetFlipbook(_flipbookReturnIdle[_dir]);
 		break;
 	}
 }
@@ -294,7 +321,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		{
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);
-			SetState(ObjectState::Hit);
+			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
 		}
 
 		return;

@@ -26,11 +26,13 @@ protected:
 	virtual void TickChase() override {};
 	virtual void TickRoaming() override {};
 	virtual void TickReturn() override {};
+	virtual void TickReturnIdle() override {};
 	virtual void UpdateAnimation() override {};
 
 public:
 	virtual int32 GetAttack() = 0;
 	virtual int32& GetHp() = 0;
+	virtual float GetSpeed() = 0;
 	virtual Vec2Int GetPlayerDetection() = 0;
 
 	void SetTarget(Player* player) { _target = player; }

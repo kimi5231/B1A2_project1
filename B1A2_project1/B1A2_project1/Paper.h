@@ -16,6 +16,9 @@ protected:
 	virtual void TickMove();
 	virtual void UpdateAnimation();
 
+public:
+	virtual float GetSpeed() override;
+
 private:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);

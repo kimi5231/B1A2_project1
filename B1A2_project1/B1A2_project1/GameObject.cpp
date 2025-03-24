@@ -73,6 +73,9 @@ void GameObject::Tick()
 	case ObjectState::Return:
 		TickReturn();
 		break;
+	case ObjectState::ReturnIdle:
+		TickReturnIdle();
+		break;
 	}
 }
 

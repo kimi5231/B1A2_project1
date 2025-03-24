@@ -1,7 +1,7 @@
 #pragma once
 #include "ResourceBase.h"
 
-struct LineInfo
+struct Line
 {
 	std::wstring speakerName;
 	int32 speakerID;
@@ -9,8 +9,7 @@ struct LineInfo
 	int32 dir;
 	std::wstring type;
 	std::wstring cutScene;
-	float posX;
-	float posY;
+	Vec2 moveDistance;
 	std::wstring speech;
 };
 
@@ -24,8 +23,8 @@ public:
 	virtual void LoadFile(const std::wstring& path) override;
 
 public:
-	std::vector<LineInfo>& GetEvent(const std::wstring& key) { return _lines[key]; }
+	std::vector<Line>& GetEvent(const std::wstring& key) { return _events[key]; }
 
 private:
-	std::unordered_map<std::wstring, std::vector<LineInfo>> _lines;
+	std::unordered_map<std::wstring, std::vector<Line>> _events;
 };

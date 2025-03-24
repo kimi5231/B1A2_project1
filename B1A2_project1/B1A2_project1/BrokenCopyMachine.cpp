@@ -97,20 +97,27 @@ void BrokenCopyMachine::TickLongAttack()
 
 void BrokenCopyMachine::TickHit()
 {
-	// 체력이 다 닳면 사망
-	if (_stat->hp == 0)
-	{
-		SetState(ObjectState::Dead);
-		return;
-	}
-	
 	_sumTime = 0.f;
 	SetState(ObjectState::Idle);
 }
 
 void BrokenCopyMachine::TickDead()
 {
+	// 난수 생성
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	std::uniform_real_distribution urd{ 0.f, 1.f };
+
 	// 아이템 드랍
+	if (urd(dre) <= _stat->healtemDropRate)
+	{
+		// 힐템 생성 코드 추가 예정
+	}
+
+	// 객체 제거
+	// 추후 GameScene로 변경할 예정
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	scene->RemoveActor(this);
 }
 
 void BrokenCopyMachine::UpdateAnimation()
@@ -146,7 +153,6 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
-		SetState(ObjectState::Hit);
 	}
 }
 

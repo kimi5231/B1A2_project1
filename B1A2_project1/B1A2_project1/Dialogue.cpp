@@ -23,7 +23,7 @@ void Dialogue::LoadFile(const std::wstring& path)
 
 	// 이벤트 저장을 위한 키, 값 변수
 	std::wstring key;
-	std::vector<LineInfo> infos;
+	std::vector<Line> lines;
 
 	std::wstring str;
 
@@ -37,8 +37,8 @@ void Dialogue::LoadFile(const std::wstring& path)
 
 		if (eventName == L"end")
 		{
-			_lines[key] = infos;
-			infos.clear();
+			_events[key] = lines;
+			lines.clear();
 			continue;
 		}
 		else if (!eventName.empty())
@@ -47,46 +47,46 @@ void Dialogue::LoadFile(const std::wstring& path)
 			continue;
 		}
 		
-		LineInfo info;
+		Line line;
 
-		std::getline(wiss, info.speakerName, L',');
+		std::getline(wiss, line.speakerName, L',');
 
 		// 문자열 정수로 변환
 		std::wstring id;
 		std::getline(wiss, id, L',');
-		info.speakerID = std::stoi(id);
+		line.speakerID = std::stoi(id);
 
 		std::wstring state;
 		std::getline(wiss, state, L',');
-		info.state = std::stoi(state);
+		line.state = std::stoi(state);
 
 		std::wstring dir;
 		std::getline(wiss, dir, L',');
-		info.dir = std::stoi(dir);
+		line.dir = std::stoi(dir);
 
-		std::getline(wiss, info.type, L',');
+		std::getline(wiss, line.type, L',');
 
-		std::getline(wiss, info.cutScene, L',');
+		std::getline(wiss, line.cutScene, L',');
 
 		// 문자열 실수로 변환
 		std::wstring x;
 		std::getline(wiss, x, L',');
-		info.posX = std::stof(x);
+		line.moveDistance.x = std::stof(x);
 
 		std::wstring y;
 		std::getline(wiss, y, L',');
-		info.posY = std::stof(y);
+		line.moveDistance.y = std::stof(y);
 
-		std::getline(wiss, info.speech, L',');
+		std::getline(wiss, line.speech, L',');
 		// 개행문자 처리
 		int32 start = 0;
-		while ((start = info.speech.find(L"\\n", start))!= std::wstring::npos)
+		while ((start = line.speech.find(L"\\n", start))!= std::wstring::npos)
 		{
-			info.speech.replace(start, 2, L"\n");
+			line.speech.replace(start, 2, L"\n");
 			start += 1;
 		}
 
-		infos.push_back(info);
+		lines.push_back(line);
 	}
 
 	ifs.close();

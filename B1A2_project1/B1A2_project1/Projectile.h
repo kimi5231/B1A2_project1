@@ -19,6 +19,9 @@ protected:
 	virtual void UpdateAnimation() {};
 
 public:
+	virtual float GetSpeed() = 0;
+
+public:
 	void SetSpeed(float speed) { _speed = speed; }
 	void SetAttack(int32 attack) { _attack = attack; }
 	void SetRange(int32 range) { _range = range; }

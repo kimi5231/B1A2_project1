@@ -28,6 +28,7 @@ protected:
 	virtual void TickChase() override {};
 	virtual void TickRoaming() override {};
 	virtual void TickReturn() override {};
+	virtual void TickReturnIdle() override {};
 	virtual void UpdateAnimation() override {};
 
 public:
@@ -36,6 +37,7 @@ public:
 
 	virtual int32 GetAttack() = 0;
 	virtual int32& GetHp() = 0;
+	virtual float GetSpeed() = 0;
 
 protected:
 	virtual void OnDamaged(Creature* other);

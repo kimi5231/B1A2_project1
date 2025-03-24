@@ -25,7 +25,7 @@ public:
 	void StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors);
 	void EndDialogue();
 
-	void ChangeSpeech();
+	void SetSpeech();
 
 	void StartMove(GameObject* object);
 	void EndMove();
@@ -33,8 +33,9 @@ public:
 
 private:
 	Dialogue* _dialogue{};
-	std::vector<LineInfo> _event;
-	int32 _eventCount = 0;
+
+	std::vector<Line> _event;
+	int32 _LineCount = 0;
 	std::vector<Actor*> _actors;
 	DialogueComponent* _currentComponent;
 	
