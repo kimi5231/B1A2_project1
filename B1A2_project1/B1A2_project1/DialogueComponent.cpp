@@ -344,6 +344,8 @@ void DialogueComponent::PrintCutScene(HDC hdc)
 	// 보정 변수 가져오기
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
+	Vec2Int winSize = GET_SINGLE(ValueManager)->GetWinSize();
+
 	// CutScene 출력
 	{
 		Texture* cutScene = GET_SINGLE(ResourceManager)->GetTexture(_currentCutScene);
@@ -360,7 +362,17 @@ void DialogueComponent::PrintCutScene(HDC hdc)
 			cutScene->GetTransparent());
 	}
 
+	// 텍스트 배경 출력
+	{
+		HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
+		SelectObject(hdc, hBrush);
+
+		Utils::DrawRect(hdc, { float(winSize.x / 2), float(560 * winSizeAdjustmemt.y) }, { winSize.x, static_cast<int32>(winSize.y / 4) });
+	
+		DeleteObject(hBrush);
+	}
+
 	// 텍스트 출력
-	Vec2Int pos{ static_cast<int32>(100 * winSizeAdjustmemt.x), static_cast<int32>(600 * winSizeAdjustmemt.y) };
+	Vec2Int pos{ static_cast<int32>(100 * winSizeAdjustmemt.x), static_cast<int32>(560 * winSizeAdjustmemt.y) };
 	Utils::DrawString(hdc, _currentSpeech, pos);
 }
