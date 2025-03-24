@@ -194,6 +194,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SettingPanel.h" />
     <ClInclude Include="SettingScene.h" />
+    <ClInclude Include="SlashWave.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SphereCollider.h" />
@@ -264,6 +265,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SettingPanel.cpp" />
     <ClCompile Include="SettingScene.cpp" />
+    <ClCompile Include="SlashWave.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />

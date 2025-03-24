@@ -117,6 +117,8 @@ public:
 public:
 	float GetFromPlayerXDistance();
 	float GetAbsFromPlayerXDisatance();
+	float GetFromPlayerYDistance();
+	float GetAbsFromPlayerYDistance();
 
 	void SetSpawnPos(Vec2 pos);
 	void SetSpawnDir(Dir dir);
@@ -128,6 +130,9 @@ public:
 public:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+
+public:
+	void CreateProjectile();
 
 private:
 	// Flipbook
@@ -151,6 +156,8 @@ private:
 
 	float _currentMoveDistance;
 	Collider* _attackCollider;
+
+	int32 _currentProjectileCount = 0;
 
 public:
 	Player* _player;

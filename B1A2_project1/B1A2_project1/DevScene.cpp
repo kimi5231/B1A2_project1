@@ -45,6 +45,8 @@ void DevScene::Init()
 	//LoadMap();
 	LoadTilemap();
 	LoadPlayer();
+	LoadMonster();
+	LoadProjectile();
 	LoadDialogue();
 	LoadItem();
 	LoadInventory();
@@ -152,12 +154,6 @@ void DevScene::Init()
 	{
 		// Layer 추후 수정 예정
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
-
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
-			fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
-
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
 			TOW->SetSpawnDir(DIR_RIGHT);
 			TOW->SetSpawnPos({ 100, 300 });
@@ -170,39 +166,26 @@ void DevScene::Init()
 		}
 		
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
-
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
-			fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
-
 			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
-
 
 			_monsterHpData[20201] = 100;
 
 			// Projectile
 			{
-				GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
-				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+				//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
+				//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
 
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-				fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+				//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
+				//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
 			}
 		}
 
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
-
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
-			fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
-
 			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
 			AF->SetSpawnDir(DIR_RIGHT);
 			AF->SetSpawnPos({ 1200, 300 });
 			//AF->SetMoveDistance();
-			// AF->SetMovementLimit({})
+			AF->SetMovementLimit({ 960, 2000 });
 
 			// Player 설정
 			AF->_player = player;
@@ -382,6 +365,57 @@ void DevScene::LoadPlayer()
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerDuckDownMoveLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerDuckDownMoveLeft", {35, 50}, 0, 9, 1, 0.7f });
+	}
+}
+
+void DevScene::LoadMonster()
+{
+	// TOW
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
+		fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
+	}
+
+	// BCM
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
+		fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
+	}
+
+	// AF
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
+		fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
+	}
+}
+
+void DevScene::LoadProjectile()
+{
+	// Paper
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
+		fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+	}
+	
+	// SlashWave
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWave", L"Sprite\\Projectile\\SlashWave.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWave");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWave");
+		fb->SetInfo({ texture, L"FB_SlashWave", {20, 88}, 0, 0, 0, 0.7f });
 	}
 }
 
