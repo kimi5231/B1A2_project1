@@ -97,13 +97,6 @@ void BrokenCopyMachine::TickLongAttack()
 
 void BrokenCopyMachine::TickHit()
 {
-	// Ã¼·ÂÀÌ ´Ù ´â¸é »ç¸Á
-	if (_stat->hp == 0)
-	{
-		SetState(ObjectState::Dead);
-		return;
-	}
-	
 	_sumTime = 0.f;
 	SetState(ObjectState::Idle);
 }
@@ -146,7 +139,6 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
-		SetState(ObjectState::Hit);
 	}
 }
 

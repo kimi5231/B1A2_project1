@@ -143,13 +143,6 @@ void TiredOfficeWorker::TickHit()
 	else
 		_pos.x += _stat->knockBackDistance;
 
-	// Ã¼·ÂÀÌ ´Ù ´â¸é »ç¸Á
-	if (_stat->hp == 0)
-	{
-		SetState(ObjectState::Dead);
-		return;
-	}
-
 	_sumTime = 0.f;
 	SetState(ObjectState::Idle);
 }
@@ -313,7 +306,6 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		{
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);
-			SetState(ObjectState::Hit);
 		}
 
 		return;
