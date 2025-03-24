@@ -154,7 +154,7 @@ void DevScene::Init()
 	{
 		// Layer 추후 수정 예정
 		{
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
+			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_MONSTER);
 			TOW->SetSpawnDir(DIR_RIGHT);
 			TOW->SetSpawnPos({ 100, 300 });
 			TOW->SetMoveDistance(580.f);
@@ -166,7 +166,7 @@ void DevScene::Init()
 		}
 		
 		{
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
+			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
 
 			_monsterHpData[20201] = 100;
 
@@ -181,7 +181,7 @@ void DevScene::Init()
 		}
 
 		{
-			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
+			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_MONSTER);
 			AF->SetSpawnDir(DIR_RIGHT);
 			AF->SetSpawnPos({ 1200, 300 });
 			//AF->SetMoveDistance();
