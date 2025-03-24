@@ -86,7 +86,7 @@ void Paper::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	// Player 충돌
+	// Player와 충돌
 	if (b2->GetCollisionLayer() == CLT_PLAYER)
 	{
 		// 추후 GameScene으로 변경

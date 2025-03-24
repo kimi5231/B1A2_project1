@@ -72,6 +72,16 @@ void TiredOfficeWorker::BeginPlay()
 void TiredOfficeWorker::Tick()
 {
 	Super::Tick();
+
+	if (_state != ObjectState::CloseAttack)
+	{
+		if (_attackCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+			RemoveComponent(_attackCollider);
+			_attackCollider = nullptr;
+		}
+	}
 }
 
 void TiredOfficeWorker::Render(HDC hdc)
@@ -86,27 +96,38 @@ void TiredOfficeWorker::TickIdle()
 
 	if (_sumTime >= _stat->idleTime)
 	{
-		_sumTime = 0.f;
 		SetState(ObjectState::Roaming);
 	}
 }
 
 void TiredOfficeWorker::TickCloseAttack()
 {
-	int32 idx = GetIdx();
-
-	// 마지막 공격 모션일 때
-	if (idx == 0)
+	// Monster Attack Collider 생성
+	if (!_attackCollider)
 	{
-		// 공격 범위 체크
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+		collider->SetSize({ 50, 50 });
+
+		_attackCollider = collider;
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
+	
+	// 마지막 공격 모션일 때
+	if (GetIdx() == 0)
+	{
+		// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
 		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
 			SetState(ObjectState::CloseAttack);
 		else
 		{
-			// collider 삭제
-			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
-			RemoveComponent(_attackCollider);
-
+			_sumTime = 0.f;
 			SetState(ObjectState::Chase);
 		}
 	}
@@ -122,9 +143,11 @@ void TiredOfficeWorker::TickHit()
 
 	// 체력이 다 닳면 사망
 	if (_stat->hp == 0)
+	{
 		SetState(ObjectState::Dead);
+		return;
+	}
 
-	// Idle, Chase, Attack
 	SetState(ObjectState::Idle);
 }
 
@@ -139,7 +162,6 @@ void TiredOfficeWorker::TickChase()
 	if (_pos.x > _movementLimit.y || _pos.x < _movementLimit.x)
 	{
 		_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
-		_sumTime = 0.f;
 		SetState(ObjectState::Return);
 	}
 
@@ -164,32 +186,14 @@ void TiredOfficeWorker::TickChase()
 		// 3초가 지니면 복귀
 		if (_sumTime >= 3.0f)
 		{
-			_sumTime = 0.f;
+			// 대기 후 복귀
 			SetState(ObjectState::Return);
 		}
 	}
 
-	// 공격 범위 체크
+	// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
 	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
-	{
-		// Monster Attack Collider
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
-
-			collider->AddCollisionFlagLayer(CLT_PLAYER);
-
-			collider->SetSize({ 50, 50 });
-
-			_attackCollider = collider;
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
-		}
-
 		SetState(ObjectState::CloseAttack);
-	}
 }
 
 void TiredOfficeWorker::TickRoaming()
@@ -206,8 +210,10 @@ void TiredOfficeWorker::TickRoaming()
 	if (_currentMoveDistance <= 0.f)
 	{
 		_currentMoveDistance = _moveDistance;
+		_sumTime = 0.f;
 		SetState(ObjectState::Idle);
 
+		// 방향 전환
 		if (_dir == DIR_RIGHT)
 			SetDir(DIR_LEFT);
 		else
@@ -237,6 +243,7 @@ void TiredOfficeWorker::TickReturn()
 
 	if (_pos.x == _spawnPos.x)
 	{
+		_sumTime = 0.f;
 		SetState(ObjectState::Idle);
 		SetPos(_spawnPos);
 		SetDir(_spawnDir);
@@ -287,9 +294,6 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		{
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);
-			// Idle, Chase 상태에서 초기화되지 않을 경우 대비
-			_sumTime = 0.f;
-
 			SetState(ObjectState::Hit);
 		}
 
@@ -302,9 +306,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		// Player와 충돌
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
-			// Idle 상태에서 초기화되지 않을 경우 대비
 			_sumTime = 0.f;
-
 			SetState(ObjectState::Chase);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
 		}
@@ -325,6 +327,7 @@ void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* othe
 		// Player와 충돌
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
+			// 놓친 시간 측정 시작
  			float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 			_sumTime += deltaTime;
 		}
@@ -351,7 +354,12 @@ void TiredOfficeWorker::SetMoveDistance(float distance)
 
 int32 TiredOfficeWorker::GetAttack()
 {
-	return int32();
+	switch (_state)
+	{
+	case ObjectState::CloseAttack:
+		return _stat->attack;
+		break;
+	}
 }
 
 void TiredOfficeWorker::CalPixelPerSecond()
