@@ -11,5 +11,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
+
+protected:
+	virtual void TickMove() {};
+	virtual void UpdateAnimation() {};
+
 };
 

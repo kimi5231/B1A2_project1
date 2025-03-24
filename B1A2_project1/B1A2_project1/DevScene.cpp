@@ -31,6 +31,7 @@
 #include "BrokenCopyMachine.h"
 #include "AmateurFencer.h"
 #include "DialogueComponent.h"
+#include "ZipLine.h"
 
 DevScene::DevScene()
 {
@@ -47,6 +48,7 @@ void DevScene::Init()
 	LoadPlayer();
 	LoadMonster();
 	LoadProjectile();
+	LoadStructure();
 	LoadDialogue();
 	LoadItem();
 	LoadInventory();
@@ -181,7 +183,7 @@ void DevScene::Init()
 				//}
 
 				{
-					AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_MONSTER);
+					AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
 					AF->SetSpawnDir(DIR_RIGHT);
 					AF->SetSpawnPos({ 1200, 300 });
 					//AF->SetMoveDistance();
@@ -204,6 +206,16 @@ void DevScene::Init()
 
 			Super::Init();
 		}
+	}
+
+	// ZipLine
+	{
+		ZipLine* zipLine = SpawnObject<ZipLine>({ 200, 100 }, LAYER_STRUCTURE);
+		zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+	
+		// Button이 필요 없는 짚라인은 아래 코드 작성X
+		ZipLineButton* zipLineButton = SpawnObject<ZipLineButton>({ 200, 300 }, LAYER_STRUCTURE);
+		zipLineButton->SetOwner(zipLine);
 	}
 }
 
@@ -425,17 +437,48 @@ void DevScene::LoadStructure()
 {
 	// ZipLine
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLine", L"Sprite\\Structure\\ZipLine.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLine");
+		// ZipLine
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLine", L"Sprite\\Structure\\ZipLine.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLine");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLine");
-		fb->SetInfo({ texture, L"FB_ZipLine", {20, 88}, 0, 0, 0, 0.7f });
-	}
-	// ZipLine 전원 버튼
-	{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLine");
+			fb->SetInfo({ texture, L"FB_ZipLine", {4, 400}, 0, 0, 0, 0.7f });
+		}
+		
+		// Grip
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineGrip", L"Sprite\\Structure\\ZipLineGrip.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineGrip");
 
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineGrip");
+			fb->SetInfo({ texture, L"FB_ZipLineGrip", {35, 22}, 0, 0, 0, 0.7f });
+		}
+
+		// Display
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineDisplay", L"Sprite\\Structure\\ZipLineDisplay.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineDisplay");
+
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOff");
+			fb1->SetInfo({ texture, L"FB_ZipLineDisplayOff", {110, 120}, 0, 0, 0, 0.7f });
+			
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOn");
+			fb2->SetInfo({ texture, L"FB_ZipLineDisplayOn", {110, 120}, 0, 0, 1, 0.7f });
+		}
+
+		// Button
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineButton", L"Sprite\\Structure\\ZipLineButton.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineButton");
+
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOff");
+			fb1->SetInfo({ texture, L"FB_ZipLineButtonOff", {101, 116}, 0, 0, 0, 0.7f });
+
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOn");
+			fb2->SetInfo({ texture, L"FB_ZipLineButtonOn", {101, 116}, 0, 0, 1, 0.7f });
+		}
 	}
-	// ZipLine 전광판
 }
 
 void DevScene::LoadDialogue()

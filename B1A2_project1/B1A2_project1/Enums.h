@@ -15,8 +15,10 @@ enum LAYER_TYPE
 	LAYER_BACKGROUND,
 	LAYER_TILEMAP,
 	LAYER_ITEM,
+	LAYER_STRUCTURE,
 	LAYER_MONSTER,
 	LAYER_PLAYER,
+
 	LAYER_UI,
 
 	LAYER_MAXCOUNT
@@ -45,6 +47,8 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_DETECT,		// 8
 	CLT_MONSTER_ATTACK,	// 9
 	CLT_PLAYER_ATTACK,	// 10 
+
+	CLT_ZIPLINE_BUTTON,	// 11
 
 	CLT_NONE,		
 };
@@ -130,6 +134,8 @@ enum class ObjectState
 	Dash,	// 대쉬
 	Return,		// 복귀
 	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
+	On,		// 짚라인
+	Off,
 };
 
 enum class ZipLineType
