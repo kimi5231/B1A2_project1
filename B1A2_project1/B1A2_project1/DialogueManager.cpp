@@ -34,12 +34,12 @@ void DialogueManager::Update()
 	{
 		if (_currentComponent->GetState() == DialogueState::Wait)
 		{
-			_eventCount++;
+			_LineCount++;
 
-			if (_eventCount == _event.size())
+			if (_LineCount == _event.size())
 				EndDialogue();
 			else
-				ChangeSpeech();
+				SetSpeech();
 		}
 		else if (_currentComponent->GetState() == DialogueState::Running)
 		{
@@ -60,11 +60,12 @@ void DialogueManager::Update()
 void DialogueManager::StartDialogue(const std::wstring& eventName, const std::vector<Actor*>& actors)
 {
 	_event = _dialogue->GetEvent(eventName);
+	_LineCount = 0;
 	_actors = actors;
 
 	_isDialogue = true;
 
-	ChangeSpeech();
+	SetSpeech();
 }
 
 void DialogueManager::EndDialogue()
@@ -76,39 +77,40 @@ void DialogueManager::EndDialogue()
 	}
 
 	_event.clear();
-
-	_eventCount = 0;
+	_LineCount = 0;
+	_actors.clear();
 
 	_isDialogue = false;
 }
 
-void DialogueManager::ChangeSpeech()
+void DialogueManager::SetSpeech()
 {
 	for (Actor* actor : _actors)
 	{
 		// 대사에 맞는 객체 찾기
-		if (_event[_eventCount].speakerID == actor->GetID())
+		if (_event[_LineCount].speakerID == actor->GetID())
 		{ 
 			if (dynamic_cast<GameObject*>(actor))
 			{
 				// Actor Setting
 				GameObject* object = dynamic_cast<GameObject*>(actor);
-				object->SetState(static_cast<ObjectState>(_event[_eventCount].state));
-				object->SetDir(static_cast<Dir>(_event[_eventCount].dir));
+				object->SetState(static_cast<ObjectState>(_event[_LineCount].state));
+				object->SetDir(static_cast<Dir>(_event[_LineCount].dir));
 				// 객체가 대화 중 이동을 하는 경우 체크
-				if (_event[_eventCount].posX > 0 || _event[_eventCount].posY > 0)
+				if (_event[_LineCount].moveDistance.x > 0 || _event[_LineCount].moveDistance.y > 0)
 					StartMove(object);
+
 				// DialogueComponent Setting
 				_currentComponent = object->GetDialogue();
 				_currentComponent->SetState(DialogueState::Running);
-				if (_event[_eventCount].type == L"C")
+				if (_event[_LineCount].type == L"C")
 				{
-					_currentComponent->SetCurrentCutScene(_event[_eventCount].cutScene);
+					_currentComponent->SetCurrentCutScene(_event[_LineCount].cutScene);
 					_currentComponent->SetType(DialogueType::CutScene);
 				}
-				else if (_event[_eventCount].type == L"D")
+				else if (_event[_LineCount].type == L"D")
 					_currentComponent->SetType(DialogueType::Bubble);
-				_currentComponent->SetSpeech(_event[_eventCount].speech);
+				_currentComponent->SetSpeech(_event[_LineCount].speech);
 			}
 
 			continue;
@@ -129,13 +131,13 @@ void DialogueManager::StartMove(GameObject* object)
 void DialogueManager::EndMove()
 {
 	_isMove = false;
-	_eventCount++;
-	ChangeSpeech();
+	_LineCount++;
+	SetSpeech();
 }
 
 void DialogueManager::Move()
 {
-	if (_event[_eventCount].posX <= 0 && _event[_eventCount].posY <= 0)
+	if (_event[_LineCount].moveDistance.x <= 0 && _event[_LineCount].moveDistance.y <= 0)
 		EndMove();
 	
 	if (!_isMove)
@@ -147,23 +149,23 @@ void DialogueManager::Move()
 	Vec2 currentPos = _movingObject->GetPos();
 
 	// Move
-	if (_event[_eventCount].posX > 0)
+	if (_event[_LineCount].moveDistance.x > 0)
 	{
 		if (_movingObject->GetDir() == DIR_RIGHT)
 			_movingObject->SetPos({ currentPos.x + moveDis, currentPos.y });
 		else
 			_movingObject->SetPos({ currentPos.x - moveDis, currentPos.y });
 
-		_event[_eventCount].posX -= moveDis;
+		_event[_LineCount].moveDistance.x -= moveDis;
 	}
 
-	if (_event[_eventCount].posY > 0)
+	if (_event[_LineCount].moveDistance.y > 0)
 	{
 		if (_movingObject->GetDir() == DIR_DOWN)
 			_movingObject->SetPos({ currentPos.x, currentPos.y + moveDis });
 		else
 			_movingObject->SetPos({ currentPos.x, currentPos.y - moveDis });
 
-		_event[_eventCount].posY -= moveDis;
+		_event[_LineCount].moveDistance.y -= moveDis;
 	}
 }
