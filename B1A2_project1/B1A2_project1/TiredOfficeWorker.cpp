@@ -379,6 +379,19 @@ void TiredOfficeWorker::SetMoveDistance(float distance)
 	_currentMoveDistance = _moveDistance;
 }
 
+float TiredOfficeWorker::GetSpeed()
+{
+	switch (_state)
+	{
+	case ObjectState::Move:
+		return _stat->speed;
+		break;
+	case ObjectState::Chase:
+		return _stat->chaseSpeed;
+		break;
+	}
+}
+
 int32 TiredOfficeWorker::GetAttack()
 {
 	switch (_state)

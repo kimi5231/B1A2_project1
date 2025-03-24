@@ -149,7 +149,7 @@ void DevScene::Init()
 	}
 
 	// Monster
-	/* {
+	{
 		// Layer 추후 수정 예정
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
@@ -209,7 +209,7 @@ void DevScene::Init()
 
 			_monsterHpData[20301] = 100;
 		}
-	}*/
+	}
 
 	// Start Dialogue
 	{

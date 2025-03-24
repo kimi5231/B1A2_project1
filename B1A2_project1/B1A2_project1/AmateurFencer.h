@@ -81,7 +81,8 @@ public:
 
 public:
 	virtual int32 GetAttack() override;
-	virtual int32& GetHp() override { return _commonStat.hp; }	
+	virtual int32& GetHp() override { return _commonStat.hp; }
+	virtual float GetSpeed() override;
 
 	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
 	// ...

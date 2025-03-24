@@ -68,6 +68,7 @@ private:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 public:
+	virtual float GetSpeed() override;
 	virtual int32 GetAttack() override;
 	virtual int32& GetHp() override { return _stat->hp; }
 	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };

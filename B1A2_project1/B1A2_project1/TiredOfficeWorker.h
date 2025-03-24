@@ -82,6 +82,8 @@ public:
 	void SetMoveDistance(float distance);
 	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
 
+public:
+	virtual float GetSpeed() override;
 	virtual int32 GetAttack() override;
 	virtual int32& GetHp() override { return _stat->hp; }
 	virtual Vec2Int GetPlayerDetection() override { return _stat->playerDetection; };
