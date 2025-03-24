@@ -68,28 +68,28 @@ void DevScene::Init()
 	// Player
 	Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
 	player->SetID(1);
-	_player = player;	
+	_player = player;
 
 	// Colider
 	{
 		BoxCollider* collider = new BoxCollider();
 		// 리셋 안 하면 모두 충돌함
-		collider->ResetCollisionFlag();	
+		collider->ResetCollisionFlag();
 
 		// 나 자신을 설정
-			collider->SetCollisionLayer(CLT_PLAYER);
+		collider->SetCollisionLayer(CLT_PLAYER);
 
 		// 충돌하고 싶은 객체 설정
 		collider->AddCollisionFlagLayer(CLT_MONSTER);	// 추후 MONSTER_ATTACK으로 변경 예정
 		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
 		collider->AddCollisionFlagLayer(CLT_ITEM);
-		collider->AddCollisionFlagLayer(CLT_GROUND);	
+		collider->AddCollisionFlagLayer(CLT_GROUND);
 		collider->AddCollisionFlagLayer(CLT_WALL);
 		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 		collider->AddCollisionFlagLayer(CLT_DETECT);
 
 		collider->SetSize({ 23, 75 });
-			
+
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		player->AddComponent(collider);
 	}
@@ -100,7 +100,7 @@ void DevScene::Init()
 		player->AddComponent(inventory);
 
 		inventory->SetOwner(player);
-			
+
 		// Update에서 inventory의 멤버 변수에 접근하기 위해
 		_inventory = inventory;
 	}
@@ -138,11 +138,11 @@ void DevScene::Init()
 		{
 			BoxCollider* collider = new BoxCollider();
 			collider->ResetCollisionFlag();
-			
+
 			collider->SetCollisionLayer(CLT_ITEM);
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 120, 55 });	
+			collider->SetSize({ 120, 55 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			item->AddComponent(collider);
@@ -160,49 +160,51 @@ void DevScene::Init()
 			TOW->SetMoveDistance(580.f);
 			TOW->SetMovementLimit({ 0, 700 });
 
-		//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
-		//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
-		//	_monsterHpData[20101] = 100;
-		//}
-		
-		{
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
+			//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
+			//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
+			//	_monsterHpData[20101] = 100;
+			//}
 
-		//	_monsterHpData[20201] = 100;
+			{
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
 
-		//	// Projectile
-		//	{
-		//		//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
-		//		//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+				//	_monsterHpData[20201] = 100;
 
-		//		//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-		//		//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
-		//	}
-		//}
+				//	// Projectile
+				//	{
+				//		//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
+				//		//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
 
-		{
-			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_MONSTER);
-			AF->SetSpawnDir(DIR_RIGHT);
-			AF->SetSpawnPos({ 1200, 300 });
-			//AF->SetMoveDistance();
-			AF->SetMovementLimit({ 960, 2000 });
+				//		//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
+				//		//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+				//	}
+				//}
 
-			// Player 설정
-			AF->_player = player;
+				{
+					AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_MONSTER);
+					AF->SetSpawnDir(DIR_RIGHT);
+					AF->SetSpawnPos({ 1200, 300 });
+					//AF->SetMoveDistance();
+					AF->SetMovementLimit({ 960, 2000 });
 
-			_monsterHpData[20301] = 100;
+					// Player 설정
+					AF->_player = player;
+
+					_monsterHpData[20301] = 100;
+				}
+			}
+
+			// Start Dialogue
+			{
+				std::vector<Actor*> actors;
+				actors.push_back(GetActor(1));
+				actors.push_back(GetActor(21));
+				GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
+			}
+
+			Super::Init();
 		}
 	}
-
-	// Start Dialogue
-	{
-		std::vector<Actor*> actors;
-		actors.push_back(GetActor(1));
-		actors.push_back(GetActor(21));
-		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}
-
-	Super::Init();
 }
 
 void DevScene::Update()

@@ -234,11 +234,6 @@ int32 AmateurFencer::GetAttack()
 	return int32();
 }
 
-float AmateurFencer::GetSpeed()
-{
-	return 0.0f;
-}
-
 BehaviorState AmateurFencer::is_cur_state_Idle()
 {
 	if (_state == ObjectState::Idle)
