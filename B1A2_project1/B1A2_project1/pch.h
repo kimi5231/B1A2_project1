@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
+#include <random>
 
 #include "Types.h"
 #include "Defines.h"
