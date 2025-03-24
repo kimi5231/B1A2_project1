@@ -28,6 +28,10 @@ TiredOfficeWorker::TiredOfficeWorker()
 		_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 		_flipbookRoaming[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 		_flipbookRoaming[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturn[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturn[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturnIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
+		_flipbookReturnIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorker");
 	}
 
 	// Collider Component
@@ -95,9 +99,7 @@ void TiredOfficeWorker::TickIdle()
 	_sumTime += deltaTime;
 
 	if (_sumTime >= _stat->idleTime)
-	{
 		SetState(ObjectState::Roaming);
-	}
 }
 
 void TiredOfficeWorker::TickCloseAttack()
@@ -148,6 +150,7 @@ void TiredOfficeWorker::TickHit()
 		return;
 	}
 
+	_sumTime = 0.f;
 	SetState(ObjectState::Idle);
 }
 
@@ -162,7 +165,8 @@ void TiredOfficeWorker::TickChase()
 	if (_pos.x > _movementLimit.y || _pos.x < _movementLimit.x)
 	{
 		_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
-		SetState(ObjectState::Return);
+		_sumTime = 0.f;
+		SetState(ObjectState::ReturnIdle);
 	}
 
 	// ÃßÀû
@@ -250,6 +254,15 @@ void TiredOfficeWorker::TickReturn()
 	}
 }
 
+void TiredOfficeWorker::TickReturnIdle()
+{
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= _stat->idleTime)
+		SetState(ObjectState::Return);
+}
+
 void TiredOfficeWorker::UpdateAnimation()
 {
 	switch (_state)
@@ -271,6 +284,12 @@ void TiredOfficeWorker::UpdateAnimation()
 		break;
 	case ObjectState::Roaming:
 		SetFlipbook(_flipbookRoaming[_dir]);
+		break;
+	case ObjectState::Return:
+		SetFlipbook(_flipbookReturn[_dir]);
+		break;
+	case ObjectState::ReturnIdle:
+		SetFlipbook(_flipbookReturnIdle[_dir]);
 		break;
 	}
 }

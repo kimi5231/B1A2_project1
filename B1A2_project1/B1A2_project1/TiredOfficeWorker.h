@@ -69,6 +69,7 @@ private:
 	virtual void TickChase() override;
 	virtual void TickRoaming() override;
 	virtual void TickReturn() override;
+	virtual void TickReturnIdle() override;
 	virtual void UpdateAnimation() override;
 
 private:
@@ -96,6 +97,8 @@ private:
 	Flipbook* _flipbookDead[2];
 	Flipbook* _flipbookChase[2];
 	Flipbook* _flipbookRoaming[2];
+	Flipbook* _flipbookReturn[2];
+	Flipbook* _flipbookReturnIdle[2];
 
 private:
 	TiredOfficeWorkerStat* _stat;

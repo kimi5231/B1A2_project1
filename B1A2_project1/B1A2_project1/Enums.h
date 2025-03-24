@@ -128,4 +128,5 @@ enum class ObjectState
 	Roaming,	// 배회
 	Dash,	// 대쉬
 	Return,		// 복귀
+	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
 };
