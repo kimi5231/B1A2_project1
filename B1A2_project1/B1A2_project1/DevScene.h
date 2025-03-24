@@ -22,6 +22,7 @@ public:
 	void LoadPlayer();
 	void LoadMonster();
 	void LoadProjectile();
+	void LoadStructure();
 	void LoadDialogue();
 	void LoadItem();
 	void LoadInventory();

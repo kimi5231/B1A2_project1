@@ -2,7 +2,7 @@
 #include "AmateurFencer.h"
 #include "BehaviorTree.h"
 #include "Player.h"
-#include "SlashWave.h"
+#include "Slashwave.h"
 #include "DevScene.h"
 #include "BoxCollider.h"
 #include "ResourceManager.h"
@@ -220,7 +220,7 @@ void AmateurFencer::CalPixelPerSecond()
 
 	// LongAtk Projectile 
 	{
-		float PROJECTILE_SPEED_KMPH = _stat->dashSpeed;
+		float PROJECTILE_SPEED_KMPH = _stat->longAtkProjectileSpeed;
 		float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
 		float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
 		float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
@@ -407,9 +407,21 @@ BehaviorState AmateurFencer::is_cur_state_slashwave()
 
 BehaviorState AmateurFencer::SlashWave()
 {
-	// 검기 날림 코드
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	SetState(ObjectState::Dash);
+	if (_sumTime >= 0.3f)
+	{
+		_sumTime = 0.f;
+		CreateProjectile();
+	}
+
+	if (_currentProjectileCount == _stat->longAtkProjectileCount)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Dash);
+		_currentProjectileCount = 0;
+	}
 
 	return BehaviorState::SUCCESS;
 }
@@ -534,11 +546,14 @@ void AmateurFencer::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 void AmateurFencer::CreateProjectile()
 {
-	//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	//SlashWave* slashWave = scene->SpawnObject<SlashWave>({ _pos.x, _pos.y }, LAYER_PLAYER);
-	//slashWave->SetSpeed(_stat->longAtkProjectileSpeed);
-	//slashWave->SetOwner(this);
+	Slashwave* slashwave = scene->SpawnObject<Slashwave>({ _pos.x, _pos.y }, LAYER_PLAYER);
+	slashwave->SetSpeed(_stat->longAtkProjectileSpeed);
+	slashwave->SetAttack(_stat->longAtkProjectileDamage);
+	slashwave->SetRange(_stat->longAtkRange);
+	slashwave->SetOwner(this);
+	slashwave->SetDir(_dir);
 
-	//_currentProjectileCount++;
+	_currentProjectileCount++;
 }

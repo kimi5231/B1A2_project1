@@ -130,3 +130,9 @@ enum class ObjectState
 	Return,		// 복귀
 	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
 };
+
+enum class ZipLineType
+{
+	ZipLine,
+	ZipLineWithButton,
+};

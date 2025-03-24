@@ -6,8 +6,9 @@
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "AmateurFencer.h"
 
-SlashWave::SlashWave()
+Slashwave::Slashwave()
 {
 	_flipbookMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWave");
 	_flipbookMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWave");
@@ -30,37 +31,71 @@ SlashWave::SlashWave()
 	SetState(ObjectState::Move);
 }
 
-SlashWave::~SlashWave()
+Slashwave::~Slashwave()
 {
 }
 
-void SlashWave::BeginPlay()
+void Slashwave::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void SlashWave::Tick()
+void Slashwave::Tick()
 {
 	Super::Tick();
 }
 
-void SlashWave::Render(HDC hdc)
+void Slashwave::Render(HDC hdc)
 {
 	Super::Render(hdc);
 }
 
-void SlashWave::TickMove()
+void Slashwave::TickMove()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (_dir == DIR_RIGHT)
+		_pos.x += _speed * deltaTime;
+	else
+		_pos.x -= _speed * deltaTime;
+
+	if (abs(_owner->GetPos().x - _pos.x) >= _range)
+	{
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		scene->RemoveActor(this);
+	}
 }
 
-void SlashWave::UpdateAnimation()
+void Slashwave::UpdateAnimation()
 {
+	switch (_state)
+	{
+	case ObjectState::Move:
+		SetFlipbook(_flipbookMove[_dir]);
+		break;
+	}
 }
 
-void SlashWave::OnComponentBeginOverlap(Collider* collider, Collider* other)
+float Slashwave::GetSpeed()
 {
+	return 0.0f;
 }
 
-void SlashWave::OnComponentEndOverlap(Collider* collider, Collider* other)
+void Slashwave::OnComponentBeginOverlap(Collider* collider, Collider* other)
+{
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		scene->RemoveActor(this);
+	}
+}
+
+void Slashwave::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
 }

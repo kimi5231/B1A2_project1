@@ -151,34 +151,34 @@ void DevScene::Init()
 	}
 
 	// Monster
-	/* {
+	 {
 		// Layer 추후 수정 예정
-		{
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
-			TOW->SetSpawnDir(DIR_RIGHT);
-			TOW->SetSpawnPos({ 100, 300 });
-			TOW->SetMoveDistance(580.f);
-			TOW->SetMovementLimit({ 0, 700 });
+		//{
+		//	TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
+		//	TOW->SetSpawnDir(DIR_RIGHT);
+		//	TOW->SetSpawnPos({ 100, 300 });
+		//	TOW->SetMoveDistance(580.f);
+		//	TOW->SetMovementLimit({ 0, 700 });
 
-			// 중간 저장할 데이터, hp는 중간에 업데이트 필요
-			// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
-			_monsterHpData[20101] = 100;
-		}
+		//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
+		//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
+		//	_monsterHpData[20101] = 100;
+		//}
 		
-		{
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
+		//{
+		//	BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
 
-			_monsterHpData[20201] = 100;
+		//	_monsterHpData[20201] = 100;
 
-			// Projectile
-			{
-				//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
-				//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+		//	// Projectile
+		//	{
+		//		//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
+		//		//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
 
-				//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-				//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
-			}
-		}
+		//		//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
+		//		//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+		//	}
+		//}
 
 		{
 			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
@@ -192,7 +192,7 @@ void DevScene::Init()
 
 			_monsterHpData[20301] = 100;
 		}
-	}*/
+	}
 
 	// Start Dialogue
 	{
@@ -417,6 +417,23 @@ void DevScene::LoadProjectile()
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWave");
 		fb->SetInfo({ texture, L"FB_SlashWave", {20, 88}, 0, 0, 0, 0.7f });
 	}
+}
+
+void DevScene::LoadStructure()
+{
+	// ZipLine
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLine", L"Sprite\\Structure\\ZipLine.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLine");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLine");
+		fb->SetInfo({ texture, L"FB_ZipLine", {20, 88}, 0, 0, 0, 0.7f });
+	}
+	// ZipLine 전원 버튼
+	{
+
+	}
+	// ZipLine 전광판
 }
 
 void DevScene::LoadDialogue()

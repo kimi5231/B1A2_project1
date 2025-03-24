@@ -194,13 +194,14 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SettingPanel.h" />
     <ClInclude Include="SettingScene.h" />
-    <ClInclude Include="SlashWave.h" />
+    <ClInclude Include="Slashwave.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteActor.h" />
     <ClInclude Include="StaticUI.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tilemap.h" />
@@ -215,6 +216,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Utils.h" />
     <ClInclude Include="ValueManager.h" />
     <ClInclude Include="Values.h" />
+    <ClInclude Include="ZipLine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
@@ -265,13 +267,14 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SettingPanel.cpp" />
     <ClCompile Include="SettingScene.cpp" />
-    <ClCompile Include="SlashWave.cpp" />
+    <ClCompile Include="Slashwave.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteActor.cpp" />
     <ClCompile Include="StaticUI.cpp" />
+    <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TilemapActor.cpp" />
@@ -283,6 +286,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="ValueManager.cpp" />
+    <ClCompile Include="ZipLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="B1A2_project1.rc" />

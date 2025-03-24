@@ -75,6 +75,9 @@
     <Filter Include="소스 파일\06. UI\Game">
       <UniqueIdentifier>{62b59c3e-42ae-4599-b549-30b56ebd26c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03. Objects\Game\Structure">
+      <UniqueIdentifier>{b6653dba-cd29-4541-875c-5b98dd135069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -269,8 +272,14 @@
     <ClInclude Include="Paper.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="SlashWave.h">
+    <ClInclude Include="Slashwave.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="ZipLine.h">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -445,8 +454,14 @@
     <ClCompile Include="Paper.cpp">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="SlashWave.cpp">
+    <ClCompile Include="Slashwave.cpp">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Structure.cpp">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="ZipLine.cpp">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

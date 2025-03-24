@@ -75,13 +75,28 @@ public:
 	virtual void Render(HDC hdc) override;
 
 	virtual void UpdateAnimation() override;
-public:
-	void CalPixelPerSecond();
 
+protected:
+	virtual void TickIdle() override {};
+	virtual void TickMove() override {};
+	virtual void TickJump() override {};
+	virtual void TickCloseAttack() override {};
+	virtual void TickLongAttack() override {};
+	virtual void TickSkill() override {};
+	virtual void TickHit() override {};
+	virtual void TickDead() override {};
+	virtual void TickChase() override {};
+	virtual void TickRoaming() override {};
+	virtual void TickReturn() override {};
+	virtual void TickReturnIdle() override {};
 
 public:
 	virtual int32 GetAttack() override;
 	virtual int32& GetHp() override { return _commonStat.hp; }	
+	virtual float GetSpeed() override { return _stat->speed; };
+
+public:
+	void CalPixelPerSecond();
 
 	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
 	// ...
@@ -158,6 +173,7 @@ private:
 	Collider* _attackCollider;
 
 	int32 _currentProjectileCount = 0;
+	float _sumTime = 0.f;
 
 public:
 	Player* _player;
