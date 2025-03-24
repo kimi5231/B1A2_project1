@@ -99,7 +99,10 @@ void TiredOfficeWorker::TickIdle()
 	_sumTime += deltaTime;
 
 	if (_sumTime >= _stat->idleTime)
+	{
+		_currentMoveDistance = _moveDistance;
 		SetState(ObjectState::Roaming);
+	}
 }
 
 void TiredOfficeWorker::TickCloseAttack()
@@ -182,10 +185,7 @@ void TiredOfficeWorker::TickChase()
 
 		// 3초가 지니면 복귀
 		if (_sumTime >= 3.0f)
-		{
-			// 대기 후 복귀
 			SetState(ObjectState::Return);
-		}
 	}
 
 	// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
@@ -206,7 +206,6 @@ void TiredOfficeWorker::TickRoaming()
 
 	if (_currentMoveDistance <= 0.f)
 	{
-		_currentMoveDistance = _moveDistance;
 		_sumTime = 0.f;
 		SetState(ObjectState::Idle);
 
