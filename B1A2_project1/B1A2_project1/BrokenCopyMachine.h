@@ -64,6 +64,10 @@ private:
 	virtual void UpdateAnimation() override;
 
 public:
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+
+public:
 	virtual int32 GetAttack() override;
 	virtual int32& GetHp() override { return _stat->hp; }
 	virtual Vec2Int GetPlayerDetection() { return {0, 0}; };

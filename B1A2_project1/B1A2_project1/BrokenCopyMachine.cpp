@@ -2,9 +2,11 @@
 #include "BrokenCopyMachine.h"
 #include "Paper.h"
 #include "DevScene.h"
+#include "BoxCollider.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "CollisionManager.h"
 
 BrokenCopyMachine::BrokenCopyMachine()
 {
@@ -16,6 +18,21 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
 	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+
+	// Collider Component
+	{
+		// Monster Collider
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER);
+
+			collider->SetSize({ 55, 55 });
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
 }
 
 BrokenCopyMachine::~BrokenCopyMachine()
@@ -72,10 +89,19 @@ void BrokenCopyMachine::TickLongAttack()
 
 void BrokenCopyMachine::TickHit()
 {
+	// 체력이 다 닳면 사망
+	if (_stat->hp == 0)
+	{
+		SetState(ObjectState::Dead);
+		return;
+	}
+		
+	SetState(ObjectState::Idle);
 }
 
 void BrokenCopyMachine::TickDead()
 {
+	// 아이템 드랍
 }
 
 void BrokenCopyMachine::UpdateAnimation()
@@ -88,9 +114,36 @@ void BrokenCopyMachine::UpdateAnimation()
 	}
 }
 
+void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* other)
+{
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	// Player Attack과 충돌
+	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
+	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+		OnDamaged(otherOwner);
+		SetState(ObjectState::Hit);
+	}
+}
+
+void BrokenCopyMachine::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
+}
+
 int32 BrokenCopyMachine::GetAttack()
 {
-	return int32();
+	switch (_state)
+	{
+	case ObjectState::LongAttack:
+		return _stat->projectileAttack;
+		break;
+	}
 }
 
 void BrokenCopyMachine::CalPixelPerSecond()
