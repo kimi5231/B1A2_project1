@@ -90,12 +90,12 @@ private:
 
 private:
 	// Flipbook
-	Flipbook* _flipbookIdle[2] = {};
-	Flipbook* _flipbookNormalAttack[2] = {};
-	Flipbook* _flipbookHit[2] = {};
-	Flipbook* _flipbookDead[2] = {};
-	Flipbook* _flipbookChase[2] = {};
-	Flipbook* _flipbookRoaming[2] = {};
+	Flipbook* _flipbookIdle[2];
+	Flipbook* _flipbookCloseAttack[2];
+	Flipbook* _flipbookHit[2];
+	Flipbook* _flipbookDead[2];
+	Flipbook* _flipbookChase[2];
+	Flipbook* _flipbookRoaming[2];
 
 private:
 	TiredOfficeWorkerStat* _stat;
