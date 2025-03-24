@@ -151,22 +151,22 @@ void DevScene::Init()
 	}
 
 	// Monster
-	 {
+	{
 		// Layer 추후 수정 예정
-		//{
-		//	TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_PLAYER);
-		//	TOW->SetSpawnDir(DIR_RIGHT);
-		//	TOW->SetSpawnPos({ 100, 300 });
-		//	TOW->SetMoveDistance(580.f);
-		//	TOW->SetMovementLimit({ 0, 700 });
+		{
+			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_MONSTER);
+			TOW->SetSpawnDir(DIR_RIGHT);
+			TOW->SetSpawnPos({ 100, 300 });
+			TOW->SetMoveDistance(580.f);
+			TOW->SetMovementLimit({ 0, 700 });
 
 		//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
 		//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
 		//	_monsterHpData[20101] = 100;
 		//}
 		
-		//{
-		//	BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_PLAYER);
+		{
+			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
 
 		//	_monsterHpData[20201] = 100;
 
@@ -181,7 +181,7 @@ void DevScene::Init()
 		//}
 
 		{
-			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_PLAYER);
+			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 150, 250 }, LAYER_MONSTER);
 			AF->SetSpawnDir(DIR_RIGHT);
 			AF->SetSpawnPos({ 1200, 300 });
 			//AF->SetMoveDistance();

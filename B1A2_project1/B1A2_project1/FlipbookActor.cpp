@@ -46,8 +46,6 @@ void FlipbookActor::Tick()
 
 void FlipbookActor::Render(HDC hdc)
 {
-	Super::Render(hdc);
-
 	if (!_flipbook)
 		return;
 
@@ -66,6 +64,8 @@ void FlipbookActor::Render(HDC hdc)
 		info.size.x,
 		info.size.y,
 		info.texture->GetTransparent());
+
+	Super::Render(hdc);
 }
 
 void FlipbookActor::SetFlipbook(Flipbook* flipbook)

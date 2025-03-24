@@ -160,6 +160,11 @@ void BrokenCopyMachine::OnComponentEndOverlap(Collider* collider, Collider* othe
 {
 }
 
+float BrokenCopyMachine::GetSpeed()
+{
+	return 0.0f;
+}
+
 int32 BrokenCopyMachine::GetAttack()
 {
 	switch (_state)
