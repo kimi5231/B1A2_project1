@@ -89,6 +89,7 @@ void DevScene::Init()
 		collider->AddCollisionFlagLayer(CLT_WALL);
 		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 		collider->AddCollisionFlagLayer(CLT_DETECT);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
 
 		collider->SetSize({ 23, 75 });
 

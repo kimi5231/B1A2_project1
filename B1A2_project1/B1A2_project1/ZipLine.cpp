@@ -59,7 +59,7 @@ ZipLineButton::ZipLineButton()
 	{
 		BoxCollider* collider = new BoxCollider();
 		collider->ResetCollisionFlag();
-		collider->SetCollisionLayer(CLT_ZIPLINE_BUTTON);
+		collider->SetCollisionLayer(CLT_STRUCTURE);
 
 		collider->SetSize({ 120, 150 });
 
@@ -110,7 +110,7 @@ void ZipLineButton::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	if (b1->GetCollisionLayer() == CLT_ZIPLINE_BUTTON)
+	if (b1->GetCollisionLayer() == CLT_STRUCTURE)
 	{
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
@@ -127,7 +127,7 @@ void ZipLineButton::OnComponentEndOverlap(Collider* collider, Collider* other)
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	if (b1->GetCollisionLayer() == CLT_ZIPLINE_BUTTON)
+	if (b1->GetCollisionLayer() == CLT_STRUCTURE)
 	{
 		if (b2->GetCollisionLayer() == CLT_PLAYER)
 		{
