@@ -156,6 +156,7 @@ void DevScene::Init()
 	// Monster
 	{
 		// Layer 추후 수정 예정
+		// TOW
 		{
 			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_MONSTER);
 			TOW->SetSpawnDir(DIR_RIGHT);
@@ -167,45 +168,28 @@ void DevScene::Init()
 			//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
 			//	_monsterHpData[20101] = 100;
 			//}
+		}
+	
+		// BCM
+		{
+			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
 
-			{
-				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
+			//	_monsterHpData[20201] = 100;
 
-				//	_monsterHpData[20201] = 100;
+		}
 
-				//	// Projectile
-				//	{
-				//		//GET_SINGLE(ResourceManager)->LoadTexture(L"Paper", L"Sprite\\Projectile\\Paper.bmp", RGB(55, 255, 0));
-				//		//Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
+		// AF
+		{
+			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
+			AF->SetSpawnDir(DIR_RIGHT);
+			AF->SetSpawnPos({ 1200, 300 });
+			//AF->SetMoveDistance();
+			AF->SetMovementLimit({ 960, 2000 });
 
-				//		//Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-				//		//fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
-				//	}
-				//}
+			// Player 설정
+			AF->_player = player;
 
-				{
-					AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
-					AF->SetSpawnDir(DIR_RIGHT);
-					AF->SetSpawnPos({ 1200, 300 });
-					//AF->SetMoveDistance();
-					AF->SetMovementLimit({ 960, 2000 });
-
-					// Player 설정
-					AF->_player = player;
-
-					_monsterHpData[20301] = 100;
-				}
-			}
-
-			// Start Dialogue
-			{
-				std::vector<Actor*> actors;
-				actors.push_back(GetActor(1));
-				actors.push_back(GetActor(21));
-				GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-			}
-
-			Super::Init();
+			_monsterHpData[20301] = 100;
 		}
 	}
 
@@ -218,6 +202,16 @@ void DevScene::Init()
 		ZipLineButton* zipLineButton = SpawnObject<ZipLineButton>({ 200, 300 }, LAYER_STRUCTURE);
 		zipLineButton->SetOwner(zipLine);
 	}
+
+	// Start Dialogue
+	{
+		std::vector<Actor*> actors;
+		actors.push_back(GetActor(1));
+		actors.push_back(GetActor(21));
+		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
+	}
+
+	Super::Init();
 }
 
 void DevScene::Update()
