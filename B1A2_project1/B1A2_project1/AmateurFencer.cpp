@@ -414,6 +414,8 @@ BehaviorState AmateurFencer::SlashWave()
 	{
 		_sumTime = 0.f;
 		CreateProjectile();
+
+		return BehaviorState::RUNNING;
 	}
 
 	if (_currentProjectileCount == _stat->longAtkProjectileCount)
@@ -421,9 +423,9 @@ BehaviorState AmateurFencer::SlashWave()
 		_sumTime = 0.f;
 		SetState(ObjectState::Dash);
 		_currentProjectileCount = 0;
+	
+		return BehaviorState::SUCCESS;
 	}
-
-	return BehaviorState::SUCCESS;
 }
 
 BehaviorState AmateurFencer::is_cur_state_dash()
@@ -436,17 +438,22 @@ BehaviorState AmateurFencer::is_cur_state_dash()
 
 BehaviorState AmateurFencer::Dash()
 {
-	if (_dir == DIR_RIGHT)
-		_pos.x += _stat->dashDistance;
-	else
-		_pos.x -= _stat->dashDistance;
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	if (GetIdx() == 0)		//if (GetIdx() == _flipbookDash[_dir]->GetFlipbookEndNum())		// Dash 애니메이션 한 번 재생
+	if (_sumTime <= 0.48f)
+	{
+		if (_dir = DIR_RIGHT)
+			_pos.x += _stat->dashSpeed * deltaTime;
+		else
+			_pos.x -= _stat->dashSpeed * deltaTime;
+	}
+	else
 	{
 		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
 	}
-	
+
 	return BehaviorState::RUNNING;
 }
 
