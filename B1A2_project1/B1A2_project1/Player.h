@@ -137,13 +137,15 @@ private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};
 	Flipbook* _flipbookPlayerMove[2] = {};
+	Flipbook* _flipbookPlayerJump[2] = {};
 	Flipbook* _flipbookPlayerDuckDown[2] = {};
 	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
-	Flipbook* _flipbookPlayerJump[2] = {};
+	Flipbook* _flipbookPlayerHang[2] = {};
+	Flipbook* _flipbookPlayerSlash[2] = {};
+
 	Flipbook* _flipbookPlayerSkill[2] = {};
 	Flipbook* _flipbookPlayerCloseAttack[2] = {};
 	Flipbook* _flipbookPlayerLongAttack[2] = {};
-	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
 	Flipbook* _flipbookPlayerHit[2] = {};
 	Flipbook* _flipbookPlayerDead[2] = {};

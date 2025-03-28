@@ -311,6 +311,8 @@ void DevScene::LoadPlayer()
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerJump", L"Sprite\\Player\\PlayerJump.bmp", RGB(55, 255, 0));	
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerDuckDown", L"Sprite\\Player\\PlayerDuckDown.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerDuckDownMove", L"Sprite\\Player\\PlayerDuckDownMove.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerHang", L"Sprite\\Player\\PlayerHang.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSlash", L"Sprite\\Player\\PlayerSlash.bmp", RGB(55, 255, 0));
 
 	// Idle
 	{
@@ -375,6 +377,32 @@ void DevScene::LoadPlayer()
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerDuckDownMoveLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerDuckDownMoveLeft", {35, 50}, 0, 9, 1, 0.7f });
+	}
+
+	// Hang
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerHang");
+
+		// Right
+		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHangRight");
+		fb1->SetInfo({ texture, L"FB_PlayerHangRight", {30, 85}, 0, 0, 0, 0.7f });
+
+		// Left
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHangLeft");
+		fb2->SetInfo({ texture, L"FB_PlayerHangLeft", {30, 85}, 0, 0, 1, 0.7f });
+	}
+
+	// Slash
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerSlash");
+
+		// Right
+		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashRight");
+		fb1->SetInfo({ texture, L"FB_PlayerSlashRight", {75, 90}, 0, 6, 0, 0.7f });
+
+		// Left
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"PlayerSlashLeft");
+		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 0.7f });
 	}
 }
 
