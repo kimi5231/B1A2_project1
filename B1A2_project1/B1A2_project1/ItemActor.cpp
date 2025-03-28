@@ -9,6 +9,7 @@
 #include "BoxCollider.h"
 #include "Item.h"
 #include "InputManager.h"
+#include "CollisionManager.h"
 
 ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& items)
 {
@@ -60,6 +61,21 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 
 	// F_key
 	_flipbookFKey = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_Fkey");
+
+
+	// Collider
+	{
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+
+		collider->SetCollisionLayer(CLT_ITEM);
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+		collider->SetSize({ 120, 55 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
 
 	SetFlipbook(_flipbookItemInMap);
 }

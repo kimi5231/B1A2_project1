@@ -130,27 +130,28 @@ void DevScene::Init()
 	}
 
 	// Item
-	Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 	{
-		ItemActor* item = new ItemActor(300100, itemData->GetItems());
-		item->SetPos({ 500, 290 });		// Àû´çÇÑ y ÁÂÇ¥ : 370, 200
-		item->SetLayer(LAYER_ITEM);
-		// item->SetID(0);
-
-		// Collider
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		// ¿­¼è
 		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
+			ItemActor* item = new ItemActor(310100, itemData->GetItems());
+			item->SetPos({ 500, 290 });		// Àû´çÇÑ y ÁÂÇ¥ : 370, 200
+			item->SetLayer(LAYER_ITEM);
 
-			collider->SetCollisionLayer(CLT_ITEM);
-			collider->AddCollisionFlagLayer(CLT_PLAYER);
-
-			collider->SetSize({ 120, 55 });
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			item->AddComponent(collider);
+			AddActor(item);
 		}
-		AddActor(item);
+		// ÈúÅÛ
+		{
+			ItemActor* item = new ItemActor(300100, itemData->GetItems());
+			item->SetPos({ 400, 290 });
+			item->SetLayer(LAYER_ITEM);
+			
+			// ÈúÅÛ ¿¹¿Ü ¼³Á¤
+			item->SetFKeyState(FKeyState::Hidden);
+
+			AddActor(item);
+		}
+		
 	}
 
 	// Monster

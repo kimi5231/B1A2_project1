@@ -74,13 +74,13 @@ void Player::Tick()
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
 			{
 				_acquiredItems[_collideItem->GetItemID()]++;
-				
+
 				Collider* collider = _collideItem->GetCollider();
 				if (collider)
 				{
 					collider->SetCollisionLayer(CLT_NONE);
 				}
-			
+
 				_collideItem->SetFKeyState(FKeyState::Hidden);
 				_collideItem->SetItemState(ItemState::Hidden);
 			}
@@ -521,7 +521,12 @@ void Player::AddHealthPoint(int hp)
 	if (_playerStat->commonStat.hp >= 100)
 		return;
 
-	_playerStat->commonStat.hp += hp;
+	if (_playerStat->commonStat.hp += hp >= 100)
+	{
+		_playerStat->commonStat.hp = 100;
+	}
+	else
+		_playerStat->commonStat.hp += hp;
 
 	// 관찰자에게 알림
 	_healthObserver(_playerStat->commonStat.hp);
@@ -613,7 +618,14 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
 		ItemActor* item = reinterpret_cast<ItemActor*>(b2->GetOwner());
-		item->SetFKeyState(FKeyState::Show);
+		
+		if (item->GetItemID() != 300100)
+			item->SetFKeyState(FKeyState::Show);
+		else
+		{
+			AddHealthPoint(20);	// 숫자 수정 필요
+			item->SetItemState(ItemState::Hidden);
+		}
 
 		_collideItem = item;
 
