@@ -41,6 +41,8 @@ private:
 public:
 	void SetZipLineType(ZipLineType type) { _zipLineType = type; }
 
+	ObjectState GetZipLineState() { return _state; }
+
 private:
 	Flipbook* _flipbookZipLine = nullptr;
 	Flipbook* _flipbookZipLineGrip = nullptr;
@@ -48,12 +50,12 @@ private:
 	ZipLineType _zipLineType;
 };
 
-class ZipLineButton : public Structure
+class ZipLineButtonAndDisplay : public Structure
 {
 	using Super = Structure;
 public:
-	ZipLineButton();
-	virtual ~ZipLineButton() override;
+	ZipLineButtonAndDisplay();
+	virtual ~ZipLineButtonAndDisplay() override;
 
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
@@ -88,6 +90,8 @@ private:
 public:
 	void SetOwner(ZipLine* zipLine) { _owner = zipLine; }
 
+	void SetDisplayPos(Vec2Int pos) { _displayPos = pos; }
+
 private:
 	Flipbook* _flipbookButtonOff = nullptr;
 	Flipbook* _flipbookButtonOn = nullptr;
@@ -96,4 +100,7 @@ private:
 
 private:
 	ZipLine* _owner = nullptr;
+
+	// Display
+	Vec2Int _displayPos;
 };

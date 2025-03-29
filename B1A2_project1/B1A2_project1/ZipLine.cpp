@@ -48,7 +48,7 @@ void ZipLine::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-ZipLineButton::ZipLineButton()
+ZipLineButtonAndDisplay::ZipLineButtonAndDisplay()
 {
 	_flipbookButtonOff = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLineButtonOff");
 	_flipbookButtonOn = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLineButtonOn");
@@ -70,26 +70,63 @@ ZipLineButton::ZipLineButton()
 	SetState(ObjectState::Off);
 }
 
-ZipLineButton::~ZipLineButton()
+ZipLineButtonAndDisplay::~ZipLineButtonAndDisplay()
 {
 }
 
-void ZipLineButton::BeginPlay()
+void ZipLineButtonAndDisplay::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ZipLineButton::Tick()
+void ZipLineButtonAndDisplay::Tick()
 {
 	Super::Tick();
 }
 
-void ZipLineButton::Render(HDC hdc)
+void ZipLineButtonAndDisplay::Render(HDC hdc)
 {
+	// ZipLine Button
 	Super::Render(hdc);
+
+	// ZipLine Display
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+	
+	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineDisplay");
+
+	if (_state == ObjectState::On)
+	{
+		::TransparentBlt(hdc,
+			((int32)_displayPos.x - texture->GetSize().x / 2) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x,
+			((int32)_displayPos.y - texture->GetSize().y / 2) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+			texture->GetSize().x * winSizeAdjustmemt.x,
+			(texture->GetSize().y / 2) * winSizeAdjustmemt.y,
+			texture->GetDC(),
+			0,
+			texture->GetSize().y / 2,
+			texture->GetSize().x,
+			texture->GetSize().y / 2,
+			texture->GetTransparent());
+	}
+	else
+	{
+		::TransparentBlt(hdc,
+			((int32)_displayPos.x - texture->GetSize().x / 2) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x,
+			((int32)_displayPos.y - texture->GetSize().y / 2) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+			texture->GetSize().x * winSizeAdjustmemt.x,
+			(texture->GetSize().y / 2) * winSizeAdjustmemt.y,
+			texture->GetDC(),
+			0,
+			0,
+			texture->GetSize().x,
+			texture->GetSize().y / 2,
+			texture->GetTransparent());
+	}
 }
 
-void ZipLineButton::UpdateAnimation()
+void ZipLineButtonAndDisplay::UpdateAnimation()
 {
 	switch (_state)
 	{
@@ -102,7 +139,7 @@ void ZipLineButton::UpdateAnimation()
 	}
 }
 
-void ZipLineButton::OnComponentBeginOverlap(Collider* collider, Collider* other)
+void ZipLineButtonAndDisplay::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
 	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
@@ -119,7 +156,7 @@ void ZipLineButton::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	}
 }
 
-void ZipLineButton::OnComponentEndOverlap(Collider* collider, Collider* other)
+void ZipLineButtonAndDisplay::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
 	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
