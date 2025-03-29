@@ -90,6 +90,7 @@ void DevScene::Init()
 		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 		collider->AddCollisionFlagLayer(CLT_DETECT);
 		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
 
 		collider->SetSize({ 23, 75 });
 
@@ -196,13 +197,17 @@ void DevScene::Init()
 
 	// ZipLine
 	{
-		ZipLine* zipLine = SpawnObject<ZipLine>({ 200, 100 }, LAYER_STRUCTURE);
+		ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 400 }, LAYER_STRUCTURE);
 		zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-	
+		zipLine->SetBeginPos({900, 600});
+		zipLine->SetEndPos({900, 200});
+
 		// Button이 필요 없는 짚라인은 아래 코드 작성X
 		ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
 		zipLineButtonAndDisplay->SetOwner(zipLine);
-		zipLineButtonAndDisplay->SetDisplayPos({ 220, 200 });
+		zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+
+		zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
 	}
 
 	// Start Dialogue

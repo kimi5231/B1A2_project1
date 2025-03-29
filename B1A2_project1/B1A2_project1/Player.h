@@ -5,7 +5,7 @@
 class Flipbook;
 class BoxCollider;
 class ItemActor;
-
+class ZipLine;
 class DevScene;
 
 struct PlayerStat
@@ -170,5 +170,7 @@ private:
 	std::unordered_map<int32, int32> _acquiredItems;		// [아이템 ID, 개수]
 
 	DevScene* _devScene = nullptr;	// 현재 씬 데이터 정보 저장을 위해 필요, 다른 게임 Scene 추가시 수정 필요
+
+	ZipLine* _zipLine = nullptr;	// 충돌 중인 짚라인의 정보를 가져와서 매달리기
 };
 

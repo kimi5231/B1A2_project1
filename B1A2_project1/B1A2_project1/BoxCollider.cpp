@@ -6,6 +6,8 @@
 #include "Actor.h"
 #include "TilemapActor.h"
 #include "Monster.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 
 BoxCollider::BoxCollider() : Collider(ColliderType::Box)
 {

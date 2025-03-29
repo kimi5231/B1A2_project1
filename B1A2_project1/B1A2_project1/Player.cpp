@@ -13,6 +13,7 @@
 #include "ItemActor.h"
 #include "Item.h"
 #include "DevScene.h"
+#include "ZipLine.h"
 
 Player::Player()
 {
@@ -311,6 +312,17 @@ void Player::TickJump()
 		else
 			SetState(ObjectState::Idle);
 	}
+	else
+	{
+		// ZipLine 
+		if (_zipLine)
+		{
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+			{
+				SetState(ObjectState::Hang);
+			}
+		}
+	}
 
 	//if (공격 받음)
 	//{
@@ -406,6 +418,10 @@ void Player::TickSkill()
 
 void Player::TickHang()
 {
+	Vec2 beginPos = _zipLine->GetBeginPos();
+
+	_pos.x = beginPos.x;
+
 }
 
 void Player::TickRelease()
@@ -645,6 +661,30 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
+	// ZipLine
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
+	{
+		ZipLine* zipLine = dynamic_cast<ZipLine*>(b2->GetOwner()); 
+		
+		if (zipLine)
+		{
+			if (zipLine->GetZipLineType() == ZipLineType::ZipLine)
+			{
+				_zipLine = zipLine;
+			}
+			else if (zipLine->GetZipLineType() == ZipLineType::ZipLineWithButton)
+			{
+				ZipLineButtonAndDisplay* BD = zipLine->GetZipLineButtonAndDisplay();
+				if (BD->GetState() == ObjectState::On)
+				{
+					_zipLine = zipLine;
+				}
+			}
+		}
+
+		return;
+	}
+
 	// 벽 충돌하면 밀어내기
 	if (b2->GetCollisionLayer() == CLT_WALL)
 	{
@@ -658,29 +698,6 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		_groundCollisionCount++;
 		_isGround = true;
 		_isAir = false;
-	
-		//RECT r1 = b1->GetRect();	// Player 충돌 영역
-		//RECT r2 = b2->GetRect();	// Tilemap 충돌 영역
-		//RECT intersect = {};      // 충돌된 영역
-
-		//if (::IntersectRect(&intersect, &r1, &r2))
-		//{
-		//	int32 intersectWidth = intersect.right - intersect.left;
-		//	int32 intersectHeight = intersect.bottom - intersect.top;
-
-		//	if (intersectWidth < intersectHeight)	// 좌우 충돌(벽)
-		//	{
-		//		AdjustCollisionPos(b1, b2);	// 벽 밀어내기
-		//	}
-		//	else if (intersectWidth >= intersectHeight)
-		//	{
-		//		_groundCollisionCount++;
-		//		_isGround = true;
-		//		_isAir = false;
-
-		//		AdjustCollisionPos(b1, b2);	// 위아래 밀어내기
-		//	}
-		//}
 	}
 }
 
@@ -702,6 +719,12 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
+	// ZipLine
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
+	{
+		_zipLine = nullptr;
+	}
+
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
 		_groundCollisionCount--;
@@ -712,25 +735,6 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 			_isAir = true;
 			_groundCollisionCount = 0;
 		}
-		//if (b2->GetCollisionLayer() == CLT_GROUND)
-		//{
-		//	for (Collider* overlap : GetOverlappingColliders())	// 현재 위치에서 여전히 타일과 겹쳐 있는지 확인함
-		//	{
-		//		if (overlap == b2)
-		//		{
-		//			return;	// 아직 겹쳐있으면 중력 적용 X
-		//		}
-		//	}
-
-		//	_groundCollisionCount--;	
-
-		//	if (_groundCollisionCount <= 0)		// 타일과 완전히 떨어졌을 때 중력 적용하기
-		//	{
-		//		_isGround = false;
-		//		_isAir = true;
-		//		_groundCollisionCount = 0;
-		//	}
-		//}
 	}
 }
 

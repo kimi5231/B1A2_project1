@@ -9,12 +9,26 @@
 
 // 1. 짚라인 - 버튼이 있는 버전과 버튼 없이 짚라인만 있는 버전
 // 2. 짚라인 버튼 - Player와 충돌 처리되면 상호작용 입력을 받아 짚라인 활성화
-// 3. 짚라인 전광판 - 버튼 활성화되면 Render
+// 3. 짚라인 전광판 - 버튼 활성화되면 On
 
 ZipLine::ZipLine()
 {
+	// Flipbook
 	_flipbookZipLine = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
-	// _flipbookZipLineGrip = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLineGrip");
+
+	// Collider
+	{
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_STRUCTURE_DETECT);
+
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+		
+		collider->SetSize({ 300, 500 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
 
 	SetState(ObjectState::Off);
 }
@@ -38,12 +52,65 @@ void ZipLine::Render(HDC hdc)
 	Super::Render(hdc);
 }
 
+void ZipLine::UpdateAnimation()
+{
+	switch (_state)
+	{
+	case ObjectState::On:
+		SetFlipbook(_flipbookZipLine);
+		break;
+	case ObjectState::Off:
+		SetFlipbook(_flipbookZipLine);
+		break;
+	}
+}
+
 void ZipLine::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		if (_zipLineType == ZipLineType::ZipLine)
+		{
+			_state = ObjectState::On;
+		}
+		else if (_zipLineType == ZipLineType::ZipLineWithButton)
+		{
+			if (_zipLineButtonAndDisplay->GetState() == ObjectState::On)
+			{
+				_state = ObjectState::On;
+			}
+		}
+	}
 }
 
 void ZipLine::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		if (_zipLineType == ZipLineType::ZipLine)
+		{
+			_state = ObjectState::Off;
+		}
+		else if (_zipLineType == ZipLineType::ZipLineWithButton)
+		{
+			if (_zipLineButtonAndDisplay->GetState() == ObjectState::On)
+			{
+				_state = ObjectState::Off;
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -158,17 +225,4 @@ void ZipLineButtonAndDisplay::OnComponentBeginOverlap(Collider* collider, Collid
 
 void ZipLineButtonAndDisplay::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
-	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
-	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
-
-	if (b1 == nullptr || b2 == nullptr)
-		return;
-
-	if (b1->GetCollisionLayer() == CLT_STRUCTURE)
-	{
-		if (b2->GetCollisionLayer() == CLT_PLAYER)
-		{
-			SetState(ObjectState::Off);
-		}
-	}
 }
