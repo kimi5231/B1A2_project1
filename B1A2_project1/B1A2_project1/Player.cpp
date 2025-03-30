@@ -14,7 +14,7 @@
 #include "Item.h"
 #include "DevScene.h"
 #include "ZipLine.h"
-#include <cmath>
+#include "SceneManager.h"
 
 Player::Player()
 {
@@ -86,7 +86,14 @@ void Player::Tick()
 				{
 					collider->SetCollisionLayer(CLT_NONE);
 				}
+				
+				// Scene에 아이템 획득 효과 그리기
+				// 추후 GameScene로 변경할 예정
+				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
+				scene->SetItemAcquireState(_collideItem);
+
+				// 아이템 숨기기
 				_collideItem->SetFKeyState(FKeyState::Hidden);
 				_collideItem->SetItemState(ItemState::Hidden);
 			}

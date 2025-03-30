@@ -32,6 +32,7 @@
 #include "AmateurFencer.h"
 #include "DialogueComponent.h"
 #include "ZipLine.h"
+#include "TimeManager.h"
 
 DevScene::DevScene()
 {
@@ -234,6 +235,19 @@ void DevScene::Update()
 		if (_menuPanel)
 			_menuPanel->Tick();
 	}
+	else if (_sceneState == SceneState::ItemAcquire)
+	{
+		static float sumTime = 0.0f;
+		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+		sumTime += deltaTime;
+
+		if (sumTime >= 2.5f)
+		{
+			_sceneState = SceneState::Play;
+		}
+
+	}
 	else if (_sceneState == SceneState::Inventory)
 	{
 		if (_inventory->GetInventoryState() == InventoryState::Show)
@@ -252,30 +266,34 @@ void DevScene::Render(HDC hdc)
 		Super::Render(hdc);
 
 		// Background
-		BLENDFUNCTION bf;
-		bf.AlphaFormat = 0; // 비트맵 종류로 일반 비트맵의 경우 0, 32비트 비트맵의 경우 AC_SRC_ALPHA
-		bf.BlendFlags = 0; // 무조건 0이어야 한다
-		bf.BlendOp = AC_SRC_OVER; // 무조건 AC_SRC_OVER이어야 하고 원본과 대상 이미지를 합친다는 의미
-		bf.SourceConstantAlpha = 170; // 투명도(투명 0 - 불투명 255)
+		BackGroundRender(hdc);
 
-		Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
-		{
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"MenuBackground");
-			::AlphaBlend(hdc,
-				0,
-				0,
-				(texture->GetSize().x) * winSizeAdjustmemt.x,
-				(texture->GetSize().y) * winSizeAdjustmemt.y,
-				texture->GetDC(),
-				0,
-				0,
-				texture->GetSize().x,
-				texture->GetSize().y,
-				bf);
-		}
-
+		// Menu Panel
 		if (_menuPanel)
 			_menuPanel->Render(hdc);
+	}
+	else if (_sceneState == SceneState::ItemAcquire)
+	{
+		Super::Render(hdc);
+
+		// Background
+		BackGroundRender(hdc);
+
+		// Item 
+		if (_acquireItem)
+		{
+			int32 id = _acquireItem->GetItemInfo()->ID;
+			std::wstring name = _acquireItem->GetItemInfo()->name;
+			std::wstring explain = _acquireItem->GetItemInfo()->explain;
+	
+			// 사진
+			ItemPictureRender(hdc, id);
+			// 이름
+			ItemNameRender(hdc, name);
+			// 설명
+			ItemExplainRender(hdc, explain);
+		}
+
 	}
 	else if (_sceneState == SceneState::Inventory)
 	{
@@ -862,6 +880,111 @@ void DevScene::SetSceneState()
 			_actors[LAYER_PLAYER][0]->SetPos(pos);
 		}
 	}
+}
+
+void DevScene::BackGroundRender(HDC hdc)
+{
+	BLENDFUNCTION bf;
+	bf.AlphaFormat = 0; // 비트맵 종류로 일반 비트맵의 경우 0, 32비트 비트맵의 경우 AC_SRC_ALPHA
+	bf.BlendFlags = 0; // 무조건 0이어야 한다
+	bf.BlendOp = AC_SRC_OVER; // 무조건 AC_SRC_OVER이어야 하고 원본과 대상 이미지를 합친다는 의미
+	bf.SourceConstantAlpha = 170; // 투명도(투명 0 - 불투명 255)
+
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"MenuBackground");
+		::AlphaBlend(hdc,
+			0,
+			0,
+			(texture->GetSize().x) * winSizeAdjustmemt.x,
+			(texture->GetSize().y) * winSizeAdjustmemt.y,
+			texture->GetDC(),
+			0,
+			0,
+			texture->GetSize().x,
+			texture->GetSize().y,
+			bf);
+	}
+}
+
+void DevScene::ItemPictureRender(HDC hdc, int32 id)
+{
+	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+
+	static Texture* texture = nullptr;
+
+	switch (id)
+	{
+	case 310100:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInMap");
+		break;
+	}
+
+	::TransparentBlt(hdc,
+		(DefaultWinSizeX / 2 - 50) * winSizeAdjustment.x,
+		(DefaultWinSizeY / 2 - 80) * winSizeAdjustment.y,
+		100 * winSizeAdjustment.x,
+		100 * winSizeAdjustment.y,
+		texture->GetDC(),
+		0,
+		0,
+		30,	// Sprite 변경시 수정 필요
+		texture->GetSize().y,
+		texture->GetTransparent());
+}
+
+void DevScene::ItemNameRender(HDC hdc, std::wstring name)
+{
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+
+	// 출력할 위치
+	RECT rect = { (DefaultWinSizeX / 2 - 30) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 120) * winSizeAdjustmemt.y, (DefaultWinSizeX / 2 + 30) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 140) * winSizeAdjustmemt.y };
+
+	// 폰트 생성
+	HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y, L"DungGeunMo");
+
+	// 폰트 선택
+	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
+
+	// 텍스트 색깔 설정
+	::SetTextColor(hdc, RGB(0, 0, 0));
+
+	// 텍스트 배경 투명화
+	::SetBkMode(hdc, TRANSPARENT);
+
+	Utils::DrawString(hdc, name, rect);
+
+	::SetTextColor(hdc, RGB(0, 0, 0));
+	::SelectObject(hdc, oldFont);
+	::DeleteObject(hfont);
+}
+
+void DevScene::ItemExplainRender(HDC hdc, std::wstring explain)
+{
+	// 보정 변수 가져오기
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+
+	// 출력할 위치
+	RECT rect = { (DefaultWinSizeX / 2 - 50) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 150) * winSizeAdjustmemt.y, (DefaultWinSizeX / 2 + 50) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 200) * winSizeAdjustmemt.y };
+
+	// 폰트 생성
+	HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y, L"DungGeunMo");
+
+	// 폰트 선택
+	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
+
+	// 텍스트 색깔 설정
+	::SetTextColor(hdc, RGB(0, 0, 0));
+
+	// 텍스트 배경 투명화
+	::SetBkMode(hdc, TRANSPARENT);
+
+	Utils::DrawString(hdc, explain, rect);
+
+	::SetTextColor(hdc, RGB(0, 0, 0));
+	::SelectObject(hdc, oldFont);
+	::DeleteObject(hfont);
 }
 
 void DevScene::OnClickGoTitleButton()

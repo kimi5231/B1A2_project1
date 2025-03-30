@@ -26,6 +26,8 @@ public:
 	Player* GetOwner() { return _owner; }
 	void SetOwner(Player* player) { _owner = player; }
 
+	ItemInfo* GetItemInfo() { return _itemInfo; }
+
 public:
 	void SetFKeyState(FKeyState state) { _FkeyState = state; }
 	FKeyState GetFKeyState() { return _FkeyState; }

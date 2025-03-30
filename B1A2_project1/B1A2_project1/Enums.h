@@ -109,6 +109,7 @@ enum class SceneState
 {
 	Play,
 	Menu,
+	ItemAcquire,
 	Inventory,
 };
 

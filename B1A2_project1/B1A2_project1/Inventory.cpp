@@ -81,12 +81,37 @@ void Inventory::Render(HDC hdc)
 
 			switch (itemID)
 			{
-			case 1001:
+			case 300100:
 				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInInventory"); break;
-			case 1002:
+			case 310100:
 				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInInventory"); break;
-			case 1003:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInInventory"); break;
+			//case 310200:
+			//	break;
+			//case 320100:
+			//	break;
+			//case 320001:
+			//	break;
+			//case 320002:
+			//	break;
+			//case 320003:
+			//	break;
+			//case 320004:
+			//	break;
+			//case 320005:
+			//	break;
+			//case 320006:
+			//	break;
+			//case 320007:
+			//	break;
+			//case 320008:
+			//	break;
+			//case 320009:
+			//	break;
+			//case 320010:
+			//	break;
+			//case 320011:
+			//	break;
+
 			}
 
 			int32 boxX = ITEM_STARTX + (i % 5) * ITEM_SIZEX;

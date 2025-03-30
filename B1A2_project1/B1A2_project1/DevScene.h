@@ -2,6 +2,7 @@
 #include "Scene.h"	// 상속 받으면 전방 선언 의미 없으므로, 무조건 include로 상속 객체 받아야 함.
 
 class Actor;
+class ItemActor;
 
 class DevScene : public Scene
 {
@@ -36,7 +37,14 @@ public:
 
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
+	void SetItemAcquireState(ItemActor* item) { _sceneState = SceneState::ItemAcquire; _acquireItem = item; };
 
+	void BackGroundRender(HDC hdc);	// 어두운 투명 배경 - 메뉴, 아이템 획득 등에 사용
+
+	// 아이템 획득 효과
+	void ItemPictureRender(HDC hdc, int32 id);
+	void ItemNameRender(HDC hdc, std::wstring name);
+	void ItemExplainRender(HDC hdc, std::wstring explain);
 public:
 	// Menu
 	void OnClickGoTitleButton();
@@ -71,4 +79,6 @@ private:
 	std::unordered_map<int32, int32> _monsterHpData;	// [몬스터 ID, 몬스터 hp]
 	
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
+
+	ItemActor* _acquireItem = nullptr;	// 아이템 획득 효과에 필요
 };
