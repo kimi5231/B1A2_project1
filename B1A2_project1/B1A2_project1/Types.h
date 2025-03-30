@@ -113,14 +113,13 @@ struct Vec2
 		return ::sqrt(LengthSquared());
 	}
 
-	void Normalize()
+	Vec2 Normalize()
 	{
 		float length = Length();
 		if (length < 0.0000000001f)
-			return;
+			return Vec2(0, 0);
 
-		x /= length;
-		y /= length;
+		return Vec2(x / length, y / length);
 	}
 
 	float Dot(Vec2 other)

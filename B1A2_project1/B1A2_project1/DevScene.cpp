@@ -197,10 +197,10 @@ void DevScene::Init()
 
 	// ZipLine
 	{
-		ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 400 }, LAYER_STRUCTURE);
+		ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
 		zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-		zipLine->SetBeginPos({900, 600});
-		zipLine->SetEndPos({900, 200});
+		zipLine->SetBeginPos({800, 250});
+		zipLine->SetEndPos({950, 170});
 
 		// Button이 필요 없는 짚라인은 아래 코드 작성X
 		ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
@@ -318,6 +318,7 @@ void DevScene::LoadPlayer()
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerDuckDown", L"Sprite\\Player\\PlayerDuckDown.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerDuckDownMove", L"Sprite\\Player\\PlayerDuckDownMove.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerHang", L"Sprite\\Player\\PlayerHang.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerRelease", L"Sprite\\Player\\PlayerRelease.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSlash", L"Sprite\\Player\\PlayerSlash.bmp", RGB(55, 255, 0));
 
 	// Idle
@@ -396,6 +397,19 @@ void DevScene::LoadPlayer()
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHangLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerHangLeft", {30, 85}, 0, 0, 1, 0.7f });
+	}
+
+	// Release
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerRelease");
+
+		// Right
+		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerReleaseRight");
+		fb1->SetInfo({ texture, L"FB_PlayerReleaseRight", {34, 88}, 0, 0, 0, 0.7f });
+
+		// Left
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerReleaseLeft");
+		fb2->SetInfo({ texture, L"FB_PlayerReleaseLeft", {34, 88}, 0, 0, 1, 0.7f });
 	}
 
 	// Slash

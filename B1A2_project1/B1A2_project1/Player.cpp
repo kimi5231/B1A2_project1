@@ -14,6 +14,7 @@
 #include "Item.h"
 #include "DevScene.h"
 #include "ZipLine.h"
+#include <cmath>
 
 Player::Player()
 {
@@ -418,14 +419,85 @@ void Player::TickSkill()
 
 void Player::TickHang()
 {
+	static bool isMoving = false;	// 이동 하는지
+	static float sumTime = 0.0f;
+
+	if (!_zipLine)
+		return;
+
 	Vec2 beginPos = _zipLine->GetBeginPos();
+	Vec2 endPos = _zipLine->GetEndPos();
+	
+	// 매달리기 시작 - 짚라인 시작 위치로 이동
+	if (!isMoving)
+	{
+		_pos = _zipLine->GetBeginPos();
 
-	_pos.x = beginPos.x;
+		_isGround = true;
+		_isAir = false;
 
+		sumTime += GET_SINGLE(TimeManager)->GetDeltaTime();
+
+		if (sumTime >= 1.0f)	// 2초 대기 후 이동 시작
+		{
+			isMoving = true;
+			sumTime = 0.0f;
+		}
+	}
+	// 이동 시작
+	else
+	{
+		float speed = 300.0f;
+		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+		Vec2 direction = (endPos - beginPos).Normalize();
+		_pos += direction * speed * deltaTime;
+
+		// 이동 중 SpaceBar 입력 시 놓기
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+		{
+			isMoving = false;
+			sumTime = 0.0f;
+
+			_isGround = false;
+			_isAir = true;
+
+			SetState(ObjectState::Release);
+
+			return;
+		}
+
+		// endPos에 도착하면 놓기
+		if ((_pos - endPos).Length() <= 5.0f) // 오차 범위 고려
+		{
+			isMoving = false;
+			sumTime = 0.0f;
+
+			_isGround = false;
+			_isAir = true;
+
+			SetState(ObjectState::Release);
+		}
+	}
 }
 
 void Player::TickRelease()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.0f;
+
+	sumTime += deltaTime;
+
+	if (_dir == DIR_RIGHT)
+		_pos.x += _playerStat->runSpeed * deltaTime;
+	else
+		_pos.x -= _playerStat->runSpeed * deltaTime;
+
+	if (sumTime >= 0.3f)
+	{
+		sumTime = 0.f;
+		SetState(ObjectState::Idle);
+	}
 }
 
 void Player::TickHit()
@@ -682,7 +754,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			}
 		}
 
-		return;
+		 return;
 	}
 
 	// 벽 충돌하면 밀어내기
