@@ -281,6 +281,9 @@
     <ClInclude Include="ZipLine.h">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>소스 파일\02. Scene\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -462,6 +465,9 @@
     </ClCompile>
     <ClCompile Include="ZipLine.cpp">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
