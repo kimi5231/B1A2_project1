@@ -34,6 +34,7 @@
 #include "ZipLine.h"
 #include "TimeManager.h"
 #include "Stage.h"
+#include "LockedDoorAndKey.h"
 
 DevScene::DevScene()
 {
@@ -154,6 +155,13 @@ void DevScene::Init()
 		zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
 		zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+	}
+
+	// LockedDoorAndKey
+	{
+		LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
+
+		lockedDoorAndKey->SetItemPos({ 1800, 520 });
 	}
 
 	// Start Dialogue
@@ -470,6 +478,32 @@ void DevScene::LoadProjectile()
 
 void DevScene::LoadStructure()
 {
+	// LockedDoorAndKey
+	{
+		// LockedDoor
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"LockedDoor", L"Sprite\\Structure\\LockedDoor.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"LockedDoor");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_LockedDoor");
+			fb->SetInfo({ texture, L"FB_LockedDoor", {80, 240}, 0, 0, 0, 0.7f });
+		}
+
+		// UnlokedDoor
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"UnlockedDoor", L"Sprite\\Structure\\UnlockedDoor.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"UnlockedDoor");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_UnlockedDoor");
+			fb->SetInfo({ texture, L"FB_UnlockedDoor", {80, 240}, 0, 0, 0, 0.7f });
+		}
+		
+		// LockedDoorItem
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"LockedDoorItem", L"Sprite\\Structure\\LockedDoorItem.bmp", RGB(55, 255, 0));
+		}
+	}
+
 	// ZipLine
 	{
 		// ZipLine
