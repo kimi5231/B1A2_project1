@@ -37,6 +37,8 @@ Player::Player()
 	_flipbookPlayerDuckDownMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDuckDownMoveLeft");
 	_flipbookPlayerHang[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHangRight");
 	_flipbookPlayerHang[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHangLeft");
+	_flipbookPlayerRelease[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseRight");
+	_flipbookPlayerRelease[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseLeft");
 	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
 	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
 
@@ -559,16 +561,17 @@ void Player::UpdateAnimation()
 		playerCollider->SetSize({ 30, 80 });
 		SetFlipbook(_flipbookPlayerHang[_dir]);
 		break;
-	//case ObjectState::Release:
-	//	SetFlipbook(_flipbookPlayerRelease[_dir]);
-	//	break;
+	case ObjectState::Release:
+		playerCollider->SetSize({ 34, 88 });
+		SetFlipbook(_flipbookPlayerRelease[_dir]);
+		break;
 	case ObjectState::Skill:
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerSkill[_dir]);
 		break;
 	case ObjectState::CloseAttack:
-		//playerCollider->SetSize({})
-		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+		playerCollider->SetSize({ 75, 90 });
+		SetFlipbook(_flipbookPlayerSlash[_dir]);
 		break;
 	case ObjectState::LongAttack:
 		//playerCollider->SetSize({})

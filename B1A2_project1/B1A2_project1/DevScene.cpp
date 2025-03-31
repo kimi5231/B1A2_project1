@@ -430,7 +430,7 @@ void DevScene::LoadPlayer()
 		fb2->SetInfo({ texture, L"FB_PlayerReleaseLeft", {34, 88}, 0, 0, 1, 0.7f });
 	}
 
-	// Slash
+	// Slash - CloseAtk
 	{
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerSlash");
 
