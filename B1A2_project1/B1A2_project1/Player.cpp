@@ -601,24 +601,26 @@ void Player::TickRelease()
 
 void Player::TickHit()
 {
-	// 피격 코드 작성
-	// ...
-
-	if (_playerStat->commonStat.hp > 0)
-		SetState(ObjectState::Idle);
+	// knockback
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _playerStat->knockBackDistance;
 	else
-		SetState(ObjectState::Dead);
+		_pos.x += _playerStat->knockBackDistance;
+
+	SetState(ObjectState::Idle);
+
 }
 
 void Player::TickDead()
 {
-	// 죽는 코드 작성
-	// ...
+	// 객체 제거
+	// 추후 GameScene로 변경할 예정
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	scene->RemoveActor(this);
 }
 
 void Player::UpdateAnimation()
 {
-
 	switch (_state)
 	{
 	case ObjectState::Idle:
@@ -662,7 +664,8 @@ void Player::UpdateAnimation()
 		SetFlipbook(_flipbookPlayerSlash[_dir]);		
 		break;
 	case ObjectState::Hit:
-	//	SetFlipbook(_flipbookPlayerHit[_dir]);
+		_playerCollider->SetSize({ 41, 80 });
+		SetFlipbook(_flipbookPlayerHit[_dir]);
 	break;
 	case ObjectState::Dead:
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
@@ -702,6 +705,26 @@ float Player::GetSpeed()
 		return _playerStat->crouchSpeed;
 		break;
 	}
+}
+
+void Player::OnDamaged(Creature* other)
+{
+	int32 damage = other->GetAttack();
+
+	if (damage <= 0)
+		return;
+
+	// 체력 감소 함수 호출
+	SubtractHealthPoint(damage);
+
+	// 체력이 다 닳으면 사망
+	if (_playerStat->commonStat.hp == 0)
+	{
+		SetState(ObjectState::Dead);
+		return;
+	}
+
+	SetState(ObjectState::Hit);
 }
 
 void Player::AddHealthPoint(int hp)
@@ -897,11 +920,23 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
 	{
 		_zipLine = nullptr;
+
+		return;
 	}
 
+	// 몬스터 거리에 따라 근거리 or 원거리 공격
 	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_MONSTER)
 	{
 		_isCloseAtk = false;
+
+		return;
+	}
+
+	if (b1->GetCollisionLayer() == CLT_PLAYER && b2->GetCollisionLayer() == CLT_MONSTER_ATTACK)
+	{
+		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+		OnDamaged(otherOwner);
+
 		return;
 	}
 

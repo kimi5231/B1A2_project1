@@ -96,6 +96,8 @@ public:
 	virtual int32 GetAttack() override;
 	virtual float GetSpeed() override;
 
+	virtual void OnDamaged(Creature* other);
+
 	// Hp 바뀔 때
 	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입
 	void SetHealthObserver(std::function<void(int)> observer) { _healthObserver = observer; }
