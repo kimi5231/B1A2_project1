@@ -932,6 +932,11 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
+	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)
+	{
+		AddSkillPoint(1);
+	}
+
 	if (b1->GetCollisionLayer() == CLT_PLAYER && b2->GetCollisionLayer() == CLT_MONSTER_ATTACK)
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());

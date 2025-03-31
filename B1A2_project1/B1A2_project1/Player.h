@@ -110,8 +110,8 @@ public:
 
 	int32 GetSkillPoint() { return _playerStat->skillPoint; }
 	void SetSkillPoint(int32 skillPoint) { _playerStat->skillPoint = skillPoint; }
-	void AddSkillPoint(int32 skillPoint) { _playerStat->skillPoint += skillPoint; }
-	void SubtractSkillPoint(int32 skillPoint) { _playerStat->skillPoint -= skillPoint; }
+	void AddSkillPoint(int32 skillPoint) { _playerStat->skillPoint = min(5, _playerStat->skillPoint + skillPoint); }
+	void SubtractSkillPoint(int32 skillPoint) { _playerStat->skillPoint = max(0, _playerStat->skillPoint - skillPoint); }
 
 public:
 	// Player가 Save Point에 충돌했을 때 스테이지 정보 저장을 위해 씬 정보가 필요함, 다른 씬 추가 시 수정 필요
