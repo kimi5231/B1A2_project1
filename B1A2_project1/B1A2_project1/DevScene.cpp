@@ -45,8 +45,7 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
-	LoadMap();
-	LoadTilemap();
+	LoadStage();
 	LoadPlayer();
 	LoadMonster();
 	LoadProjectile();
@@ -59,7 +58,7 @@ void DevScene::Init()
 
 	// Tilemap
 	{
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage1");
 
 		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
@@ -213,12 +212,12 @@ void DevScene::Init()
 	}
 
 	// Start Dialogue
-	{
+	/*{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
 		actors.push_back(GetActor(21));
 		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}
+	}*/
 
 	Super::Init();
 }
@@ -303,30 +302,42 @@ void DevScene::Render(HDC hdc)
 	}
 }
 
-void DevScene::LoadMap()
+void DevScene::LoadStage()
 {
+	// Stage
+	{
+		// csv 추가되면 변경 예정
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1", L"DataBase\\Test.csv");
+	}
+
 	// Map
 	{
+		// Texture
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage1.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage2", L"Sprite\\Map\\Stage2.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage3", L"Sprite\\Map\\Stage3.bmp");
 
-		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, mapSize.x, mapSize.y);
-
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
-		SpriteActor* map = new SpriteActor();
-		const Vec2Int size = sprite->GetSize();
-		map->SetPos(Vec2(size.x / 2, size.y / 2));
-		map->SetSprite(sprite);
-		map->SetLayer(LAYER_BACKGROUND);
-
-		AddActor(map);
+		// Sprite
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, 6200, 1440);
+		}
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage2");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage2", texture, 0, 0, 8880, 1720);
+		}
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage3");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage3", texture, 0, 0, 3080, 1960);
+		}
 	}
-}
 
-void DevScene::LoadTilemap()
-{
-	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	// Tilemap
+	{
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage1", L"Tilemap\\Stage1.txt");
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage2", L"Tilemap\\Stage2.txt");
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage3", L"Tilemap\\Stage3.txt");
+	}
 }
 
 void DevScene::LoadPlayer()
@@ -767,10 +778,9 @@ void DevScene::SetStage1()
 
 	// Set Monster
 	{
-		// Load 함수로 뺄 예정
-		GET_SINGLE(ResourceManager)->LoadStage(L"Stage", L"DataBase\\Test.csv");
 		
-		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage");
+		
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1");
 		const std::vector<StageInfo>& infos = stage->GetInfos();
 
 		for (const StageInfo& info : infos)

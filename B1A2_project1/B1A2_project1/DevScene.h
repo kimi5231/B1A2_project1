@@ -18,8 +18,7 @@ public:
 
 public:
 	// Resource Load
-	void LoadMap();
-	void LoadTilemap();
+	void LoadStage();
 	void LoadPlayer();
 	void LoadMonster();
 	void LoadProjectile();
