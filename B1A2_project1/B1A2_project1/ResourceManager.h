@@ -6,8 +6,10 @@ class Flipbook;
 class Sound;
 class Tilemap;
 class Dialogue;
-class LineInfo;
 class Item;
+class Stage;
+struct LineInfo;
+struct StageInfo;
 struct PlayerStat;
 struct TiredOfficeWorkerStat;
 struct BrokenCopyMachineStat;
@@ -49,6 +51,9 @@ public:
 	Item* GetItem(const std::wstring& key) { return _items[key]; }
 	Item* LoadItem(const std::wstring& key, const std::wstring& path);
 
+	Stage* GetStage(const std::wstring& key) { return _stages[key]; }
+	Stage* LoadStage(const std::wstring& key, const std::wstring& path);
+
 	PlayerStat* GetPlayerStat() { return _playerStat; }
 	PlayerStat* LoadPlayerStat(const std::wstring& path);
 
@@ -73,6 +78,7 @@ private:
 	std::unordered_map<std::wstring, Tilemap*> _tilemaps;
 	std::unordered_map<std::wstring, Dialogue*> _dialogues;
 	std::unordered_map<std::wstring, Item*> _items;
+	std::unordered_map<std::wstring, Stage*> _stages;
 	PlayerStat* _playerStat;
 	TiredOfficeWorkerStat* _tiredOfficeWorkerStat;
 	BrokenCopyMachineStat* _brokenCopyMachineStat;

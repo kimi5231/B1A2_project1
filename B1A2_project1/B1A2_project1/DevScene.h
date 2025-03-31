@@ -30,6 +30,11 @@ public:
 	void LoadMenu();
 	void LoadSound();
 
+private:
+	// Set Stage
+	void SetStage(int32 stage);
+	void SetStage1();
+
 public:
 	// Save
 	void SaveCurData();
