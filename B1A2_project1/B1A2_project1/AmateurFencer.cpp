@@ -47,6 +47,7 @@ AmateurFencer::AmateurFencer()
 			collider->SetCollisionLayer(CLT_MONSTER);
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
+			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
 			collider->AddCollisionFlagLayer(CLT_GROUND);
 			collider->AddCollisionFlagLayer(CLT_WALL);
 

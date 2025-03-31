@@ -448,11 +448,11 @@ void DevScene::LoadPlayer()
 
 		// Right
 		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashRight");
-		fb1->SetInfo({ texture, L"FB_PlayerSlashRight", {75, 90}, 0, 6, 0, 0.7f });
+		fb1->SetInfo({ texture, L"FB_PlayerSlashRight", {75, 90}, 0, 6, 0, 1.0f });
 
 		// Left
-		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"PlayerSlashLeft");
-		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 0.7f });
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashLeft");
+		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 1.0f });
 	}
 }
 

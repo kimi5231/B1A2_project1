@@ -133,6 +133,9 @@ public:
 	void SetAcquireItems(const std::unordered_map<int32, int32>& items) { _acquiredItems = items; }		// 저장 데이터 불러올 때 사용
 	void ClearAcquireItems() { _acquiredItems.clear(); }
 
+public:
+	int32 GetAtkRange() { return _playerStat->nAtkRange; }
+
 private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};
@@ -172,5 +175,10 @@ private:
 	DevScene* _devScene = nullptr;	// 현재 씬 데이터 정보 저장을 위해 필요, 다른 게임 Scene 추가시 수정 필요
 
 	ZipLine* _zipLine = nullptr;	// 충돌 중인 짚라인의 정보를 가져와서 매달리기
+
+	Collider* _attackCollider = nullptr;
+	Collider* _detectCollider = nullptr;	// 근거리, 원거리 공격 결정 
+	// Collider* _attackMonsterCollider = nullptr;
+	bool _isCloseAtk = false;
 };
 
