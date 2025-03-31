@@ -8,6 +8,7 @@
 #include "Monster.h"
 #include "ResourceManager.h"
 #include "Texture.h"
+#include "Player.h"
 
 BoxCollider::BoxCollider() : Collider(ColliderType::Box)
 {
@@ -45,6 +46,30 @@ void BoxCollider::BeginPlay()
 		else
 			_pos.x = owner->GetPos().x - 30;
 	}
+	
+	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Player*>(GetOwner()))
+	{
+		Player* owner = dynamic_cast<Player*>(GetOwner());
+		int32 monsterDetection = owner->GetAtkRange();
+
+		if (owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + owner->GetAtkRange();
+		else
+			_pos.x = owner->GetPos().x - owner->GetAtkRange();
+	}
+
+
+	if (GetCollisionLayer() == CLT_PLAYER_ATTACK && dynamic_cast<Player*>(GetOwner()))
+	{
+		Player* owner = dynamic_cast<Player*>(GetOwner());
+
+		_pos.y -= 20;
+
+		if (owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + 20;
+		else
+			_pos.x = owner->GetPos().x - 20;
+	}
 }
 
 void BoxCollider::TickComponent()
@@ -72,6 +97,29 @@ void BoxCollider::TickComponent()
 			_pos.x = owner->GetPos().x + 30;
 		else
 			_pos.x = owner->GetPos().x - 30;
+	}
+
+	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Player*>(GetOwner()))
+	{
+		Player* owner = dynamic_cast<Player*>(GetOwner());
+		int32 monsterDetection = owner->GetAtkRange();
+
+		if (owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + owner->GetAtkRange();
+		else
+			_pos.x = owner->GetPos().x - owner->GetAtkRange();
+	}
+
+	if (GetCollisionLayer() == CLT_PLAYER_ATTACK && dynamic_cast<Player*>(GetOwner()))
+	{
+		Player* owner = dynamic_cast<Player*>(GetOwner());
+
+		_pos.y -= 20;
+
+		if (owner->GetDir() == DIR_RIGHT)
+			_pos.x = owner->GetPos().x + 20;
+		else
+			_pos.x = owner->GetPos().x - 20;
 	}
 }
 

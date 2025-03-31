@@ -15,6 +15,7 @@
 #include "DevScene.h"
 #include "ZipLine.h"
 #include "SceneManager.h"
+#include "Flipbook.h"
 
 Player::Player()
 {
@@ -39,8 +40,8 @@ Player::Player()
 	_flipbookPlayerHang[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHangLeft");
 	_flipbookPlayerRelease[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseRight");
 	_flipbookPlayerRelease[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseLeft");
-	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
-	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
+	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
+	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
 
 	// Camera Component
 	CameraComponent* camera = new CameraComponent();
@@ -73,8 +74,8 @@ void Player::Tick()
 	/*if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
 		return;*/
 
-	// F key가 활성화되면 획득할 수 있음
-	// 획득 후 F key와 Item을 화면에서 지움
+		// F key가 활성화되면 획득할 수 있음
+		// 획득 후 F key와 Item을 화면에서 지움
 	if (_collideItem)
 	{
 		if (_collideItem->GetFKeyState() == FKeyState::Show)
@@ -88,7 +89,7 @@ void Player::Tick()
 				{
 					collider->SetCollisionLayer(CLT_NONE);
 				}
-				
+
 				// Scene에 아이템 획득 효과 그리기
 				// 추후 GameScene로 변경할 예정
 				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
@@ -100,6 +101,16 @@ void Player::Tick()
 			}
 		}
 	}
+
+	if (_state != ObjectState::CloseAttack && _state != ObjectState::LongAttack)
+	{
+		if (_attackCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+			RemoveComponent(_attackCollider);
+			_attackCollider = nullptr;
+		}
+	}	
 
 	TickGravity();
 
@@ -119,7 +130,10 @@ void Player::TickIdle()
 		return;
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	
+	static float sumTime = 0.0f;
+
+	sumTime += deltaTime;
+
 	_keyPressed = true;
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
@@ -153,10 +167,33 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 	{
-		// if (거리 계산)
-		SetState(ObjectState::CloseAttack);
+		// 거리 체크 - detect collider에 몬스터가 있으면(detect와 monster의 충돌이 있으면) 베기, 없으면 찌르기
+		if (!_detectCollider)
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_DETECT);
 
-		// SetState(ObjectState::LongAttack);
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+			collider->SetSize({ 50, 80 });
+
+			_detectCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+
+		_isCloseAtk = false;
+
+		if (sumTime >= 0.05f)
+		{
+			if (!_isCloseAtk)
+			{
+				SetState(ObjectState::LongAttack);
+				sumTime = 0.0f;
+			}
+		}
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
@@ -344,20 +381,30 @@ void Player::TickJump()
 
  }
 
+
 void Player::TickCloseAttack()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	// 좌우 이동도 가능하도록 추가
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	if (!_attackCollider)
 	{
-		SetDir(DIR_LEFT);
-		_pos.x -= _playerStat->runSpeed * deltaTime;
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_PLAYER_ATTACK);
+
+		collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+		collider->SetSize({ 45, 45 });
+
+		_attackCollider = collider;
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+
+	if (this->GetIdx() == 6)
 	{
-		SetDir(DIR_RIGHT);
-		_pos.x += _playerStat->runSpeed * deltaTime;
+		SetState(ObjectState::Idle);
 	}
 
 	//if (공격 받음)
@@ -365,27 +412,31 @@ void Player::TickCloseAttack()
 	//	SubtractHealthPoint(깎을hp);
 	//	SetState(ObjectState::Hit);
 	//}
-
-	// 공격 코드 작성
-	// ...
-
-	SetState(ObjectState::Idle);
 }
 
 void Player::TickLongAttack()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	// 좌우 이동도 가능하도록 추가
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	if (!_attackCollider)
 	{
-		SetDir(DIR_LEFT);
-		_pos.x -= _playerStat->runSpeed * deltaTime;
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_PLAYER_ATTACK);
+
+		collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+		collider->SetSize({ 45, 45 });
+
+		_attackCollider = collider;
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+
+	if (this->GetIdx() == 6)
 	{
-		SetDir(DIR_RIGHT);
-		_pos.x += _playerStat->runSpeed * deltaTime;
+		SetState(ObjectState::Idle);
 	}
 
 	//if (공격 받음)
@@ -393,11 +444,6 @@ void Player::TickLongAttack()
 	//	SubtractHealthPoint(깎을hp);
 	//	SetState(ObjectState::Hit);
 	//}
-
-	// 공격 코드 작성
-	// ...
-
-	SetState(ObjectState::Idle);
 }
 
 void Player::TickSkill()
@@ -536,10 +582,7 @@ void Player::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		playerCollider->SetSize({ 23, 85 });
-		if (_keyPressed)
-			SetFlipbook(_flipbookPlayerIdle[_dir]);
-		else
-			SetFlipbook(_flipbookPlayerIdle[_dir]);		
+		SetFlipbook(_flipbookPlayerIdle[_dir]);		
 		break;
 	case ObjectState::Move:
 		playerCollider->SetSize({67, 70 });
@@ -574,10 +617,9 @@ void Player::UpdateAnimation()
 		SetFlipbook(_flipbookPlayerSlash[_dir]);
 		break;
 	case ObjectState::LongAttack:
-		//playerCollider->SetSize({})
-		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+		playerCollider->SetSize({ 75, 90 });
+		SetFlipbook(_flipbookPlayerSlash[_dir]);		
 		break;
-
 	case ObjectState::Hit:
 	//	SetFlipbook(_flipbookPlayerHit[_dir]);
 	break;
@@ -767,6 +809,14 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		}
 
 		 return;
+	}
+
+	// Monster Atk - 몬스터가 사거리 내 있으면, 근거리 공격
+	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_MONSTER)
+	{
+		SetState(ObjectState::CloseAttack);
+
+		_isCloseAtk = true;
 	}
 
 	// 벽 충돌하면 밀어내기
