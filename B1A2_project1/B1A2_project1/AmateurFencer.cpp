@@ -46,10 +46,7 @@ AmateurFencer::AmateurFencer()
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_MONSTER);
 
-			collider->AddCollisionFlagLayer(CLT_PLAYER);
 			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
-			collider->AddCollisionFlagLayer(CLT_GROUND);
-			collider->AddCollisionFlagLayer(CLT_WALL);
 
 			collider->SetSize({ 31, 88 });
 
@@ -131,12 +128,20 @@ void AmateurFencer::BeginPlay()
 	AttackSelector->addChild(CloseAtkSequence);
 	AttackSelector->addChild(LongAtkSequence);
 
+	// Dead Sequence
+	Condition* c6 = new Condition("is cur state Dead?", [&]() {return is_cur_state_dead(); });
+	Action* a6 = new Action("Dead", [&]() {return Dead(); });
+	Sequence* DeadSequence = new Sequence();
+	DeadSequence->addChild(c6);
+	DeadSequence->addChild(a6);
+
 	// rootNode 설정
 	Selector* RootSelector = new Selector();
 	RootSelector->addChild(IdleSequence);
 	RootSelector->addChild(HitSequence);
 	RootSelector->addChild(ChaseSequence);
 	RootSelector->addChild(AttackSelector);
+	RootSelector->addChild(DeadSequence);
 	_rootNode = RootSelector;
 
 	SetState(ObjectState::Idle);
@@ -232,7 +237,7 @@ void AmateurFencer::CalPixelPerSecond()
 
 int32 AmateurFencer::GetAttack()
 {
-	return int32();
+	return _stat->closeAtkDamage;
 }
 
 BehaviorState AmateurFencer::is_cur_state_Idle()
@@ -263,15 +268,7 @@ BehaviorState AmateurFencer::Hit()
 	else
 		_pos.x += _stat->knockBackDistance;
 
-	if (_stat->commonStat.hp <= 0)
-	{
-		//SetState(ObjectState::Dead);
-		SetState(ObjectState::Chase);
-	}
-	else
-	{
-		SetState(ObjectState::Chase);
-	}
+	SetState(ObjectState::Chase);
 
 	return BehaviorState::SUCCESS;
 }
@@ -458,6 +455,24 @@ BehaviorState AmateurFencer::Dash()
 	return BehaviorState::RUNNING;
 }
 
+BehaviorState AmateurFencer::is_cur_state_dead()
+{
+	if (_state == ObjectState::Dead)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
+}
+
+BehaviorState AmateurFencer::Dead()
+{
+	// 객체 제거
+	// 추후 GameScene로 변경할 예정
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	scene->RemoveActor(this);
+	
+	return BehaviorState::SUCCESS;
+}
+
 float AmateurFencer::GetFromPlayerXDistance()
 {
 	return this->GetPos().x - _player->GetPos().x;	// 양수 → 플레이어보다 오른쪽에, 음수 → 플레이어보다 왼쪽에
@@ -513,14 +528,11 @@ void AmateurFencer::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		}
 	}
 
-	if (b1->GetCollisionLayer() == CLT_MONSTER)
+	if (b1->GetCollisionLayer() == CLT_MONSTER && b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
-		if (b2->GetCollisionLayer() == CLT_PLAYER)	// CLT_PLAYER_ATTACK으로 수정
-		{
-			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
-			OnDamaged(otherOwner);
-			SetState(ObjectState::Hit);
-		}
+		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+		OnDamaged(otherOwner);
+		SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
 	}
 }
 
@@ -538,16 +550,6 @@ void AmateurFencer::OnComponentEndOverlap(Collider* collider, Collider* other)
 		{
 			SetState(ObjectState::Idle);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
-		}
-	}
-
-	if (b1->GetCollisionLayer() == CLT_MONSTER)
-	{
-		if (b2->GetCollisionLayer() == CLT_PLAYER)	// CLT_PLAYER_ATTACK으로 수정
-		{
-			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
-			OnDamaged(otherOwner);
-			SetState(ObjectState::Chase);
 		}
 	}
 }

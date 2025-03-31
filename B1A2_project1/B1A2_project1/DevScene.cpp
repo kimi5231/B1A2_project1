@@ -98,6 +98,7 @@ void DevScene::Init()
 
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		player->AddComponent(collider);
+		player->SetPlayerCollider(collider);
 	}
 
 	// Inventory

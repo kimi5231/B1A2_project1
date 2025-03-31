@@ -51,6 +51,25 @@ Player::Player()
 	DialogueComponent* dialogueComponent = new DialogueComponent();
 	AddComponent(dialogueComponent);
 
+	// Collider
+	{
+		// Monster Detect
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_DETECT);
+
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+			collider->SetSize({ 80, 80 });
+
+			_detectCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
+
 	// CurrentScene
 }
 
@@ -167,33 +186,10 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 	{
-		// 거리 체크 - detect collider에 몬스터가 있으면(detect와 monster의 충돌이 있으면) 베기, 없으면 찌르기
-		if (!_detectCollider)
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_DETECT);
-
-			collider->AddCollisionFlagLayer(CLT_MONSTER);
-
-			collider->SetSize({ 50, 80 });
-
-			_detectCollider = collider;
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
-		}
-
-		_isCloseAtk = false;
-
-		if (sumTime >= 0.05f)
-		{
-			if (!_isCloseAtk)
-			{
-				SetState(ObjectState::LongAttack);
-				sumTime = 0.0f;
-			}
-		}
+		if (_isCloseAtk)
+			SetState(ObjectState::CloseAttack);
+		else
+			SetState(ObjectState::LongAttack);
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
@@ -220,6 +216,9 @@ void Player::TickMove()
 		return;
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.0f;
+
+	sumTime += deltaTime;
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
@@ -255,7 +254,11 @@ void Player::TickMove()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))	// Normal Attack
 	{
-		SetState(ObjectState::CloseAttack);
+		if (_isCloseAtk)
+			SetState(ObjectState::CloseAttack);
+		else
+			SetState(ObjectState::LongAttack);
+
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))	// Skill
 	{
@@ -394,7 +397,7 @@ void Player::TickCloseAttack()
 
 		collider->AddCollisionFlagLayer(CLT_MONSTER);
 
-		collider->SetSize({ 45, 45 });
+		collider->SetSize({ 55, 55 });
 
 		_attackCollider = collider;
 
@@ -417,6 +420,9 @@ void Player::TickCloseAttack()
 void Player::TickLongAttack()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.0f;
+
+	sumTime += deltaTime;
 
 	if (!_attackCollider)
 	{
@@ -426,7 +432,7 @@ void Player::TickLongAttack()
 
 		collider->AddCollisionFlagLayer(CLT_MONSTER);
 
-		collider->SetSize({ 45, 45 });
+		collider->SetSize({ 55, 55 });
 
 		_attackCollider = collider;
 
@@ -434,8 +440,20 @@ void Player::TickLongAttack()
 		AddComponent(collider);
 	}
 
+	if (sumTime <= 1.0)
+	{
+		if (_dir == DIR_RIGHT)
+		{
+			_pos.x += 80 * deltaTime;
+		}
+		else 
+			_pos.x -= 80 * deltaTime;
+	}
+
 	if (this->GetIdx() == 6)
 	{
+		sumTime = 0.0f;
+
 		SetState(ObjectState::Idle);
 	}
 
@@ -576,36 +594,35 @@ void Player::TickDead()
 
 void Player::UpdateAnimation()
 {
-	BoxCollider* playerCollider = dynamic_cast<BoxCollider*>(this->GetCollider());
 
 	switch (_state)
 	{
 	case ObjectState::Idle:
-		playerCollider->SetSize({ 23, 85 });
+		_playerCollider->SetSize({ 23, 85 });
 		SetFlipbook(_flipbookPlayerIdle[_dir]);		
 		break;
 	case ObjectState::Move:
-		playerCollider->SetSize({67, 70 });
+		_playerCollider->SetSize({67, 70 });
 		SetFlipbook(_flipbookPlayerMove[_dir]);
 		break;
 	case ObjectState::DuckDown:
-		playerCollider->SetSize({35, 45});
+		_playerCollider->SetSize({35, 45});
 		SetFlipbook(_flipbookPlayerDuckDown[_dir]);
 		break;
 	case ObjectState::DuckDownMove:
-		playerCollider->SetSize({ 34, 50 });
+		_playerCollider->SetSize({ 34, 50 });
 		SetFlipbook(_flipbookPlayerDuckDownMove[_dir]);
 		break;
 	case ObjectState::Jump:
-		playerCollider->SetSize({ 34, 55 });
+		_playerCollider->SetSize({ 34, 55 });
 		SetFlipbook(_flipbookPlayerJump[_dir]);
 		break;
 	case ObjectState::Hang:
-		playerCollider->SetSize({ 30, 80 });
+		_playerCollider->SetSize({ 30, 80 });
 		SetFlipbook(_flipbookPlayerHang[_dir]);
 		break;
 	case ObjectState::Release:
-		playerCollider->SetSize({ 34, 88 });
+		_playerCollider->SetSize({ 34, 88 });
 		SetFlipbook(_flipbookPlayerRelease[_dir]);
 		break;
 	case ObjectState::Skill:
@@ -613,11 +630,11 @@ void Player::UpdateAnimation()
 		//SetFlipbook(_flipbookPlayerSkill[_dir]);
 		break;
 	case ObjectState::CloseAttack:
-		playerCollider->SetSize({ 75, 90 });
+		_playerCollider->SetSize({ 75, 90 });
 		SetFlipbook(_flipbookPlayerSlash[_dir]);
 		break;
 	case ObjectState::LongAttack:
-		playerCollider->SetSize({ 75, 90 });
+		_playerCollider->SetSize({ 75, 90 });
 		SetFlipbook(_flipbookPlayerSlash[_dir]);		
 		break;
 	case ObjectState::Hit:
@@ -814,9 +831,8 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// Monster Atk - 몬스터가 사거리 내 있으면, 근거리 공격
 	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_MONSTER)
 	{
-		SetState(ObjectState::CloseAttack);
-
 		_isCloseAtk = true;
+		return;
 	}
 
 	// 벽 충돌하면 밀어내기
@@ -857,6 +873,12 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
 	{
 		_zipLine = nullptr;
+	}
+
+	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_MONSTER)
+	{
+		_isCloseAtk = false;
+		return;
 	}
 
 	if (b2->GetCollisionLayer() == CLT_GROUND)

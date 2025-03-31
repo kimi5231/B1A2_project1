@@ -44,6 +44,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_MONSTER);
 
+			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
+
 			collider->SetSize({ 31, 77 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
@@ -316,8 +318,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	if (b1->GetCollisionLayer() == CLT_MONSTER)
 	{
 		// Player Attack과 충돌
-		// 추후 CLT_PLAYER_ATTACK로 변경할 예정
-		if (b2->GetCollisionLayer() == CLT_PLAYER)
+ 		if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 		{
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);

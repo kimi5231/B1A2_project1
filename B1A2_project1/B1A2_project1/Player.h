@@ -120,6 +120,8 @@ public:
 	void CalPixelPerSecond();
 
 	// Collider
+	void SetPlayerCollider(BoxCollider* collider) { _playerCollider = collider; }
+
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 	
@@ -176,6 +178,7 @@ private:
 
 	ZipLine* _zipLine = nullptr;	// 충돌 중인 짚라인의 정보를 가져와서 매달리기
 
+	BoxCollider* _playerCollider = nullptr;
 	Collider* _attackCollider = nullptr;
 	Collider* _detectCollider = nullptr;	// 근거리, 원거리 공격 결정 
 	// Collider* _attackMonsterCollider = nullptr;
