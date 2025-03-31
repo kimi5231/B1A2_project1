@@ -119,28 +119,12 @@ void DevScene::Init()
 
 	// Monster
 	{
-		// Layer 추후 수정 예정
-		// TOW
-		{
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_MONSTER);
-			TOW->SetSpawnDir(DIR_RIGHT);
-			TOW->SetSpawnPos({ 100, 300 });
-			TOW->SetMoveDistance(580.f);
-			TOW->SetMovementLimit({ 0, 700 });
-
 			//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
 			//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
 			//	_monsterHpData[20101] = 100;
 			//}
-		}
 	
-		// BCM
-		{
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
-
 			//	_monsterHpData[20201] = 100;
-
-		}
 
 		// AF
 		{
@@ -268,7 +252,9 @@ void DevScene::LoadStage()
 	// Stage
 	{
 		// csv 추가되면 변경 예정
-		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1", L"DataBase\\Test.csv");
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1_FieldMonster", L"DataBase\\Stage1_FieldMonster.csv");
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage2_FieldMonster", L"DataBase\\Stage2_FieldMonster.csv");
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage3_FieldMonster", L"DataBase\\Stage3_FieldMonster.csv");
 	}
 
 	// Map
@@ -716,6 +702,12 @@ void DevScene::SetStage(int32 stage)
 	case 1:
 		SetStage1();
 		break;
+	case 2:
+		SetStage2();
+		break;
+	case 3:
+		SetStage3();
+		break;
 	}
 }
 
@@ -766,18 +758,35 @@ void DevScene::SetStage1()
 
 	// Monster
 	{
-		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1");
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1_FieldMonster");
 		const std::vector<StageInfo>& infos = stage->GetInfos();
 
 		for (const StageInfo& info : infos)
 		{
-			// id로 타입 구분하기
-			// 몬스터 생성
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
-			TOW->SetSpawnDir(info.dir);
-			TOW->SetSpawnPos(info.spawnPos);
-			TOW->SetMoveDistance(info.movingDistance);
-			TOW->SetMovementLimit(info.movementLimit);
+			// TOW
+			if (info.id > 20100 && info.id <= 20199)
+			{
+				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetSpawnDir(info.dir);
+				TOW->SetSpawnPos(info.spawnPos);
+				TOW->SetMoveDistance(info.movingDistance);
+				TOW->SetMovementLimit(info.movementLimit);
+				continue;
+			}
+			
+			// BCM
+			if (info.id > 20200 && info.id <= 20299)
+			{
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetDir(info.dir);
+				continue;
+			}
+
+			// AF
+			if (info.id > 20300 && info.id <= 20399)
+			{
+				continue;
+			}
 		}
 	}
 
@@ -897,6 +906,16 @@ void DevScene::LoadGameData()
 	}
 
 	file.close();
+
+}
+
+void DevScene::SetStage2()
+{
+
+}
+
+void DevScene::SetStage3()
+{
 
 }
 
