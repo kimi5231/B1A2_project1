@@ -18,8 +18,7 @@ public:
 
 public:
 	// Resource Load
-	void LoadMap();
-	void LoadTilemap();
+	void LoadStage();
 	void LoadPlayer();
 	void LoadMonster();
 	void LoadProjectile();
@@ -34,6 +33,8 @@ private:
 	// Set Stage
 	void SetStage(int32 stage);
 	void SetStage1();
+	void SetStage2();
+	void SetStage3();
 
 public:
 	// Save

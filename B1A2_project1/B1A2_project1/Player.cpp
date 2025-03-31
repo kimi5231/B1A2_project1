@@ -53,24 +53,29 @@ Player::Player()
 
 	// Collider
 	{
-		// Monster Detect
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_DETECT);
+		BoxCollider* collider = new BoxCollider();
+		// 리셋 안 하면 모두 충돌함
+		collider->ResetCollisionFlag();
 
-			collider->AddCollisionFlagLayer(CLT_MONSTER);
+		// 나 자신을 설정
+		collider->SetCollisionLayer(CLT_PLAYER);
 
-			collider->SetSize({ 80, 80 });
+		// 충돌하고 싶은 객체 설정
+		collider->AddCollisionFlagLayer(CLT_MONSTER_ATTACK);
+		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
+		collider->AddCollisionFlagLayer(CLT_ITEM);
+		collider->AddCollisionFlagLayer(CLT_GROUND);
+		collider->AddCollisionFlagLayer(CLT_WALL);
+		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
+		collider->AddCollisionFlagLayer(CLT_DETECT);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
 
-			_detectCollider = collider;
+		collider->SetSize({ 23, 75 });
 
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
-		}
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
 	}
-
-	// CurrentScene
 }
 
 Player::~Player()

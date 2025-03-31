@@ -45,8 +45,8 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
-	LoadMap();
-	LoadTilemap();
+	// Resource Load
+	LoadStage();
 	LoadPlayer();
 	LoadMonster();
 	LoadProjectile();
@@ -57,56 +57,15 @@ void DevScene::Init()
 	LoadMenu();
 	// LoadSound();
 
-	// Tilemap
-	{
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Tilemap");
-
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
-		actor->SetShowDebug(false);
-		actor->SetTilemap(tm);
-	}
-
-	// Player
-	Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
-	player->SetID(1);
-	_player = player;
-
-	// 스테이지 지정
+	// 스테이지 설정
 	SetStage(1);
-
-	// Colider
-	{
-		BoxCollider* collider = new BoxCollider();
-		// 리셋 안 하면 모두 충돌함
-		collider->ResetCollisionFlag();
-
-		// 나 자신을 설정
-		collider->SetCollisionLayer(CLT_PLAYER);
-
-		// 충돌하고 싶은 객체 설정
-		collider->AddCollisionFlagLayer(CLT_MONSTER);	// 추후 MONSTER_ATTACK으로 변경 예정
-		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
-		collider->AddCollisionFlagLayer(CLT_ITEM);
-		collider->AddCollisionFlagLayer(CLT_GROUND);
-		collider->AddCollisionFlagLayer(CLT_WALL);
-		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
-		collider->AddCollisionFlagLayer(CLT_DETECT);
-		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
-		collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
-
-		collider->SetSize({ 23, 75 });
-
-		GET_SINGLE(CollisionManager)->AddCollider(collider);
-		player->AddComponent(collider);
-		player->SetPlayerCollider(collider);
-	}
 
 	// Inventory
 	{
 		Inventory* inventory = new Inventory();
-		player->AddComponent(inventory);
+		_player->AddComponent(inventory);
 
-		inventory->SetOwner(player);
+		inventory->SetOwner(_player);
 
 		// Update에서 inventory의 멤버 변수에 접근하기 위해
 		_inventory = inventory;
@@ -114,14 +73,14 @@ void DevScene::Init()
 
 	// InGame UI
 	InGamePanel* panel = new InGamePanel();
-	panel->SetPlayer(player);
+	panel->SetPlayer(_player);
 	AddPanel(panel);
 
 	// player의 체력 변경 시 UI 업데이트 등록
-	player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
 
 	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
-	player->SetCurrentScene(this);
+	_player->SetCurrentScene(this);
 
 	// Announcemet
 	{
@@ -160,28 +119,12 @@ void DevScene::Init()
 
 	// Monster
 	{
-		// Layer 추후 수정 예정
-		// TOW
-		{
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>({ 100, 300 }, LAYER_MONSTER);
-			TOW->SetSpawnDir(DIR_RIGHT);
-			TOW->SetSpawnPos({ 100, 300 });
-			TOW->SetMoveDistance(580.f);
-			TOW->SetMovementLimit({ 0, 700 });
-
 			//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
 			//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
 			//	_monsterHpData[20101] = 100;
 			//}
-		}
 	
-		// BCM
-		{
-			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>({ 200, 200 }, LAYER_MONSTER);
-
 			//	_monsterHpData[20201] = 100;
-
-		}
 
 		// AF
 		{
@@ -192,7 +135,7 @@ void DevScene::Init()
 			AF->SetMovementLimit({ 960, 2000 });
 
 			// Player 설정
-			AF->_player = player;
+			AF->_player = _player;
 
 			_monsterHpData[20301] = 100;
 		}
@@ -214,12 +157,12 @@ void DevScene::Init()
 	}
 
 	// Start Dialogue
-	{
+	/*{
 		std::vector<Actor*> actors;
 		actors.push_back(GetActor(1));
 		actors.push_back(GetActor(21));
 		GET_SINGLE(DialogueManager)->StartDialogue(L"prologue1", actors);
-	}
+	}*/
 
 	Super::Init();
 }
@@ -304,30 +247,44 @@ void DevScene::Render(HDC hdc)
 	}
 }
 
-void DevScene::LoadMap()
+void DevScene::LoadStage()
 {
+	// Stage
+	{
+		// csv 추가되면 변경 예정
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1_FieldMonster", L"DataBase\\Stage1_FieldMonster.csv");
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage2_FieldMonster", L"DataBase\\Stage2_FieldMonster.csv");
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage3_FieldMonster", L"DataBase\\Stage3_FieldMonster.csv");
+	}
+
 	// Map
 	{
+		// Texture
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage1.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage2", L"Sprite\\Map\\Stage2.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage3", L"Sprite\\Map\\Stage3.bmp");
 
-		Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, mapSize.x, mapSize.y);
-
-		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
-		SpriteActor* map = new SpriteActor();
-		const Vec2Int size = sprite->GetSize();
-		map->SetPos(Vec2(size.x / 2, size.y / 2));
-		map->SetSprite(sprite);
-		map->SetLayer(LAYER_BACKGROUND);
-
-		AddActor(map);
+		// Sprite
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage1");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage1", texture, 0, 0, 6200, 1440);
+		}
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage2");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage2", texture, 0, 0, 8880, 1720);
+		}
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage3");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage3", texture, 0, 0, 3080, 1960);
+		}
 	}
-}
 
-void DevScene::LoadTilemap()
-{
-	GET_SINGLE(ResourceManager)->LoadTilemap(L"Tilemap", L"Tilemap\\Tilemap.txt");
+	// Tilemap
+	{
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage1", L"Tilemap\\Stage1.txt");
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage2", L"Tilemap\\Stage2.txt");
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage3", L"Tilemap\\Stage3.txt");
+	}
 }
 
 void DevScene::LoadPlayer()
@@ -745,50 +702,97 @@ void DevScene::SetStage(int32 stage)
 	case 1:
 		SetStage1();
 		break;
+	case 2:
+		SetStage2();
+		break;
+	case 3:
+		SetStage3();
+		break;
 	}
 }
 
 void DevScene::SetStage1()
 {
-	// 이전 스테이지 객체 삭제
+	// 이전 스테이지 객체 삭제 (Player, UI 제외)
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+			for (Actor* actor : actors)
+				SAFE_DELETE(actor);
+		}
+	}
 
-	// Set Map
+	// Map
 	{
 		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
+		
 		const Vec2Int size = sprite->GetSize();
 		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
 		map->SetSprite(sprite);
-	}
-	
-	// Set Player Pos
-	{
-		Actor* player = _actors[LAYER_PLAYER].at(0);
-		player->SetPos({ 100, 100 });
+
+		GET_SINGLE(ValueManager)->SetMapSize(size);
 	}
 
-	// Set Monster
+	// Tilemap
 	{
-		// Load 함수로 뺄 예정
-		GET_SINGLE(ResourceManager)->LoadStage(L"Stage", L"DataBase\\Test.csv");
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage1");
+
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+	}
+	
+	// Player
+	{
+		// Player가 없다면 생성
+		if (!_player)
+		{
+			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			_player = player;
+		}
 		
-		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage");
+		_player->SetPos({ 400, 200 });
+	}
+
+	// Monster
+	{
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1_FieldMonster");
 		const std::vector<StageInfo>& infos = stage->GetInfos();
 
 		for (const StageInfo& info : infos)
 		{
-			// id로 타입 구분하기
-			// 몬스터 생성
-			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
-			TOW->SetSpawnDir(info.dir);
-			TOW->SetSpawnPos(info.spawnPos);
-			TOW->SetMoveDistance(info.movingDistance);
-			TOW->SetMovementLimit(info.movementLimit);
+			// TOW
+			if (info.id > 20100 && info.id <= 20199)
+			{
+				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetSpawnDir(info.dir);
+				TOW->SetSpawnPos(info.spawnPos);
+				TOW->SetMoveDistance(info.movingDistance);
+				TOW->SetMovementLimit(info.movementLimit);
+				continue;
+			}
+			
+			// BCM
+			if (info.id > 20200 && info.id <= 20299)
+			{
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetDir(info.dir);
+				continue;
+			}
+
+			// AF
+			if (info.id > 20300 && info.id <= 20399)
+			{
+				continue;
+			}
 		}
 	}
 
-	// Set Structure
+	// Structure
 
-	// Set Item
+	// Item
 }
 
 void DevScene::SaveCurData()
@@ -902,6 +906,16 @@ void DevScene::LoadGameData()
 	}
 
 	file.close();
+
+}
+
+void DevScene::SetStage2()
+{
+
+}
+
+void DevScene::SetStage3()
+{
 
 }
 
