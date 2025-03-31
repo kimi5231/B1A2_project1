@@ -37,6 +37,8 @@ Player::Player()
 	_flipbookPlayerDuckDownMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDuckDownMoveLeft");
 	_flipbookPlayerHang[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHangRight");
 	_flipbookPlayerHang[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHangLeft");
+	_flipbookPlayerRelease[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseRight");
+	_flipbookPlayerRelease[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseLeft");
 	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
 	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
 
@@ -90,7 +92,6 @@ void Player::Tick()
 				// Scene에 아이템 획득 효과 그리기
 				// 추후 GameScene로 변경할 예정
 				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-
 				scene->SetItemAcquireState(_collideItem);
 
 				// 아이템 숨기기
@@ -327,6 +328,9 @@ void Player::TickJump()
 		{
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 			{
+				// 바라보는 방향 설정
+				_dir = DIR_RIGHT;
+
 				SetState(ObjectState::Hang);
 			}
 		}
@@ -434,7 +438,7 @@ void Player::TickHang()
 
 	Vec2 beginPos = _zipLine->GetBeginPos();
 	Vec2 endPos = _zipLine->GetEndPos();
-	
+
 	// 매달리기 시작 - 짚라인 시작 위치로 이동
 	if (!isMoving)
 	{
@@ -557,16 +561,17 @@ void Player::UpdateAnimation()
 		playerCollider->SetSize({ 30, 80 });
 		SetFlipbook(_flipbookPlayerHang[_dir]);
 		break;
-	//case ObjectState::Release:
-	//	SetFlipbook(_flipbookPlayerRelease[_dir]);
-	//	break;
+	case ObjectState::Release:
+		playerCollider->SetSize({ 34, 88 });
+		SetFlipbook(_flipbookPlayerRelease[_dir]);
+		break;
 	case ObjectState::Skill:
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerSkill[_dir]);
 		break;
 	case ObjectState::CloseAttack:
-		//playerCollider->SetSize({})
-		//SetFlipbook(_flipbookPlayerAttackNormal[_dir]);
+		playerCollider->SetSize({ 75, 90 });
+		SetFlipbook(_flipbookPlayerSlash[_dir]);
 		break;
 	case ObjectState::LongAttack:
 		//playerCollider->SetSize({})
