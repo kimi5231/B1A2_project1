@@ -8,6 +8,7 @@
 #include "Dialogue.h"
 #include "SoundManager.h"
 #include "Item.h"
+#include "Stage.h"
 #include "Player.h"
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
@@ -159,6 +160,20 @@ Item* ResourceManager::LoadItem(const std::wstring& key, const std::wstring& pat
 	_items[key] = item;
 
 	return item;
+}
+
+Stage* ResourceManager::LoadStage(const std::wstring& key, const std::wstring& path)
+{
+	if (_stages[key])
+		return _stages[key];
+
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	Stage* stage = new Stage();
+	stage->LoadFile(fullpath);
+	_stages[key] = stage;
+
+	return stage;
 }
 
 PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)

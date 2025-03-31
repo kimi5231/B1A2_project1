@@ -33,6 +33,7 @@
 #include "DialogueComponent.h"
 #include "ZipLine.h"
 #include "TimeManager.h"
+#include "Stage.h"
 
 DevScene::DevScene()
 {
@@ -44,7 +45,7 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
-	//LoadMap();
+	LoadMap();
 	LoadTilemap();
 	LoadPlayer();
 	LoadMonster();
@@ -55,9 +56,6 @@ void DevScene::Init()
 	LoadInventory();
 	LoadMenu();
 	// LoadSound();
-
-	// 현재 스테이지 번호
-	_curStageNum = 1;
 
 	// Tilemap
 	{
@@ -72,6 +70,9 @@ void DevScene::Init()
 	Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
 	player->SetID(1);
 	_player = player;
+
+	// 스테이지 지정
+	SetStage(1);
 
 	// Colider
 	{
@@ -730,6 +731,63 @@ void DevScene::LoadSound()
 		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
 		sound->Play(true);
 	}
+}
+
+void DevScene::SetStage(int32 stage)
+{
+	_curStageNum = stage;
+
+	// 이전 스테이지 내용 삭제
+
+	switch (stage)
+	{
+	case 1:
+		SetStage1();
+		break;
+	}
+}
+
+void DevScene::SetStage1()
+{
+	// 이전 스테이지 객체 삭제
+
+	// Set Map
+	{
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
+		const Vec2Int size = sprite->GetSize();
+		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
+		map->SetSprite(sprite);
+	}
+	
+	// Set Player Pos
+	{
+		Actor* player = _actors[LAYER_PLAYER].at(0);
+		player->SetPos({ 100, 100 });
+	}
+
+	// Set Monster
+	{
+		// Load 함수로 뺄 예정
+		GET_SINGLE(ResourceManager)->LoadStage(L"Stage", L"DataBase\\Test.csv");
+		
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage");
+		const std::vector<StageInfo>& infos = stage->GetInfos();
+
+		for (const StageInfo& info : infos)
+		{
+			// id로 타입 구분하기
+			// 몬스터 생성
+			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+			TOW->SetSpawnDir(info.dir);
+			TOW->SetSpawnPos(info.spawnPos);
+			TOW->SetMoveDistance(info.movingDistance);
+			TOW->SetMovementLimit(info.movementLimit);
+		}
+	}
+
+	// Set Structure
+
+	// Set Item
 }
 
 void DevScene::SaveCurData()

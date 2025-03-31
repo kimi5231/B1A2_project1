@@ -78,6 +78,9 @@
     <Filter Include="소스 파일\03. Objects\Game\Structure">
       <UniqueIdentifier>{b6653dba-cd29-4541-875c-5b98dd135069}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Resources\DataBase">
+      <UniqueIdentifier>{c832530f-460e-42de-9bd7-f7383737c786}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -284,6 +287,9 @@
     <ClInclude Include="EndingScene.h">
       <Filter>소스 파일\02. Scene\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -468,6 +474,9 @@
     </ClCompile>
     <ClCompile Include="EndingScene.cpp">
       <Filter>소스 파일\02. Scene\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
