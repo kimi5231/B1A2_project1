@@ -168,6 +168,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DialogueComponent.h" />
     <ClInclude Include="DialogueManager.h" />
+    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Flipbook.h" />
     <ClInclude Include="FlipbookActor.h" />
@@ -241,6 +242,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DialogueComponent.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
+    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="Flipbook.cpp" />
     <ClCompile Include="FlipbookActor.cpp" />
     <ClCompile Include="FlipbookUI.cpp" />
