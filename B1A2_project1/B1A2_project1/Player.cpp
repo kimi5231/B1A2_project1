@@ -90,7 +90,6 @@ void Player::Tick()
 				// Scene에 아이템 획득 효과 그리기
 				// 추후 GameScene로 변경할 예정
 				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-
 				scene->SetItemAcquireState(_collideItem);
 
 				// 아이템 숨기기
@@ -327,6 +326,9 @@ void Player::TickJump()
 		{
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 			{
+				// 바라보는 방향 설정
+				_dir = DIR_RIGHT;
+
 				SetState(ObjectState::Hang);
 			}
 		}
@@ -434,7 +436,7 @@ void Player::TickHang()
 
 	Vec2 beginPos = _zipLine->GetBeginPos();
 	Vec2 endPos = _zipLine->GetEndPos();
-	
+
 	// 매달리기 시작 - 짚라인 시작 위치로 이동
 	if (!isMoving)
 	{
