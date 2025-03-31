@@ -51,7 +51,31 @@ Player::Player()
 	DialogueComponent* dialogueComponent = new DialogueComponent();
 	AddComponent(dialogueComponent);
 
-	// CurrentScene
+	// Collider
+	{
+		BoxCollider* collider = new BoxCollider();
+		// 리셋 안 하면 모두 충돌함
+		collider->ResetCollisionFlag();
+
+		// 나 자신을 설정
+		collider->SetCollisionLayer(CLT_PLAYER);
+
+		// 충돌하고 싶은 객체 설정
+		collider->AddCollisionFlagLayer(CLT_MONSTER_ATTACK);
+		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
+		collider->AddCollisionFlagLayer(CLT_ITEM);
+		collider->AddCollisionFlagLayer(CLT_GROUND);
+		collider->AddCollisionFlagLayer(CLT_WALL);
+		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
+		collider->AddCollisionFlagLayer(CLT_DETECT);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
+		collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
+
+		collider->SetSize({ 23, 75 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+	}
 }
 
 Player::~Player()

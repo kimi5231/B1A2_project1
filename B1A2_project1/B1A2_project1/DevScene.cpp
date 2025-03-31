@@ -45,6 +45,7 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
+	// Resource Load
 	LoadStage();
 	LoadPlayer();
 	LoadMonster();
@@ -56,55 +57,15 @@ void DevScene::Init()
 	LoadMenu();
 	// LoadSound();
 
-	// Tilemap
-	{
-		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage1");
-
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
-		actor->SetShowDebug(false);
-		actor->SetTilemap(tm);
-	}
-
-	// Player
-	Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
-	player->SetID(1);
-	_player = player;
-
-	// 스테이지 지정
+	// 스테이지 설정
 	SetStage(1);
-
-	// Colider
-	{
-		BoxCollider* collider = new BoxCollider();
-		// 리셋 안 하면 모두 충돌함
-		collider->ResetCollisionFlag();
-
-		// 나 자신을 설정
-		collider->SetCollisionLayer(CLT_PLAYER);
-
-		// 충돌하고 싶은 객체 설정
-		collider->AddCollisionFlagLayer(CLT_MONSTER);	// 추후 MONSTER_ATTACK으로 변경 예정
-		collider->AddCollisionFlagLayer(CLT_PROJECTILE);
-		collider->AddCollisionFlagLayer(CLT_ITEM);
-		collider->AddCollisionFlagLayer(CLT_GROUND);
-		collider->AddCollisionFlagLayer(CLT_WALL);
-		collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
-		collider->AddCollisionFlagLayer(CLT_DETECT);
-		collider->AddCollisionFlagLayer(CLT_STRUCTURE);
-		collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
-
-		collider->SetSize({ 23, 75 });
-
-		GET_SINGLE(CollisionManager)->AddCollider(collider);
-		player->AddComponent(collider);
-	}
 
 	// Inventory
 	{
 		Inventory* inventory = new Inventory();
-		player->AddComponent(inventory);
+		_player->AddComponent(inventory);
 
-		inventory->SetOwner(player);
+		inventory->SetOwner(_player);
 
 		// Update에서 inventory의 멤버 변수에 접근하기 위해
 		_inventory = inventory;
@@ -112,14 +73,14 @@ void DevScene::Init()
 
 	// InGame UI
 	InGamePanel* panel = new InGamePanel();
-	panel->SetPlayer(player);
+	panel->SetPlayer(_player);
 	AddPanel(panel);
 
 	// player의 체력 변경 시 UI 업데이트 등록
-	player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
 
 	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
-	player->SetCurrentScene(this);
+	_player->SetCurrentScene(this);
 
 	// Announcemet
 	{
@@ -190,7 +151,7 @@ void DevScene::Init()
 			AF->SetMovementLimit({ 960, 2000 });
 
 			// Player 설정
-			AF->_player = player;
+			AF->_player = _player;
 
 			_monsterHpData[20301] = 100;
 		}
@@ -760,26 +721,51 @@ void DevScene::SetStage(int32 stage)
 
 void DevScene::SetStage1()
 {
-	// 이전 스테이지 객체 삭제
+	// 이전 스테이지 객체 삭제 (Player, UI 제외)
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+			for (Actor* actor : actors)
+				SAFE_DELETE(actor);
+		}
+	}
 
-	// Set Map
+	// Map
 	{
 		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
+		
 		const Vec2Int size = sprite->GetSize();
 		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
 		map->SetSprite(sprite);
-	}
-	
-	// Set Player Pos
-	{
-		Actor* player = _actors[LAYER_PLAYER].at(0);
-		player->SetPos({ 100, 100 });
+
+		GET_SINGLE(ValueManager)->SetMapSize(size);
 	}
 
-	// Set Monster
+	// Tilemap
 	{
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage1");
+
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+	}
+	
+	// Player
+	{
+		// Player가 없다면 생성
+		if (!_player)
+		{
+			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			_player = player;
+		}
 		
-		
+		_player->SetPos({ 400, 200 });
+	}
+
+	// Monster
+	{
 		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1");
 		const std::vector<StageInfo>& infos = stage->GetInfos();
 
@@ -795,9 +781,9 @@ void DevScene::SetStage1()
 		}
 	}
 
-	// Set Structure
+	// Structure
 
-	// Set Item
+	// Item
 }
 
 void DevScene::SaveCurData()
