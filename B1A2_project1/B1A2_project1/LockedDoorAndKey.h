@@ -53,5 +53,8 @@ private:
 
 	Vec2Int _doorPos;
 	Vec2Int _itemPos;
+
+public:
+	bool _isKeyAcquired = false;
 };
 

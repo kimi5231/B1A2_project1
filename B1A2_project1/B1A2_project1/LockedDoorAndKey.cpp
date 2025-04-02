@@ -14,17 +14,35 @@ LockedDoorAndKey::LockedDoorAndKey()
 
 	// Collider
 	{
-		BoxCollider* collider = new BoxCollider();
-		collider->ResetCollisionFlag();
-		collider->SetCollisionLayer(CLT_STRUCTURE_DETECT);
+		// Detect
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_STRUCTURE_DETECT);
 
-		collider->AddCollisionFlagLayer(CLT_PLAYER);
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-		collider->SetSize({80, 240});
+			collider->SetSize({ 160, 240 });
 
-		GET_SINGLE(CollisionManager)->AddCollider(collider);
-		AddComponent(collider);
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+		
+		// Structure
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_STRUCTURE);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 80, 240 });
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
 	}
+
 
 	SetState(ObjectState::Off);
 }
@@ -99,14 +117,4 @@ void LockedDoorAndKey::OnComponentBeginOverlap(Collider* collider, Collider* oth
 
 void LockedDoorAndKey::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
-	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
-	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
-
-	if (b1 == nullptr || b2 == nullptr)
-		return;
-
-	if (b2->GetCollisionLayer() == CLT_PLAYER)
-	{
-		_isKeyRender = false;
-	}
 }

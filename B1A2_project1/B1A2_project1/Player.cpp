@@ -16,6 +16,8 @@
 #include "ZipLine.h"
 #include "SceneManager.h"
 #include "Flipbook.h"
+#include "LockedDoorAndKey.h"
+
 
 Player::Player()
 {
@@ -137,6 +139,10 @@ void Player::Tick()
 				// 추후 GameScene로 변경할 예정
 				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 				scene->SetItemAcquireState(_collideItem);
+
+				// 잠긴 문과 열쇠의 열쇠 획득시 문 열리도록 설정
+				if (_collideItem->GetID() == 300100)
+					_isKeyAcquire = true;
 
 				// 아이템 숨기기
 				_collideItem->SetFKeyState(FKeyState::Hidden);
@@ -851,28 +857,72 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	// ZipLine
+	// Structure Detect
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
 	{
-		ZipLine* zipLine = dynamic_cast<ZipLine*>(b2->GetOwner()); 
-		
-		if (zipLine)
+		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
+		if (!structure)
+			return;
+
+		// ZipLine
 		{
-			if (zipLine->GetZipLineType() == ZipLineType::ZipLine)
+			ZipLine* zipLine = dynamic_cast<ZipLine*>(structure);
+
+			if (zipLine)
 			{
-				_zipLine = zipLine;
-			}
-			else if (zipLine->GetZipLineType() == ZipLineType::ZipLineWithButton)
-			{
-				ZipLineButtonAndDisplay* BD = zipLine->GetZipLineButtonAndDisplay();
-				if (BD->GetState() == ObjectState::On)
+				if (zipLine->GetZipLineType() == ZipLineType::ZipLine)
 				{
 					_zipLine = zipLine;
+				}
+				else if (zipLine->GetZipLineType() == ZipLineType::ZipLineWithButton)
+				{
+					ZipLineButtonAndDisplay* BD = zipLine->GetZipLineButtonAndDisplay();
+					if (BD->GetState() == ObjectState::On)
+					{
+						_zipLine = zipLine;
+					}
 				}
 			}
 		}
 
-		 return;
+		// LockedDoorAndKey - 플레이어가 열쇠를 획득한 상태라면 문 열기
+		{
+			LockedDoorAndKey* lockedDoorAndKey = dynamic_cast<LockedDoorAndKey*>(structure);
+
+			if (lockedDoorAndKey)
+			{
+				if (_isKeyAcquire)
+				{
+					lockedDoorAndKey->_isKeyAcquired = true;
+						return;
+				}
+			}
+		}
+
+		return;
+	}
+
+	// Structure
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE)
+	{
+		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
+		if (!structure)
+			return;
+
+		// LcokedDoorAndKey
+		{
+			LockedDoorAndKey* lockedDoorAndKey = dynamic_cast<LockedDoorAndKey*>(structure);
+
+			if (lockedDoorAndKey)
+			{
+				if (!lockedDoorAndKey->_isKeyAcquired)
+				{
+					AdjustCollisionPos(b1, b2);
+					return;
+				}
+				return;
+			}
+		}
 	}
 
 	// Monster Atk - 몬스터가 사거리 내 있으면, 근거리 공격
