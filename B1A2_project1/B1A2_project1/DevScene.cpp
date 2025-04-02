@@ -35,6 +35,7 @@
 #include "TimeManager.h"
 #include "Stage.h"
 #include "LockedDoorAndKey.h"
+#include "BreakingWall.h"
 
 DevScene::DevScene()
 {
@@ -142,26 +143,34 @@ void DevScene::Init()
 		}
 	}
 
-	// ZipLine
+	// Structure
 	{
-		ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
-		zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-		zipLine->SetBeginPos({800, 250});
-		zipLine->SetEndPos({950, 170});
+		// ZipLine
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetBeginPos({ 800, 250 });
+			zipLine->SetEndPos({ 950, 170 });
 
-		// Button이 필요 없는 짚라인은 아래 코드 작성X
-		ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-		zipLineButtonAndDisplay->SetOwner(zipLine);
-		zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+			// Button이 필요 없는 짚라인은 아래 코드 작성X
+			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+			zipLineButtonAndDisplay->SetOwner(zipLine);
+			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-		zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-	}
+			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		}
 
-	// LockedDoorAndKey
-	{
-		LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
+		// LockedDoorAndKey
+		{
+			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
 
-		lockedDoorAndKey->SetItemPos({ 1800, 520 });
+			lockedDoorAndKey->SetItemPos({ 1800, 520 });
+		}
+
+		// BreakingWall
+		{
+			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
+		}
 	}
 
 	// Start Dialogue
@@ -546,6 +555,27 @@ void DevScene::LoadStructure()
 
 			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOn");
 			fb2->SetInfo({ texture, L"FB_ZipLineButtonOn", {101, 116}, 0, 0, 1, 0.7f });
+		}
+	}
+
+	// BreakingWall
+	{
+		// Wall
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"Wall", L"Sprite\\Structure\\Wall.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Wall");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Wall");
+			fb->SetInfo({ texture, L"FB_Wall", {80, 240}, 0, 0, 0, 0.7f });
+		}
+
+		// Breaking Wall
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingWall", L"Sprite\\Structure\\BreakingWall.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingWall");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWall");
+			fb->SetInfo({ texture, L"FB_BreakingWall", {80, 240}, 0, 2, 0, 0.7f });
 		}
 	}
 }

@@ -136,8 +136,9 @@ enum class ObjectState
 	Dash,	// 대쉬
 	Return,		// 복귀
 	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
-	On,		// 짚라인
+	On,		// 구조물
 	Off,
+	Breaking,
 };
 
 enum class ZipLineType

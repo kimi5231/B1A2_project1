@@ -17,7 +17,7 @@
 #include "SceneManager.h"
 #include "Flipbook.h"
 #include "LockedDoorAndKey.h"
-
+#include "BreakingWall.h"
 
 Player::Player()
 {
@@ -923,6 +923,18 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 				return;
 			}
 		}
+
+		// BreakingWall
+		{
+			BreakingWall* breakingWall = dynamic_cast<BreakingWall*>(structure);
+
+			if (breakingWall)
+			{
+				_isCloseAtk = true;
+				AdjustCollisionPos(b1, b2);
+				return;
+			}
+		}
 	}
 
 	// Monster Atk - 몬스터가 사거리 내 있으면, 근거리 공격
@@ -980,6 +992,11 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		_isCloseAtk = false;
 
 		return;
+	}
+	// Breaking Wall 
+	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_STRUCTURE)
+	{
+		_isCloseAtk = false;
 	}
 
 	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)
