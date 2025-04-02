@@ -59,6 +59,9 @@ void LockedDoorAndKey::BeginPlay()
 void LockedDoorAndKey::Tick()
 {
 	Super::Tick();
+
+	if (_isKeyAcquired)
+		SetState(ObjectState::On);
 }
 
 void LockedDoorAndKey::Render(HDC hdc)

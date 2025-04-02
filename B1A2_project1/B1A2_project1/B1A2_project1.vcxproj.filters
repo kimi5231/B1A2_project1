@@ -290,6 +290,9 @@
     <ClInclude Include="Stage.h">
       <Filter>소스 파일\04. Resources\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="LockedDoorAndKey.h">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -477,6 +480,9 @@
     </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="LockedDoorAndKey.cpp">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
