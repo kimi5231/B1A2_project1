@@ -1,6 +1,8 @@
 #pragma once
 #include "Structure.h"
 
+class Player;
+
 class BreakingWall : public Structure
 {
 	using Super = Structure;
@@ -42,10 +44,15 @@ private:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
+public:
+	void SetPlayer(Player* player) { _player = player; }
+
 private:
 	Flipbook* _flipbookWall = nullptr;
 	Flipbook* _flipbookBreakingWall = nullptr;
 
 	int32 _hp = 120;
+
+	Player* _player = nullptr;
 };
 

@@ -66,6 +66,8 @@ void BreakingWall::TickBreaking()
 {
 	if (GetIdx() == 2)
 	{	
+		_player->SetIsCloseAtk(false);
+
 		// 객체 제거
 		// 추후 GameScene으로 변경할 예정
 		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());

@@ -232,12 +232,6 @@ void Player::TickIdle()
 		if (_state == ObjectState::Idle)
 			UpdateAnimation();
 	}
-	
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
 }
 
 void Player::TickMove()
@@ -294,12 +288,6 @@ void Player::TickMove()
 	{
 		SetState(ObjectState::Skill);
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
 }
 
 void Player::TickDuckDown()
@@ -439,12 +427,6 @@ void Player::TickCloseAttack()
 	{
 		SetState(ObjectState::Idle);
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
 }
 
 void Player::TickLongAttack()
@@ -470,14 +452,14 @@ void Player::TickLongAttack()
 		AddComponent(collider);
 	}
 
-	if (sumTime <= 1.0)
+	if (sumTime <= 0.7f)
 	{
 		if (_dir == DIR_RIGHT)
 		{
-			_pos.x += 80 * deltaTime;
+			_pos.x += 114 * deltaTime;
 		}
 		else 
-			_pos.x -= 80 * deltaTime;
+			_pos.x -= 114 * deltaTime;
 	}
 
 	if (this->GetIdx() == 6)
@@ -486,12 +468,6 @@ void Player::TickLongAttack()
 
 		SetState(ObjectState::Idle);
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
 }
 
 void Player::TickSkill()
@@ -509,12 +485,6 @@ void Player::TickSkill()
 		SetDir(DIR_RIGHT);
 		_pos.x += _playerStat->runSpeed * deltaTime;
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
 
 	// 스킬 코드 작성
 	// ...
@@ -677,8 +647,6 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	break;
 	}
-
-	// CheckCollisionAfterResize();	// Collider 크기 변경 후 충돌 검사하기
 }
 
 int32 Player::GetAttack()
@@ -992,11 +960,6 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		_isCloseAtk = false;
 
 		return;
-	}
-	// Breaking Wall 
-	if (b1->GetCollisionLayer() == CLT_DETECT && b2->GetCollisionLayer() == CLT_STRUCTURE)
-	{
-		_isCloseAtk = false;
 	}
 
 	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)

@@ -141,6 +141,8 @@ public:
 public:
 	int32 GetAtkRange() { return _playerStat->nAtkRange; }
 
+	void SetIsCloseAtk(bool isCloseAtk) { _isCloseAtk = isCloseAtk; }
+
 private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};

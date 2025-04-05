@@ -170,6 +170,7 @@ void DevScene::Init()
 		// BreakingWall
 		{
 			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
+			breakingWall->SetPlayer(_player);
 		}
 	}
 
@@ -199,16 +200,17 @@ void DevScene::Update()
 	}
 	else if (_sceneState == SceneState::ItemAcquire)
 	{
-		static float sumTime = 0.0f;
+		static float sumTime = 0.f;
 		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 		sumTime += deltaTime;
 
-		if (sumTime >= 2.5f)
+		if (sumTime >= 0.5f)
 		{
 			_sceneState = SceneState::Play;
-		}
 
+			sumTime = 0.f;
+		}
 	}
 	else if (_sceneState == SceneState::Inventory)
 	{
@@ -413,11 +415,11 @@ void DevScene::LoadPlayer()
 
 		// Right
 		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashRight");
-		fb1->SetInfo({ texture, L"FB_PlayerSlashRight", {75, 90}, 0, 6, 0, 1.0f });
+		fb1->SetInfo({ texture, L"FB_PlayerSlashRight", {75, 90}, 0, 6, 0, 0.7f });
 
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashLeft");
-		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 1.0f });
+		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 0.7f });
 	}
 
 	// Hit
