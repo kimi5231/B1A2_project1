@@ -8,7 +8,7 @@ class Node;
 struct AmateurFencerStat
 {
 	CommonStat commonStat;	// A, B
-	float healtemDropRate;	// C
+	float healItemDropRate;	// C
 	float speed;	// D
 	Vec2Int playerDetection;	// E, F
 	int32 knockBackDistance; // G
@@ -41,7 +41,7 @@ struct AmateurFencerStat
 				{
 				case 0:this->commonStat.id = std::stoi(cell); break;	// A
 				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
-				case 2: this->healtemDropRate = std::stof(cell); break;	// C
+				case 2: this->healItemDropRate = std::stof(cell); break;	// C
 				case 3: this->speed = std::stof(cell); break;	// D
 				case 4: this->playerDetection.x = std::stoi(cell); break;	// E
 				case 5: this->playerDetection.y = std::stoi(cell); break;	// F
@@ -97,9 +97,6 @@ public:
 
 public:
 	void CalPixelPerSecond();
-
-	// Player에게 공격 -> HP 감소 함수(관찰자 패턴으로 구현)
-	// ...
 
 	// Idle Sequence
 	BehaviorState is_cur_state_Idle();

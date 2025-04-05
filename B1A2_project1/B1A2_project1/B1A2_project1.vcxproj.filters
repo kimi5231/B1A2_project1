@@ -296,6 +296,9 @@
     <ClInclude Include="BreakingWall.h">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="FinalBoss.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -489,6 +492,9 @@
     </ClCompile>
     <ClCompile Include="BreakingWall.cpp">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalBoss.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
