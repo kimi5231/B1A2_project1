@@ -138,7 +138,6 @@ enum class ObjectState
 	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
 	On,		// 구조물
 	Off,
-	Breaking,
 };
 
 enum class ZipLineType

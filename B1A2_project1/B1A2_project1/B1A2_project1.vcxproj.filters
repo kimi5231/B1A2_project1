@@ -299,6 +299,9 @@
     <ClInclude Include="FinalBoss.h">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -495,6 +498,9 @@
     </ClCompile>
     <ClCompile Include="FinalBoss.cpp">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

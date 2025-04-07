@@ -31,8 +31,6 @@ BreakingWall::BreakingWall()
 			AddComponent(collider);
 		}
 	}
-
-	SetState(ObjectState::On);
 }
 
 BreakingWall::~BreakingWall()
@@ -42,14 +40,13 @@ BreakingWall::~BreakingWall()
 void BreakingWall::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetState(ObjectState::On);
 }
 
 void BreakingWall::Tick()
 {
 	Super::Tick();
-
-	if (_state == ObjectState::Breaking)
-		TickBreaking();
 }
 
 void BreakingWall::Render(HDC hdc)
@@ -62,7 +59,7 @@ void BreakingWall::TickOn()
 {
 }
 
-void BreakingWall::TickBreaking()
+void BreakingWall::TickDead()
 {
 	if (GetIdx() == 2)
 	{	
@@ -82,7 +79,7 @@ void BreakingWall::UpdateAnimation()
 	case ObjectState::On:
 		SetFlipbook(_flipbookWall);
 		break;
-	case ObjectState::Breaking:
+	case ObjectState::Dead:
 		SetFlipbook(_flipbookBreakingWall);
 		break;
 	}
@@ -108,7 +105,7 @@ void BreakingWall::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 		if (_hp == 0)
 		{
-			SetState(ObjectState::Breaking);
+			SetState(ObjectState::Dead);
 			return;
 		}
 	}

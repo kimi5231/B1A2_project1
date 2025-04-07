@@ -221,6 +221,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Utils.h" />
     <ClInclude Include="ValueManager.h" />
     <ClInclude Include="Values.h" />
+    <ClInclude Include="Window.h" />
     <ClInclude Include="ZipLine.h" />
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +297,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="ValueManager.cpp" />
+    <ClCompile Include="Window.cpp" />
     <ClCompile Include="ZipLine.cpp" />
   </ItemGroup>
   <ItemGroup>

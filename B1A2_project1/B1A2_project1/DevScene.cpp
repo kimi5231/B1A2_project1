@@ -36,6 +36,7 @@
 #include "Stage.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
+#include "Window.h"
 
 DevScene::DevScene()
 {
@@ -171,6 +172,11 @@ void DevScene::Init()
 		{
 			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
 			breakingWall->SetPlayer(_player);
+		}
+
+		// Window
+		{
+			Window* window = SpawnObject<Window>({ 600, 100 }, LAYER_STRUCTURE);
 		}
 	}
 
@@ -579,6 +585,18 @@ void DevScene::LoadStructure()
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWall");
 			fb->SetInfo({ texture, L"FB_BreakingWall", {80, 240}, 0, 2, 0, 0.7f });
 		}
+	}
+
+	// Window
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Window", L"Sprite\\Structure\\Window.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Window");
+
+		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_WindowOff");
+		fb1->SetInfo({ texture, L"FB_WindowOff", {280, 120}, 0, 0, 0, 0.7f });
+		
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_WindowOn");
+		fb2->SetInfo({ texture, L"FB_WindowOn", {280, 120}, 0, 0, 1, 0.7f });
 	}
 }
 

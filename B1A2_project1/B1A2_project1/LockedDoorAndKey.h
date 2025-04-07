@@ -20,6 +20,9 @@ protected:
 	virtual void TickJump() {};
 	virtual void TickCloseAttack() {};
 	virtual void TickLongAttack() {};
+	virtual void TickThrust() {};
+	virtual void TickBackStep() {};
+	virtual void TickSlashWave() {};
 	virtual void TickSkill() {};
 	virtual void TickHang() {};
 	virtual void TickRelease() {};
@@ -27,8 +30,11 @@ protected:
 	virtual void TickDead() {};
 	virtual void TickChase() {};
 	virtual void TickRoaming() {};
+	virtual void TickDash() {};
 	virtual void TickReturn() {};
 	virtual void TickReturnIdle() {};
+	virtual void TickOn() {};
+	virtual void TickOff() {};
 	virtual void UpdateAnimation();
 
 public:

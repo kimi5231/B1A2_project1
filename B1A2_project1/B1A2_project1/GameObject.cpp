@@ -49,6 +49,15 @@ void GameObject::Tick()
 	case ObjectState::LongAttack:
 		TickLongAttack();
 		break;
+	case ObjectState::Thrust:
+		TickThrust();
+		break;
+	case ObjectState::BackStep:
+		TickBackStep();
+		break;
+	case ObjectState::SlashWave:
+		TickSlashWave();
+		break;
 	case ObjectState::Skill:
 		TickSkill();
 		break;
@@ -70,11 +79,20 @@ void GameObject::Tick()
 	case ObjectState::Roaming:
 		TickRoaming();
 		break;
+	case ObjectState::Dash:
+		TickDash();
+		break;
 	case ObjectState::Return:
 		TickReturn();
 		break;
 	case ObjectState::ReturnIdle:
 		TickReturnIdle();
+		break;
+	case ObjectState::On:
+		TickOn();
+		break;
+	case ObjectState::Off:
+		TickOff();
 		break;
 	}
 }
