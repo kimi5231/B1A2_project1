@@ -40,6 +40,7 @@ protected:
 
 public:
 	virtual float GetSpeed() { return 0.f; }
+	ObjectState GetState() { return _state; }
 
 private:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);

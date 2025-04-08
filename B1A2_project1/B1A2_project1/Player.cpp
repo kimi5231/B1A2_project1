@@ -18,6 +18,7 @@
 #include "Flipbook.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
+#include "Window.h"
 
 Player::Player()
 {
@@ -161,6 +162,32 @@ void Player::Tick()
 		}
 	}	
 
+	// Window
+	if (_window && _isInWindow)
+	{
+		if (_window->GetState() == ObjectState::On)
+		{
+			if (!_damagedByWindow)
+			{
+				// 체력 감소 함수 호출
+				SubtractHealthPoint(20);
+
+				// 체력이 다 닳으면 사망
+				if (_playerStat->commonStat.hp == 0)
+				{
+					SetState(ObjectState::Dead);
+					return;
+				}
+
+				_damagedByWindow = true;
+			}
+		}
+	}
+	else
+	{
+		_damagedByWindow = false;
+	}
+
 	TickGravity();
 
 	// 플레이어가 화면 밖으로 넘어가지 않도록
@@ -200,8 +227,6 @@ void Player::TickIdle()
 		// 이미 점프 중이면 리턴
 		if (!_isGround && _isAir)
 			return;
-
-		SubtractHealthPoint(3);		// 체력바 test
 
 		_isGround = false;
 		_isAir = true;
@@ -903,6 +928,17 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 				return;
 			}
 		}
+
+		// Window
+		{
+			Window* window = dynamic_cast<Window*>(structure);
+
+			if (window)
+			{
+				_isInWindow = true;
+				_window = window;
+			}
+		}
 	}
 
 	// Monster Atk - 몬스터가 사거리 내 있으면, 근거리 공격
@@ -952,6 +988,25 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 		_zipLine = nullptr;
 
 		return;
+	}
+
+	// Structure
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE)
+	{
+		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
+		if (!structure)
+			return;
+	
+		// Window
+		{
+			Window* window = dynamic_cast<Window*>(structure);
+
+			if (window)
+			{
+				_isInWindow = false;
+				_window = nullptr;
+			}
+		}
 	}
 
 	// 몬스터 거리에 따라 근거리 or 원거리 공격

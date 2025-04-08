@@ -176,7 +176,7 @@ void DevScene::Init()
 
 		// Window
 		{
-			Window* window = SpawnObject<Window>({ 600, 100 }, LAYER_STRUCTURE);
+			Window* window = SpawnObject<Window>({ 600, 200 }, LAYER_STRUCTURE);
 		}
 	}
 
