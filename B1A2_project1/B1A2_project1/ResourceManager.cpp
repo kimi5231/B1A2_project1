@@ -13,6 +13,7 @@
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
 #include "AmateurFencer.h"
+#include "FinalBoss.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -218,4 +219,15 @@ AmateurFencerStat* ResourceManager::LoadAmateurFencerStat(const std::wstring& pa
 	_amateurFencerStat = amateurFencerStat;
 
 	return amateurFencerStat;
+}
+
+FinalBossStat* ResourceManager::LoadFinalBossStat(const std::wstring& path)
+{
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	FinalBossStat* finalBossStat = new FinalBossStat();
+	finalBossStat->LoadFile(fullpath);
+	_finalBossStat = finalBossStat;
+
+	return finalBossStat;
 }

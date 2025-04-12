@@ -101,6 +101,61 @@ public:
 public:
 	void CalPixelPerSecond();
 
+	// Idle Sequence
+	BehaviorState is_cur_state_idle();
+	BehaviorState Idle();
+
+	// Hit Sequeucne
+	BehaviorState is_cur_state_hit();
+	BehaviorState Hit();
+
+	// Dead Sequence;
+	BehaviorState is_cur_state_dead();
+	BehaviorState Dead();
+
+	// 수정 소환 Sequence
+	BehaviorState is_cur_state_projectile_fall();
+	BehaviorState ProjectileFall();
+	BehaviorState is_cur_state_projctile_creation();
+	BehaviorState ProjectileCreation();
+
+	// 몬스터 소환 Sequence
+	BehaviorState is_cur_state_monster_creation();
+	BehaviorState MonsterCreation();
+
+	// CloseAtk Sequence
+	BehaviorState is_cur_state_thrust();
+	BehaviorState Thrust();
+	BehaviorState is_cur_state_backstep();
+	BehaviorState BackStep();
+
+	// LongAtk Sequence
+	BehaviorState is_cur_state_slashwave();
+	BehaviorState SlashWave();
+	BehaviorState is_cur_state_dash();
+	BehaviorState Dash();
+
+	// 순간 이동 Sequence
+	BehaviorState is_cur_state_teleport();
+	BehaviorState Teleport();
+
+	// 마구 베기 Sequence
+	BehaviorState is_cur_state_cut_severely();
+	BehaviorState CutSeverely();
+
+private:
+	// Flipbook
+	Flipbook* _flipbookIdle[2] = {};
+	Flipbook* _flipbookHit[2] = {};
+	Flipbook* _flipbookDead[2] = {};
+	// 수정 소환 & 몬스터 소환 Flipbook은 Idle로 임시 설정
+	Flipbook* _flipbookThrust[2] = {};
+	Flipbook* _flipbookBackStep[2] = {};
+	Flipbook* _flipbookSlashWave[2] = {};
+	Flipbook* _flipbookDash[2] = {};
+	Flipbook* _flipbookTeleport[2] = {};
+	Flipbook* _flipbookCutSeverely[2] = {};
+
 private:
 	FinalBossStat* _stat;
 	Node* _rootNode;	// BT 최상위 노드

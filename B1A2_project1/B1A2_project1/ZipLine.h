@@ -74,6 +74,7 @@ private:
 
 	Vec2 _beginPos;
 	Vec2 _endPos;
+	Vec2 _midPos;
 };
 
 class ZipLineButtonAndDisplay : public Structure

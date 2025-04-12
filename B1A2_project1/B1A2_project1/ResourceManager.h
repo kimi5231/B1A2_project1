@@ -14,6 +14,7 @@ struct PlayerStat;
 struct TiredOfficeWorkerStat;
 struct BrokenCopyMachineStat;
 struct AmateurFencerStat;
+struct FinalBossStat;
 
 class ResourceManager
 {
@@ -66,6 +67,9 @@ public:
 	AmateurFencerStat* GetAmateurFencerStat() { return _amateurFencerStat; }
 	AmateurFencerStat* LoadAmateurFencerStat(const std::wstring& path);
 
+	FinalBossStat* GetFinalBossStat() { return _finalBossStat; }
+	FinalBossStat* LoadFinalBossStat(const std::wstring& path);
+
 private:
 	HWND _hwnd;
 	std::filesystem::path _resourcePath;
@@ -83,5 +87,6 @@ private:
 	TiredOfficeWorkerStat* _tiredOfficeWorkerStat;
 	BrokenCopyMachineStat* _brokenCopyMachineStat;
 	AmateurFencerStat* _amateurFencerStat;
+	FinalBossStat* _finalBossStat;
 };
 

@@ -99,7 +99,7 @@ public:
 	void CalPixelPerSecond();
 
 	// Idle Sequence
-	BehaviorState is_cur_state_Idle();
+	BehaviorState is_cur_state_idle();
 	BehaviorState Idle();
 
 	// Attacked Sequence

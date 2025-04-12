@@ -80,7 +80,7 @@ void AmateurFencer::BeginPlay()
 	Super::BeginPlay();
 
 	// Idle Sequence
-	Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_Idle(); });
+	Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_idle(); });
 	Action* a1 = new Action("Idle", [&]() {return Idle(); });
 	Sequence* IdleSequence = new Sequence();
 	IdleSequence->addChild(c1);
@@ -117,7 +117,6 @@ void AmateurFencer::BeginPlay()
 	Action* a5_1 = new Action("SlashWave", [&]() {return SlashWave(); });
 	Condition* c5_2 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
 	Action* a5_2 = new Action("Dash", [&]() {return Dash(); });
-
 	Sequence* LongAtkSequence = new Sequence();
 	LongAtkSequence->addChild(c5_1);
 	LongAtkSequence->addChild(a5_1);
@@ -240,7 +239,7 @@ int32 AmateurFencer::GetAttack()
 	return _stat->closeAtkDamage;
 }
 
-BehaviorState AmateurFencer::is_cur_state_Idle()
+BehaviorState AmateurFencer::is_cur_state_idle()
 {
 	if (_state == ObjectState::Idle)
 		return BehaviorState::SUCCESS;
