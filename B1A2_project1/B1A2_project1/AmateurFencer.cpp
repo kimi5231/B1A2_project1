@@ -142,8 +142,6 @@ void AmateurFencer::BeginPlay()
 	RootSelector->addChild(AttackSelector);
 	RootSelector->addChild(DeadSequence);
 	_rootNode = RootSelector;
-
-	SetState(ObjectState::Idle);
 }
 
 void AmateurFencer::Tick()
@@ -236,7 +234,12 @@ void AmateurFencer::CalPixelPerSecond()
 
 int32 AmateurFencer::GetAttack()
 {
-	return _stat->closeAtkDamage;
+	switch (_state)
+	{
+	case ObjectState::CloseAttack:
+		return _stat->closeAtkDamage;
+		break;
+	}
 }
 
 BehaviorState AmateurFencer::is_cur_state_idle()
@@ -557,7 +560,7 @@ void AmateurFencer::CreateProjectile()
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	Slashwave* slashwave = scene->SpawnObject<Slashwave>({ _pos.x, _pos.y }, LAYER_PLAYER);
+	Slashwave* slashwave = scene->SpawnObject<Slashwave>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
 	slashwave->SetSpeed(_stat->longAtkProjectileSpeed);
 	slashwave->SetAttack(_stat->longAtkProjectileDamage);
 	slashwave->SetRange(_stat->longAtkRange);

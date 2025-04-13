@@ -126,10 +126,6 @@ public:
 	BehaviorState is_cur_state_dead();
 	BehaviorState Dead();
 
-	// 참고) 멤버 변수
-	//Vec2 _speed = {};
-	//Dir _dir = DIR_LEFT;
-	//ObjectState _state = ObjectState::Idle;
 public:
 	float GetFromPlayerXDistance();
 	float GetAbsFromPlayerXDisatance();

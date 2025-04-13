@@ -7,6 +7,9 @@
 #include "CollisionManager.h"
 #include "TimeManager.h"
 #include "Flipbook.h"
+#include "SceneManager.h"
+#include "DevScene.h"
+#include "SlashWave2.h"
 
 FinalBoss::FinalBoss()
 {
@@ -88,8 +91,8 @@ void FinalBoss::BeginPlay()
 	// 수정 소환 Sequence
 	Condition* c4 = new Condition("is cur state Projectile Fall?", [&]() {return is_cur_state_projectile_fall(); });
 	Action* a4 = new Action("ProjectileFall", [&]() {return ProjectileFall(); });;
-	Condition* c5 = new Condition("is cur state Projctile Creation?", [&]() {return is_cur_state_projctile_creation(); });
-	Action* a5 = new Action("ProjctileCreation", [&]() {return ProjectileCreation(); });
+	Condition* c5 = new Condition("is cur state Crystal Creation?", [&]() {return is_cur_state_crystal_creation(); });
+	Action* a5 = new Action("CrystalCreation", [&]() {return CrystalCreation(); });
 	Sequence* CrystalCreationSequence = new Sequence();
 	CrystalCreationSequence->addChild(c4);
 	CrystalCreationSequence->addChild(a4);
@@ -98,7 +101,7 @@ void FinalBoss::BeginPlay()
 
 	// Monster Creation Sequeuce
 	Condition* c6 = new Condition("is cur state Monster Creation?", [&]() {return is_cur_state_monster_creation(); });
-	Action* a6 = new Action("ProjctileCreation", [&]() {return MonsterCreation(); });
+	Action* a6 = new Action("MonsterCreation", [&]() {return MonsterCreation(); });
 	Sequence* MonsterCreationSequence = new Sequence();
 	MonsterCreationSequence->addChild(c6);
 	MonsterCreationSequence->addChild(a6);
@@ -166,6 +169,13 @@ void FinalBoss::Tick()
 {
 	Super::Tick();
 
+	if (GetFromPlayerXDistance() >= 0)
+		SetDir(DIR_LEFT);
+	else
+		SetDir(DIR_RIGHT);
+
+	_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
+
 	if (_rootNode)
 	{
 		_rootNode->run();
@@ -179,50 +189,149 @@ void FinalBoss::Render(HDC hdc)
 
 void FinalBoss::UpdateAnimation()
 {
+	switch (_state)
+	{
+	case ObjectState::Idle:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::Hit:
+		SetFlipbook(_flipbookHit[_dir]);
+		break;
+	case ObjectState::Dead:
+		SetFlipbook(_flipbookDead[_dir]);
+		break;
+	case ObjectState::ProjectileFall:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::CrystalCreation:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::MonsterCreation:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::Thrust:
+		SetFlipbook(_flipbookThrust[_dir]);
+		break;
+	case ObjectState::BackStep:
+		SetFlipbook(_flipbookBackStep[_dir]);
+		break;
+	case ObjectState::SlashWave:
+		SetFlipbook(_flipbookSlashWave[_dir]);
+		break;
+	case ObjectState::Dash:
+		SetFlipbook(_flipbookDash[_dir]);
+		break;
+	case ObjectState::Teleport:
+		SetFlipbook(_flipbookIdle[_dir]);
+		break;
+	case ObjectState::CutSeverely:
+		SetFlipbook(_flipbookCutSeverely[_dir]);
+		break;
+	}
 }
 
 int32 FinalBoss::GetAttack()
 {
-	return int32();
+	switch (_state)
+	{
+	case ObjectState::CloseAttack:
+		return _stat->closeAtkDamage;
+		break;
+	}
 }
 
 void FinalBoss::CalPixelPerSecond()
 {
+	float PIXEL_PER_METER = (10.0 / 0.2);
+
+	// Move
+	{
+		float MOVE_SPEED_KMPH = _stat->speed;
+		float MOVE_SPEED_MPM = (MOVE_SPEED_KMPH * 1000.0 / 60.0);
+		float MOVE_SPEED_MPS = (MOVE_SPEED_MPM / 60.0);
+		float MOVE_SPEED_PPS = (MOVE_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->speed = MOVE_SPEED_PPS;
+	}
+
+	// Dash
+	{
+		float DASH_SPEED_KMPH = _stat->dashSpeed;
+		float DASH_SPEED_MPM = (DASH_SPEED_KMPH * 1000.0 / 60.0);
+		float DASH_SPEED_MPS = (DASH_SPEED_MPM / 60.0);
+		float DASH_SPEED_PPS = (DASH_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->dashSpeed = DASH_SPEED_PPS;
+	}
+
+	// LongAtk Projectile 
+	{
+		float PROJECTILE_SPEED_KMPH = _stat->longAtkProjectileSpeed;
+		float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+		float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+		float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+		_stat->longAtkProjectileSpeed = PROJECTILE_SPEED_PPS;
+	}
 }
 
 BehaviorState FinalBoss::is_cur_state_idle()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Idle)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Idle()
 {
-	return BehaviorState();
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_hit()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Hit)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Hit()
 {
-	return BehaviorState();
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _stat->knockBackDistance;
+	else
+		_pos.x += _stat->knockBackDistance;
+
+	SetState(ObjectState::Idle);
+
+	return BehaviorState::SUCCESS;
 }
 
 BehaviorState FinalBoss::is_cur_state_dead()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Dead)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Dead()
 {
-	return BehaviorState();
+	// 객체 제거
+	// 추후 GameScene로 변경할 예정
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	scene->RemoveActor(this);
+
+	return BehaviorState::SUCCESS;
 }
 
 BehaviorState FinalBoss::is_cur_state_projectile_fall()
 {
-	return BehaviorState();
+	if (_state == ObjectState::ProjectileFall)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::ProjectileFall()
@@ -230,19 +339,25 @@ BehaviorState FinalBoss::ProjectileFall()
 	return BehaviorState();
 }
 
-BehaviorState FinalBoss::is_cur_state_projctile_creation()
+BehaviorState FinalBoss::is_cur_state_crystal_creation()
 {
-	return BehaviorState();
+	if (_state == ObjectState::CrystalCreation)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
-BehaviorState FinalBoss::ProjectileCreation()
+BehaviorState FinalBoss::CrystalCreation()
 {
 	return BehaviorState();
 }
 
 BehaviorState FinalBoss::is_cur_state_monster_creation()
 {
-	return BehaviorState();
+	if (_state == ObjectState::MonsterCreation)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::MonsterCreation()
@@ -252,60 +367,215 @@ BehaviorState FinalBoss::MonsterCreation()
 
 BehaviorState FinalBoss::is_cur_state_thrust()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Thrust)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Thrust()
 {
-	return BehaviorState();
+	if (!_attackCollider)
+	{
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
+
+			_attackCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
+
+	if (GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
+	{
+		SetState(ObjectState::BackStep);
+		return BehaviorState::SUCCESS;
+	}
 }
 
 BehaviorState FinalBoss::is_cur_state_backstep()
 {
-	return BehaviorState();
+	if (_state == ObjectState::BackStep)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::BackStep()
 {
-	return BehaviorState();
+	if (_dir == DIR_RIGHT)
+		_pos.x -= _stat->backStepDistance;
+	else
+		_pos.x += _stat->backStepDistance;
+
+	// 다음 동작?
+
+	return BehaviorState::SUCCESS;
 }
 
 BehaviorState FinalBoss::is_cur_state_slashwave()
 {
-	return BehaviorState();
+	if (_state == ObjectState::SlashWave)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::SlashWave()
 {
-	return BehaviorState();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= 0.3f)
+	{
+		_sumTime = 0.f;
+		CreateProjectile();
+
+		return BehaviorState::RUNNING;
+	}
+
+	if (_currentProjectileCount == _stat->longAtkProjectileCount)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Dash);
+		_currentProjectileCount = 0;
+
+		return BehaviorState::SUCCESS;
+	}
 }
 
 BehaviorState FinalBoss::is_cur_state_dash()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Dash)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Dash()
 {
-	return BehaviorState();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime <= 0.48f)
+	{
+		if (_dir = DIR_RIGHT)
+			_pos.x += _stat->dashSpeed * deltaTime;
+		else
+			_pos.x -= _stat->dashSpeed * deltaTime;
+	}
+	else
+	{
+		SetState(ObjectState::Chase);
+		return BehaviorState::SUCCESS;
+	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_teleport()
 {
-	return BehaviorState();
+	if (_state == ObjectState::Teleport)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::Teleport()
 {
+	// 찌르기 or 마구 베기
+
 	return BehaviorState();
 }
 
 BehaviorState FinalBoss::is_cur_state_cut_severely()
 {
-	return BehaviorState();
+	if (_state == ObjectState::CutSeverely)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
 }
 
 BehaviorState FinalBoss::CutSeverely()
 {
 	return BehaviorState();
+}
+
+float FinalBoss::GetFromPlayerXDistance()
+{
+	return this->GetPos().x - _player->GetPos().x;
+}
+
+float FinalBoss::GetAbsFromPlayerXDisatance()
+{
+	return std::abs(GetFromPlayerXDistance());
+}
+
+void FinalBoss::SetSpawnPos(Vec2 pos)
+{
+	_spawnPos = pos;
+	SetPos(_spawnPos);
+}
+
+void FinalBoss::SetSpawnDir(Dir dir)
+{
+	_spawnDir = dir;
+	SetDir(dir);
+}
+
+void FinalBoss::SetMoveDistance(float distance)
+{
+	_moveDistance = distance;
+	_currentMoveDistance = _moveDistance;
+}
+
+void FinalBoss::OnComponentBeginOverlap(Collider* collider, Collider* other)
+{
+}
+
+void FinalBoss::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
+}
+
+void FinalBoss::CreateProjectile()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+
+	bool isWType = (dist(gen) == 0);
+
+	if (isWType)
+	{
+		SlashwaveW* slashwaveW = scene->SpawnObject<SlashwaveW>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
+		slashwaveW->SetSpeed(_stat->longAtkProjectileSpeed);
+		slashwaveW->SetAttack(_stat->longAtkProjectileDamage);
+		slashwaveW->SetRange(_stat->longAtkRange);
+		slashwaveW->SetOwner(this);
+		slashwaveW->SetDir(_dir);
+	}
+	else
+	{
+		SlashwaveH* slashwaveH = scene->SpawnObject<SlashwaveH>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
+		slashwaveH->SetSpeed(_stat->longAtkProjectileSpeed);
+		slashwaveH->SetAttack(_stat->longAtkProjectileDamage);
+		slashwaveH->SetRange(_stat->longAtkRange);
+		slashwaveH->SetOwner(this);
+		slashwaveH->SetDir(_dir);
+	}
+
+	_currentProjectileCount++;
+}
+
+void FinalBoss::CreateProjectileFall()
+{
 }

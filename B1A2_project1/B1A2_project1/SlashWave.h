@@ -13,8 +13,8 @@ public:
 	virtual void Render(HDC hdc) override;
 
 protected:
-	virtual void TickMove();
-	virtual void UpdateAnimation();
+	virtual void TickMove() override;
+	virtual void UpdateAnimation() override;
 
 public:
 	virtual float GetSpeed() override;

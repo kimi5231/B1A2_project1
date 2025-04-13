@@ -302,6 +302,9 @@
     <ClInclude Include="Window.h">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="Slashwave2.h">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -501,6 +504,9 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Slashwave2.cpp">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

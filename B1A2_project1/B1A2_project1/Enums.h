@@ -16,6 +16,7 @@ enum LAYER_TYPE
 	LAYER_TILEMAP,
 	LAYER_ITEM,
 	LAYER_STRUCTURE,
+	LAYER_PROJECTILE,
 	LAYER_MONSTER,
 	LAYER_PLAYER,
 
@@ -136,6 +137,11 @@ enum class ObjectState
 	Dash,	// 대쉬
 	Return,		// 복귀
 	ReturnIdle,		// 복귀 대기(복귀하기 전 대기하는 상태)
+	ProjectileFall,
+	CrystalCreation,
+	MonsterCreation,
+	Teleport,
+	CutSeverely,
 	On,		// 구조물
 	Off,
 };
@@ -144,4 +150,10 @@ enum class ZipLineType
 {
 	ZipLine,
 	ZipLineWithButton,
+};
+
+enum class SlashWaveType
+{
+	W,
+	H,
 };

@@ -17,7 +17,7 @@ struct FinalBossStat
 	int32 closeAtkRange;	// I
 	int32 closeAtkDamage;	// J
 	int32 longAtkRange;	// K
-	int32 lonagAtkProjectileDamage;	// L
+	int32 longAtkProjectileDamage;	// L
 	float longAtkProjectileSpeed;	// M
 	int32 longAtkProjectileCount;	// N
 	std::string projetileTypeWidth;	// O
@@ -52,7 +52,7 @@ struct FinalBossStat
 				case 8: this->closeAtkRange = std::stoi(cell); break;	// I
 				case 9: this->closeAtkDamage = std::stoi(cell); break;	// J
 				case 10: this->longAtkRange = std::stoi(cell); break;	// K
-				case 11: this->lonagAtkProjectileDamage = std::stoi(cell); break;	// L
+				case 11: this->longAtkProjectileDamage = std::stoi(cell); break;	// L
 				case 12: this->longAtkProjectileSpeed = std::stof(cell); break;	// M
 				case 13: this->longAtkProjectileCount = std::stoi(cell); break;	// N
 				case 14: this->projetileTypeWidth = cell; break;	// O
@@ -116,8 +116,8 @@ public:
 	// 수정 소환 Sequence
 	BehaviorState is_cur_state_projectile_fall();
 	BehaviorState ProjectileFall();
-	BehaviorState is_cur_state_projctile_creation();
-	BehaviorState ProjectileCreation();
+	BehaviorState is_cur_state_crystal_creation();
+	BehaviorState CrystalCreation();
 
 	// 몬스터 소환 Sequence
 	BehaviorState is_cur_state_monster_creation();
@@ -142,6 +142,23 @@ public:
 	// 마구 베기 Sequence
 	BehaviorState is_cur_state_cut_severely();
 	BehaviorState CutSeverely();
+
+public:
+	float GetFromPlayerXDistance();
+	float GetAbsFromPlayerXDisatance();
+
+	void SetSpawnPos(Vec2 pos);
+	void SetSpawnDir(Dir dir);
+	void SetMoveDistance(float distance);
+	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
+
+public:
+	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+
+public:
+	void CreateProjectile();	// Long Atk
+	void CreateProjectileFall();	// Projectile Fall
 
 private:
 	// Flipbook
