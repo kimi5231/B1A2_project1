@@ -128,6 +128,8 @@ ZipLineButtonAndDisplay::ZipLineButtonAndDisplay()
 		collider->ResetCollisionFlag();
 		collider->SetCollisionLayer(CLT_STRUCTURE);
 
+		collider->AddCollisionFlagLayer(CLT_PLAYER);
+
 		collider->SetSize({ 120, 150 });
 
 		GET_SINGLE(CollisionManager)->AddCollider(collider);

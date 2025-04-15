@@ -143,6 +143,8 @@ enum class ObjectState
 	Teleport,
 	CutSeverely,
 	On,		// ±¸Á¶¹°
+	On2,
+	Ready,
 	Off,
 };
 

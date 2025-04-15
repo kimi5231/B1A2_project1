@@ -19,6 +19,7 @@
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
 #include "Window.h"
+#include "FootHold.h"
 
 Player::Player()
 {
@@ -186,6 +187,22 @@ void Player::Tick()
 	else
 	{
 		_damagedByWindow = false;
+	}
+
+	// FootHoldAndZipLineButton
+	if (_footHoldAndZipLineButton)
+	{
+		switch (_footHoldAndZipLineButton->GetState())
+		{
+		case ObjectState::Off:
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_1))
+				_footHoldAndZipLineButton->SetState(ObjectState::On);
+			break;
+		case ObjectState::On:
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_2))
+				_footHoldAndZipLineButton->SetState(ObjectState::On2);
+			break;
+		}
 	}
 
 	TickGravity();
@@ -875,6 +892,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 						_zipLine = zipLine;
 					}
 				}
+				return;
 			}
 		}
 
@@ -887,12 +905,10 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 				if (_isKeyAcquire)
 				{
 					lockedDoorAndKey->_isKeyAcquired = true;
-						return;
+					return;
 				}
 			}
 		}
-
-		return;
 	}
 
 	// Structure
@@ -937,6 +953,18 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			{
 				_isInWindow = true;
 				_window = window;
+				return;
+			}
+		}
+
+		// FootHoldAndZipLineButton
+		{
+			FootHoldAndZipLineButton* button = dynamic_cast<FootHoldAndZipLineButton*>(structure);
+
+			if (button)
+			{
+				_footHoldAndZipLineButton = button;
+				return;
 			}
 		}
 	}
@@ -994,8 +1022,6 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE)
 	{
 		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
-		if (!structure)
-			return;
 	
 		// Window
 		{
@@ -1005,6 +1031,19 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 			{
 				_isInWindow = false;
 				_window = nullptr;
+
+				return;
+			}
+		}
+
+		// FootHoldAndZipLineButton
+		{
+			FootHoldAndZipLineButton* button = dynamic_cast<FootHoldAndZipLineButton*>(structure);
+			if (button)
+			{
+				_footHoldAndZipLineButton = nullptr;
+
+				return;
 			}
 		}
 	}

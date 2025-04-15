@@ -8,6 +8,7 @@ class ItemActor;
 class ZipLine;
 class LockedDoorAndKey;
 class Window;
+class FootHoldAndZipLineButton;
 class DevScene;
 
 struct PlayerStat
@@ -184,6 +185,7 @@ private:
 
 	ZipLine* _zipLine = nullptr;	// 충돌 중인 짚라인의 정보를 가져와서 매달리기
 	Window* _window = nullptr;
+	FootHoldAndZipLineButton* _footHoldAndZipLineButton = nullptr;
 
 	BoxCollider* _playerCollider = nullptr;
 	Collider* _attackCollider = nullptr;

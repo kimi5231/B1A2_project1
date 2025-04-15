@@ -34,6 +34,7 @@ protected:
 	virtual void TickReturn() {};
 	virtual void TickReturnIdle() {};
 	virtual void TickOn() {};
+	virtual void TickReady() {};
 	virtual void TickOff() {};
 	virtual void UpdateAnimation() {};
 

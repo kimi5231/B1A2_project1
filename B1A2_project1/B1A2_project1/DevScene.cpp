@@ -37,6 +37,7 @@
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
 #include "Window.h"
+#include "FootHold.h"
 
 DevScene::DevScene()
 {
@@ -130,36 +131,36 @@ void DevScene::Init()
 			//	_monsterHpData[20201] = 100;
 
 		// AF
-		{
-			AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
-			AF->SetSpawnDir(DIR_RIGHT);
-			AF->SetSpawnPos({ 1200, 300 });
-			//AF->SetMoveDistance();
-			AF->SetMovementLimit({ 960, 2000 });
+		//{
+		//	AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
+		//	AF->SetSpawnDir(DIR_RIGHT);
+		//	AF->SetSpawnPos({ 1200, 300 });
+		//	//AF->SetMoveDistance();
+		//	AF->SetMovementLimit({ 960, 2000 });
 
-			// Player 설정
-			AF->_player = _player;
+		//	// Player 설정
+		//	AF->_player = _player;
 
-			_monsterHpData[20301] = 100;
-		}
+		//	_monsterHpData[20301] = 100;
+		//}
 	}
 
 	// Structure
 	{
 		// ZipLine
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-			zipLine->SetBeginPos({ 800, 250 });
-			zipLine->SetEndPos({ 950, 170 });
+		//{
+		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
+		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+		//	zipLine->SetBeginPos({ 800, 250 });
+		//	zipLine->SetEndPos({ 950, 170 });
 
-			// Button이 필요 없는 짚라인은 아래 코드 작성X
-			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-			zipLineButtonAndDisplay->SetOwner(zipLine);
-			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
+		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+		//	zipLineButtonAndDisplay->SetOwner(zipLine);
+		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
+		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		//}
 
 		// LockedDoorAndKey
 		{
@@ -169,14 +170,22 @@ void DevScene::Init()
 		}
 
 		// BreakingWall
-		{
-			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
-			breakingWall->SetPlayer(_player);
-		}
+		//{
+		//	BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
+		//	breakingWall->SetPlayer(_player);
+		//}
 
 		// Window
+		//{
+		//	Window* window = SpawnObject<Window>({ 600, 200 }, LAYER_STRUCTURE);
+		//}
+
+		// FootHoldAndZipLineButton
 		{
-			Window* window = SpawnObject<Window>({ 600, 200 }, LAYER_STRUCTURE);
+			FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 700, 600 }, LAYER_STRUCTURE);
+		
+			FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
+			footHold->SetFootHoldAndZipLineButton(button);
 		}
 	}
 
@@ -598,6 +607,34 @@ void DevScene::LoadStructure()
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_WindowOn");
 		fb2->SetInfo({ texture, L"FB_WindowOn", {280, 120}, 0, 0, 1, 0.7f });
 	}
+
+	// FootHold
+	{
+		// FootHoldAndZipLineButton
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FootHoldAndZipLineButton", L"Sprite\\Structure\\FootHoldAndZipLineButton.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHoldAndZipLineButton");
+
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOff");
+			fb1->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOff", { 80, 105 }, 0, 0, 0, 0.7f });
+
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn1");
+			fb2->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn1", { 80, 105 }, 0, 0, 1, 0.7f });
+
+			Flipbook* fb3 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn2");
+			fb3->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn2", { 80, 105 }, 0, 0, 2, 0.7f });
+		}
+
+		// FootHold
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FootHold", L"Sprite\\Structure\\FootHold.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHold");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHold");
+			fb->SetInfo({ texture, L"FB_FootHold", {320, 120}, 0, 0, 0, 0.7f });
+		}
+	}
+
 }
 
 void DevScene::LoadDialogue()

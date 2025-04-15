@@ -285,6 +285,40 @@ BehaviorState FinalBoss::is_cur_state_idle()
 
 BehaviorState FinalBoss::Idle()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	float XDistance = GetAbsFromPlayerXDisatance();
+
+	// Idle 유지
+
+	// 대쉬 or 순간이동
+	if (XDistance >= _stat->longAtkRange)
+	{
+		// 같은 층에 있을 때
+		{
+			SetState(ObjectState::Dash);
+			return BehaviorState::SUCCESS;
+		}
+
+		// 다른 층에 있을 때
+
+	}
+	
+	// 근거리 or 원거리 공격
+	if (XDistance <= _stat->closeAtkRange)
+	{
+		SetState(ObjectState::CloseAttack);
+		return BehaviorState::SUCCESS;
+	}
+	else if (std::abs(XDistance - _stat->closeAtkRange) > std::abs(_stat->longAtkRange - XDistance))
+	{
+		SetState(ObjectState::LongAttack);
+		return BehaviorState::SUCCESS;
+	}
+
+
+	// 상태 지정
+	// ...
+
 	return BehaviorState::RUNNING;
 }
 
@@ -415,7 +449,7 @@ BehaviorState FinalBoss::BackStep()
 	else
 		_pos.x += _stat->backStepDistance;
 
-	// 다음 동작?
+	SetState(ObjectState::Idle);
 
 	return BehaviorState::SUCCESS;
 }

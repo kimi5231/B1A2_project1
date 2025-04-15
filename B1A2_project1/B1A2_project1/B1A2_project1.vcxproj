@@ -175,6 +175,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Flipbook.h" />
     <ClInclude Include="FlipbookActor.h" />
     <ClInclude Include="FlipbookUI.h" />
+    <ClInclude Include="FootHold.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -254,6 +255,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Flipbook.cpp" />
     <ClCompile Include="FlipbookActor.cpp" />
     <ClCompile Include="FlipbookUI.cpp" />
+    <ClCompile Include="FootHold.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
