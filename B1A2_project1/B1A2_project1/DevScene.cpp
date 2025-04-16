@@ -184,6 +184,8 @@ void DevScene::Init()
 		{
 			FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 700, 600 }, LAYER_STRUCTURE);
 			button->SetZipLinePos({500, 500});
+			button->SetZipLineBegin({ 800, 250 });
+			button->SetZipLineEnd({ 950, 170 });
 
 			FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
 			footHold->SetFootHoldAndZipLineButton(button);

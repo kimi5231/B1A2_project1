@@ -75,8 +75,8 @@ void FootHoldAndZipLineButton::TickOn2()
 
 	ZipLine* zipLine = scene->SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
 	zipLine->SetZipLineType(ZipLineType::ZipLine);
-	zipLine->SetBeginPos({800, 250});
-	zipLine->SetEndPos({ 950, 170 });
+	zipLine->SetBeginPos({_zipLineBegin});
+	zipLine->SetEndPos({_zipLineEnd});
 
 	SetState(ObjectState::Idle);	// 계속 생성되지 않도록 상태 바꿈
 }

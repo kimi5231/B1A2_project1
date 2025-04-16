@@ -53,13 +53,17 @@ public:
 
 	void SetZipLinePos(Vec2 pos) { _zipLinePos = pos; }
 	Vec2 GetZipLinePos() { return _zipLinePos; }
-
+	void SetZipLineBegin(Vec2 pos) { _zipLineBegin = pos; }
+	void SetZipLineEnd(Vec2 pos) { _zipLineEnd = pos; }
 private:
+
 	Flipbook* _flipbookFootHoldAndZipLineButtonOff = nullptr;
 	Flipbook* _flipbookFootHoldAndZipLineButtonOn1 = nullptr;
 	Flipbook* _flipbookFootHoldAndZipLineButtonOn2 = nullptr;
 
 	Vec2 _zipLinePos = {};
+	Vec2 _zipLineBegin = {};
+	Vec2 _zipLineEnd = {};
 };
 
 /////////////////////////////////////////////////////////////////////////////////
