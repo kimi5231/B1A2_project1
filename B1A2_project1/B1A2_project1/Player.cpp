@@ -46,6 +46,8 @@ Player::Player()
 	_flipbookPlayerRelease[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseLeft");
 	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
 	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
+	_flipbookPlayerHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitRight");
+	_flipbookPlayerHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitLeft");
 
 	// Camera Component
 	CameraComponent* camera = new CameraComponent();
@@ -348,13 +350,6 @@ void Player::TickDuckDown()
 	{
 		SetState(ObjectState::Idle);
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
-
 }
 
 void Player::TickDuckDownMove()
@@ -381,13 +376,6 @@ void Player::TickDuckDownMove()
 	{
 		SetState(ObjectState::Move);
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
-
 }
 
 void Player::TickJump()
@@ -435,13 +423,6 @@ void Player::TickJump()
 			}
 		}
 	}
-
-	//if (공격 받음)
-	//{
-	//	SubtractHealthPoint(깎을hp);
-	//	SetState(ObjectState::Hit);
-	//}
-
  }
 
 
@@ -619,14 +600,21 @@ void Player::TickRelease()
 
 void Player::TickHit()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.f;
+	sumTime += deltaTime;
+
 	// knockback
 	if (_dir == DIR_RIGHT)
-		_pos.x -= _playerStat->knockBackDistance;
+		_pos.x -= (_playerStat->knockBackDistance * 2) * deltaTime;		// 속 = 거 / 시
 	else
-		_pos.x += _playerStat->knockBackDistance;
+		_pos.x += (_playerStat->knockBackDistance * 2) * deltaTime;
 
-	SetState(ObjectState::Idle);
-
+	if (sumTime >= 0.5f)
+	{
+		sumTime = 0.f;
+		SetState(ObjectState::Idle);
+	}
 }
 
 void Player::TickDead()
