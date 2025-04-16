@@ -35,7 +35,9 @@ protected:
 	virtual void TickDash() {};
 	virtual void TickReturn() {};
 	virtual void TickReturnIdle() {};
+
 	virtual void TickOn() {};
+	virtual void TickOn2();
 	virtual void TickOff() {};
 	virtual void UpdateAnimation();
 
@@ -49,10 +51,15 @@ private:
 public:
 	ObjectState GetState() { return _state; }
 
+	void SetZipLinePos(Vec2 pos) { _zipLinePos = pos; }
+	Vec2 GetZipLinePos() { return _zipLinePos; }
+
 private:
 	Flipbook* _flipbookFootHoldAndZipLineButtonOff = nullptr;
 	Flipbook* _flipbookFootHoldAndZipLineButtonOn1 = nullptr;
 	Flipbook* _flipbookFootHoldAndZipLineButtonOn2 = nullptr;
+
+	Vec2 _zipLinePos = {};
 };
 
 /////////////////////////////////////////////////////////////////////////////////

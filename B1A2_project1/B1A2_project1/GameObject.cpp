@@ -91,6 +91,8 @@ void GameObject::Tick()
 	case ObjectState::On:
 		TickOn();
 		break;
+	case ObjectState::On2:
+		TickOn2();
 	case ObjectState::Ready:
 		TickReady();
 		break;

@@ -4,6 +4,9 @@
 #include "BoxCollider.h"
 #include "CollisionManager.h"
 #include "TimeManager.h"
+#include "ZipLine.h"
+#include "DevScene.h"
+#include "SceneManager.h"
 
 FootHoldAndZipLineButton::FootHoldAndZipLineButton()
 {
@@ -66,6 +69,18 @@ void FootHoldAndZipLineButton::UpdateAnimation()
 	}
 }
 
+void FootHoldAndZipLineButton::TickOn2()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	ZipLine* zipLine = scene->SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
+	zipLine->SetZipLineType(ZipLineType::ZipLine);
+	zipLine->SetBeginPos({800, 250});
+	zipLine->SetEndPos({ 950, 170 });
+
+	SetState(ObjectState::Idle);	// 계속 생성되지 않도록 상태 바꿈
+}
+
 void FootHoldAndZipLineButton::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
 }
@@ -104,6 +119,8 @@ FootHold::~FootHold()
 void FootHold::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetState(ObjectState::Off);
 }
 
 void FootHold::Tick()
@@ -146,9 +163,9 @@ void FootHold::TickReady()
 	static float sumTime;
 	sumTime += deltaTime;
 
-	_pos.y -= 20 * deltaTime;
+	_pos.y -= 80 * deltaTime;
 
-	if (sumTime >= 2.f)
+	if (sumTime >= 0.5f)
 	{
 		SetState(ObjectState::On);
 		sumTime = 0.f;
