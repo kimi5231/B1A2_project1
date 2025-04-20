@@ -629,10 +629,18 @@ void Player::TickHit()
 
 void Player::TickDead()
 {
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	scene->RemoveActor(this);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.f;
+	sumTime += deltaTime;
+
+	if (sumTime >= 2.f)
+	{
+		sumTime = 0.f;
+
+		// 초기화 - 체력, 위치?
+		SetHealthPoint(100);
+		SetState(ObjectState::Idle);
+	}
 }
 
 void Player::UpdateAnimation()
@@ -739,6 +747,13 @@ void Player::OnDamaged(Creature* other)
 	}
 
 	SetState(ObjectState::Hit);
+}
+
+void Player::SetHealthPoint(int hp)
+{
+	_playerStat->commonStat.hp = 100;
+
+	_healthObserver(_playerStat->commonStat.hp);
 }
 
 void Player::AddHealthPoint(int hp)

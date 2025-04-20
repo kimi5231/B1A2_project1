@@ -450,7 +450,7 @@ void DevScene::LoadPlayer()
 		fb1->SetInfo({ texture, L"FB_PlayerHitRight", {41, 80}, 0, 0, 0, 0.7f });
 
 		// Left
-		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHithLeft");
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHitLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerHitLeft", {41, 80}, 0, 0, 1, 0.7f });
 	}
 }
