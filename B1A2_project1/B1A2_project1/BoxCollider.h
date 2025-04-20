@@ -18,6 +18,9 @@ public:
 	Vec2 GetSize() { return _size; }
 	void SetSize(Vec2 size) { _size = size; }
 	
+	Vec2 GetPos() { return _pos; }
+	void SetPos(Vec2 pos) { _pos = pos; }
+
 	RECT GetRect();
 
 private:

@@ -4,7 +4,6 @@
 #include "BoxCollider.h"
 #include "CollisionManager.h"
 #include "ValueManager.h"
-#include "ResourceManager.h"
 #include "Texture.h"
 
 // 1. 짚라인 - 버튼이 있는 버전과 버튼 없이 짚라인만 있는 버전
@@ -24,10 +23,12 @@ ZipLine::ZipLine()
 
 		collider->AddCollisionFlagLayer(CLT_PLAYER);
 		
-		collider->SetSize({ 300, 500 });
+		collider->SetSize({ 200, 200 });
 
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		AddComponent(collider);
+
+		_playerDetectCollider = collider;
 	}
 
 	SetState(ObjectState::Off);

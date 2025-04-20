@@ -2,6 +2,8 @@
 #include "Structure.h"
 
 class ZipLineButtonAndDisplay;
+class BoxCollider;
+class Player;
 
 class ZipLine : public Structure
 {
@@ -61,7 +63,13 @@ public:
 	Vec2 GetBeginPos() { return _beginPos; }
 	void SetEndPos(Vec2 pos) { _endPos = pos; }
 	Vec2 GetEndPos() { return _endPos; }
+	void SetMidPos(Vec2 pos) { _midPos = pos; }
+	Vec2 GetMidPos() { return _midPos; }
 
+	BoxCollider* GetPlayerDetectCollider() { return _playerDetectCollider; }
+
+	void SetPlayer(Player* player) { _player = player; }
+	Player* GetPlayer() { return _player; }
 private:
 	Flipbook* _flipbookZipLine = nullptr;
 	Flipbook* _flipbookZipLineGrip = nullptr;
@@ -72,9 +80,13 @@ private:
 
 	ObjectState _state = ObjectState::Off;
 
+	BoxCollider* _playerDetectCollider = nullptr;
+
+	Player* _player = nullptr;
+
 	Vec2 _beginPos;
 	Vec2 _endPos;
-	Vec2 _midPos;
+	Vec2 _midPos = {};
 };
 
 class ZipLineButtonAndDisplay : public Structure

@@ -44,7 +44,8 @@ public:
 
 public:
 	void SetState(ObjectState state);
-	
+	ObjectState GetState() { return _state; }
+
 	void SetDir(Dir dir);
 	Dir GetDir() { return _dir; }
 

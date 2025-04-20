@@ -526,17 +526,21 @@ void Player::TickHang()
 	Vec2 beginPos = _zipLine->GetBeginPos();
 	Vec2 endPos = _zipLine->GetEndPos();
 
+	if (_zipLine->GetMidPos().x != 0 && _zipLine->GetMidPos().y != 0)	// 중간 탑승
+		beginPos = _zipLine->GetMidPos();
+
+
 	// 매달리기 시작 - 짚라인 시작 위치로 이동
 	if (!isMoving)
 	{
-		_pos = _zipLine->GetBeginPos();
+		_pos = beginPos;
 
 		_isGround = true;
 		_isAir = false;
 
 		sumTime += GET_SINGLE(TimeManager)->GetDeltaTime();
 
-		if (sumTime >= 1.0f)	// 2초 대기 후 이동 시작
+		if (sumTime >= 1.0f)	// 1초 대기 후 이동 시작
 		{
 			isMoving = true;
 			sumTime = 0.0f;
@@ -550,15 +554,19 @@ void Player::TickHang()
 
 		Vec2 direction = (endPos - beginPos).Normalize();
 		_pos += direction * speed * deltaTime;
+		//_zipLine->GetPlayerDetectCollider()->SetPos({ _pos });
 
 		// 이동 중 SpaceBar 입력 시 놓기
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 		{
 			isMoving = false;
+
 			sumTime = 0.0f;
 
 			_isGround = false;
 			_isAir = true;
+
+			_zipLine->SetMidPos(_pos);
 
 			SetState(ObjectState::Release);
 
@@ -573,6 +581,8 @@ void Player::TickHang()
 
 			_isGround = false;
 			_isAir = true;
+
+			_zipLine->SetMidPos({ 0, 0 });	// 중간 하차 X
 
 			SetState(ObjectState::Release);
 		}

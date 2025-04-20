@@ -195,5 +195,6 @@ private:
 	bool _isKeyAcquire = false;
 	bool _isInWindow = false;
 	bool _damagedByWindow = false;	
+	bool _isReleaseInMid = false;
 };
 

@@ -147,20 +147,21 @@ void DevScene::Init()
 
 	// Structure
 	{
-		// ZipLine
-		//{
-		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
-		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-		//	zipLine->SetBeginPos({ 800, 250 });
-		//	zipLine->SetEndPos({ 950, 170 });
+		 // ZipLine
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetBeginPos({ 500, 200 });
+			zipLine->SetEndPos({ 950, 150 });
+			zipLine->SetPlayer(_player);
 
-		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
-		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-		//	zipLineButtonAndDisplay->SetOwner(zipLine);
-		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+			// Button이 필요 없는 짚라인은 아래 코드 작성X
+			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+			zipLineButtonAndDisplay->SetOwner(zipLine);
+			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		//}
+			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		}
 
 		// LockedDoorAndKey
 		{

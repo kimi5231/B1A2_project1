@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 #include "Player.h"
+#include "ZipLine.h"
 
 BoxCollider::BoxCollider() : Collider(ColliderType::Box)
 {
@@ -70,6 +71,28 @@ void BoxCollider::BeginPlay()
 		else
 			_pos.x = owner->GetPos().x - 20;
 	}
+
+	if (GetCollisionLayer() == CLT_STRUCTURE_DETECT && dynamic_cast<ZipLine*>(GetOwner()))
+	{
+		ZipLine* owner = dynamic_cast<ZipLine*>(GetOwner());
+		Player* player = dynamic_cast<Player*>(owner->GetPlayer());
+
+		if (player->GetState() == ObjectState::Hang)	// Player를 따라감
+		{
+			owner->GetPlayerDetectCollider()->SetPos({ player->GetPos() });
+		}
+		else if (player->GetState() == ObjectState::Release)
+		{
+			_pos = owner->GetMidPos();
+		}
+		else
+		{
+			if (owner->GetMidPos().x == 0 && owner->GetMidPos().y == 0)		// 초기 위치
+				_pos = owner->GetBeginPos();
+			else  // 중간 하차 후 위치 유지
+				_pos = owner->GetMidPos();
+		}
+	}
 }
 
 void BoxCollider::TickComponent()
@@ -120,6 +143,28 @@ void BoxCollider::TickComponent()
 			_pos.x = owner->GetPos().x + 20;
 		else
 			_pos.x = owner->GetPos().x - 20;
+	}
+
+	if (GetCollisionLayer() == CLT_STRUCTURE_DETECT && dynamic_cast<ZipLine*>(GetOwner()))
+	{
+		ZipLine* owner = dynamic_cast<ZipLine*>(GetOwner());
+		Player* player = dynamic_cast<Player*>(owner->GetPlayer());
+
+		if (player->GetState() == ObjectState::Hang)	// Player를 따라감
+		{
+			owner->GetPlayerDetectCollider()->SetPos({ player->GetPos() });
+		}
+		else if (player->GetState() == ObjectState::Release)
+		{
+			_pos = owner->GetMidPos();
+		}
+		else
+		{
+			if (owner->GetMidPos().x == 0 && owner->GetMidPos().y == 0)		// 초기 위치
+				_pos = owner->GetBeginPos();
+			else  // 중간 하차 후 위치 유지
+				_pos = owner->GetMidPos();		
+		}
 	}
 }
 
