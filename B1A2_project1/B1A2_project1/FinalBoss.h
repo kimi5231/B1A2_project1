@@ -77,7 +77,6 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
-	virtual void UpdateAnimation() override;
 
 protected:
 	virtual void TickIdle() override {};
@@ -93,10 +92,13 @@ protected:
 	virtual void TickReturn() override {};
 	virtual void TickReturnIdle() override {};
 
+	virtual void UpdateAnimation() override;
+
 public:
 	virtual int32 GetAttack() override;
 	virtual int32& GetHp() override { return _commonStat.hp; }
 	virtual float GetSpeed() override { return _stat->speed; };
+	virtual Vec2Int GetPlayerDetection() { return { 0, 0 }; }
 
 public:
 	void CalPixelPerSecond();
@@ -152,6 +154,8 @@ public:
 	void SetMoveDistance(float distance);
 	void SetMovementLimit(Vec2 limit) { _movementLimit = limit; }
 
+	void SetPlayer(Player* player) { _player = player; }
+
 public:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
@@ -161,6 +165,8 @@ public:
 	void CreateProjectileFall();	// Projectile Fall
 	void CreateBlanket();
 	void CreateMonster();
+
+	void SubtractCurrentCrystalCount(int32) { _currentCrystalCount--; }
 
 private:
 	// Flipbook
@@ -193,6 +199,13 @@ private:
 	int32 _currentCrystalCount = 0;
 	float _sumTime = 0.f;
 
+	bool _isPlayerInSameFloor = false;		// 추적해야 함!
+
+	bool _isFirstCrystalCreationWork = false;
+	bool _isSecondCrystalCreationWork = false;
+	bool _isThirdCrystalCreationWork = false;
+
+	bool _isCrystalSpawned = false;
 public:
 	Player* _player;
 };

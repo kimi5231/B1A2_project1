@@ -13,6 +13,8 @@
 #include "CloseAtkMonster.h"
 #include "Blanket.h"
 #include "LongAtkMonster.h"
+#include "Crystal.h"
+#include "FallingProjectile.h"
 
 FinalBoss::FinalBoss()
 {
@@ -183,15 +185,24 @@ void FinalBoss::Tick()
 	// Clamp
 	_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
 
+	// Player와 같은 층에 있는지 확인 - 맵 생성 후에 수정 필요
+	if (abs(_player->GetPos().y - _pos.y) > 100)
+		_isPlayerInSameFloor = false;
+	else
+		_isPlayerInSameFloor = true;
+
 	// BT
 	if (_rootNode)
 	{
 		_rootNode->run();
 	}
 
-	// 장판
-	if (_sumTime >= 20.f)
+	// Blanket
+	if (_sumTime >= 10.f)
+	{
 		CreateBlanket();
+		_sumTime = 0.f;
+	}
 }
 
 void FinalBoss::Render(HDC hdc)
@@ -300,22 +311,14 @@ BehaviorState FinalBoss::Idle()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	float XDistance = GetAbsFromPlayerXDisatance();
 
-	// Idle 유지
-
-	// 대쉬 or 순간이동
-	if (XDistance >= _stat->longAtkRange)
+	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= 100)
 	{
-		// 같은 층에 있을 때
-		{
-			SetState(ObjectState::Dash);
-			return BehaviorState::SUCCESS;
-		}
+		if (_dir == DIR_RIGHT)
+			_pos.x += _stat->speed * deltaTime;
+		else
+			_pos.x -= _stat->speed * deltaTime;
 
-		// 다른 층에 있을 때
-		{
-			SetState(ObjectState::Teleport);
-			return BehaviorState::SUCCESS;
-		}
+		return BehaviorState::RUNNING;
 	}
 
 	// (근거리 or 원거리 공격) or (몬스터 소환) = 7 : 3
@@ -342,7 +345,19 @@ BehaviorState FinalBoss::Idle()
 		return BehaviorState::SUCCESS;
 	}
 
-	// 수정 소환 - Hit 상태일 때 지정
+	// 대쉬 or 순간이동
+	if (XDistance >= _stat->longAtkRange)
+	{
+		if (!_isPlayerInSameFloor)
+		{
+			SetState(ObjectState::Dash);
+			return BehaviorState::SUCCESS;
+		}
+		else {
+			//SetState(ObjectState::Teleport);
+			//return BehaviorState::SUCCESS;
+		}
+	}
 
 	return BehaviorState::RUNNING;
 }
@@ -357,12 +372,37 @@ BehaviorState FinalBoss::is_cur_state_hit()
 
 BehaviorState FinalBoss::Hit()
 {
+	// knock back
 	if (_dir == DIR_RIGHT)
 		_pos.x -= _stat->knockBackDistance;
 	else
 		_pos.x += _stat->knockBackDistance;
 
-	SetState(ObjectState::Idle);
+	// 수정 소환
+	if (_stat->commonStat.hp <= 75 && _stat->commonStat.hp > 50 && !_isFirstCrystalCreationWork)
+	{
+		_isFirstCrystalCreationWork = true;
+
+		SetState(ObjectState::CrystalCreation);
+	}
+	else if (_stat->commonStat.hp <= 50 && _stat->commonStat.hp > 25 && !_isSecondCrystalCreationWork)
+	{
+		_isSecondCrystalCreationWork = true;
+		_currentCrystalCount = 2;
+
+		SetState(ObjectState::CrystalCreation);
+	}
+	else if (_stat->commonStat.hp <= 25 && _isThirdCrystalCreationWork)
+	{
+		_isThirdCrystalCreationWork = true;
+		_currentCrystalCount = 3;
+
+		SetState(ObjectState::CrystalCreation);
+	}
+	else
+	{
+		SetState(ObjectState::Idle);
+	}
 
 	return BehaviorState::SUCCESS;
 }
@@ -408,7 +448,61 @@ BehaviorState FinalBoss::is_cur_state_crystal_creation()
 
 BehaviorState FinalBoss::CrystalCreation()
 {
-	return BehaviorState();
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float hpSumTime = 0.f;
+	static float projectileSumTime = 0.f;
+
+	hpSumTime += deltaTime;
+	projectileSumTime += deltaTime;
+	_sumTime += deltaTime;
+
+	// 수정 생성
+	if (!_isCrystalSpawned)
+	{
+		Crystal* crystal1 = scene->SpawnObject<Crystal>({ 440, 200 }, LAYER_STRUCTURE);
+		crystal1->SetFinalBoss(this);
+		Crystal* crystal2 = scene->SpawnObject<Crystal>({ 840, 200 }, LAYER_STRUCTURE);
+		crystal2->SetFinalBoss(this);
+		Crystal* crystal3 = scene->SpawnObject<Crystal>({ 1240, 200 }, LAYER_STRUCTURE);
+		crystal3->SetFinalBoss(this);
+
+		_currentCrystalCount = 3;
+		_isCrystalSpawned = true;
+	}
+
+	// 몬스터 hp 올리기
+	if (hpSumTime >= 1.f)
+	{
+		switch (_currentCrystalCount)
+		{
+		case 3:
+			_stat->commonStat.hp += 6;
+			break;
+		case 2:
+			_stat->commonStat.hp += 4;
+			break;
+		case 1:
+			_stat->commonStat.hp += 2;
+			break;
+		}
+		hpSumTime = 0.f;
+	}
+
+	// Projectile Fall
+	if (projectileSumTime >= 0.3f)
+	{
+		CreateProjectileFall();
+	}
+
+	// 상태 변경
+	if (_sumTime >= 10.f)
+	{
+		SetState(ObjectState::Idle);
+		return BehaviorState::SUCCESS;
+	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_monster_creation()
@@ -421,23 +515,9 @@ BehaviorState FinalBoss::is_cur_state_monster_creation()
 
 BehaviorState FinalBoss::MonsterCreation()
 {
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_sumTime += deltaTime;
-
-	if (_sumTime >= 2.f)
-	{
-		_sumTime = 0.f;
-		CreateMonster();
-
-		return BehaviorState::RUNNING;
-	}
-
-	if (_currentMonsterCreationCount == 5)
-	{
-		_sumTime = 0.f;
-		SetState(ObjectState::Idle);
-		_currentMonsterCreationCount = 0;
-	}
+	MonsterCreation();
+	SetState(ObjectState::Idle);
+	return BehaviorState::SUCCESS;
 }
 
 BehaviorState FinalBoss::is_cur_state_thrust()
@@ -565,8 +645,31 @@ BehaviorState FinalBoss::is_cur_state_teleport()
 
 BehaviorState FinalBoss::Teleport()
 {
-	// 이동 후
+	// 이동 
+	Vec2 playerPos = _player->GetPos();
+
+	if (playerPos.x - _pos.x <= 0)	// 몬스터가 왼쪽
+		_pos = { playerPos.x - 20, playerPos.y };	// 위치 맵에 따라, 플레이어 위치 따라 수정 필요
+	else
+		_pos = { playerPos.x + 20, playerPos.y };
+
 	// 찌르기 or 마구 베기 5:5
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+
+	bool isThrust = (dist(gen) == 0);
+
+	if (isThrust)
+	{
+		SetState(ObjectState::Thrust);
+		return BehaviorState::SUCCESS;
+	}
+	else
+	{
+		SetState(ObjectState::CutSeverely);
+		return BehaviorState::SUCCESS;
+	}
 
 	return BehaviorState();
 }
@@ -581,6 +684,29 @@ BehaviorState FinalBoss::is_cur_state_cut_severely()
 
 BehaviorState FinalBoss::CutSeverely()
 {
+	if (!_attackCollider)
+	{
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
+			collider->SetSize({ 100, 80 });	// 스프라이트에 따라 수정 필요
+
+			_attackCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
+
+	if (GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
+	{
+		SetState(ObjectState::Idle);
+		return BehaviorState::SUCCESS;
+	}
 	return BehaviorState();
 }
 
@@ -614,6 +740,20 @@ void FinalBoss::SetMoveDistance(float distance)
 
 void FinalBoss::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (_state == ObjectState::CrystalCreation)		// 수정 소환 상태에선 공격
+		return;
+	
+	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
+	{
+		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+		OnDamaged(otherOwner);
+	}
 }
 
 void FinalBoss::OnComponentEndOverlap(Collider* collider, Collider* other)
@@ -654,6 +794,37 @@ void FinalBoss::CreateProjectile()
 
 void FinalBoss::CreateProjectileFall()
 {
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+	std::uniform_int_distribution<> dist(0, 1200);
+
+	// FB의 체력에 따른 Damage 설정
+	int32 damage = 0;
+	int32 hp = _stat->commonStat.hp;
+
+	if (hp <= 100 && hp > 75)
+	{
+		damage = 10;
+	}
+	else if (hp <= 75 && hp > 50)
+	{
+		damage = 15;
+	}
+	else if (hp <= 50 && hp > 25)
+	{
+		damage = 20;
+	}
+	else
+	{
+		damage = 25;
+	}
+
+	FallingProjectile* fp = scene->SpawnObject<FallingProjectile>({100, 0}, LAYER_PROJECTILE);	// {float(dist(gen))
+	fp->SetSpeed(_stat->longAtkProjectileSpeed);	// FallingProjectile 속도 없어서 걍 넣음
+	fp->SetAttack(damage);
+	fp->SetOwner(this);
 }
 
 void FinalBoss::CreateBlanket()

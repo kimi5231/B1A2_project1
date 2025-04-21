@@ -21,6 +21,7 @@
 #include "Window.h"
 #include "FootHold.h"
 #include "Blanket.h"
+#include "Crystal.h"
 
 Player::Player()
 {
@@ -978,6 +979,17 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			if (button)
 			{
 				_footHoldAndZipLineButton = button;
+				return;
+			}
+		}
+
+		// Crystal
+		{
+			Crystal* crystal = dynamic_cast<Crystal*>(structure);
+
+			if (crystal)
+			{
+				AdjustCollisionPos(b1, b2);
 				return;
 			}
 		}

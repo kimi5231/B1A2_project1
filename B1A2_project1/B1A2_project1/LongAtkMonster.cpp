@@ -174,9 +174,7 @@ void LongAtkMonster::OnComponentBeginOverlap(Collider* collider, Collider* other
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	// Player Attack과 충돌
-	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
-	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);

@@ -40,6 +40,7 @@
 #include "FootHold.h"
 #include "Blanket.h"
 #include "LongAtkMonster.h"
+#include "FinalBoss.h"
 
 DevScene::DevScene()
 {
@@ -195,10 +196,19 @@ void DevScene::Init()
 		}
 	}
 
-	LongAtkMonster* LAM = SpawnObject<LongAtkMonster>({ 200, 300 }, LAYER_MONSTER);
-	LAM->SetSpawnDir(DIR_LEFT);
-	LAM->SetSpawnPos({ 200, 300 });
-	LAM->SetMovementLimit({ 50, 350 });
+	//{
+	//	LongAtkMonster* LAM = SpawnObject<LongAtkMonster>({ 200, 300 }, LAYER_MONSTER);
+	//	LAM->SetSpawnDir(DIR_LEFT);
+	//	LAM->SetSpawnPos({ 200, 300 });
+	//	LAM->SetMovementLimit({ 50, 350 });
+	//}
+
+	{
+		FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 500, 300 }, LAYER_MONSTER);
+		finalBoss->SetPlayer(_player);
+		finalBoss->SetSpawnDir(DIR_RIGHT);
+		finalBoss->SetSpawnPos({ 500, 300 });
+	}
 
 	// Start Dialogue
 	/*{
@@ -490,6 +500,15 @@ void DevScene::LoadMonster()
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
 		fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
 	}
+
+	// FB
+	{
+	/*	GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss", L"Sprite\\Monster\\FinalBoss.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBoss");
+		fb->SetInfo({ texture, L"FB_FinalBoss", {25, 85}, 0, 0, 0, 0.7f });*/
+	}
 }
 
 void DevScene::LoadProjectile()
@@ -519,6 +538,15 @@ void DevScene::LoadProjectile()
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Blanket");
 		fb->SetInfo({ texture, L"FB_Blanket", {200, 80}, 0, 0, 0, 0.7f });
+	}
+
+	// Falling Projectile
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"FallingProjectile", L"Sprite\\Projectile\\FallingProjectile.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile");
+		fb->SetInfo({ texture, L"FB_FallingProjectile", {40, 40}, 0, 0, 0, 0.7f });
 	}
 }
 
@@ -653,6 +681,15 @@ void DevScene::LoadStructure()
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHold");
 			fb->SetInfo({ texture, L"FB_FootHold", {320, 120}, 0, 0, 0, 0.7f });
 		}
+	}
+
+	// Crystal
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Crystal", L"Sprite\\Structure\\Crystal.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Crystal");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Crystal");
+		fb->SetInfo({ texture, L"FB_Crystal", {40, 60}, 0, 0, 0, 0.7f });
 	}
 }
 

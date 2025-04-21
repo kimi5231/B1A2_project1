@@ -166,6 +166,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="Crystal.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DevScene.h" />
     <ClInclude Include="Dialogue.h" />
@@ -173,6 +174,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="DialogueManager.h" />
     <ClInclude Include="EndingScene.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="FallingProjectile.h" />
     <ClInclude Include="FinalBoss.h" />
     <ClInclude Include="Flipbook.h" />
     <ClInclude Include="FlipbookActor.h" />
@@ -251,11 +253,13 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Crystal.cpp" />
     <ClCompile Include="DevScene.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DialogueComponent.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
     <ClCompile Include="EndingScene.cpp" />
+    <ClCompile Include="FallingProjectile.cpp" />
     <ClCompile Include="FinalBoss.cpp" />
     <ClCompile Include="Flipbook.cpp" />
     <ClCompile Include="FlipbookActor.cpp" />

@@ -150,6 +150,9 @@ void BoxCollider::TickComponent()
 		ZipLine* owner = dynamic_cast<ZipLine*>(GetOwner());
 		Player* player = dynamic_cast<Player*>(owner->GetPlayer());
 
+		if (owner == nullptr || player == nullptr)
+			return;
+
 		if (player->GetState() == ObjectState::Hang)	// Player를 따라감
 		{
 			owner->GetPlayerDetectCollider()->SetPos({ player->GetPos() });
