@@ -10,6 +10,9 @@
 #include "SceneManager.h"
 #include "DevScene.h"
 #include "SlashWave2.h"
+#include "CloseAtkMonster.h"
+#include "Blanket.h"
+#include "LongAtkMonster.h"
 
 FinalBoss::FinalBoss()
 {
@@ -168,18 +171,27 @@ void FinalBoss::BeginPlay()
 void FinalBoss::Tick()
 {
 	Super::Tick();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
+	// Dir
 	if (GetFromPlayerXDistance() >= 0)
 		SetDir(DIR_LEFT);
 	else
 		SetDir(DIR_RIGHT);
 
+	// Clamp
 	_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
 
+	// BT
 	if (_rootNode)
 	{
 		_rootNode->run();
 	}
+
+	// 장판
+	if (_sumTime >= 20.f)
+		CreateBlanket();
 }
 
 void FinalBoss::Render(HDC hdc)
@@ -300,24 +312,37 @@ BehaviorState FinalBoss::Idle()
 		}
 
 		// 다른 층에 있을 때
-
+		{
+			SetState(ObjectState::Teleport);
+			return BehaviorState::SUCCESS;
+		}
 	}
-	
-	// 근거리 or 원거리 공격
-	if (XDistance <= _stat->closeAtkRange)
+
+	// (근거리 or 원거리 공격) or (몬스터 소환) = 7 : 3
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(0, 10);
+
+	if (dist(gen) <= 7)		// Attack 
 	{
-		SetState(ObjectState::CloseAttack);
+		if (XDistance <= _stat->closeAtkRange)
+		{
+			SetState(ObjectState::CloseAttack);
+			return BehaviorState::SUCCESS;
+		}
+		else if (std::abs(XDistance - _stat->closeAtkRange) > std::abs(_stat->longAtkRange - XDistance))
+		{
+			SetState(ObjectState::LongAttack);
+			return BehaviorState::SUCCESS;
+		}
+	}	
+	else    // Monster Creation
+	{
+		SetState(ObjectState::MonsterCreation);
 		return BehaviorState::SUCCESS;
 	}
-	else if (std::abs(XDistance - _stat->closeAtkRange) > std::abs(_stat->longAtkRange - XDistance))
-	{
-		SetState(ObjectState::LongAttack);
-		return BehaviorState::SUCCESS;
-	}
 
-
-	// 상태 지정
-	// ...
+	// 수정 소환 - Hit 상태일 때 지정
 
 	return BehaviorState::RUNNING;
 }
@@ -396,7 +421,23 @@ BehaviorState FinalBoss::is_cur_state_monster_creation()
 
 BehaviorState FinalBoss::MonsterCreation()
 {
-	return BehaviorState();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= 2.f)
+	{
+		_sumTime = 0.f;
+		CreateMonster();
+
+		return BehaviorState::RUNNING;
+	}
+
+	if (_currentMonsterCreationCount == 5)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Idle);
+		_currentMonsterCreationCount = 0;
+	}
 }
 
 BehaviorState FinalBoss::is_cur_state_thrust()
@@ -524,7 +565,8 @@ BehaviorState FinalBoss::is_cur_state_teleport()
 
 BehaviorState FinalBoss::Teleport()
 {
-	// 찌르기 or 마구 베기
+	// 이동 후
+	// 찌르기 or 마구 베기 5:5
 
 	return BehaviorState();
 }
@@ -612,4 +654,50 @@ void FinalBoss::CreateProjectile()
 
 void FinalBoss::CreateProjectileFall()
 {
+}
+
+void FinalBoss::CreateBlanket()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+	std::uniform_int_distribution<> dist(0, 20);
+
+	Blanket* blanket = scene->SpawnObject<Blanket>({ float(dist(gen) * 40), float(100) }, LAYER_PROJECTILE);	// 위치 수정 필요
+}
+
+void FinalBoss::CreateMonster()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+
+	for (int i = 0; i < 5; i++)
+	{
+		std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+		std::uniform_int_distribution<> dist2(0, 110);
+
+		bool isCType = (dist(gen) == 0);
+		int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
+
+		if (isCType)
+		{
+			CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(SpawnPos), float(300) }, LAYER_MONSTER);		// 위치 수정 필요
+			cm->SetSpawnDir(DIR_RIGHT);
+			cm->SetSpawnPos({ 200, 300 });
+			cm->SetMoveDistance(100.f);
+			cm->SetMovementLimit({ float(SpawnPos - 100), float(SpawnPos + 100) });
+		}
+		else
+		{
+			LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(SpawnPos), float(300) }, LAYER_MONSTER);
+			lam->SetSpawnDir(DIR_RIGHT);
+			lam->SetSpawnPos({ 200, 150 });
+			lam->SetMovementLimit({ float(SpawnPos - 100), float(SpawnPos + 100) });
+		}
+	}
 }

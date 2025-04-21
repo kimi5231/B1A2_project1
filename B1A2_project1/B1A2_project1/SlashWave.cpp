@@ -21,6 +21,8 @@ Slashwave::Slashwave()
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_PROJECTILE);
 
+			collider->AddCollisionFlagLayer(CLT_PLAYER);
+
 			collider->SetSize({ 20, 88 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);

@@ -20,6 +20,7 @@
 #include "BreakingWall.h"
 #include "Window.h"
 #include "FootHold.h"
+#include "Blanket.h"
 
 Player::Player()
 {
@@ -987,6 +988,26 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	{
 		_isCloseAtk = true;
 		return;
+	}
+
+	// Projectile
+	if (b2->GetCollisionLayer() == CLT_PROJECTILE)
+	{
+		Projectile* projectile = dynamic_cast<Projectile*>(b2->GetOwner());
+		if (!projectile)
+			return;
+
+		// Blanket
+		{
+			Blanket* blanket = dynamic_cast<Blanket*>(projectile);
+			if (blanket)
+			{
+				//Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
+				//OnDamaged(otherOwner);
+
+				return;
+			}
+		}
 	}
 
 	// 벽 충돌하면 밀어내기

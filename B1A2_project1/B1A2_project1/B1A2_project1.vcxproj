@@ -154,12 +154,14 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     </ClInclude>
     <ClInclude Include="B1A2_project1.h" />
     <ClInclude Include="BehaviorTree.h" />
+    <ClInclude Include="Blanket.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="BreakingWall.h" />
     <ClInclude Include="BrokenCopyMachine.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraActor.h" />
+    <ClInclude Include="CloseAtkMonster.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
@@ -186,6 +188,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemActor.h" />
     <ClInclude Include="LockedDoorAndKey.h" />
+    <ClInclude Include="LongAtkMonster.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Paper.h" />
@@ -236,12 +239,14 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     </ClCompile>
     <ClCompile Include="B1A2_project1.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
+    <ClCompile Include="Blanket.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="BreakingWall.cpp" />
     <ClCompile Include="BrokenCopyMachine.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraActor.cpp" />
+    <ClCompile Include="CloseAtkMonster.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -265,6 +270,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemActor.cpp" />
     <ClCompile Include="LockedDoorAndKey.cpp" />
+    <ClCompile Include="LongAtkMonster.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Paper.cpp" />

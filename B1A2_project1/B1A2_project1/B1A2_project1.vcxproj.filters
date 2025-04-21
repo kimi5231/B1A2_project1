@@ -269,9 +269,6 @@
     <ClInclude Include="TiredOfficeWorker.h">
       <Filter>소스 파일\03. Objects\Game\Creature</Filter>
     </ClInclude>
-    <ClInclude Include="BrokenCopyMachine.h">
-      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
-    </ClInclude>
     <ClInclude Include="Paper.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
@@ -307,6 +304,18 @@
     </ClInclude>
     <ClInclude Include="FootHold.h">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="LongAtkMonster.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenCopyMachine.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="CloseAtkMonster.h">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClInclude>
+    <ClInclude Include="Blanket.h">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -513,6 +522,15 @@
     </ClCompile>
     <ClCompile Include="FootHold.cpp">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="LongAtkMonster.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="CloseAtkMonster.cpp">
+      <Filter>소스 파일\03. Objects\Game\Creature</Filter>
+    </ClCompile>
+    <ClCompile Include="Blanket.cpp">
+      <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

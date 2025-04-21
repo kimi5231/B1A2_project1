@@ -18,6 +18,8 @@ SlashwaveW::SlashwaveW()
 		collider->ResetCollisionFlag();
 		collider->SetCollisionLayer(CLT_PROJECTILE);
 
+		collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
+
 		collider->SetSize({ 50, 30 });
 
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
@@ -107,6 +109,8 @@ SlashwaveH::SlashwaveH()
 		BoxCollider* collider = new BoxCollider();
 		collider->ResetCollisionFlag();
 		collider->SetCollisionLayer(CLT_PROJECTILE);
+
+		collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
 
 		collider->SetSize({ 20, 90 });
 

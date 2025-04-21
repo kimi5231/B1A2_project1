@@ -38,6 +38,8 @@
 #include "BreakingWall.h"
 #include "Window.h"
 #include "FootHold.h"
+#include "Blanket.h"
+#include "LongAtkMonster.h"
 
 DevScene::DevScene()
 {
@@ -192,6 +194,11 @@ void DevScene::Init()
 			footHold->SetFootHoldAndZipLineButton(button);
 		}
 	}
+
+	LongAtkMonster* LAM = SpawnObject<LongAtkMonster>({ 200, 300 }, LAYER_MONSTER);
+	LAM->SetSpawnDir(DIR_LEFT);
+	LAM->SetSpawnPos({ 200, 300 });
+	LAM->SetMovementLimit({ 50, 350 });
 
 	// Start Dialogue
 	/*{
@@ -504,6 +511,15 @@ void DevScene::LoadProjectile()
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWave");
 		fb->SetInfo({ texture, L"FB_SlashWave", {20, 88}, 0, 0, 0, 0.7f });
 	}
+
+	// Blanket
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"Blanket", L"Sprite\\Projectile\\Blanket.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Blanket");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Blanket");
+		fb->SetInfo({ texture, L"FB_Blanket", {200, 80}, 0, 0, 0, 0.7f });
+	}
 }
 
 void DevScene::LoadStructure()
@@ -638,7 +654,6 @@ void DevScene::LoadStructure()
 			fb->SetInfo({ texture, L"FB_FootHold", {320, 120}, 0, 0, 0, 0.7f });
 		}
 	}
-
 }
 
 void DevScene::LoadDialogue()

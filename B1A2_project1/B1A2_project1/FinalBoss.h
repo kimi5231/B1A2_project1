@@ -159,6 +159,8 @@ public:
 public:
 	void CreateProjectile();	// Long Atk
 	void CreateProjectileFall();	// Projectile Fall
+	void CreateBlanket();
+	void CreateMonster();
 
 private:
 	// Flipbook
@@ -186,6 +188,9 @@ private:
 	Collider* _attackCollider;
 
 	int32 _currentProjectileCount = 0;
+	int32 _currentMonsterCreationCount = 0;		// 积己且 锭
+	int32 _currentMonsterCount = 0;		// 积己 饶
+	int32 _currentCrystalCount = 0;
 	float _sumTime = 0.f;
 
 public:
