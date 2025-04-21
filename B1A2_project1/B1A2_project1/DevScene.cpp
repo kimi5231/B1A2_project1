@@ -466,11 +466,95 @@ void DevScene::LoadMonster()
 {
 	// TOW
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorker", L"Sprite\\Monster\\TiredOfficeWorker.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorker");
+		// Idle
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerIdle", L"Sprite\\Monster\\TiredOfficeWorkerIdle.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerIdle");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorker");
-		fb->SetInfo({ texture, L"FB_TiredOfficeWorker", {31, 77}, 0, 0, 0, 0.7f });
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerIdleRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerIdleRight", {34, 80}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerIdleLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerIdleLeft", {34, 80}, 0, 4, 1, 0.7f });
+			}
+		}
+	
+		// Roaming
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerRoaming", L"Sprite\\Monster\\TiredOfficeWorkerRoaming.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerRoaming");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerRoamingRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerRoamingRight", {50, 81}, 0, 3, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerRoamingLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerRoamingLeft", {50, 81}, 0, 3, 1, 0.7f });
+			}
+		}
+
+		// Chase
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerChase", L"Sprite\\Monster\\TiredOfficeWorkerChase.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerChase");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerChaseRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerChaseRight", {97, 77}, 0, 5, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerChaseLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerChaseLeft", {97, 77}, 0, 5, 1, 0.7f });
+			}
+		}
+
+		// CloseAttack
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerCloseAttack", L"Sprite\\Monster\\TiredOfficeWorkerCloseAttack.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerCloseAttack");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerCloseAttackRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerCloseAttackRight", {95, 105}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerCloseAttackLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerCloseAttackLeft", {95, 105}, 0, 4, 1, 0.7f });
+			}
+		}
+
+		// Hit
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerHit", L"Sprite\\Monster\\TiredOfficeWorkerHit.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerHit");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerHitRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerHitRight", {50, 70}, 0, 0, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerHitLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerHitLeft", {50, 70}, 0, 0, 1, 0.7f });
+			}
+		}
+
+		// Dead
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"TiredOfficeWorkerDead", L"Sprite\\Monster\\TiredOfficeWorkerDead.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"TiredOfficeWorkerDead");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerDeadRight");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerDeadRight", {60, 78}, 0, 1, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_TiredOfficeWorkerDeadLeft");
+				fb->SetInfo({ texture, L"FB_TiredOfficeWorkerDeadLeft", {60, 78}, 0, 1, 1, 0.7f });
+			}
+		}
 	}
 
 	// BCM
