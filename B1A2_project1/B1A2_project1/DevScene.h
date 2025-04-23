@@ -35,6 +35,7 @@ private:
 	void SetStage1();
 	void SetStage2();
 	void SetStage3();
+	void SetFinalBossStage();
 
 public:
 	// Save

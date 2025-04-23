@@ -318,6 +318,7 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage1", L"Sprite\\Map\\Stage1.bmp");
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage2", L"Sprite\\Map\\Stage2.bmp");
 		GET_SINGLE(ResourceManager)->LoadTexture(L"Stage3", L"Sprite\\Map\\Stage3.bmp");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossStage", L"Sprite\\Map\\FinalBossStage.bmp");
 
 		// Sprite
 		{
@@ -332,6 +333,10 @@ void DevScene::LoadStage()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Stage3");
 			GET_SINGLE(ResourceManager)->CreateSprite(L"Stage3", texture, 0, 0, 3080, 1960);
 		}
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossStage");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"FinalBossStage", texture, 0, 0, 1280, 720);
+		}
 	}
 
 	// Tilemap
@@ -339,6 +344,7 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage1", L"Tilemap\\Stage1.txt");
 		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage2", L"Tilemap\\Stage2.txt");
 		GET_SINGLE(ResourceManager)->LoadTilemap(L"Stage3", L"Tilemap\\Stage3.txt");
+		GET_SINGLE(ResourceManager)->LoadTilemap(L"FinalBossStage", L"Tilemap\\FinalBossStage.txt");
 	}
 }
 
@@ -983,6 +989,9 @@ void DevScene::SetStage(int32 stage)
 	case 3:
 		SetStage3();
 		break;
+	case 4:
+		SetFinalBossStage();
+		break;
 	}
 }
 
@@ -1068,6 +1077,64 @@ void DevScene::SetStage1()
 	// Structure
 
 	// Item
+}
+
+void DevScene::SetStage2()
+{
+
+}
+
+void DevScene::SetStage3()
+{
+
+}
+
+void DevScene::SetFinalBossStage()
+{
+	// 임시 코드, 추후 수정 예정
+	
+	// 이전 스테이지 객체 삭제 (Player, UI 제외)
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+			for (Actor* actor : actors)
+				SAFE_DELETE(actor);
+		}
+	}
+
+	// Map
+	{
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"FinalBossStage");
+
+		const Vec2Int size = sprite->GetSize();
+		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
+		map->SetSprite(sprite);
+
+		GET_SINGLE(ValueManager)->SetMapSize(size);
+	}
+
+	// Tilemap
+	{
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"FinalBossStage");
+
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+	}
+
+	// Player
+	{
+		// Player가 없다면 생성
+		if (!_player)
+		{
+			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			_player = player;
+		}
+
+		_player->SetPos({ 400, 200 });
+	}
 }
 
 void DevScene::SaveCurData()
@@ -1181,16 +1248,6 @@ void DevScene::LoadGameData()
 	}
 
 	file.close();
-
-}
-
-void DevScene::SetStage2()
-{
-
-}
-
-void DevScene::SetStage3()
-{
 
 }
 
