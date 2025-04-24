@@ -323,6 +323,9 @@
     <ClInclude Include="FallingProjectile.h">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="DestructibleObject.h">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -543,6 +546,9 @@
     </ClCompile>
     <ClCompile Include="FallingProjectile.cpp">
       <Filter>소스 파일\03. Objects\Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="DestructibleObject.cpp">
+      <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

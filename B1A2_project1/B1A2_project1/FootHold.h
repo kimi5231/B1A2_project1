@@ -15,27 +15,6 @@ public:
 	virtual void Render(HDC hdc) override;
 
 protected:
-	virtual void TickIdle() {};
-	virtual void TickMove() {};
-	virtual void TickDuckDown() {};
-	virtual void TickDuckDownMove() {};
-	virtual void TickJump() {};
-	virtual void TickCloseAttack() {};
-	virtual void TickLongAttack() {};
-	virtual void TickThrust() {};
-	virtual void TickBackStep() {};
-	virtual void TickSlashWave() {};
-	virtual void TickSkill() {};
-	virtual void TickHang() {};
-	virtual void TickRelease() {};
-	virtual void TickHit() {};
-	virtual void TickDead() {};
-	virtual void TickChase() {};
-	virtual void TickRoaming() {};
-	virtual void TickDash() {};
-	virtual void TickReturn() {};
-	virtual void TickReturnIdle() {};
-
 	virtual void TickOn() {};
 	virtual void TickOn2();
 	virtual void TickOff() {};
@@ -79,26 +58,6 @@ public:
 	virtual void Render(HDC hdc) override;
 
 protected:
-	virtual void TickIdle() {};
-	virtual void TickMove() {};
-	virtual void TickDuckDown() {};
-	virtual void TickDuckDownMove() {};
-	virtual void TickJump() {};
-	virtual void TickCloseAttack() {};
-	virtual void TickLongAttack() {};
-	virtual void TickThrust() {};
-	virtual void TickBackStep() {};
-	virtual void TickSlashWave() {};
-	virtual void TickSkill() {};
-	virtual void TickHang() {};
-	virtual void TickRelease() {};
-	virtual void TickHit() {};
-	virtual void TickDead() {};
-	virtual void TickChase() {};
-	virtual void TickRoaming() {};
-	virtual void TickDash() {};
-	virtual void TickReturn() {};
-	virtual void TickReturnIdle() {};
 	virtual void UpdateAnimation();
 	
 	virtual void TickOff();

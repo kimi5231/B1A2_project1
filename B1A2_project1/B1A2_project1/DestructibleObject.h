@@ -3,12 +3,12 @@
 
 class Player;
 
-class BreakingWall : public Structure
+class DestructibleObject : public Structure
 {
 	using Super = Structure;
 public:
-	BreakingWall();
-	virtual ~BreakingWall() override;
+	DestructibleObject();
+	virtual ~DestructibleObject();
 
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
@@ -31,10 +31,10 @@ public:
 	void SetPlayer(Player* player) { _player = player; }
 
 private:
-	Flipbook* _flipbookWall = nullptr;
-	Flipbook* _flipbookBreakingWall = nullptr;
+	Flipbook* _flipbookObject = nullptr;
+	Flipbook* _flipbookBreakingObject = nullptr;
 
-	int32 _hp = 120;
+	int32 _hp = 80;
 
 	Player* _player = nullptr;
 };

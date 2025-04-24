@@ -75,6 +75,20 @@ public:
 		return object;
 	}
 
+	template<typename T, typename... Args>
+	T* SpawnObject(Vec2 pos, LAYER_TYPE layer, Args&&... args)
+	{
+		auto isActor = std::is_convertible_v<T*, Actor*>;
+		assert(isActor);
+
+		T* object = new T(std::forward<Args>(args)...);
+		object->SetPos(pos);
+		object->SetLayer(layer);
+		AddActor(object);
+
+		return object;
+	}
+
 private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
 	Inventory* _inventory = nullptr;

@@ -102,24 +102,32 @@ void DevScene::Init()
 	// Item
 	{
 		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-		// ø≠ºË
-		{
-			ItemActor* item = new ItemActor(310100, itemData->GetItems());
-			item->SetPos({ 500, 290 });		// ¿˚¥Á«— y ¡¬«• : 370, 200
-			item->SetLayer(LAYER_ITEM);
+		//// ø≠ºË
+		//{
+		//	ItemActor* item = new ItemActor(310100, itemData->GetItems());
+		//	item->SetPos({ 500, 290 });		// ¿˚¥Á«— y ¡¬«• : 370, 200
+		//	item->SetLayer(LAYER_ITEM);
 
-			AddActor(item);
+		//	AddActor(item);
+		//}
+		//// »˙≈€
+		//{
+		//	ItemActor* item = new ItemActor(300100, itemData->GetItems());
+		//	item->SetPos({ 400, 290 });
+		//	item->SetLayer(LAYER_ITEM);
+		//	
+		//	// »˙≈€ øπø‹ º≥¡§
+		//	item->SetFKeyState(FKeyState::Hidden);
+
+		//	AddActor(item);
+		//}
+
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 		}
-		// »˙≈€
 		{
-			ItemActor* item = new ItemActor(300100, itemData->GetItems());
-			item->SetPos({ 400, 290 });
-			item->SetLayer(LAYER_ITEM);
-			
-			// »˙≈€ øπø‹ º≥¡§
+			ItemActor* item = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 			item->SetFKeyState(FKeyState::Hidden);
-
-			AddActor(item);
 		}
 		
 	}
@@ -173,7 +181,7 @@ void DevScene::Init()
 			lockedDoorAndKey->SetItemPos({ 1800, 520 });
 		}
 
-		// BreakingWall
+		 // BreakingWall
 		//{
 		//	BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
 		//	breakingWall->SetPlayer(_player);
@@ -185,15 +193,15 @@ void DevScene::Init()
 		//}
 
 		// FootHoldAndZipLineButton
-		{
-			FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 700, 600 }, LAYER_STRUCTURE);
-			button->SetZipLinePos({500, 500});
-			button->SetZipLineBegin({ 800, 250 });
-			button->SetZipLineEnd({ 950, 170 });
+		//{
+		//	FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 700, 600 }, LAYER_STRUCTURE);
+		//	button->SetZipLinePos({500, 500});
+		//	button->SetZipLineBegin({ 800, 250 });
+		//	button->SetZipLineEnd({ 950, 170 });
 
-			FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
-			footHold->SetFootHoldAndZipLineButton(button);
-		}
+		//	FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
+		//	footHold->SetFootHoldAndZipLineButton(button);
+		//}
 	}
 
 	//{
@@ -203,12 +211,12 @@ void DevScene::Init()
 	//	LAM->SetMovementLimit({ 50, 350 });
 	//}
 
-	{
-		FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 500, 300 }, LAYER_MONSTER);
-		finalBoss->SetPlayer(_player);
-		finalBoss->SetSpawnDir(DIR_RIGHT);
-		finalBoss->SetSpawnPos({ 500, 300 });
-	}
+	//{
+	//	FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 500, 300 }, LAYER_MONSTER);
+	//	finalBoss->SetPlayer(_player);
+	//	finalBoss->SetSpawnDir(DIR_RIGHT);
+	//	finalBoss->SetSpawnPos({ 500, 300 });
+	//}
 
 	// Start Dialogue
 	/*{

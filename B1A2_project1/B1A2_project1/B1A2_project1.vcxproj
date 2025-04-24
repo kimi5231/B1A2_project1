@@ -168,6 +168,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Crystal.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="DestructibleObject.h" />
     <ClInclude Include="DevScene.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DialogueComponent.h" />
@@ -254,6 +255,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Crystal.cpp" />
+    <ClCompile Include="DestructibleObject.cpp" />
     <ClCompile Include="DevScene.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DialogueComponent.cpp" />

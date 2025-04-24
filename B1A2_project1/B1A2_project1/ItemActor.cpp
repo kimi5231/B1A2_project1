@@ -76,8 +76,6 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		AddComponent(collider);
 	}
-
-	SetFlipbook(_flipbookItemInMap);
 }
 
 ItemActor::~ItemActor()
@@ -87,6 +85,8 @@ ItemActor::~ItemActor()
 void ItemActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetFlipbook(_flipbookItemInMap);
 }
 
 void ItemActor::Tick()
