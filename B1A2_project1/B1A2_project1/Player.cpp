@@ -18,6 +18,7 @@
 #include "Flipbook.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
+#include "DestructibleObject.h"
 #include "Window.h"
 #include "FootHold.h"
 #include "Blanket.h"
@@ -957,6 +958,17 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 				_isCloseAtk = true;
 				AdjustCollisionPos(b1, b2);
 				return;
+			}
+		}
+
+		// DestructibleObject
+		{
+			DestructibleObject* destructibleObject = dynamic_cast<DestructibleObject*>(structure);
+
+			if (destructibleObject)
+			{
+				_isCloseAtk = true;
+				AdjustCollisionPos(b1, b2);
 			}
 		}
 

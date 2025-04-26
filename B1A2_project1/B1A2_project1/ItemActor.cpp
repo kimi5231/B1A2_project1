@@ -13,6 +13,8 @@
 
 ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& items)
 {
+	SetFKeyState(FKeyState::Show);
+
 	// items에서 item 정보 찾기
 	auto it = items.find(itemID);
 	if (it != items.end())
@@ -25,6 +27,7 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 		{
 		case 300100:
 			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
+			SetFKeyState(FKeyState::Hidden);
 			break;
 		case 310100:
 			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");

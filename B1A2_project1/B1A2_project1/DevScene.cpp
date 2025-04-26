@@ -41,6 +41,7 @@
 #include "Blanket.h"
 #include "LongAtkMonster.h"
 #include "FinalBoss.h"
+#include "DestructibleObject.h"
 
 DevScene::DevScene()
 {
@@ -102,34 +103,12 @@ void DevScene::Init()
 	// Item
 	{
 		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-		//// 열쇠
-		//{
-		//	ItemActor* item = new ItemActor(310100, itemData->GetItems());
-		//	item->SetPos({ 500, 290 });		// 적당한 y 좌표 : 370, 200
-		//	item->SetLayer(LAYER_ITEM);
 
-		//	AddActor(item);
-		//}
-		//// 힐템
-		//{
-		//	ItemActor* item = new ItemActor(300100, itemData->GetItems());
-		//	item->SetPos({ 400, 290 });
-		//	item->SetLayer(LAYER_ITEM);
-		//	
-		//	// 힐템 예외 설정
-		//	item->SetFKeyState(FKeyState::Hidden);
+		// Key
+		ItemActor* key = SpawnObject<ItemActor>({ 600, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
 
-		//	AddActor(item);
-		//}
-
-		{
-			ItemActor* item = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
-		}
-		{
-			ItemActor* item = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
-			item->SetFKeyState(FKeyState::Hidden);
-		}
-		
+		// 힐템
+		ItemActor* healITem = SpawnObject<ItemActor>({ 500, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 	}
 
 	// Monster
@@ -159,20 +138,20 @@ void DevScene::Init()
 	// Structure
 	{
 		 // ZipLine
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-			zipLine->SetBeginPos({ 500, 200 });
-			zipLine->SetEndPos({ 950, 150 });
-			zipLine->SetPlayer(_player);
+		//{
+		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
+		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+		//	zipLine->SetBeginPos({ 500, 200 });
+		//	zipLine->SetEndPos({ 950, 150 });
+		//	zipLine->SetPlayer(_player);
 
-			// Button이 필요 없는 짚라인은 아래 코드 작성X
-			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-			zipLineButtonAndDisplay->SetOwner(zipLine);
-			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
+		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+		//	zipLineButtonAndDisplay->SetOwner(zipLine);
+		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
+		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		//}
 
 		// LockedDoorAndKey
 		{
@@ -202,6 +181,12 @@ void DevScene::Init()
 		//	FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
 		//	footHold->SetFootHoldAndZipLineButton(button);
 		//}
+
+		// DestructibleObject
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 400, 290 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
 	}
 
 	//{
@@ -718,6 +703,27 @@ void DevScene::LoadStructure()
 
 			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOn");
 			fb2->SetInfo({ texture, L"FB_ZipLineButtonOn", {101, 116}, 0, 0, 1, 0.7f });
+		}
+
+		// DestructibleObject
+		{
+			// DestructibleObject
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"DestructibleObject", L"Sprite\\Structure\\DestructibleObject.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"DestructibleObject");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_DestructibleObject");
+				fb->SetInfo({ texture, L"FB_DestructibleObject", {120, 100}, 0, 0, 0, 0.7f });
+			}
+
+			// BreakingDestructibleObject
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingDestructibleObject", L"Sprite\\Structure\\BreakingDestructibleObject.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingDestructibleObject");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingDestructibleObject");
+				fb->SetInfo({ texture, L"FB_BreakingDestructibleObject", {120, 100}, 0, 2, 0, 0.7f });
+			}
 		}
 	}
 
