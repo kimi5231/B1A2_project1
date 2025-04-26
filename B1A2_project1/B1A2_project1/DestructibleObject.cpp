@@ -74,7 +74,7 @@ void DestructibleObject::TickDead()
 		std::mt19937 gen(rd()); // 시드 생성기
 		std::uniform_int_distribution<> dist(0, 1);
 
-		//if (dist(gen) == 1)
+		if (dist(gen) == 1)
 		{
 			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
