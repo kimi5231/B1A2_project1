@@ -58,8 +58,14 @@ void GameObject::Tick()
 	case ObjectState::SlashWave:
 		TickSlashWave();
 		break;
-	case ObjectState::Skill:
-		TickSkill();
+	case ObjectState::SkillReady:
+		TickSkillReady();
+		break;
+	case ObjectState::SkillWaiting:
+		TickSkillWaiting();
+		break;
+	case ObjectState::SkillEnd:
+		TickSkillEnd();
 		break;
 	case ObjectState::Hang:
 		TickHang();

@@ -270,7 +270,16 @@ void Player::TickIdle()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
-		SetState(ObjectState::Skill);
+		if (GetSkillPoint() >= 3)
+		{
+			SubtractSkillPoint(3);
+
+			_skillTimer = 2.0f;
+			_leftInputCount = 0;
+			_rightInputCount = 0;
+
+			SetState(ObjectState::SkillReady);
+		}
 	}
 	else
 	{
@@ -333,7 +342,7 @@ void Player::TickMove()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))	// Skill
 	{
-		SetState(ObjectState::Skill);
+		SetState(ObjectState::SkillReady);
 	}
 }
 
@@ -428,7 +437,6 @@ void Player::TickJump()
 	}
  }
 
-
 void Player::TickCloseAttack()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
@@ -496,26 +504,35 @@ void Player::TickLongAttack()
 	}
 }
 
-void Player::TickSkill()
+void Player::TickSkillReady()
 {
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_skillTimer -= GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	// 좌우 이동도 가능하도록 추가
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::A) && _leftInputCount < 5)
 	{
-		SetDir(DIR_LEFT);
-		_pos.x -= _playerStat->runSpeed * deltaTime;
+		_leftInputCount++;
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::D) && _rightInputCount < 5)
 	{
-		SetDir(DIR_RIGHT);
-		_pos.x += _playerStat->runSpeed * deltaTime;
+		_rightInputCount++;
 	}
 
-	// 스킬 코드 작성
-	// ...
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
+	{
+		SetState(ObjectState::SkillWaiting);
+	}
+	else if (_skillTimer <= 0)
+	{
+		SetState(ObjectState::SkillWaiting);
+	}
+}
 
-	SetState(ObjectState::Idle);
+void Player::TickSkillWaiting()
+{
+}
+
+void Player::TickSkillEnd()
+{
 }
 
 void Player::TickHang()
@@ -678,7 +695,7 @@ void Player::UpdateAnimation()
 		_playerCollider->SetSize({ 34, 88 });
 		SetFlipbook(_flipbookPlayerRelease[_dir]);
 		break;
-	case ObjectState::Skill:
+	case ObjectState::SkillReady:
 		//playerCollider->SetSize({})
 		//SetFlipbook(_flipbookPlayerSkill[_dir]);
 		break;
@@ -706,12 +723,28 @@ int32 Player::GetAttack()
 	switch (_state)
 	{
 	case ObjectState::CloseAttack:
-		return _playerStat->nAtkDamage;
+		if (GetSkillPoint() >= 5)
+		{
+			SubtractSkillPoint(3);
+			return _playerStat->nAtkDamage * 1.5f;
+		}
+		else
+		{
+			return _playerStat->nAtkDamage;
+		}
 		break;
 	case ObjectState::LongAttack:
-		return _playerStat->nAtkDamage;
+		if (GetSkillPoint() >= 5)
+		{
+			SubtractSkillPoint(3);
+			return _playerStat->nAtkDamage * 1.5f;
+		}
+		else
+		{
+			return _playerStat->nAtkDamage;
+		}
 		break;
-	case ObjectState::Skill:
+	case ObjectState::SkillReady:
 		return _playerStat->skillDamage;
 		break;
 	}

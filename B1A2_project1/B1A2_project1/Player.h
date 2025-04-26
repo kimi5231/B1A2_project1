@@ -88,7 +88,9 @@ private:
 	virtual void TickJump() override;
 	virtual void TickCloseAttack() override;
 	virtual void TickLongAttack() override;
-	virtual void TickSkill() override;
+	virtual void TickSkillReady() override;
+	virtual void TickSkillWaiting() override;
+	virtual void TickSkillEnd() override;
 	virtual void TickHang() override;
 	virtual void TickRelease() override;
 	virtual void TickHit() override;
@@ -197,5 +199,10 @@ private:
 	bool _isInWindow = false;
 	bool _damagedByWindow = false;	
 	bool _isReleaseInMid = false;
+
+	// Skill
+	float _skillTimer = 0.f;
+	int32 _leftInputCount = 0;
+	int32 _rightInputCount = 0;
 };
 

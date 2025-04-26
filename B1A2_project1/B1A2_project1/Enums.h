@@ -127,7 +127,9 @@ enum class ObjectState
 	Thrust,		// 찌르기
 	BackStep,	// 백스텝
 	SlashWave,	// 검기 날리기
-	Skill,	// 스킬
+	SkillReady,	// 스킬
+	SkillWaiting,
+	SkillEnd,
 	Hang,	// 매달리기
 	Release,	// 놓기
 	Hit,	// 피격

@@ -23,7 +23,9 @@ protected:
 	virtual void TickThrust() {};
 	virtual void TickBackStep() {};
 	virtual void TickSlashWave() {};
-	virtual void TickSkill() {};
+	virtual void TickSkillReady() {};
+	virtual void TickSkillWaiting() {};
+	virtual void TickSkillEnd() {};
 	virtual void TickHang() {};
 	virtual void TickRelease() {};
 	virtual void TickHit() {};

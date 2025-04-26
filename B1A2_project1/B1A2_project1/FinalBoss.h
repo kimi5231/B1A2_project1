@@ -84,7 +84,6 @@ protected:
 	virtual void TickJump() override {};
 	virtual void TickCloseAttack() override {};
 	virtual void TickLongAttack() override {};
-	virtual void TickSkill() override {};
 	virtual void TickHit() override {};
 	virtual void TickDead() override {};
 	virtual void TickChase() override {};
