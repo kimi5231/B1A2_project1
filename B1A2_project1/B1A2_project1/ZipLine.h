@@ -49,8 +49,8 @@ public:
 	void SetPlayer(Player* player) { _player = player; }
 	Player* GetPlayer() { return _player; }
 private:
-	Flipbook* _flipbookZipLine = nullptr;
-	Flipbook* _flipbookZipLineGrip = nullptr;
+	Flipbook* _flipbookZipLineOff = nullptr;
+	Flipbook* _flipbookZipLineOn = nullptr;
 
 	ZipLineType _zipLineType;
 

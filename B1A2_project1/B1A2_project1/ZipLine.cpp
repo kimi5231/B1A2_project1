@@ -13,7 +13,8 @@
 ZipLine::ZipLine()
 {
 	// Flipbook
-	_flipbookZipLine = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
+	_flipbookZipLineOff = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
+	_flipbookZipLineOn = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
 
 	// Collider
 	{
@@ -58,10 +59,10 @@ void ZipLine::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::On:
-		SetFlipbook(_flipbookZipLine);
+		SetFlipbook(_flipbookZipLineOn);
 		break;
 	case ObjectState::Off:
-		SetFlipbook(_flipbookZipLine);
+		SetFlipbook(_flipbookZipLineOff);
 		break;
 	}
 }

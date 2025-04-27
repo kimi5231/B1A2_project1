@@ -138,20 +138,20 @@ void DevScene::Init()
 	// Structure
 	{
 		 // ZipLine
-		//{
-		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
-		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-		//	zipLine->SetBeginPos({ 500, 200 });
-		//	zipLine->SetEndPos({ 950, 150 });
-		//	zipLine->SetPlayer(_player);
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetBeginPos({ 500, 200 });
+			zipLine->SetEndPos({ 950, 150 });
+			zipLine->SetPlayer(_player);
 
-		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
-		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-		//	zipLineButtonAndDisplay->SetOwner(zipLine);
-		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+			// Button이 필요 없는 짚라인은 아래 코드 작성X
+			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+			zipLineButtonAndDisplay->SetOwner(zipLine);
+			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		//}
+			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		}
 
 		// LockedDoorAndKey
 		{
@@ -424,11 +424,11 @@ void DevScene::LoadPlayer()
 
 		// Right
 		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHangRight");
-		fb1->SetInfo({ texture, L"FB_PlayerHangRight", {30, 85}, 0, 0, 0, 0.7f });
+		fb1->SetInfo({ texture, L"FB_PlayerHangRight", {30, 92}, 0, 0, 0, 0.7f });
 
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHangLeft");
-		fb2->SetInfo({ texture, L"FB_PlayerHangLeft", {30, 85}, 0, 0, 1, 0.7f });
+		fb2->SetInfo({ texture, L"FB_PlayerHangLeft", {30, 92}, 0, 0, 1, 0.7f });
 	}
 
 	// Release
