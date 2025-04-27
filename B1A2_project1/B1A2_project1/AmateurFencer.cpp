@@ -265,14 +265,24 @@ BehaviorState AmateurFencer::is_cur_state_hit()
 
 BehaviorState AmateurFencer::Hit()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	// knockback
 	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->knockBackDistance;
+		_pos.x -= (_stat->knockBackDistance * 2) * deltaTime;
 	else
-		_pos.x += _stat->knockBackDistance;
+		_pos.x += (_stat->knockBackDistance * 2) * deltaTime;
 
-	SetState(ObjectState::Chase);
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Chase);
+		
+		return BehaviorState::SUCCESS;
+	}
 
-	return BehaviorState::SUCCESS;
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState AmateurFencer::is_cur_state_chase()
@@ -290,9 +300,9 @@ BehaviorState AmateurFencer::Chase()
 	float yDistance = GetAbsFromPlayerYDistance();
 	
 	// Chase 유지
-	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+	if (xDistance > _stat->closeAtkRange && xDistance <= _stat->playerDetection.x)
 	{
-		if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
+		if (yDistance > _stat->playerDetection.y)
 		{
 			if (_dir == DIR_RIGHT)
 				_pos.x += _stat->speed * deltaTime;
@@ -304,12 +314,12 @@ BehaviorState AmateurFencer::Chase()
 	}
 	
 	// 근거리 or 원거리 공격
-	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
+	if (xDistance <= _stat->closeAtkRange)
 	{
 		SetState(ObjectState::Thrust);
 		return BehaviorState::SUCCESS;
 	}
-	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRange) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+	else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
 	{
 		SetState(ObjectState::SlashWave);
 		return BehaviorState::SUCCESS;
@@ -351,6 +361,8 @@ BehaviorState AmateurFencer::Thrust()	// 찌르기
 		SetState(ObjectState::BackStep);
 		return BehaviorState::SUCCESS;
 	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState AmateurFencer::is_cur_state_backstep()

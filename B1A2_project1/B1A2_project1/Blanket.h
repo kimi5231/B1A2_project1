@@ -1,6 +1,8 @@
 #pragma once
 #include "Projectile.h"
 
+class BoxCollider;
+
 class Blanket : public Projectile
 {
 	using Super = Projectile;
@@ -29,6 +31,8 @@ private:
 	Flipbook* _flipbookBlanket;
 
 	float _sumTime = 0.f;
+
+	BoxCollider* _collider;
 };
 
  

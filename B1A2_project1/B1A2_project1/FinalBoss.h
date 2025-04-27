@@ -77,7 +77,6 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
-
 protected:
 	virtual void TickIdle() override {};
 	virtual void TickMove() override {};
@@ -106,7 +105,11 @@ public:
 	BehaviorState is_cur_state_idle();
 	BehaviorState Idle();
 
+	//  Chase Sequeuce
+	BehaviorState is_cur_state_chase();
+	BehaviorState Chase();
 	// Hit Sequeucne
+
 	BehaviorState is_cur_state_hit();
 	BehaviorState Hit();
 
@@ -115,8 +118,6 @@ public:
 	BehaviorState Dead();
 
 	// 수정 소환 Sequence
-	BehaviorState is_cur_state_projectile_fall();
-	BehaviorState ProjectileFall();
 	BehaviorState is_cur_state_crystal_creation();
 	BehaviorState CrystalCreation();
 
@@ -167,9 +168,13 @@ public:
 
 	void SubtractCurrentCrystalCount(int32) { _currentCrystalCount--; }
 
+	void UpdatePlayerFloor();
+	void UpdateBossFloor();
+
 private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
+	Flipbook* _flipbookChase[2] = {};
 	Flipbook* _flipbookHit[2] = {};
 	Flipbook* _flipbookDead[2] = {};
 	// 수정 소환 & 몬스터 소환 Flipbook은 Idle로 임시 설정
@@ -196,9 +201,15 @@ private:
 	int32 _currentMonsterCreationCount = 0;		// 생성할 때
 	int32 _currentMonsterCount = 0;		// 생성 후
 	int32 _currentCrystalCount = 0;
-	float _sumTime = 0.f;
 
-	bool _isPlayerInSameFloor = false;		// 추적해야 함!
+	float _sumTime = 0.f;
+	float _hpSumTime = 0.f;
+	float _projectileSumTime = 0.f;
+	float _blancketSumTime = 0.f;
+	float _monsterCreationSumTime = 0.f;
+
+	int32 _playerFloor = 0;
+	int32 _bossFloor = 0;
 
 	bool _isFirstCrystalCreationWork = false;
 	bool _isSecondCrystalCreationWork = false;

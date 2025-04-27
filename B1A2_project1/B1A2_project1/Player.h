@@ -10,6 +10,7 @@ class LockedDoorAndKey;
 class Window;
 class FootHoldAndZipLineButton;
 class DevScene;
+class Projectile;
 
 struct PlayerStat
 {
@@ -102,6 +103,7 @@ public:
 	virtual float GetSpeed() override;
 
 	virtual void OnDamaged(Creature* other);
+	void OnDamagedByProjectile(Projectile* projectile);
 
 	// Hp 바뀔 때
 	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입

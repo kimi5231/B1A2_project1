@@ -6,6 +6,7 @@
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
+#include "CollisionManager.h"
 
 Blanket::Blanket()
 {
@@ -16,6 +17,8 @@ Blanket::Blanket()
 		// Projectile
 		{
 			BoxCollider* collider = new BoxCollider();
+			_collider = collider;
+
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_PROJECTILE);
 
@@ -27,6 +30,9 @@ Blanket::Blanket()
 			AddComponent(collider);
 		}
 	}
+
+	// 공격력 수정 필요
+	SetAttack(5);
 
 	SetState(ObjectState::On);
 }
@@ -50,7 +56,11 @@ void Blanket::Tick()
 	_sumTime += deltaTime;
 
 	if (_sumTime >= 5.f)
-	{
+	{	
+		_sumTime - 0.f;
+
+		GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+
 		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
 	}

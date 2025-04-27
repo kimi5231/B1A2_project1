@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -102,13 +102,13 @@ void DevScene::Init()
 
 	// Item
 	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		//Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		// Key
-		ItemActor* key = SpawnObject<ItemActor>({ 600, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
+		//// Key
+		//ItemActor* key = SpawnObject<ItemActor>({ 600, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
 
-		// 힐템
-		ItemActor* healITem = SpawnObject<ItemActor>({ 500, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
+		//// 힐템
+		//ItemActor* healITem = SpawnObject<ItemActor>({ 500, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 	}
 
 	// Monster
@@ -125,10 +125,10 @@ void DevScene::Init()
 		//	AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
 		//	AF->SetSpawnDir(DIR_RIGHT);
 		//	AF->SetSpawnPos({ 1200, 300 });
-		//	//AF->SetMoveDistance();
+		//	AF->SetMoveDistance();
 		//	AF->SetMovementLimit({ 960, 2000 });
 
-		//	// Player 설정
+		//	 Player 설정
 		//	AF->_player = _player;
 
 		//	_monsterHpData[20301] = 100;
@@ -138,27 +138,27 @@ void DevScene::Init()
 	// Structure
 	{
 		 // ZipLine
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-			zipLine->SetBeginPos({ 500, 200 });
-			zipLine->SetEndPos({ 950, 150 });
-			zipLine->SetPlayer(_player);
+		//{
+		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
+		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+		//	zipLine->SetBeginPos({ 500, 200 });
+		//	zipLine->SetEndPos({ 950, 150 });
+		//	zipLine->SetPlayer(_player);
 
-			// Button이 필요 없는 짚라인은 아래 코드 작성X
-			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-			zipLineButtonAndDisplay->SetOwner(zipLine);
-			zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
+		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
+		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
+		//	zipLineButtonAndDisplay->SetOwner(zipLine);
+		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
 
-			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
+		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		//}
 
 		// LockedDoorAndKey
-		{
-			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
+		//{
+		//	LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
 
-			lockedDoorAndKey->SetItemPos({ 1800, 520 });
-		}
+		//	lockedDoorAndKey->SetItemPos({ 1800, 520 });
+		//}
 
 		 // BreakingWall
 		//{
@@ -183,10 +183,10 @@ void DevScene::Init()
 		//}
 
 		// DestructibleObject
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 400, 290 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
+		//{
+		//	DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 400, 290 }, LAYER_STRUCTURE);
+		//	destructibleObject->SetPlayer(_player);
+		//}
 	}
 
 	//{
@@ -194,13 +194,6 @@ void DevScene::Init()
 	//	LAM->SetSpawnDir(DIR_LEFT);
 	//	LAM->SetSpawnPos({ 200, 300 });
 	//	LAM->SetMovementLimit({ 50, 350 });
-	//}
-
-	//{
-	//	FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 500, 300 }, LAYER_MONSTER);
-	//	finalBoss->SetPlayer(_player);
-	//	finalBoss->SetSpawnDir(DIR_RIGHT);
-	//	finalBoss->SetSpawnPos({ 500, 300 });
 	//}
 
 	// Start Dialogue
@@ -586,11 +579,11 @@ void DevScene::LoadMonster()
 
 	// FB
 	{
-	/*	GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss", L"Sprite\\Monster\\FinalBoss.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss", L"Sprite\\Monster\\FinalBoss.bmp", RGB(55, 255, 0));
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBoss");
-		fb->SetInfo({ texture, L"FB_FinalBoss", {25, 85}, 0, 0, 0, 0.7f });*/
+		fb->SetInfo({ texture, L"FB_FinalBoss", {25, 85}, 0, 0, 0, 0.7f });
 	}
 }
 
@@ -1143,11 +1136,19 @@ void DevScene::SetFinalBossStage()
 		// Player가 없다면 생성
 		if (!_player)
 		{
-			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			Player* player = SpawnObject<Player>({ 200, 520 }, LAYER_PLAYER);
 			_player = player;
 		}
 
-		_player->SetPos({ 400, 200 });
+		_player->SetPos({ 200, 520 });
+	}
+
+	// FinalBoss
+	{
+		FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 1000, 520 }, LAYER_MONSTER);
+		finalBoss->SetPlayer(_player);
+		finalBoss->SetSpawnDir(DIR_RIGHT);
+		finalBoss->SetMovementLimit({ 50, 1200 });	// 수정 필요
 	}
 }
 

@@ -22,6 +22,8 @@
 #include "Window.h"
 #include "FootHold.h"
 #include "Blanket.h"
+#include "Projectile.h"
+
 #include "Crystal.h"
 
 Player::Player()
@@ -785,6 +787,26 @@ void Player::OnDamaged(Creature* other)
 	SetState(ObjectState::Hit);
 }
 
+void Player::OnDamagedByProjectile(Projectile* projectile)
+{
+	int damage = projectile->GetAttack();
+
+	if (damage <= 0)
+		return;
+
+	// 체력 감소 함수 호출
+	SubtractHealthPoint(damage);
+
+	// 체력이 다 닳으면 사망
+	if (_playerStat->commonStat.hp == 0)
+	{
+		SetState(ObjectState::Dead);
+		return;
+	}
+
+	SetState(ObjectState::Hit);
+}
+
 void Player::SetHealthPoint(int hp)
 {
 	_playerStat->commonStat.hp = 100;
@@ -1059,8 +1081,8 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			Blanket* blanket = dynamic_cast<Blanket*>(projectile);
 			if (blanket)
 			{
-				//Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
-				//OnDamaged(otherOwner);
+				Projectile* projectile = dynamic_cast<Projectile*>(b2->GetOwner());
+				OnDamagedByProjectile(projectile);
 
 				return;
 			}

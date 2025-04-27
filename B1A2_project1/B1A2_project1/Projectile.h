@@ -24,6 +24,7 @@ public:
 public:
 	void SetSpeed(float speed) { _speed = speed; }
 	void SetAttack(int32 attack) { _attack = attack; }
+	int32 GetAttack() { return _attack; }
 	void SetRange(int32 range) { _range = range; }
 	void SetOwner(Creature* owner) { _owner = owner; }
 
