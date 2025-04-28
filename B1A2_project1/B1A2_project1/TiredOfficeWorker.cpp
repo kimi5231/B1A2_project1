@@ -17,7 +17,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 	CalPixelPerSecond();
 
-	// SetFlipbook
+	// Set Flipbook
 	{
 		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleRight");
 		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleLeft");
@@ -82,16 +82,6 @@ void TiredOfficeWorker::BeginPlay()
 void TiredOfficeWorker::Tick()
 {
 	Super::Tick();
-
-	if (_state != ObjectState::CloseAttack)
-	{
-		if (_attackCollider)
-		{
-			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
-			RemoveComponent(_attackCollider);
-			_attackCollider = nullptr;
-		}
-	}
 }
 
 void TiredOfficeWorker::Render(HDC hdc)
@@ -122,7 +112,7 @@ void TiredOfficeWorker::TickCloseAttack()
 
 		collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-		collider->SetSize({ 50, 50 });
+		collider->SetSize({ 75, 65 });
 
 		_attackCollider = collider;
 
@@ -131,29 +121,37 @@ void TiredOfficeWorker::TickCloseAttack()
 	}
 	
 	// 마지막 공격 모션일 때
-	if (GetIdx() == 0)
+	if (GetIdx() == 4)
 	{
-		// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
-		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+		// 공격 범위 체크 (코드 정리 필요)
+		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange.x &&
+			_target->GetPos().y >= _pos.y - (_stat->attackRange.y / 2) &&
+			_target->GetPos().y <= _pos.y + (_stat->attackRange.y / 2))
 			SetState(ObjectState::CloseAttack);
 		else
 		{
 			_sumTime = 0.f;
 			SetState(ObjectState::Chase);
 		}
+
+		// Monster Attack Collider 삭제
+		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+		RemoveComponent(_attackCollider);
+		_attackCollider = nullptr;
 	}
 }
 
 void TiredOfficeWorker::TickHit()
 {
-	// knockback
-	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->knockBackDistance;
-	else
-		_pos.x += _stat->knockBackDistance;
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	_sumTime = 0.f;
-	SetState(ObjectState::Chase);
+	// 스턴이 끝나면 Chase으로 변경
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Chase);
+	}
 }
 
 void TiredOfficeWorker::TickDead()
@@ -208,8 +206,10 @@ void TiredOfficeWorker::TickChase()
 			SetState(ObjectState::Return);
 	}
 
-	// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
-	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+	// 공격 범위 체크 (코드 정리 필요)
+	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange.x && 
+		_target->GetPos().y >= _pos.y - (_stat->attackRange.y / 2) &&
+		_target->GetPos().y <= _pos.y + (_stat->attackRange.y / 2))
 		SetState(ObjectState::CloseAttack);
 }
 
@@ -314,7 +314,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	// 피격 >> 추적
+	// 피격 > 추적
 
 	// 부딪힌 자신의 collider가 CLT_MONSTER일 때
 	if (b1->GetCollisionLayer() == CLT_MONSTER)
@@ -325,6 +325,12 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
+			
+			// knockback
+			if (_dir == DIR_RIGHT)
+				_pos.x -= _stat->knockBackDistance;
+			else
+				_pos.x += _stat->knockBackDistance;
 		}
 		else if (b2->GetCollisionLayer() == CLT_PLAYER_SKILL)
 		{

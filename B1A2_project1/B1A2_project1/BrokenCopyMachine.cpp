@@ -10,22 +10,23 @@
 
 BrokenCopyMachine::BrokenCopyMachine()
 {
+	// Set Stat
 	BrokenCopyMachineStat* brokenCopyMachineStat = new BrokenCopyMachineStat();
 	brokenCopyMachineStat = GET_SINGLE(ResourceManager)->LoadBrokenCopyMachineStat(L"DataBase\\brokenCopyMachineStat.csv");
 	_stat = brokenCopyMachineStat;
 
 	CalPixelPerSecond();
 
-	// SetFlipbook
+	// Set Flipbook
 	{
-		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookLongAttack[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookLongAttack[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineIdleRight");
+		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineIdleLeft");
+		_flipbookLongAttack[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineLongAttackRight");
+		_flipbookLongAttack[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineLongAttackLeft");
+		_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineHitRight");
+		_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineHitLeft");
+		_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineDeadRight");
+		_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineDeadLeft");
 	}
 
 	// Collider Component
@@ -36,7 +37,9 @@ BrokenCopyMachine::BrokenCopyMachine()
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_MONSTER);
 
-			collider->SetSize({ 55, 55 });
+			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
+
+			collider->SetSize({ 40, 55 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
@@ -97,8 +100,15 @@ void BrokenCopyMachine::TickLongAttack()
 
 void BrokenCopyMachine::TickHit()
 {
-	_sumTime = 0.f;
-	SetState(ObjectState::Idle);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	// 스턴이 끝나면 Idle로 변경
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Idle);
+	}
 }
 
 void BrokenCopyMachine::TickDead()
@@ -149,7 +159,7 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 
 	// Player Attack과 충돌
 	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
-	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);

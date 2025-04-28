@@ -3,14 +3,13 @@
 
 struct TiredOfficeWorkerStat
 {
-	int32 id;	// A
-	int32 hp;	// B
-	float healtemDropRate;	// C
-	float speed;	// D
-	float chaseSpeed;	// E
-	Vec2Int playerDetection;	// F, G
-	int32 knockBackDistance; // H
-	int32 attackRange;	// I
+	int32 hp;	// A
+	float healtemDropRate;	// B
+	float speed;	// B
+	float chaseSpeed;	// D
+	Vec2Int playerDetection;	// E, F
+	int32 knockBackDistance; // G
+	Vec2Int attackRange;	// H, I
 	int32 attack;	// J
 	float idleTime;	// K
 
@@ -31,15 +30,15 @@ struct TiredOfficeWorkerStat
 			{
 				switch (column)
 				{
-				case 0:this->id = std::stoi(cell); break;	// A
-				case 1: this->hp = std::stoi(cell); break;	// B
-				case 2: this->healtemDropRate = std::stof(cell); break;	// C
-				case 3: this->speed = std::stof(cell); break;	// D
-				case 4: this->chaseSpeed = std::stof(cell); break;	// E
-				case 5: this->playerDetection.x = std::stoi(cell); break;	// F
-				case 6: this->playerDetection.y = std::stoi(cell); break;	// G
-				case 7: this->knockBackDistance = std::stoi(cell); break;	// H
-				case 8: this->attackRange = std::stoi(cell); break;	// I
+				case 0: this->hp = std::stoi(cell); break;	// A
+				case 1: this->healtemDropRate = std::stof(cell); break;	// B
+				case 2: this->speed = std::stof(cell); break;	// C
+				case 3: this->chaseSpeed = std::stof(cell); break;	// D
+				case 4: this->playerDetection.x = std::stoi(cell); break;	// E
+				case 5: this->playerDetection.y = std::stoi(cell); break;	// F
+				case 6: this->knockBackDistance = std::stoi(cell); break;	// G
+				case 7: this->attackRange.x = std::stoi(cell); break;	// H
+				case 8: this->attackRange.y = std::stoi(cell); break;	// I
 				case 9: this->attack = std::stoi(cell); break;	// J
 				case 10: this->idleTime = std::stof(cell); break;	// K
 				}
