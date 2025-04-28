@@ -145,7 +145,7 @@ void TiredOfficeWorker::TickHit()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
 
-	// 스턴이 끝나면 추적으로 변경
+	// 스턴이 끝나면 Chase으로 변경
 	if (_sumTime >= 0.5f)
 	{
 		_sumTime = 0.f;

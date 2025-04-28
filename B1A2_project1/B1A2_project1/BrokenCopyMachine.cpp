@@ -37,6 +37,8 @@ BrokenCopyMachine::BrokenCopyMachine()
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_MONSTER);
 
+			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
+
 			collider->SetSize({ 40, 55 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
@@ -98,8 +100,15 @@ void BrokenCopyMachine::TickLongAttack()
 
 void BrokenCopyMachine::TickHit()
 {
-	_sumTime = 0.f;
-	SetState(ObjectState::Idle);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	// 스턴이 끝나면 Idle로 변경
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Idle);
+	}
 }
 
 void BrokenCopyMachine::TickDead()
@@ -150,7 +159,7 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 
 	// Player Attack과 충돌
 	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
-	if (b2->GetCollisionLayer() == CLT_PLAYER)
+	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
