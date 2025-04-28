@@ -48,9 +48,10 @@ enum COLLISION_LAYER_TYPE : uint8
 	CLT_DETECT,		// 8
 	CLT_MONSTER_ATTACK,	// 9
 	CLT_PLAYER_ATTACK,	// 10 
+	CLT_PLAYER_SKILL,
 
-	CLT_STRUCTURE,	// 11 - 예. 짚라인 버튼
-	CLT_STRUCTURE_DETECT, // 12 - 예. 짚라인
+	CLT_STRUCTURE,	// 12 - 예. 짚라인 버튼
+	CLT_STRUCTURE_DETECT, // 13 - 예. 짚라인
 
 	CLT_NONE,		
 };

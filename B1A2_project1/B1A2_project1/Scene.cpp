@@ -5,6 +5,7 @@
 #include "Panel.h"
 #include "Actor.h"
 #include "CollisionManager.h"
+#include "Player.h"
 
 Scene::Scene()
 {
@@ -46,9 +47,30 @@ void Scene::Update()
 	for (int i = 0; i < LAYER_MAXCOUNT; ++i)
 		actorsCopy[i] = _actors[i];
 
-	for (const std::vector<Actor*>& actors : actorsCopy) {
-		for (Actor* actor : actors)
+	// Player 찾기
+	Player* player = nullptr;
+	for (Actor* actor : actorsCopy[LAYER_PLAYER])
+	{
+		player = dynamic_cast<Player*>(actor);
+		if (player)
+			break;
+	}
+
+	bool isSkillActive = player ? player->isSkillActive() : false;
+
+	for (int i = 0; i < LAYER_MAXCOUNT; ++i)
+	{
+		for (Actor* actor : actorsCopy[i])
+		{
+			// Monster와 Projectile이면 스킬 중에 Skip
+			if (isSkillActive)
+			{
+				if (i == LAYER_MONSTER || i == LAYER_PROJECTILE)
+					continue;
+			}
+
 			actor->Tick();
+		}
 	}
 
 	for (Panel* panel : _panels)

@@ -68,7 +68,6 @@ void DestructibleObject::TickDead()
 	{
 		_player->SetIsCloseAtk(false);
 
-
 		// 아이템 
 		std::random_device rd;
 		std::mt19937 gen(rd()); // 시드 생성기

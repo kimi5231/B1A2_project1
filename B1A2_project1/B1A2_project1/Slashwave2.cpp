@@ -10,7 +10,7 @@
 
 SlashwaveW::SlashwaveW()
 {
-	_flipbookW = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashwaveW");
+	_flipbookW = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveW");
 
 	// Collider
 	{
@@ -102,7 +102,7 @@ void SlashwaveW::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 SlashwaveH::SlashwaveH()
 {
-	_flipbookH = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashwaveH");
+	_flipbookH = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveH");
 
 	// Collider
 	{

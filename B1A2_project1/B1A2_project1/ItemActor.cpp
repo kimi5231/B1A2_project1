@@ -65,7 +65,6 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 	// F_key
 	_flipbookFKey = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_Fkey");
 
-
 	// Collider
 	{
 		BoxCollider* collider = new BoxCollider();
@@ -74,7 +73,10 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 		collider->SetCollisionLayer(CLT_ITEM);
 		collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-		collider->SetSize({ 120, 55 });
+		if (itemID == 300100)
+			collider->SetSize({ 10, 55 });
+		else
+			collider->SetSize({ 120, 55 });
 
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		AddComponent(collider);

@@ -94,7 +94,7 @@ protected:
 
 public:
 	virtual int32 GetAttack() override;
-	virtual int32& GetHp() override { return _commonStat.hp; }
+	virtual int32& GetHp() override { return _stat->commonStat.hp; }
 	virtual float GetSpeed() override { return _stat->speed; };
 	virtual Vec2Int GetPlayerDetection() { return { 0, 0 }; }
 
@@ -120,10 +120,6 @@ public:
 	// 수정 소환 Sequence
 	BehaviorState is_cur_state_crystal_creation();
 	BehaviorState CrystalCreation();
-
-	// 몬스터 소환 Sequence
-	BehaviorState is_cur_state_monster_creation();
-	BehaviorState MonsterCreation();
 
 	// CloseAtk Sequence
 	BehaviorState is_cur_state_thrust();
@@ -171,6 +167,7 @@ public:
 	void UpdatePlayerFloor();
 	void UpdateBossFloor();
 
+	void UpdateMovementLimit();
 private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
@@ -203,19 +200,29 @@ private:
 	int32 _currentCrystalCount = 0;
 
 	float _sumTime = 0.f;
+	float _IdlesumTime = 0.f;
+	float _dashTeleportSumTime = 0.f;
+	float _crystalCreationSumTime = 0.f;
 	float _hpSumTime = 0.f;
 	float _projectileSumTime = 0.f;
 	float _blancketSumTime = 0.f;
 	float _monsterCreationSumTime = 0.f;
+	float _monsterIdleSumTime = 0.f;
 
 	int32 _playerFloor = 0;
 	int32 _bossFloor = 0;
+	float _firstFloorYpos = 550;
+	float _secondFloorYPos = 370;
+	float _thirdFloorYPos = 260;
 
 	bool _isFirstCrystalCreationWork = false;
 	bool _isSecondCrystalCreationWork = false;
 	bool _isThirdCrystalCreationWork = false;
 
 	bool _isCrystalSpawned = false;
+
+	bool _isMonsterCreation = false;
+
 public:
 	Player* _player;
 };

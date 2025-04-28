@@ -43,6 +43,7 @@ public:
 
 protected:
 	virtual void OnDamaged(Creature* other);
+	virtual void OnDamagedNoHit(Creature* other);
 	
 protected:
 	CommonStat _commonStat;

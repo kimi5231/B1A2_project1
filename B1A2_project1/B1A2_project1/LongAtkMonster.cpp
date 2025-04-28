@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "CollisionManager.h"
+#include "ItemActor.h"
 
 LongAtkMonster::LongAtkMonster()
 {
@@ -32,6 +33,8 @@ LongAtkMonster::LongAtkMonster()
 		// Monster Collider
 		{
 			BoxCollider* collider = new BoxCollider();
+			_collider = collider;
+
 			collider->ResetCollisionFlag();
 			collider->SetCollisionLayer(CLT_MONSTER);
 
@@ -61,8 +64,11 @@ void LongAtkMonster::Tick()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_creationTime += deltaTime;
 
+	// 일정 시간 지나면 자동으로 삭제 
 	if (_creationTime > 10.f)
 	{
+		GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+
 		// 추후 GameScene으로 변경
 		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
@@ -130,20 +136,13 @@ void LongAtkMonster::TickHit()
 
 void LongAtkMonster::TickDead()
 {
-	// 난수 생성
-	std::random_device rd;
-	std::default_random_engine dre{ rd() };
-	std::uniform_real_distribution urd{ 0.f, 1.f };
-
-	// 아이템 드랍
-	if (urd(dre) <= _stat->healtemDropRate)
-	{
-		// 힐템 생성 코드 추가 예정
-	}
+	// 힐템 드랍
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+	ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 
 	// 객체 제거
 	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 	scene->RemoveActor(this);
 }
 

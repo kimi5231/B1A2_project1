@@ -70,5 +70,7 @@ private:
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
 	float _creationTime = 0.f;
+
+	Collider* _collider = nullptr;
 };
 

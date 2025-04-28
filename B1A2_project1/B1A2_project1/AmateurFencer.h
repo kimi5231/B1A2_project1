@@ -91,8 +91,8 @@ protected:
 
 public:
 	virtual int32 GetAttack() override;
-	virtual int32& GetHp() override { return _commonStat.hp; }	
-	virtual float GetSpeed() override { return _stat->speed; };
+	virtual int32& GetHp() override { return _stat->commonStat.hp; }
+	virtual float GetSpeed() override { return _stat->speed; }
 
 public:
 	void CalPixelPerSecond();

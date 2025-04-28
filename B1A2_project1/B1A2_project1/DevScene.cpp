@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(1);
 
 	// Inventory
 	{
@@ -345,6 +345,9 @@ void DevScene::LoadPlayer()
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerRelease", L"Sprite\\Player\\PlayerRelease.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSlash", L"Sprite\\Player\\PlayerSlash.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerHit", L"Sprite\\Player\\PlayerHit.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSkillReady", L"Sprite\\Player\\PlayerSkillReady.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSkillWaiting", L"Sprite\\Player\\PlayerSkillWaiting.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSkillEnd", L"Sprite\\Player\\PlayerSkillEnd.bmp", RGB(55, 255, 0));
 
 	// Idle
 	{
@@ -462,6 +465,49 @@ void DevScene::LoadPlayer()
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerHitLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerHitLeft", {41, 80}, 0, 0, 1, 0.7f });
 	}
+
+	// Skill
+	{
+		// Skill Ready
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerSkillReady");
+
+			// Right
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillReadyRight");
+			fb1->SetInfo({ texture, L"FB_PlayerSkillReadyRight", {140, 85}, 0, 2, 0, 0.7f });
+
+			// Left
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillReadyLeft");
+			fb2->SetInfo({ texture, L"FB_PlayerSkillReadyLeft", {140, 85}, 0, 2, 1, 0.7f });
+		}
+
+		// Skill Waiting
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerSkillWaiting");
+
+			// Right
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillWaitingRight");
+			fb1->SetInfo({ texture, L"FB_PlayerSkillWaitingRight", {140, 85}, 0, 0, 0, 0.7f });
+
+			// Left
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillWaitingLeft");
+			fb2->SetInfo({ texture, L"FB_PlayerSkillWaitingLeft", {140, 85}, 0, 0, 1, 0.7f });
+		}
+
+		// Skill End
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerSkillEnd");
+
+			// Right
+			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillEndRight");
+			fb1->SetInfo({ texture, L"FB_PlayerSkillEndRight", {140, 85}, 0, 8, 0, 0.7f });
+
+			// Left
+			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSkillEndLeft");
+			fb2->SetInfo({ texture, L"FB_PlayerSkillEndLeft", {140, 85}, 0, 8, 1, 0.7f });
+		}
+	}
+
 }
 
 void DevScene::LoadMonster()
@@ -605,6 +651,24 @@ void DevScene::LoadProjectile()
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWave");
 		fb->SetInfo({ texture, L"FB_SlashWave", {20, 88}, 0, 0, 0, 0.7f });
+	}
+
+	// SlashWaveW
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveW", L"Sprite\\Projectile\\SlashWaveW.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWaveW");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveW");
+		fb->SetInfo({ texture, L"FB_SlashWaveW", {20, 45}, 0, 0, 0, 0.7f });
+	}
+
+	// SlashWaveH
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveH", L"Sprite\\Projectile\\SlashWaveH.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWaveH");
+
+		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveH");
+		fb->SetInfo({ texture, L"FB_SlashWaveH", {20, 88}, 0, 0, 0, 0.7f });
 	}
 
 	// Blanket

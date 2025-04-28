@@ -23,7 +23,6 @@
 #include "FootHold.h"
 #include "Blanket.h"
 #include "Projectile.h"
-
 #include "Crystal.h"
 
 Player::Player()
@@ -53,6 +52,12 @@ Player::Player()
 	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
 	_flipbookPlayerHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitRight");
 	_flipbookPlayerHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitLeft");
+	_flipbookPlayerSkillReady[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillReadyRight");
+	_flipbookPlayerSkillReady[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillReadyLeft");	
+	_flipbookPlayerSkillWaiting[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillWaitingRight");
+	_flipbookPlayerSkillWaiting[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillWaitingLeft");
+	_flipbookPlayerSkillEnd[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillEndRight");
+	_flipbookPlayerSkillEnd[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillEndLeft");
 
 	// Camera Component
 	CameraComponent* camera = new CameraComponent();
@@ -88,22 +93,6 @@ Player::Player()
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 			SetPlayerCollider(collider);
-		}
-
-		// Monster Detect
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_DETECT);
-
-			collider->AddCollisionFlagLayer(CLT_MONSTER);
-
-			collider->SetSize({ 80, 80 });
-
-			_detectCollider = collider;
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
 		}
 	}
 }
@@ -169,6 +158,41 @@ void Player::Tick()
 			_attackCollider = nullptr;
 		}
 	}	
+	if (_state != ObjectState::SkillWaiting && _state != ObjectState::SkillEnd)
+	{
+		if (_skillCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_skillCollider);
+			RemoveComponent(_skillCollider);
+			_skillCollider = nullptr;
+		}
+
+		// Detect Collider 생성
+		if (!_detectCollider)
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_DETECT);
+
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+			collider->SetSize({ 80, 80 });
+
+			_detectCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
+	if (_state == ObjectState::SkillWaiting || _state == ObjectState::SkillEnd)
+	{
+		if (_detectCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
+			RemoveComponent(_detectCollider);
+			_detectCollider = nullptr;
+		}
+	}
 
 	// Window
 	if (_window && _isInWindow)
@@ -238,6 +262,8 @@ void Player::TickIdle()
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
+		AddSkillPoint(3);
+
 		SetDir(DIR_LEFT);
 		SetState(ObjectState::Move);
 	}
@@ -276,7 +302,8 @@ void Player::TickIdle()
 		{
 			SubtractSkillPoint(3);
 
-			_skillTimer = 2.0f;
+			_skillTimer = 0.f;
+
 			_leftInputCount = 0;
 			_rightInputCount = 0;
 
@@ -508,7 +535,8 @@ void Player::TickLongAttack()
 
 void Player::TickSkillReady()
 {
-	_skillTimer -= GET_SINGLE(TimeManager)->GetDeltaTime();
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_skillTimer += deltaTime;
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::A) && _leftInputCount < 5)
 	{
@@ -521,20 +549,88 @@ void Player::TickSkillReady()
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
-		SetState(ObjectState::SkillWaiting);
+		if (_leftInputCount > 0 || _rightInputCount > 0)
+		{
+			_skillTimer = 0.f;
+
+			if (_leftInputCount == _rightInputCount)
+				SetState(ObjectState::Idle);
+			else
+			{
+				if (_leftInputCount < _rightInputCount)
+					SetDir(DIR_RIGHT);
+				else
+					SetDir(DIR_LEFT);
+
+				SetState(ObjectState::SkillWaiting);
+			}
+		}
 	}
-	else if (_skillTimer <= 0)
+	if (_skillTimer >= 2.0f)
 	{
-		SetState(ObjectState::SkillWaiting);
-	}
+		_skillTimer = 0.f;
+
+		if (_leftInputCount > 0 || _rightInputCount > 0)
+		{
+			if (_leftInputCount == _rightInputCount)
+				SetState(ObjectState::Idle);
+			else
+			{
+				if (_leftInputCount < _rightInputCount)
+					SetDir(DIR_RIGHT);
+				else
+					SetDir(DIR_LEFT);
+
+				SetState(ObjectState::SkillWaiting);
+			}
+		}
+		else // A, D 미입력
+		{
+			SetState(ObjectState::Idle);
+		}
+	}	
 }
 
 void Player::TickSkillWaiting()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.f;
+	sumTime += deltaTime;
+
+	int32 distance = std::abs(_rightInputCount - _leftInputCount) * 80;
+
+	if (!_skillCollider)
+	{
+		BoxCollider* collider = new BoxCollider();
+		collider->ResetCollisionFlag();
+		collider->SetCollisionLayer(CLT_PLAYER_SKILL);
+
+		collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+		collider->SetSize({ 140, 85 });
+
+		GET_SINGLE(CollisionManager)->AddCollider(collider);
+		AddComponent(collider);
+		
+		_skillCollider = collider;
+	}
+
+	if (_dir == DIR_RIGHT)
+		_pos.x += (distance / 0.7) * deltaTime;		// 속 = 거 / 시
+	else
+		_pos.x -= (distance / 0.7) * deltaTime;
+
+	if (sumTime > 0.7f)
+	{
+		sumTime = 0.f;
+		SetState(ObjectState::SkillEnd);
+	}
 }
 
 void Player::TickSkillEnd()
 {
+	if (GetIdx() == _flipbookPlayerSkillEnd[_dir]->GetFlipbookEndNum())
+		SetState(ObjectState::Idle);
 }
 
 void Player::TickHang()
@@ -698,11 +794,19 @@ void Player::UpdateAnimation()
 		SetFlipbook(_flipbookPlayerRelease[_dir]);
 		break;
 	case ObjectState::SkillReady:
-		//playerCollider->SetSize({})
-		//SetFlipbook(_flipbookPlayerSkill[_dir]);
+		_playerCollider->SetSize({140, 85});
+		SetFlipbook(_flipbookPlayerSkillReady[_dir]);
+		break;
+	case ObjectState::SkillWaiting:
+		_playerCollider->SetSize({ 140, 85 });
+		SetFlipbook(_flipbookPlayerSkillWaiting[_dir]);
+		break;
+	case ObjectState::SkillEnd:
+		_playerCollider->SetSize({ 140, 85 });
+		SetFlipbook(_flipbookPlayerSkillEnd[_dir]);
 		break;
 	case ObjectState::CloseAttack:
-		_playerCollider->SetSize({ 75, 90 });
+		//_playerCollider->SetSize({ 75, 90 });
 		SetFlipbook(_flipbookPlayerSlash[_dir]);
 		break;
 	case ObjectState::LongAttack:
@@ -728,7 +832,7 @@ int32 Player::GetAttack()
 		if (GetSkillPoint() >= 5)
 		{
 			SubtractSkillPoint(3);
-			return _playerStat->nAtkDamage * 1.5f;
+			return _playerStat->nAtkDamage * _playerStat->strongAtkMultiplier;
 		}
 		else
 		{
@@ -739,14 +843,15 @@ int32 Player::GetAttack()
 		if (GetSkillPoint() >= 5)
 		{
 			SubtractSkillPoint(3);
-			return _playerStat->nAtkDamage * 1.5f;
+			return _playerStat->nAtkDamage * _playerStat->strongAtkMultiplier;
 		}
 		else
 		{
 			return _playerStat->nAtkDamage;
 		}
 		break;
-	case ObjectState::SkillReady:
+	case ObjectState::SkillWaiting:
+	case ObjectState::SkillEnd:
 		return _playerStat->skillDamage;
 		break;
 	}

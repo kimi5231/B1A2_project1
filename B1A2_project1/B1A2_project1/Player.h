@@ -24,10 +24,10 @@ struct PlayerStat
 	int32 knockBackDistance = 0;	// I
 	float strongAtkMultiplier = 0.f;	// J	
 	int32 nAtkDamage = 0;	// K
-	int32 skillDamage = 0;	// L
-	int32 skillRange = 0;	// M
-	float skillDuration = 0;	// N
-	int32 skillStepDistance = 0;	// O
+	int32 skillDamage = 0;	// M
+	int32 skillRange = 0;	// N
+	float skillDuration = 0;	// O
+	int32 skillStepDistance = 0;	// P
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -59,7 +59,7 @@ struct PlayerStat
 				case 10: this->nAtkDamage = std::stoi(cell); break;	// K
 				case 11: this->skillDamage = std::stoi(cell); break;	// L
 				case 12: this->skillRange = std::stoi(cell); break;	// M
-				case 13: this->skillDamage = std::stof(cell); break;	// N
+				case 13: this->skillDuration = std::stof(cell); break;	// N
 				case 14: this->skillStepDistance = std::stoi(cell); break;	// O
 				}
 				++column;
@@ -150,6 +150,7 @@ public:
 
 	void SetIsCloseAtk(bool isCloseAtk) { _isCloseAtk = isCloseAtk; }
 
+	bool isSkillActive() const { return _state == ObjectState::SkillReady || _state == ObjectState::SkillWaiting || _state == ObjectState::SkillEnd; }
 private:
 	// Flipbook
 	Flipbook* _flipbookPlayerIdle[2] = {};
@@ -160,7 +161,10 @@ private:
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerSlash[2] = {};		// CloseAtk
 
-	Flipbook* _flipbookPlayerSkill[2] = {};
+	Flipbook* _flipbookPlayerSkillReady[2] = {};
+	Flipbook* _flipbookPlayerSkillWaiting[2] = {};
+	Flipbook* _flipbookPlayerSkillEnd[2] = {};
+
 	//Flipbook* _flipbookPlayerCloseAttack[2] = {};
 	//Flipbook* _flipbookPlayerLongAttack[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
@@ -195,6 +199,7 @@ private:
 	BoxCollider* _playerCollider = nullptr;
 	Collider* _attackCollider = nullptr;
 	Collider* _detectCollider = nullptr;	// 근거리, 원거리 공격 결정 
+	Collider* _skillCollider = nullptr;
 
 	bool _isCloseAtk = false;
 	bool _isKeyAcquire = false;
