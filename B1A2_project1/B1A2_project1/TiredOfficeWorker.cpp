@@ -17,7 +17,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 	CalPixelPerSecond();
 
-	// SetFlipbook
+	// Set Flipbook
 	{
 		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleRight");
 		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleLeft");

@@ -561,11 +561,65 @@ void DevScene::LoadMonster()
 
 	// BCM
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachine", L"Sprite\\Monster\\BrokenCopyMachine.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachine");
+		// Idle
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachineIdle", L"Sprite\\Monster\\BrokenCopyMachineIdle.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachineIdle");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachine");
-		fb->SetInfo({ texture, L"FB_BrokenCopyMachine", {55, 55}, 0, 0, 0, 0.7f });
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineIdleRight");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineIdleRight", {40, 55}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineIdleLeft");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineIdleLeft", {40, 55}, 0, 4, 1, 0.7f });
+			}
+		}
+		
+		// LongAttack
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachineLongAttack", L"Sprite\\Monster\\BrokenCopyMachineLongAttack.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachineLongAttack");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineLongAttackRight");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineLongAttackRight", {44, 61}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineLongAttackLeft");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineLongAttackLeft", {44, 61}, 0, 4, 1, 0.7f });
+			}
+		}
+
+		// Hit
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachineHit", L"Sprite\\Monster\\BrokenCopyMachineHit.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachineHit");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineHitRight");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineHitRight", {43, 59}, 0, 0, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineHitLeft");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineHitLeft", {43, 59}, 0, 0, 1, 0.7f });
+			}
+		}
+
+		// Dead
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"BrokenCopyMachineDead", L"Sprite\\Monster\\BrokenCopyMachineDead.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BrokenCopyMachineDead");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineDeadRight");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineDeadRight", {45, 75}, 0, 3, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BrokenCopyMachineDeadLeft");
+				fb->SetInfo({ texture, L"FB_BrokenCopyMachineDeadLeft", {45, 75}, 0, 3, 1, 0.7f });
+			}
+		}
 	}
 
 	// AF
