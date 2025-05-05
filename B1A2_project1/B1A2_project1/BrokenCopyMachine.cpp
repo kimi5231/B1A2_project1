@@ -173,7 +173,6 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		return;
 
 	// Player Attack과 충돌
-	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
 	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
 		_sumTime = 0.f;
