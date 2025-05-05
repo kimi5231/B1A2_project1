@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -595,11 +595,121 @@ void DevScene::LoadMonster()
 
 	// AF
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencer", L"Sprite\\Monster\\AmateurFencer.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencer");
+		// Idle
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerIdle", L"Sprite\\Monster\\AmateurFencerIdle.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerIdle");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencer");
-		fb->SetInfo({ texture, L"FB_AmateurFencer", {31, 77}, 0, 0, 0, 0.7f });
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerIdleRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerIdleRight", {31, 88}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerIdleLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerIdleLeft", {31, 88}, 0, 4, 1, 0.7f });
+			}
+		}
+
+		// Hit
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerHit", L"Sprite\\Monster\\AmateurFencerHit.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerHit");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerHitRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerHitRight", {75, 65}, 0, 0, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerHitLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerHitLeft", {75, 65}, 0, 0, 1, 0.7f });
+			}
+		}
+
+		// Chase
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerChase", L"Sprite\\Monster\\AmateurFencerChase.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerChase");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerChaseRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerChaseRight", {90, 100}, 0, 7, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerChaseLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerChaseLeft", {90, 100}, 0, 7, 1, 0.7f });
+			}
+		}
+
+		// CloseAttack
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerCloseAttack", L"Sprite\\Monster\\AmateurFencerCloseAttack.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerCloseAttack");
+
+			// Thrust
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerThrustRight", {145, 88}, 0, 10, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerThrustLeft", {145, 88}, 0, 10, 1, 0.7f });
+			}
+
+			// BackStep
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerBackStepRight", {145, 88}, 11, 16, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerBackStepLeft", {145, 88}, 11, 16, 1, 0.7f });
+			}
+		}
+
+		// SlashWave - LongAttack
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerLongAttack", L"Sprite\\Monster\\AmateurFencerLongAttack.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerLongAttack");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerSlashWaveRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerSlashWaveRight", {85, 88}, 0, 9, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerSlashWaveLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerSlashWaveLeft", {85, 88}, 0, 9, 1, 0.7f });
+			}
+		}
+
+		// Dash
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerDash", L"Sprite\\Monster\\AmateurFencerDash.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerDash");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDashRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerDashRight", {90, 88}, 0, 2, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDashLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerDashLeft", {90, 88}, 0, 2, 1, 0.7f });
+			}
+		}
+
+		// Dead
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerDead", L"Sprite\\Monster\\AmateurFencerDead.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerDead");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDeadRight");
+				fb->SetInfo({ texture, L"FB_AmateurFencerDeadRight", {75, 60}, 0, 1, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerDeadLeft");
+				fb->SetInfo({ texture, L"FB_AmateurFencerDeadLeft", {75, 60}, 0, 1, 1, 0.7f });
+			}
+		}
 	}
 
 	// FB
