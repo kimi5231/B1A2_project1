@@ -295,27 +295,35 @@ void TiredOfficeWorker::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		SetFlipbook(_flipbookIdle[_dir]);
+		_collider->SetSize({34, 80});
 		break;
 	case ObjectState::CloseAttack:
 		SetFlipbook(_flipbookCloseAttack[_dir]);
+		_collider->SetSize({ 95, 105 });
 		break;
 	case ObjectState::Hit:
 		SetFlipbook(_flipbookHit[_dir]);
+		_collider->SetSize({ 50, 70 });
 		break;
 	case ObjectState::Dead:
 		SetFlipbook(_flipbookDead[_dir]);
+		_collider->SetSize({ 60, 78 });
 		break;
 	case ObjectState::Chase:
 		SetFlipbook(_flipbookChase[_dir]);
+		_collider->SetSize({ 97, 77 });
 		break;
 	case ObjectState::Roaming:
 		SetFlipbook(_flipbookRoaming[_dir]);
+		_collider->SetSize({ 50, 81 });
 		break;
 	case ObjectState::Return:
 		SetFlipbook(_flipbookReturn[_dir]);
+		_collider->SetSize({ 50, 81 });
 		break;
 	case ObjectState::ReturnIdle:
 		SetFlipbook(_flipbookReturnIdle[_dir]);
+		_collider->SetSize({ 34, 80 });
 		break;
 	}
 }

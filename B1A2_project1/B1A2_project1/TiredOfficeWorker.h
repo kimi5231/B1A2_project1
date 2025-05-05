@@ -1,6 +1,8 @@
 #pragma once
 #include "Monster.h"
 
+class BoxCollider;
+
 struct TiredOfficeWorkerStat
 {
 	int32 hp;	// A
@@ -110,7 +112,7 @@ private:
 
 	float _currentMoveDistance;
 
-	Collider* _collider = nullptr;
+	BoxCollider* _collider = nullptr;
 	Collider* _detectCollider = nullptr;
 	Collider* _attackCollider = nullptr;
 
