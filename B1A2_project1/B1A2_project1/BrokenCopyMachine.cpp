@@ -3,6 +3,7 @@
 #include "Paper.h"
 #include "DevScene.h"
 #include "BoxCollider.h"
+#include "ItemActor.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
@@ -116,21 +117,28 @@ void BrokenCopyMachine::TickHit()
 
 void BrokenCopyMachine::TickDead()
 {
-	// 난수 생성
-	std::random_device rd;
-	std::default_random_engine dre{ rd() };
-	std::uniform_real_distribution urd{ 0.f, 1.f };
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	// 아이템 드랍
-	if (urd(dre) <= _stat->healtemDropRate)
+	// 스턴이 끝나면 객체 제거 후 아이템 드랍
+	if (_sumTime >= 0.5f)
 	{
-		// 힐템 생성 코드 추가 예정
-	}
+		// 난수 생성
+		std::random_device rd;
+		std::default_random_engine dre{ rd() };
+		std::uniform_real_distribution urd{ 0.f, 1.f };
 
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	scene->RemoveActor(this);
+		// 추후 GameScene로 변경할 예정
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		
+		// 아이템 드랍
+		if (urd(dre) <= _stat->healtemDropRate)
+		{
+			//ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, );
+		}
+		
+		scene->RemoveActor(this);
+	}
 }
 
 void BrokenCopyMachine::UpdateAnimation()
@@ -164,6 +172,7 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 	// 추후 CLT_PLAYER_ATTACK로 변경할 예정
 	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
+		_sumTime = 0.f;
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
 	}
@@ -208,8 +217,7 @@ void BrokenCopyMachine::CreateProjectile()
 	// 추후 GameScene으로 변경
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	// 추후 Layer, Pos 변경 예정
-	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y}, LAYER_PLAYER);
+	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y}, LAYER_PROJECTILE);
 	paper->SetSpeed(_stat->projectileSpeed);
 	paper->SetAttack(_stat->projectileAttack);
 	paper->SetRange(_stat->attackRange);
