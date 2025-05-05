@@ -59,7 +59,7 @@ void InGamePanel::Render(HDC hdc)
 		Texture* hpPoint = GET_SINGLE(ResourceManager)->GetTexture(L"HpPoint");
 
 		::TransparentBlt(hdc,
-			34 * winSizeAdjustmemt.x,
+			48 * winSizeAdjustmemt.x,
 			15 * winSizeAdjustmemt.y,
 			_hp * winSizeAdjustmemt.x,		// hp에 따라 변경
 			hpPoint->GetSize().y * winSizeAdjustmemt.y,	
