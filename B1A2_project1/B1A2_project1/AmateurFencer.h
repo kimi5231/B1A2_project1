@@ -145,6 +145,8 @@ public:
 public:
 	void CreateProjectile();
 
+	void SetPlayer(Player* player) { _player = player; }
+
 private:
 	// Flipbook
 	Flipbook* _flipbookIdle[2] = {};
@@ -173,7 +175,6 @@ private:
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
 
-public:
 	Player* _player;
 };
 

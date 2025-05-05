@@ -119,82 +119,7 @@ void DevScene::Init()
 			//}
 	
 			//	_monsterHpData[20201] = 100;
-
-		// AF
-		//{
-		//	AmateurFencer* AF = SpawnObject<AmateurFencer>({ 1200, 300 }, LAYER_MONSTER);
-		//	AF->SetSpawnDir(DIR_RIGHT);
-		//	AF->SetSpawnPos({ 1200, 300 });
-		//	AF->SetMoveDistance();
-		//	AF->SetMovementLimit({ 960, 2000 });
-
-		//	 Player 설정
-		//	AF->_player = _player;
-
-		//	_monsterHpData[20301] = 100;
-		//}
 	}
-
-	// Structure
-	{
-		 // ZipLine
-		//{
-		//	ZipLine* zipLine = SpawnObject<ZipLine>({ 500, 250 }, LAYER_STRUCTURE);
-		//	zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-		//	zipLine->SetBeginPos({ 500, 200 });
-		//	zipLine->SetEndPos({ 950, 150 });
-		//	zipLine->SetPlayer(_player);
-
-		//	// Button이 필요 없는 짚라인은 아래 코드 작성X
-		//	ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 200, 300 }, LAYER_STRUCTURE);
-		//	zipLineButtonAndDisplay->SetOwner(zipLine);
-		//	zipLineButtonAndDisplay->SetDisplayPos({ 500, 200 });
-
-		//	zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		//}
-
-		// LockedDoorAndKey
-		//{
-		//	LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 1840, 520 }, LAYER_STRUCTURE);
-
-		//	lockedDoorAndKey->SetItemPos({ 1800, 520 });
-		//}
-
-		 // BreakingWall
-		//{
-		//	BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 500, 200 }, LAYER_STRUCTURE);
-		//	breakingWall->SetPlayer(_player);
-		//}
-
-		// Window
-		//{
-		//	Window* window = SpawnObject<Window>({ 600, 200 }, LAYER_STRUCTURE);
-		//}
-
-		// FootHoldAndZipLineButton
-		//{
-		//	FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 700, 600 }, LAYER_STRUCTURE);
-		//	button->SetZipLinePos({500, 500});
-		//	button->SetZipLineBegin({ 800, 250 });
-		//	button->SetZipLineEnd({ 950, 170 });
-
-		//	FootHold* footHold = SpawnObject<FootHold>({ 900, 500 }, LAYER_STRUCTURE);
-		//	footHold->SetFootHoldAndZipLineButton(button);
-		//}
-
-		// DestructibleObject
-		//{
-		//	DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 400, 290 }, LAYER_STRUCTURE);
-		//	destructibleObject->SetPlayer(_player);
-		//}
-	}
-
-	//{
-	//	LongAtkMonster* LAM = SpawnObject<LongAtkMonster>({ 200, 300 }, LAYER_MONSTER);
-	//	LAM->SetSpawnDir(DIR_LEFT);
-	//	LAM->SetSpawnPos({ 200, 300 });
-	//	LAM->SetMovementLimit({ 50, 350 });
-	//}
 
 	// Start Dialogue
 	/*{
@@ -1191,28 +1116,315 @@ void DevScene::SetStage1()
 				BCM->SetDir(info.dir);
 				continue;
 			}
-
-			// AF
-			if (info.id > 20300 && info.id <= 20399)
-			{
-				continue;
-			}
 		}
 	}
 
 	// Structure
+	{
+		// LockedDoorAndKey
+		{
+			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({1920, 520}, LAYER_STRUCTURE);
+			lockedDoorAndKey->SetItemPos({ 2250, 280 });
+		}
+
+		// ZipLine
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 695 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetBeginPos({ 3490, 970 });
+			zipLine->SetEndPos({ 3490, 380 });
+			zipLine->SetPlayer(_player);
+
+			// Button이 필요 없는 짚라인은 아래 코드 작성X
+			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 3920, 1060 }, LAYER_STRUCTURE);
+			zipLineButtonAndDisplay->SetOwner(zipLine);
+			zipLineButtonAndDisplay->SetDisplayPos({ 3580, 880 });
+
+			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		}
+		/*{
+			ZipLine* zipLine2 = SpawnObject<ZipLine>({ 5020, 585 }, LAYER_STRUCTURE);
+			zipLine2->SetZipLineType(ZipLineType::ZipLine);
+			zipLine2->SetBeginPos({ 4520, 450 });
+			zipLine2->SetEndPos({ 5520, 720 });
+			zipLine2->SetPlayer(_player);
+		}*/
+
+		// BreakingWall
+		{
+			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3760, 1040 }, LAYER_STRUCTURE);
+			breakingWall->SetPlayer(_player);
+		}
+	}
 
 	// Item
 }
 
 void DevScene::SetStage2()
 {
+	// 이전 스테이지 객체 삭제 (Player, UI 제외)
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+			for (Actor* actor : actors)
+				SAFE_DELETE(actor);
+		}
+	}
 
+	// Map
+	{
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage2");
+
+		const Vec2Int size = sprite->GetSize();
+		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
+		map->SetSprite(sprite);
+
+		GET_SINGLE(ValueManager)->SetMapSize(size);
+	}
+
+	// Tilemap
+	{
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage2");
+
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+	}
+
+	// Player
+	{
+		// Player가 없다면 생성
+		if (!_player)
+		{
+			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			_player = player;
+		}
+
+		_player->SetPos({ 400, 200 });
+		_player->SetCurStageNum(_curStageNum);
+	}
+
+	// Monster
+	{
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage2_FieldMonster");
+		const std::vector<StageInfo>& infos = stage->GetInfos();
+
+		for (const StageInfo& info : infos)
+		{
+			// TOW
+			if (info.id > 20100 && info.id <= 20199)
+			{
+				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetSpawnDir(info.dir);
+				TOW->SetSpawnPos(info.spawnPos);
+				TOW->SetMoveDistance(info.movingDistance);
+				TOW->SetMovementLimit(info.movementLimit);
+				continue;
+			}
+
+			// BCM
+			if (info.id > 20200 && info.id <= 20299)
+			{
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetDir(info.dir);
+				continue;
+			}
+
+			// AF
+			if (info.id > 20300 && info.id <= 20399)
+			{
+				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
+				AF->SetSpawnDir(info.dir);
+				AF->SetSpawnPos(info.spawnPos);
+				AF->SetMoveDistance(info.movingDistance);
+				AF->SetMovementLimit(info.movementLimit);
+
+				AF->SetPlayer(_player);
+				 
+				continue;
+			}
+		}
+	}
+
+	// Structure
+	{
+		// Window
+		{
+			Window* window1 = SpawnObject<Window>({ 190, 1900 }, LAYER_STRUCTURE);
+			Window* window2 = SpawnObject<Window>({ 820, 310 }, LAYER_STRUCTURE);
+			Window* window3 = SpawnObject<Window>({ 1300, 400 }, LAYER_STRUCTURE);
+			Window* window4 = SpawnObject<Window>({ 1770, 490 }, LAYER_STRUCTURE);
+		}
+
+		// ZipLine
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 670 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLine);
+			zipLine->SetBeginPos({ 430, 150 });
+			zipLine->SetEndPos({ 2360, 510 });
+			zipLine->SetPlayer(_player);
+		}
+
+		// LockedDoorAndKey
+		{
+			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 2760, 560 }, LAYER_STRUCTURE);
+			lockedDoorAndKey->SetItemPos({ 2250, 280 });
+		}
+
+		// BreakingWall
+		{
+			{
+				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3920, 960 }, LAYER_STRUCTURE);
+				breakingWall->SetPlayer(_player);
+			}
+			{
+				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 5560, 1480 }, LAYER_STRUCTURE);
+				breakingWall->SetPlayer(_player);
+			}
+		}
+
+		// ZipLine 
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ 4475, 1020 }, LAYER_STRUCTURE);
+			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetBeginPos({ 3800, 920 });
+			zipLine->SetEndPos({ 5150, 1120 });
+			zipLine->SetPlayer(_player);
+
+			// Button이 필요 없는 짚라인은 아래 코드 작성X
+			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 5770, 1580 }, LAYER_STRUCTURE);
+			zipLineButtonAndDisplay->SetOwner(zipLine);
+			zipLineButtonAndDisplay->SetDisplayPos({ 3660, 920 });
+
+			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+		}
+	}
 }
 
 void DevScene::SetStage3()
 {
+	// 이전 스테이지 객체 삭제 (Player, UI 제외)
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+			for (Actor* actor : actors)
+				SAFE_DELETE(actor);
+		}
+	}
 
+	// Map
+	{
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage3");
+
+		const Vec2Int size = sprite->GetSize();
+		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
+		map->SetSprite(sprite);
+
+		GET_SINGLE(ValueManager)->SetMapSize(size);
+	}
+
+	// Tilemap
+	{
+		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage3");
+
+		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		actor->SetShowDebug(false);
+		actor->SetTilemap(tm);
+	}
+
+	// Player
+	{
+		// Player가 없다면 생성
+		if (!_player)
+		{
+			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			_player = player;
+		}
+
+		_player->SetPos({ 400, 200 });
+		_player->SetCurStageNum(_curStageNum);
+	}
+
+	// Monster
+	{
+		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage3_FieldMonster");
+		const std::vector<StageInfo>& infos = stage->GetInfos();
+
+		for (const StageInfo& info : infos)
+		{
+			// TOW
+			if (info.id > 20100 && info.id <= 20199)
+			{
+				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetSpawnDir(info.dir);
+				TOW->SetSpawnPos(info.spawnPos);
+				TOW->SetMoveDistance(info.movingDistance);
+				TOW->SetMovementLimit(info.movementLimit);
+				continue;
+			}
+
+			// BCM
+			if (info.id > 20200 && info.id <= 20299)
+			{
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetDir(info.dir);
+				continue;
+			}
+
+			// AF
+			if (info.id > 20300 && info.id <= 20399)
+			{
+				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
+				AF->SetSpawnDir(info.dir);
+				AF->SetSpawnPos(info.spawnPos);
+				AF->SetMoveDistance(info.movingDistance);
+				AF->SetMovementLimit(info.movementLimit);
+
+				AF->SetPlayer(_player);
+
+				continue;
+			}
+		}
+	}
+
+	// Destructible Object
+	{
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 2060, 280 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 500, 600 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 1380, 600 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 360, 1240 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 2900, 1240 }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+	}
+
+	// FootHold
+	{
+		FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 1320, 1230 }, LAYER_STRUCTURE);
+		button->SetZipLinePos({1740, 1480});
+		button->SetZipLineBegin({ 1740, 1480 });
+		button->SetZipLineEnd({ 2600, 1410 });
+
+		FootHold* footHold = SpawnObject<FootHold>({ 1000, 1180 }, LAYER_STRUCTURE);
+		footHold->SetFootHoldAndZipLineButton(button);
+	}
 }
 
 void DevScene::SetFinalBossStage()

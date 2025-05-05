@@ -73,7 +73,7 @@ void FootHoldAndZipLineButton::TickOn2()
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	ZipLine* zipLine = scene->SpawnObject<ZipLine>({ 900, 200 }, LAYER_STRUCTURE);
+	ZipLine* zipLine = scene->SpawnObject<ZipLine>({ _zipLineBegin }, LAYER_STRUCTURE);
 	zipLine->SetZipLineType(ZipLineType::ZipLine);
 	zipLine->SetBeginPos({_zipLineBegin});
 	zipLine->SetEndPos({_zipLineEnd});
