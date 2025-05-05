@@ -1,6 +1,8 @@
 #pragma once
 #include "Monster.h"
 
+class BoxCollider;
+
 struct BrokenCopyMachineStat
 {
 	int32 id;	// A
@@ -88,7 +90,7 @@ private:
 private:
 	BrokenCopyMachineStat* _stat;
 
-	Collider* _collider;
+	BoxCollider* _collider;
 
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
