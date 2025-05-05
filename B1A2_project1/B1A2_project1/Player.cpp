@@ -1021,7 +1021,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_ITEM)
 	{
 		ItemActor* item = reinterpret_cast<ItemActor*>(b2->GetOwner());
-		
+
 		if (item->GetItemID() != 300100)
 			item->SetFKeyState(FKeyState::Show);
 		else
@@ -1042,7 +1042,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 		return;
 	}
-
+	
 	// Structure Detect
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
 	{

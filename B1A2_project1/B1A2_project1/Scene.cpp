@@ -114,6 +114,8 @@ void Scene::RemoveActor(Actor* actor)
 
 	std::vector<Actor*>& v = _actors[actor->GetLayer()];
 	v.erase(std::remove(v.begin(), v.end(), actor), v.end());
+
+	delete actor;
 }
 
 void Scene::AddPanel(Panel* panel)

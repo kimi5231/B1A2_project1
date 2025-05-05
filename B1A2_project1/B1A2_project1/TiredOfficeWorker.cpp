@@ -49,6 +49,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 			collider->AddCollisionFlagLayer(CLT_PLAYER_SKILL);
 
 			collider->SetSize({ 34, 80 });
+			
+			_collider = collider;
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
@@ -64,6 +66,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 			collider->SetSize({ float(_stat->playerDetection.x), float(_stat->playerDetection.y) });
 
+			_detectCollider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -72,6 +76,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 TiredOfficeWorker::~TiredOfficeWorker()
 {
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
 }
 
 void TiredOfficeWorker::BeginPlay()

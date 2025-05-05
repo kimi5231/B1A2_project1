@@ -166,6 +166,8 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
+	Collider* _collider;
+	Collider* _detectCollider;
 	Collider* _attackCollider;
 
 	int32 _currentProjectileCount = 0;

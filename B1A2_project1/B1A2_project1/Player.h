@@ -122,11 +122,10 @@ public:
 	void SubtractSkillPoint(int32 skillPoint) { _playerStat->skillPoint = max(0, _playerStat->skillPoint - skillPoint); }
 
 public:
-	// Player가 Save Point에 충돌했을 때 스테이지 정보 저장을 위해 씬 정보가 필요함, 다른 씬 추가 시 수정 필요
-	void SetCurrentScene(DevScene* devScene) { _devScene = devScene; }
+	void SetCurrentScene(DevScene* devScene) { _devScene = devScene; }		// GameScene으로 수정 필요
+	void SetCurStageNum(int32 stage) { _curStageNum = stage; }
 
 public: 
-	// 현실에서의 단위를 픽셀 단위로 바꿈
 	void CalPixelPerSecond();
 
 	// Collider
@@ -160,13 +159,9 @@ private:
 	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerSlash[2] = {};		// CloseAtk
-
 	Flipbook* _flipbookPlayerSkillReady[2] = {};
 	Flipbook* _flipbookPlayerSkillWaiting[2] = {};
 	Flipbook* _flipbookPlayerSkillEnd[2] = {};
-
-	//Flipbook* _flipbookPlayerCloseAttack[2] = {};
-	//Flipbook* _flipbookPlayerLongAttack[2] = {};
 	Flipbook* _flipbookPlayerRelease[2] = {};
 	Flipbook* _flipbookPlayerHit[2] = {};
 	Flipbook* _flipbookPlayerDead[2] = {};
@@ -211,5 +206,8 @@ private:
 	float _skillTimer = 0.f;
 	int32 _leftInputCount = 0;
 	int32 _rightInputCount = 0;
+
+	// CurSceneMum
+	int32 _curStageNum = 0;
 };
 

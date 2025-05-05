@@ -109,6 +109,9 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
+
+	Collider* _collider = nullptr;
+	Collider* _detectCollider = nullptr;
 	Collider* _attackCollider = nullptr;
 
 	float _sumTime = 0.f;

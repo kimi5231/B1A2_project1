@@ -50,6 +50,8 @@ AmateurFencer::AmateurFencer()
 
 			collider->SetSize({ 31, 88 });
 
+			_collider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -64,15 +66,18 @@ AmateurFencer::AmateurFencer()
 
 			collider->SetSize({ float(_stat->playerDetection.x), float(_stat->playerDetection.y) });
 
+			_detectCollider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
 	}
-
 }
 
 AmateurFencer::~AmateurFencer()
 {
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
 }
 
 void AmateurFencer::BeginPlay()

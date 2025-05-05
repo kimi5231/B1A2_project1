@@ -42,6 +42,8 @@ LongAtkMonster::LongAtkMonster()
 
 			collider->SetSize({ 55, 55 });
 
+			_collider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -50,6 +52,7 @@ LongAtkMonster::LongAtkMonster()
 
 LongAtkMonster::~LongAtkMonster()
 {
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
 }
 
 void LongAtkMonster::BeginPlay()

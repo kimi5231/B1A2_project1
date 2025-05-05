@@ -41,6 +41,8 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 			collider->SetSize({ 40, 55 });
 
+			_collider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -49,6 +51,7 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 BrokenCopyMachine::~BrokenCopyMachine()
 {
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
 }
 
 void BrokenCopyMachine::BeginPlay()

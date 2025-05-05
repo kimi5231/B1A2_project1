@@ -61,6 +61,8 @@ FinalBoss::FinalBoss()
 
 			collider->SetSize({ 30, 80 });	// 수정 필요
 
+			_collider = collider;
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -69,6 +71,7 @@ FinalBoss::FinalBoss()
 
 FinalBoss::~FinalBoss()
 {
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
 }
 
 void FinalBoss::BeginPlay()

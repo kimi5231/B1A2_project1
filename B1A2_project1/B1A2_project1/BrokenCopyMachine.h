@@ -88,6 +88,8 @@ private:
 private:
 	BrokenCopyMachineStat* _stat;
 
+	Collider* _collider;
+
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
 };

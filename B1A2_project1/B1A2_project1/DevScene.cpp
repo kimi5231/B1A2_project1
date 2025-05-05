@@ -1163,6 +1163,7 @@ void DevScene::SetStage1()
 		}
 		
 		_player->SetPos({ 400, 200 });
+		_player->SetCurStageNum(_curStageNum);
 	}
 
 	// Monster
@@ -1259,6 +1260,7 @@ void DevScene::SetFinalBossStage()
 		}
 
 		_player->SetPos({ 200, 520 });
+		_player->SetCurStageNum(_curStageNum);
 	}
 
 	// FinalBoss

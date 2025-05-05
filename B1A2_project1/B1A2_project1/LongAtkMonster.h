@@ -71,6 +71,6 @@ private:
 	float _sumTime = 0.f;
 	float _creationTime = 0.f;
 
-	Collider* _collider = nullptr;
+	Collider* _collider;
 };
 
