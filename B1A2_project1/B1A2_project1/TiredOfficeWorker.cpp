@@ -162,21 +162,29 @@ void TiredOfficeWorker::TickHit()
 
 void TiredOfficeWorker::TickDead()
 {
-	// 난수 생성
-	std::random_device rd;
-	std::default_random_engine dre{ rd() };
-	std::uniform_real_distribution urd{ 0.f, 1.f };
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	// 아이템 드랍
-	if (urd(dre) <= _stat->healtemDropRate)
+	// 스턴이 끝나면 객체 제거 후 아이템 드랍
+	if (_sumTime >= 0.5f)
 	{
-		// 힐템 생성 코드 추가 예정
-	}
+		// 추후 GameScene로 변경할 예정
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	scene->RemoveActor(this);
+		// 난수 생성
+		std::random_device rd;
+		std::default_random_engine dre{ rd() };
+		std::uniform_real_distribution urd{ 0.f, 1.f };
+
+		// 아이템 드랍
+		if (urd(dre) <= _stat->healtemDropRate)
+		{
+			// 힐템 생성 코드 추가 예정
+		}
+
+		// 객체 제거
+		scene->RemoveActor(this);
+	}	
 }
 
 void TiredOfficeWorker::TickChase()
@@ -328,6 +336,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		// Player Attack과 충돌
  		if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 		{
+			_sumTime = 0.f;
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamaged(otherOwner);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
@@ -340,6 +349,7 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		}
 		else if (b2->GetCollisionLayer() == CLT_PLAYER_SKILL)
 		{
+			_sumTime = 0.f;
 			Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 			OnDamagedNoHit(otherOwner);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
