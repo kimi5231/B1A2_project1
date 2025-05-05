@@ -440,20 +440,20 @@ BehaviorState FinalBoss::Hit()
 	}
 
 	// 수정 소환
-	if (_stat->commonStat.hp <= 75 && _stat->commonStat.hp > 50 && !_isFirstCrystalCreationWork)
+	if (_stat->commonStat.hp <= 1000 && _stat->commonStat.hp > 900 && !_isFirstCrystalCreationWork)
 	{
 		_isFirstCrystalCreationWork = true;
 
 		SetState(ObjectState::CrystalCreation);
 	}
-	else if (_stat->commonStat.hp <= 50 && _stat->commonStat.hp > 25 && !_isSecondCrystalCreationWork)
+	else if (_stat->commonStat.hp <= 600 && _stat->commonStat.hp > 500 && !_isSecondCrystalCreationWork)
 	{
 		_isSecondCrystalCreationWork = true;
 		_currentCrystalCount = 2;
 
 		SetState(ObjectState::CrystalCreation);
 	}
-	else if (_stat->commonStat.hp <= 25 && _isThirdCrystalCreationWork)
+	else if (_stat->commonStat.hp <= 100 && _isThirdCrystalCreationWork)
 	{
 		_isThirdCrystalCreationWork = true;
 		_currentCrystalCount = 3;
