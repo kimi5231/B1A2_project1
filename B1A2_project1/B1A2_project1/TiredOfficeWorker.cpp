@@ -3,6 +3,8 @@
 #include "BoxCollider.h"
 #include "Player.h"
 #include "DevScene.h"
+#include "Item.h"
+#include "ItemActor.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
@@ -180,7 +182,9 @@ void TiredOfficeWorker::TickDead()
 		// 아이템 드랍
 		if (urd(dre) <= _stat->healtemDropRate)
 		{
-			// 힐템 생성 코드 추가 예정
+			// 힐템 생성
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 		}
 
 		// 객체 제거
