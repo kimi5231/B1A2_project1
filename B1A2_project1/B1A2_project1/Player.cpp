@@ -821,6 +821,8 @@ void Player::UpdateAnimation()
 	//	SetFlipbook(_flipbookPlayerDead[_dir]);
 	break;
 	}
+
+	//_isAir = true;
 }
 
 int32 Player::GetAttack()
@@ -1289,6 +1291,9 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
+		/*if (b1->GetRect().bottom != b2->GetRect().top)
+			return;*/
+		
 		_groundCollisionCount--;
 
 		if (_groundCollisionCount <= 0)		// 타일과 완전히 떨어졌을 때 중력 적용하기
@@ -1298,6 +1303,27 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 			_groundCollisionCount = 0;
 		}
 	}
+}
+
+void Player::OnComponentOverlapping(Collider* collider, Collider* other)
+{
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b2->GetCollisionLayer() == CLT_WALL)
+	{
+		AdjustCollisionPos(b1, b2);
+		return;
+	}
+
+	/*if (b2->GetCollisionLayer() == CLT_GROUND)
+	{
+		AdjustCollisionPos(b1, b2);
+		return;
+	}*/
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
