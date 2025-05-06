@@ -102,13 +102,19 @@ void DevScene::Init()
 
 	// Item
 	{
-		//Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		//// Key
-		//ItemActor* key = SpawnObject<ItemActor>({ 600, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
+		// Nametag
+		ItemActor* nametag = SpawnObject<ItemActor>({ 300, 290 }, LAYER_ITEM, 320001, itemData->GetItems());
 
-		//// »˙≈€
-		//ItemActor* healITem = SpawnObject<ItemActor>({ 500, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
+		// Key
+		ItemActor* sword = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
+
+		// Multipletap
+		ItemActor* multipletap = SpawnObject<ItemActor>({ 150, 290 }, LAYER_ITEM, 310200, itemData->GetItems());
+
+		// Heal
+		ItemActor* healITem = SpawnObject<ItemActor>({ 100, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 	}
 
 	// Monster
@@ -981,50 +987,199 @@ void DevScene::LoadItem()
 	GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
 
 	// Texture
-	// in Map
+	// Map	
 	GET_SINGLE(ResourceManager)->LoadTexture(L"F_key", L"Sprite\\Item\\F_key.bmp", RGB(55, 255, 0));
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1001_keyInMap", L"Sprite\\Item\\1001_keyInMap.bmp", RGB(55, 255, 0));
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencilInMap", L"Sprite\\Item\\1002_pencilInMap.bmp", RGB(55, 255, 0));
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1003_matchInMap", L"Sprite\\Item\\1003_matchInMap.bmp", RGB(55, 255, 0));
-	// in Inventory
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1001_keyInInventory", L"Sprite\\Item\\1001_keyInInventory.bmp", RGB(55, 255, 0));
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1002_pencilInInventory", L"Sprite\\Item\\1002_pencilInInventory.bmp", RGB(55, 255, 0));
-	GET_SINGLE(ResourceManager)->LoadTexture(L"1003_matchInInventory", L"Sprite\\Item\\1003_matchInInventory.bmp", RGB(55, 255, 0));
 
-	// F button
-	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
-		GET_SINGLE(ResourceManager)->CreateSprite(L"F_key", texture, 0, 0, 30, 30);
-	}
-	// 1001_Key
-	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInMap");
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Heal", L"Sprite\\Item\\map_Heal.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Key", L"Sprite\\Item\\map_Key.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Multipletap", L"Sprite\\Item\\map_Multipletap.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Gem", L"Sprite\\Item\\map_Gem.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Nametag", L"Sprite\\Item\\map_Nametag.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Sword", L"Sprite\\Item\\map_Sword.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Medal1gold", L"Sprite\\Item\\map_Medal1gold.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Medal2gold", L"Sprite\\Item\\map_Medal2gold.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Photo1", L"Sprite\\Item\\map_Photo1.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Medal3silver", L"Sprite\\Item\\map_Medal3silver.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Photo2", L"Sprite\\Item\\map_Photo2.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Photo3", L"Sprite\\Item\\map_Photo3.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Box", L"Sprite\\Item\\map_Box.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Photo4", L"Sprite\\Item\\map_Photo4.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"map_Poster", L"Sprite\\Item\\map_Poster.bmp", RGB(55, 255, 0));
+	
+	// Inventory
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Key", L"Sprite\\Item\\inventory_Key.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Multipletap", L"Sprite\\Item\\inventory_Multipletap.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Gem", L"Sprite\\Item\\inventory_Gem.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Nametag", L"Sprite\\Item\\inventory_Nametag.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Sword", L"Sprite\\Item\\inventory_Sword.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Medal1gold", L"Sprite\\Item\\inventory_Medal1gold.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Medal2gold", L"Sprite\\Item\\inventory_Medal2gold.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Photo1", L"Sprite\\Item\\inventory_Photo1.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Medal3silver", L"Sprite\\Item\\inventory_Medal3silver.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Photo2", L"Sprite\\Item\\inventory_Photo2.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Photo3", L"Sprite\\Item\\inventory_Photo3.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Box", L"Sprite\\Item\\inventory_Box.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Photo4", L"Sprite\\Item\\inventory_Photo4.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"inventory_Poster", L"Sprite\\Item\\inventory_Poster.bmp", RGB(55, 255, 0));
 
-		// in Map
+	// Map
+	{
+		// F button
 		{
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_keyInMap");
-			fb->SetInfo({ texture, L"FB_keyInMap", {30, 30}, 0, 2, 0, 0.7f, true });
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"F_key");
+			GET_SINGLE(ResourceManager)->CreateSprite(L"F_key", texture, 0, 0, 30, 30);
+		}
+
+		// Heal
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Heal");
+			
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Heal");
+			fb->SetInfo({ texture, L"FB_map_Heal", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// key
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Key");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Key");
+			fb->SetInfo({ texture, L"FB_map_Key", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Multipletap
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Multipletap");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Multipletap");
+			fb->SetInfo({ texture, L"FB_map_Multipletap", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Gem
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Gem");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Gem");
+			fb->SetInfo({ texture, L"FB_map_Gem", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Nametag
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Nametag");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Nametag");
+			fb->SetInfo({ texture, L"FB_map_Nametag", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Sword
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Sword");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Sword");
+			fb->SetInfo({ texture, L"FB_map_Sword", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Medal1gold
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal1gold");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Medal1gold");
+			fb->SetInfo({ texture, L"FB_map_Medal1gold", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Medal2gold
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal2gold");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Medal2gold");
+			fb->SetInfo({ texture, L"FB_map_Medal2gold", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Photo1
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo1");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Photo1");
+			fb->SetInfo({ texture, L"FB_map_Photo1", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Medal3silver
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal3silver");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Medal3silver");
+			fb->SetInfo({ texture, L"FB_map_Medal3silver", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Photo2
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo2");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Photo2");
+			fb->SetInfo({ texture, L"FB_map_Photo2", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Photo3
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo3");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Photo3");
+			fb->SetInfo({ texture, L"FB_map_Photo3", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Box
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Box");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Box");
+			fb->SetInfo({ texture, L"FB_map_Box", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Photo4
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo4");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Photo4");
+			fb->SetInfo({ texture, L"FB_map_Photo4", {30, 30}, 0, 2, 0, 0.7f, true });
+		}
+
+		// Poster
+		{
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Poster");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_map_Poster");
+			fb->SetInfo({ texture, L"FB_map_Poster", {30, 30}, 0, 2, 0, 0.7f, true });
 		}
 	}
-	// 1002_pencil
-	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInMap");
 
-		// in Map
-		{
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_pencilInMap");
-			fb->SetInfo({ texture, L"FB_pencilInMap", {30, 30}, 0, 2, 0, 0.7f, true });
-		}
-	}
-	// 1003_match
+	// Inventory
 	{
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInMap");
+		// key
 
-		// in Map
-		{
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_matchInMap");
-			fb->SetInfo({ texture, L"FB_matchInMap", {30, 30}, 0, 2, 0, 0.7f, true });
-		}
+		// Multipletap
+
+		// Gem
+
+		// Nametag
+
+		// Sword
+
+		// Medal1gold
+
+		// Medal2gold
+
+		// Photo1
+
+		// Medal3silver
+
+		// Photo2
+
+		// Photo3
+
+		// Box
+
+		// Photo4
+
+		// Poster
 	}
 }
 
@@ -1778,10 +1933,51 @@ void DevScene::ItemPictureRender(HDC hdc, int32 id)
 	switch (id)
 	{
 	case 310100:
-		texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInMap");
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Key");
+		break;
+	case 310200:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Multipletap");
+		break;
+	case 320100:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Gem");
+		break;
+	case 320001:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Nametag");
+		break;
+	case 320002:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Sword");
+		break;
+	case 320003:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal1gold");
+		break;
+	case 320004:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal2gold");
+		break;
+	case 320005:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo1");
+		break;
+	case 320006:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Medal3silver");
+		break;
+	case 320007:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo2");
+		break;
+	case 320008:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo3");
+		break;
+	case 320009:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Box");
+		break;
+	case 320010:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Photo4");
+		break;
+	case 320011:
+		texture = GET_SINGLE(ResourceManager)->GetTexture(L"map_Poster");
 		break;
 	}
 
+	if (!texture)
+		return;
 	::TransparentBlt(hdc,
 		(DefaultWinSizeX / 2 - 50) * winSizeAdjustment.x,
 		(DefaultWinSizeY / 2 - 80) * winSizeAdjustment.y,

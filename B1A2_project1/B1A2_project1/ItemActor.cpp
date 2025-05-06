@@ -26,39 +26,51 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 		switch (itemID)
 		{
 		case 300100:
-			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_keyInMap");
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Heal");
 			SetFKeyState(FKeyState::Hidden);
 			break;
 		case 310100:
-			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_pencilInMap");
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Key");
 			break;
-		//case 310200:
-		//	break;
-		//case 320100:
-		//	break;
-		//case 320001:
-		//	break;
-		//case 320002:
-		//	break;
-		//case 320003:
-		//	break;
-		//case 320004:
-		//	break;
-		//case 320005:
-		//	break;
-		//case 320006:
-		//	break;
-		//case 320007:
-		//	break;
-		//case 320008:
-		//	break;
-		//case 320009:
-		//	break;
-		//case 320010:
-		//	break;
-		//case 320011:
-		//	break;
-
+		case 310200:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Multipletap");
+			break;
+		case 320100:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Gem");
+			break;
+		case 320001:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Nametag");
+			break;
+		case 320002:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Sword");
+			break;
+		case 320003:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Medal1gold");
+			break;
+		case 320004:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Medal2gold");
+			break;
+		case 320005:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Photo1");
+			break;
+		case 320006:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Medal3silver");
+			break;
+		case 320007:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Photo2");
+			break;
+		case 320008:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Photo3");
+			break;
+		case 320009:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Box");
+			break;
+		case 320010:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Photo4");
+			break;
+		case 320011:
+			_flipbookItemInMap = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_map_Poster");
+			break;
 		}
 	}
 

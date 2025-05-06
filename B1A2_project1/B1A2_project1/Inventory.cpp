@@ -82,36 +82,35 @@ void Inventory::Render(HDC hdc)
 			switch (itemID)
 			{
 			case 300100:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInInventory"); break;
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Heal"); break;
 			case 310100:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInInventory"); break;
-			//case 310200:
-			//	break;
-			//case 320100:
-			//	break;
-			//case 320001:
-			//	break;
-			//case 320002:
-			//	break;
-			//case 320003:
-			//	break;
-			//case 320004:
-			//	break;
-			//case 320005:
-			//	break;
-			//case 320006:
-			//	break;
-			//case 320007:
-			//	break;
-			//case 320008:
-			//	break;
-			//case 320009:
-			//	break;
-			//case 320010:
-			//	break;
-			//case 320011:
-			//	break;
-
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Key"); break;
+			case 310200:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Multipletap"); break;
+			case 320100:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Gem"); break;
+			case 320001:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Nametag"); break;
+			case 320002:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Sword"); break;
+			case 320003:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal1gold"); break;
+			case 320004:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal2gold"); break;
+			case 320005:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo1"); break;
+			case 320006:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal3silver"); break;
+			case 320007:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo2"); break;
+			case 320008:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo3"); break;
+			case 320009:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Box"); break;
+			case 320010:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo4"); break;
+			case 320011:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Poster"); break;
 			}
 
 			int32 boxX = ITEM_STARTX + (i % 5) * ITEM_SIZEX;
@@ -120,15 +119,14 @@ void Inventory::Render(HDC hdc)
 			// 선택된 아이템이 있으면 표시 - 텍스처의 시작점 지정
 			int32 textureStartY = 0;
 			
-			if (_clickedItemID == 0)
-			{
-				textureStartY = 0;
-			}
-			else
+			if (_clickedItemID == itemID)
 			{
 				textureStartY = ITEM_SIZEX;
 			}
-				
+			else
+			{
+				textureStartY = 0;
+			}
 
 			::TransparentBlt(hdc,
 				boxX * winSizeAdjustmemt.x,
@@ -178,14 +176,36 @@ void Inventory::Render(HDC hdc)
 
 			switch (_clickedItemID)
 			{
-			case 1001:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1001_keyInInventory"); break;
-				break;
-			case 1002:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1002_pencilInInventory"); break;
-			case 1003:
-				texture = GET_SINGLE(ResourceManager)->GetTexture(L"1003_matchInInventory"); break;
-
+			case 300100:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Heal"); break;
+			case 310100:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Key"); break;
+			case 310200:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Multipletap"); break;
+			case 320100:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Gem"); break;
+			case 320001:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Nametag"); break;
+			case 320002:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Sword"); break;
+			case 320003:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal1gold"); break;
+			case 320004:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal2gold"); break;
+			case 320005:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo1"); break;
+			case 320006:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Medal3silver"); break;
+			case 320007:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo2"); break;
+			case 320008:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo3"); break;
+			case 320009:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Box"); break;
+			case 320010:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Photo4"); break;
+			case 320011:
+				texture = GET_SINGLE(ResourceManager)->GetTexture(L"inventory_Poster"); break;
 			}
 
 			::TransparentBlt(hdc,
@@ -211,6 +231,7 @@ void Inventory::Render(HDC hdc)
 			auto it = _itemInfo.find(_clickedItemID);
 			if (it != _itemInfo.end())
 				explain = it->second->explain;
+
 
 			// 출력할 위치
 			RECT rect = { 81 * winSizeAdjustmemt.x, 488 * winSizeAdjustmemt.y, 507 * winSizeAdjustmemt.x, 677 * winSizeAdjustmemt.y };
