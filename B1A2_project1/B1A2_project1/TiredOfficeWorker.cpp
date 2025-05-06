@@ -144,7 +144,7 @@ void TiredOfficeWorker::TickCloseAttack()
 		// Monster Attack Collider »èÁ¦
 		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
 		RemoveComponent(_attackCollider);
-		_attackCollider = nullptr;
+		SAFE_DELETE(_attackCollider);
 	}
 }
 
