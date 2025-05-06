@@ -133,7 +133,8 @@ public:
 
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
-	
+	virtual void OnComponentOverlapping(Collider* collider, Collider* other);
+
 	void AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2);	// Æ¨±â±â
 	void TickGravity();
 

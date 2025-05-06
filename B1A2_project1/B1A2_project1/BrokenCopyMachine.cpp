@@ -3,6 +3,7 @@
 #include "Paper.h"
 #include "DevScene.h"
 #include "BoxCollider.h"
+#include "Item.h"
 #include "ItemActor.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
@@ -52,7 +53,7 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 BrokenCopyMachine::~BrokenCopyMachine()
 {
-	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+	
 }
 
 void BrokenCopyMachine::BeginPlay()
@@ -134,7 +135,9 @@ void BrokenCopyMachine::TickDead()
 		// 아이템 드랍
 		if (urd(dre) <= _stat->healtemDropRate)
 		{
-			//ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, );
+			// 힐템 생성
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 		}
 		
 		scene->RemoveActor(this);

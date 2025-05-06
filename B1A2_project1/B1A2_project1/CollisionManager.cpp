@@ -42,12 +42,20 @@ void CollisionManager::Update()
 			// 충돌한다면
 			if (src->CheckCollision(dest))
 			{
+				// 충돌 진행중
+				if (src->_collisionMap.contains(dest))
+				{
+					src->GetOwner()->OnComponentOverlapping(src, dest);
+					dest->GetOwner()->OnComponentOverlapping(dest, src);
+				}
+
+				// 최초 충돌
 				if (src->_collisionMap.contains(dest) == false)
 				{
-					src->GetOwner()->OnComponentBeginOverlap(src, dest);
-					dest->GetOwner()->OnComponentBeginOverlap(dest, src);
 					src->_collisionMap.insert(dest);
 					dest->_collisionMap.insert(src);
+					src->GetOwner()->OnComponentBeginOverlap(src, dest);
+					dest->GetOwner()->OnComponentBeginOverlap(dest, src);
 				}
 			}
 			else

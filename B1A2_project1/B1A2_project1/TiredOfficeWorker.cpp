@@ -3,6 +3,8 @@
 #include "BoxCollider.h"
 #include "Player.h"
 #include "DevScene.h"
+#include "Item.h"
+#include "ItemActor.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
@@ -76,8 +78,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 TiredOfficeWorker::~TiredOfficeWorker()
 {
-	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
-	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
+	
 }
 
 void TiredOfficeWorker::BeginPlay()
@@ -143,7 +144,7 @@ void TiredOfficeWorker::TickCloseAttack()
 		// Monster Attack Collider 삭제
 		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
 		RemoveComponent(_attackCollider);
-		_attackCollider = nullptr;
+		SAFE_DELETE(_attackCollider);
 	}
 }
 
@@ -179,7 +180,9 @@ void TiredOfficeWorker::TickDead()
 		// 아이템 드랍
 		if (urd(dre) <= _stat->healtemDropRate)
 		{
-			// 힐템 생성 코드 추가 예정
+			// 힐템 생성
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 		}
 
 		// 객체 제거

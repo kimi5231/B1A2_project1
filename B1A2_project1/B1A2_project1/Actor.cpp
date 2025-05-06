@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Collider.h"
 #include "DialogueComponent.h"
+#include "CollisionManager.h"
 
 Actor::Actor()
 {
@@ -11,7 +12,14 @@ Actor::Actor()
 Actor::~Actor()
 {
 	for (Component* component : _components)
+	{
+		if (dynamic_cast<Collider*>(component))
+		{
+			Collider* collider = dynamic_cast<Collider*>(component);
+			GET_SINGLE(CollisionManager)->RemoveCollider(collider);
+		}
 		SAFE_DELETE(component);
+	}
 }
 
 void Actor::BeginPlay()
