@@ -78,9 +78,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 TiredOfficeWorker::~TiredOfficeWorker()
 {
-	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
-	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
-	GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+	
 }
 
 void TiredOfficeWorker::BeginPlay()

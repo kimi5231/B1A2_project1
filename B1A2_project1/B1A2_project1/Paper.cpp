@@ -23,6 +23,8 @@ Paper::Paper()
 
 			collider->SetSize({ 10, 5 });
 
+			collider->SetCollisionFlag(CLT_PLAYER);
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
@@ -33,6 +35,7 @@ Paper::Paper()
 
 Paper::~Paper()
 {
+
 }
 
 void Paper::BeginPlay()

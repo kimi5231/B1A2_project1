@@ -53,7 +53,7 @@ BrokenCopyMachine::BrokenCopyMachine()
 
 BrokenCopyMachine::~BrokenCopyMachine()
 {
-	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+	
 }
 
 void BrokenCopyMachine::BeginPlay()
