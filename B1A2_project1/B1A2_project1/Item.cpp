@@ -49,6 +49,8 @@ void Item::LoadFile(const std::wstring& path)
             start += 1; // 다음 탐색 위치 (중복 변환 방지)
         }
 
+        info->explain = strExplain;
+
         // F 키로 습득
         std::wstring strAcquiredByFkey;
         std::getline(wiss, strAcquiredByFkey, L',');

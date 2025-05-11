@@ -237,7 +237,7 @@ void Inventory::Render(HDC hdc)
 			RECT rect = { 81 * winSizeAdjustmemt.x, 488 * winSizeAdjustmemt.y, 507 * winSizeAdjustmemt.x, 677 * winSizeAdjustmemt.y };
 
 			// 폰트 생성
-			HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y, L"DungGeunMo");
+			HFONT hfont = Utils::MakeFont(17.f * winSizeAdjustmemt.y, L"DungGeunMo");
 
 			// 폰트 선택
 			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);

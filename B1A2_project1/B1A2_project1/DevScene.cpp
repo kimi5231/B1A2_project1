@@ -202,7 +202,7 @@ void DevScene::Render(HDC hdc)
 			int32 id = _acquireItem->GetItemInfo()->ID;
 			std::wstring name = _acquireItem->GetItemInfo()->name;
 			std::wstring explain = _acquireItem->GetItemInfo()->explain;
-	
+
 			// 사진
 			ItemPictureRender(hdc, id);
 			// 이름
@@ -2024,10 +2024,10 @@ void DevScene::ItemExplainRender(HDC hdc, std::wstring explain)
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
 	// 출력할 위치
-	RECT rect = { (DefaultWinSizeX / 2 - 50) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 150) * winSizeAdjustmemt.y, (DefaultWinSizeX / 2 + 50) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 200) * winSizeAdjustmemt.y };
+	RECT rect = { (DefaultWinSizeX / 2 - 170) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 150) * winSizeAdjustmemt.y, (DefaultWinSizeX / 2 + 300) * winSizeAdjustmemt.x, (DefaultWinSizeY / 2 + 200) * winSizeAdjustmemt.y };
 
 	// 폰트 생성
-	HFONT hfont = Utils::MakeFont(20.f * winSizeAdjustmemt.y, L"DungGeunMo");
+	HFONT hfont = Utils::MakeFont(17.f * winSizeAdjustmemt.y, L"DungGeunMo");
 
 	// 폰트 선택
 	HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);
