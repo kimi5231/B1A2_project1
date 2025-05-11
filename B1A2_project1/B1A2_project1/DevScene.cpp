@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -648,27 +648,34 @@ void DevScene::LoadMonster()
 
 		// CloseAttack
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerCloseAttack", L"Sprite\\Monster\\AmateurFencerCloseAttack.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerCloseAttack");
-
 			// Thrust
 			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustRight");
-				fb->SetInfo({ texture, L"FB_AmateurFencerThrustRight", {145, 88}, 0, 10, 0, 0.7f });
-			}
-			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustLeft");
-				fb->SetInfo({ texture, L"FB_AmateurFencerThrustLeft", {145, 88}, 0, 10, 1, 0.7f });
+				GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerThrust", L"Sprite\\Monster\\AmateurFencerThrust.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerThrust");
+
+				{
+					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustRight");
+					fb->SetInfo({ texture, L"FB_AmateurFencerThrustRight", {145, 88}, 0, 10, 0, 0.7f });
+				}
+				{
+					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerThrustLeft");
+					fb->SetInfo({ texture, L"FB_AmateurFencerThrustLeft", {145, 88}, 0, 10, 1, 0.7f });
+				}
 			}
 
 			// BackStep
 			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepRight");
-				fb->SetInfo({ texture, L"FB_AmateurFencerBackStepRight", {145, 88}, 11, 16, 0, 0.7f });
-			}
-			{
-				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepLeft");
-				fb->SetInfo({ texture, L"FB_AmateurFencerBackStepLeft", {145, 88}, 11, 16, 1, 0.7f });
+				GET_SINGLE(ResourceManager)->LoadTexture(L"AmateurFencerBackStep", L"Sprite\\Monster\\AmateurFencerBackStep.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"AmateurFencerBackStep");
+
+				{
+					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepRight");
+					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepRight", {145, 88}, 11, 16, 0, 0.7f });
+				}
+				{
+					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepLeft");
+					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepLeft", {145, 88}, 11, 16, 1, 0.7f });
+				}
 			}
 		}
 

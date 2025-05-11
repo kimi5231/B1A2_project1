@@ -262,8 +262,6 @@ void Player::TickIdle()
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
 	{
-		AddSkillPoint(3);
-
 		SetDir(DIR_LEFT);
 		SetState(ObjectState::Move);
 	}
@@ -1183,17 +1181,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		if (!projectile)
 			return;
 
-		// Blanket
-		{
-			Blanket* blanket = dynamic_cast<Blanket*>(projectile);
-			if (blanket)
-			{
-				Projectile* projectile = dynamic_cast<Projectile*>(b2->GetOwner());
-				OnDamagedByProjectile(projectile);
-
-				return;
-			}
-		}
+		OnDamagedByProjectile(projectile);
 	}
 
 	// 벽 충돌하면 밀어내기

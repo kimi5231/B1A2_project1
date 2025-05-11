@@ -305,7 +305,7 @@ BehaviorState AmateurFencer::Chase()
 	float yDistance = GetAbsFromPlayerYDistance();
 	
 	// Chase 유지
-	if (xDistance > _stat->closeAtkRange && xDistance <= _stat->playerDetection.x)
+	if (xDistance > _stat->closeAtkRangeX && xDistance <= _stat->playerDetection.x)
 	{
 		if (yDistance > _stat->playerDetection.y)
 		{
@@ -319,12 +319,12 @@ BehaviorState AmateurFencer::Chase()
 	}
 	
 	// 근거리 or 원거리 공격
-	if (xDistance <= _stat->closeAtkRange)
+	if (xDistance <= _stat->closeAtkRangeX)
 	{
 		SetState(ObjectState::Thrust);
 		return BehaviorState::SUCCESS;
 	}
-	else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+	else if (std::abs(xDistance - _stat->closeAtkRangeX) > std::abs(xDistance - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
 	{
 		SetState(ObjectState::SlashWave);
 		return BehaviorState::SUCCESS;
@@ -355,7 +355,7 @@ BehaviorState AmateurFencer::Thrust()	// 찌르기
 			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
 
 			_attackCollider = collider;
-
+			
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 			}
@@ -363,6 +363,10 @@ BehaviorState AmateurFencer::Thrust()	// 찌르기
 
 	if (GetIdx() == _flipbookThrust[_dir]->GetFlipbookEndNum())	// _flipbookThrust[_dir}->GetFlipbookEndNum()
 	{
+		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+		RemoveComponent(_attackCollider);
+		SAFE_DELETE(_attackCollider);
+
 		SetState(ObjectState::BackStep);
 		return BehaviorState::SUCCESS;
 	}
@@ -390,7 +394,7 @@ BehaviorState AmateurFencer::BackStep()
 	float yDistance = GetAbsFromPlayerYDistance();
 
 	// Chase
-	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRange && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRangeX && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
 	{
 		if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
 		{
@@ -401,17 +405,16 @@ BehaviorState AmateurFencer::BackStep()
 	}
 
 	// 근거리 or 원거리 공격
-	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRange)
+	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRangeX)
 	{
 		SetState(ObjectState::Thrust);
 		return BehaviorState::SUCCESS;
 	}
-	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRange) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRangeX) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
 	{
 		SetState(ObjectState::SlashWave);
 		return BehaviorState::SUCCESS;
 	}
-
 }
 
 BehaviorState AmateurFencer::is_cur_state_slashwave()
@@ -458,15 +461,15 @@ BehaviorState AmateurFencer::Dash()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
 
-	if (_sumTime <= 0.48f)
-	{
-		if (_dir = DIR_RIGHT)
-			_pos.x += _stat->dashSpeed * deltaTime;
-		else
-			_pos.x -= _stat->dashSpeed * deltaTime;
-	}
+	if (_dir = DIR_RIGHT)
+		_pos.x += _stat->dashSpeed * deltaTime;
 	else
+		_pos.x -= _stat->dashSpeed * deltaTime;
+	
+	if (_sumTime >= 0.5f)
 	{
+		_sumTime = 0.f;
+
 		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
 	}
@@ -496,8 +499,6 @@ BehaviorState AmateurFencer::Dead()
 	
 		return BehaviorState::SUCCESS;
 	}
-
-
 }
 
 float AmateurFencer::GetFromPlayerXDistance()

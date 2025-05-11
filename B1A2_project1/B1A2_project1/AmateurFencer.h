@@ -7,18 +7,19 @@ class Node;
 
 struct AmateurFencerStat
 {
-	CommonStat commonStat;	// A, B
-	float healItemDropRate;	// C
-	float speed;	// D
-	Vec2Int playerDetection;	// E, F
-	int32 knockBackDistance; // G
-	int32 backStepDistance;	// H
-	int32 closeAtkRange;	// I
+	int32 hp;	// A
+	float healItemDropRate;	// B
+	float speed;	// C
+	Vec2Int playerDetection;	// D, E
+	int32 knockBackDistance; // F
+	int32 backStepDistance;	// G
+	int32 closeAtkRangeX;	// H
+	int32 closeAtkRangeY;	// I
 	int32 closeAtkDamage;	// J
-	int32 dashSpeed;	// K
+	float dashSpeed;	// K
 	int32 dashDistance;	// L
 	int32 longAtkRange;	// M
-	int32 longAtkProjectileSpeed;	// N
+	float longAtkProjectileSpeed;	// N
 	int32 longAtkProjectileDamage;	// O
 	int32 longAtkProjectileCount;	// P
 
@@ -39,22 +40,22 @@ struct AmateurFencerStat
 			{
 				switch (column)
 				{
-				case 0:this->commonStat.id = std::stoi(cell); break;	// A
-				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
-				case 2: this->healItemDropRate = std::stof(cell); break;	// C
-				case 3: this->speed = std::stof(cell); break;	// D
-				case 4: this->playerDetection.x = std::stoi(cell); break;	// E
-				case 5: this->playerDetection.y = std::stoi(cell); break;	// F
-				case 6: this->knockBackDistance = std::stoi(cell); break;	// G
-				case 7: this->backStepDistance = std::stoi(cell); break;	// H
-				case 8: this->closeAtkRange = std::stoi(cell); break;	// I
+				case 0: this->hp = std::stoi(cell); break;
+				case 1: this->healItemDropRate = std::stof(cell); break;	// B
+				case 2: this->speed = std::stof(cell); break;	// C
+				case 3: this->playerDetection.x = std::stoi(cell); break;	// D
+				case 4: this->playerDetection.y = std::stoi(cell); break;	// E
+				case 5: this->knockBackDistance = std::stoi(cell); break;	// F
+				case 6: this->backStepDistance = std::stoi(cell); break;	// G
+				case 7: this->closeAtkRangeX = std::stoi(cell); break;	// H
+				case 8: this->closeAtkRangeY = std::stoi(cell); break;	// I
 				case 9: this->closeAtkDamage = std::stoi(cell); break;	// J
-				case 10: this->dashSpeed = std::stoi(cell); break;	// K
+				case 10: this->dashSpeed = std::stof(cell); break;	// K
 				case 11: this->dashDistance = std::stoi(cell); break;	// L
 				case 12: this->longAtkRange = std::stoi(cell); break;	// M
-				case 13: this->longAtkProjectileSpeed = std::stoi(cell); break;	// N
+				case 13: this->longAtkProjectileSpeed = std::stof(cell); break;	// N
 				case 14: this->longAtkProjectileDamage = std::stoi(cell); break;	// O
-				case 15: this->longAtkProjectileCount = std::stoi(cell); break;	// P
+				case 15: this->longAtkProjectileCount = std::stoi(cell); break;		// P
 				}
 				++column;
 			}
@@ -91,7 +92,7 @@ protected:
 
 public:
 	virtual int32 GetAttack() override;
-	virtual int32& GetHp() override { return _stat->commonStat.hp; }
+	virtual int32& GetHp() override { return _stat->hp; }
 	virtual float GetSpeed() override { return _stat->speed; }
 
 public:
@@ -168,9 +169,9 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
-	Collider* _collider;
-	Collider* _detectCollider;
-	Collider* _attackCollider;
+	Collider* _collider = nullptr;
+	Collider* _detectCollider = nullptr;
+	Collider* _attackCollider = nullptr;
 
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
