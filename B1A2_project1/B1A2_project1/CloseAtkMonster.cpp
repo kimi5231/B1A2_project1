@@ -172,14 +172,20 @@ void CloseAtkMonster::TickHit()
 
 void CloseAtkMonster::TickDead()
 {
-	// 힐템 드랍
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-	ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	scene->RemoveActor(this);
+	if (_sumTime >= 0.5f)
+	{
+		// 힐템 드랍
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+
+		// 객체 제거
+		// 추후 GameScene로 변경할 예정
+		scene->RemoveActor(this);
+	}
 }
 
 void CloseAtkMonster::TickChase()

@@ -484,12 +484,20 @@ BehaviorState AmateurFencer::is_cur_state_dead()
 
 BehaviorState AmateurFencer::Dead()
 {
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	scene->RemoveActor(this);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= 0.5f)
+	{	
+		// 객체 제거
+		// 추후 GameScene로 변경할 예정
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		scene->RemoveActor(this);
 	
-	return BehaviorState::SUCCESS;
+		return BehaviorState::SUCCESS;
+	}
+
+
 }
 
 float AmateurFencer::GetFromPlayerXDistance()
