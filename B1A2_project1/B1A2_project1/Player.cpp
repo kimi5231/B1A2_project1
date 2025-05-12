@@ -6,6 +6,7 @@
 #include "CollisionManager.h"
 #include "ValueManager.h"
 #include "DialogueManager.h"
+#include "SceneManager.h"
 #include "CameraComponent.h"
 #include "DialogueComponent.h"
 #include "Dialogue.h"
@@ -14,7 +15,6 @@
 #include "Item.h"
 #include "DevScene.h"
 #include "ZipLine.h"
-#include "SceneManager.h"
 #include "Flipbook.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
@@ -24,6 +24,7 @@
 #include "Blanket.h"
 #include "Projectile.h"
 #include "Crystal.h"
+#include "TilemapActor.h"
 
 Player::Player()
 {
@@ -69,6 +70,7 @@ Player::Player()
 
 	// Collider
 	{
+		// Player Collider
 		{
 			BoxCollider* collider = new BoxCollider();
 			// 리셋 안 하면 모두 충돌함
@@ -241,6 +243,57 @@ void Player::Tick()
 	// 플레이어가 화면 밖으로 넘어가지 않도록
 	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
 	_pos.x = std::clamp(_pos.x, (float)(67 / 2), (float)mapSize.x);		// 67은 DevScene에서 설정한 Player collider 크기
+
+	// Ground or Air 판단 코드(추후 코드 정리 필요)
+	{
+		Scene* scene = GET_SINGLE(SceneManager)->GetCurrentScene();
+
+		TilemapActor* actor = dynamic_cast<TilemapActor*>(scene->GetActor(999));
+
+		const std::vector<Component*>& components = actor->GetComponents();
+
+		for (Component* component : components)
+		{
+			if (dynamic_cast<BoxCollider*>(component))
+			{
+				BoxCollider* collider = dynamic_cast<BoxCollider*>(component);
+
+				if (collider->GetCollisionLayer() == CLT_GROUND)
+				{
+					Vec2 pos = _playerCollider->GetPos();
+					float posX1 = pos.x - _playerCollider->GetSize().x / 2;
+					float posX2 = pos.x + _playerCollider->GetSize().x / 2;
+					float posY = pos.y +  _playerCollider->GetSize().y / 2;
+					
+					if (collider->GetPos().x - 20 < posX1 && posX1 < collider->GetPos().x + 20)
+					{
+						if (collider->GetPos().y - 20 < posY && posY < collider->GetPos().y + 20)
+						{
+							_isAir = false;
+							_isGround = true;
+							return;
+						}
+					}
+
+					if (collider->GetPos().x - 20 < posX2 && posX2 < collider->GetPos().x + 20)
+					{
+						if (collider->GetPos().y - 20 < posY && posY < collider->GetPos().y + 20)
+						{
+							_isAir = false;
+							_isGround = true;
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		if (_state != ObjectState::Hang)
+		{
+			_isAir = true;
+			_isGround = false;
+		}
+	}
 }
 
 void Player::Render(HDC hdc)
@@ -761,6 +814,8 @@ void Player::TickDead()
 
 void Player::UpdateAnimation()
 {
+	Vec2 colliderSize = _playerCollider->GetSize();
+
 	switch (_state)
 	{
 	case ObjectState::Idle:
@@ -820,7 +875,11 @@ void Player::UpdateAnimation()
 	break;
 	}
 
-	//_isAir = true;
+	if (colliderSize.y > _playerCollider->GetSize().y)
+	{
+		_isGround = false;
+		_isAir = true;
+	}
 }
 
 int32 Player::GetAttack()
@@ -1271,26 +1330,6 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 		return;
 	}
-
-	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)
-	{
-		AddSkillPoint(1);
-	}
-
-	if (b2->GetCollisionLayer() == CLT_GROUND)
-	{
-		/*if (b1->GetRect().bottom != b2->GetRect().top)
-			return;*/
-		
-		_groundCollisionCount--;
-
-		if (_groundCollisionCount <= 0)		// 타일과 완전히 떨어졌을 때 중력 적용하기
-		{
-			_isGround = false;
-			_isAir = true;
-			_groundCollisionCount = 0;
-		}
-	}
 }
 
 void Player::OnComponentOverlapping(Collider* collider, Collider* other)
@@ -1307,11 +1346,11 @@ void Player::OnComponentOverlapping(Collider* collider, Collider* other)
 		return;
 	}
 
-	/*if (b2->GetCollisionLayer() == CLT_GROUND)
+	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
-		AdjustCollisionPos(b1, b2);
+		AdjustCollisionPosGround(b1, b2);
 		return;
-	}*/
+	}
 }
 
 void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
@@ -1354,4 +1393,28 @@ void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
 	}
 	
 	SetPos(pos);
+}
+
+void Player::AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2)
+{
+	RECT r1 = b1->GetRect();
+	RECT r2 = b2->GetRect();
+
+	Vec2 pos = GetPos();
+	Vec2 colliderPos = _playerCollider->GetPos();
+
+	// 충돌 범위
+	RECT intersect = {};
+
+	if (::IntersectRect(&intersect, &r1, &r2))
+	{
+		int32 h = intersect.bottom - intersect.top;
+
+		// 위로 올려 보내기
+		pos.y -= h;	
+		colliderPos.y -= h;
+	}
+
+	SetPos(pos);
+	_playerCollider->SetPos(colliderPos);
 }

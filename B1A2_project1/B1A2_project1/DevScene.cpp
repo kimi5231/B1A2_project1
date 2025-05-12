@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(1);
 
 	// Inventory
 	{
@@ -1348,6 +1348,7 @@ void DevScene::SetStage1()
 		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
+		actor->SetID(999);
 	}
 	
 	// Player

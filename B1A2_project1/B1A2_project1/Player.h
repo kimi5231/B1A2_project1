@@ -136,6 +136,7 @@ public:
 	virtual void OnComponentOverlapping(Collider* collider, Collider* other);
 
 	void AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2);	// ∆®±‚±‚
+	void AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2);
 	void TickGravity();
 
 public:
@@ -179,7 +180,7 @@ private:
 	int32 _gravity = 1000;
 	float _ySpeed = {};
 
-	bool _isGround = false;
+	bool _isGround = true;
 	bool _isAir = false;
 
 	// »πµÊ«— æ∆¿Ã≈€

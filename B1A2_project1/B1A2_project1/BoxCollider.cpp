@@ -59,7 +59,6 @@ void BoxCollider::BeginPlay()
 			_pos.x = owner->GetPos().x - monsterDetection;
 	}
 
-
 	if (GetCollisionLayer() == CLT_PLAYER_ATTACK && dynamic_cast<Player*>(GetOwner()))
 	{
 		Player* owner = dynamic_cast<Player*>(GetOwner());
