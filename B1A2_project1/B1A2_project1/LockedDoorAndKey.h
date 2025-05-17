@@ -33,12 +33,11 @@ private:
 	Flipbook* _flipbookUnlockedDoor = nullptr;
 	Flipbook* _flipbookKey = nullptr;
 
-	bool _isKeyRender = false;
-
 	Vec2Int _doorPos;
 	Vec2Int _itemPos;
 
 public:
 	bool _isKeyAcquired = false;
+	bool _isOperateKey = false;
 };
 

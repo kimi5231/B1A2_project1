@@ -95,6 +95,7 @@ ItemActor::ItemActor(int32 itemID, const std::unordered_map<int32, ItemInfo*>& i
 	}
 
 	SetFlipbook(_flipbookItemInMap);
+	SetFKeyState(FKeyState::Hidden);
 }
 
 ItemActor::~ItemActor()

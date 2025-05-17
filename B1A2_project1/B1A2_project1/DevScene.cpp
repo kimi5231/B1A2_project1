@@ -813,11 +813,6 @@ void DevScene::LoadStructure()
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_UnlockedDoor");
 			fb->SetInfo({ texture, L"FB_UnlockedDoor", {80, 240}, 0, 0, 0, 0.7f });
 		}
-		
-		// LockedDoorItem
-		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"LockedDoorItem", L"Sprite\\Structure\\LockedDoorItem.bmp", RGB(55, 255, 0));
-		}
 	}
 
 	// ZipLine
@@ -872,7 +867,7 @@ void DevScene::LoadStructure()
 				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"DestructibleObject");
 
 				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_DestructibleObject");
-				fb->SetInfo({ texture, L"FB_DestructibleObject", {120, 100}, 0, 0, 0, 0.7f });
+				fb->SetInfo({ texture, L"FB_DestructibleObject", {64, 46}, 0, 0, 0, 0.7f });
 			}
 
 			// BreakingDestructibleObject
@@ -881,7 +876,7 @@ void DevScene::LoadStructure()
 				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingDestructibleObject");
 
 				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingDestructibleObject");
-				fb->SetInfo({ texture, L"FB_BreakingDestructibleObject", {120, 100}, 0, 2, 0, 0.7f });
+				fb->SetInfo({ texture, L"FB_BreakingDestructibleObject", {64, 46}, 0, 2, 0, 0.7f });
 			}
 		}
 	}

@@ -141,7 +141,7 @@ void Player::Tick()
 				scene->SetItemAcquireState(_collideItem);
 
 				// 잠긴 문과 열쇠의 열쇠 획득시 문 열리도록 설정
-				if (_collideItem->GetID() == 300100)
+				if (_collideItem->GetItemID() == 310100)
 					_isKeyAcquire = true;
 
 				// 아이템 숨기기

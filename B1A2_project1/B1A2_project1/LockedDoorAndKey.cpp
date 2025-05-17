@@ -5,6 +5,9 @@
 #include "CollisionManager.h"
 #include "ValueManager.h"
 #include "Texture.h"
+#include "SceneManager.h"
+#include "DevScene.h"
+#include "ItemActor.h"
 
 LockedDoorAndKey::LockedDoorAndKey()
 {
@@ -67,29 +70,6 @@ void LockedDoorAndKey::Tick()
 void LockedDoorAndKey::Render(HDC hdc)
 {
 	Super::Render(hdc);
-
-	// Key 그리기
-	if (!_isKeyRender)
-		return;
-	
-	// 보정 변수 가져오기
-	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
-	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
-
-	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"LockedDoorItem");
-
-	::TransparentBlt(hdc,
-		_itemPos.x * winSizeAdjustmemt.x - cameraPosAdjustmemt.x,
-		_itemPos.y * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
-		texture->GetSize().x * winSizeAdjustmemt.x,
-		texture->GetSize().y  * winSizeAdjustmemt.y,
-		texture->GetDC(),
-		0,
-		0,
-		texture->GetSize().x,
-		texture->GetSize().y,
-		texture->GetTransparent());
-
 }
 
 void LockedDoorAndKey::UpdateAnimation()
@@ -112,9 +92,19 @@ void LockedDoorAndKey::OnComponentBeginOverlap(Collider* collider, Collider* oth
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
+	if (_isOperateKey)
+		return;
+
 	if (b2->GetCollisionLayer() == CLT_PLAYER)
 	{
-		_isKeyRender = true;
+		// 추후 GameScene로 변경할 예정
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		
+		// Key 생성
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemActor* Item = scene->SpawnObject<ItemActor>({ float(_itemPos.x), float(_itemPos.y) }, LAYER_ITEM, 310100, itemData->GetItems());
+
+		_isOperateKey = true;
 	}
 }
 

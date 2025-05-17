@@ -26,7 +26,7 @@ DestructibleObject::DestructibleObject()
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
 
-			collider->SetSize({ 120, 100 });
+			collider->SetSize({ 64, 46 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);

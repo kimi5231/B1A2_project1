@@ -35,6 +35,8 @@ public:
 	void SetItemState(ItemState state) { _itemState = state; }
 	ItemState GetItemState() { return _itemState; }
 
+	int32 GetItemId() { return _itemInfo->ID; }
+
 	// 아이템 삭제 위해
 	Collider* GetCollider() const;
 protected:
