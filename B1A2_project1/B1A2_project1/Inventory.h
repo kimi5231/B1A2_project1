@@ -43,6 +43,13 @@ public:
 	// _acquiredItens에 Player가 획득한 아이템 저장
 	void SaveAcquireItems();
 
+	// Render
+	void InventoryBackgroundRender(HDC hdc);
+	void InventoryItemRender(HDC hdc);
+	void ClickedItemPhotoRender(HDC hdc);
+	void ClickedItemExplainRender(HDC hdc);
+
+
 public:
 	// 마우스 입력
 	std::vector<RECT> _itemBoxes;	// 클릭 영역 확인
