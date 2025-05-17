@@ -725,13 +725,157 @@ void DevScene::LoadMonster()
 		}
 	}
 
-	// FB
+	// FinalBoss
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss", L"Sprite\\Monster\\FinalBoss.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss");
+		// Idle
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossIdle", L"Sprite\\Monster\\FinalBossIdle.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossIdle");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBoss");
-		fb->SetInfo({ texture, L"FB_FinalBoss", {25, 85}, 0, 0, 0, 0.7f });
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossIdleRight");
+				fb->SetInfo({ texture, L"FB_FinalBossIdleRight", {35, 90}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossIdleLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossIdleLeft", {35, 90}, 0, 4, 1, 0.7f });
+			}
+		}
+
+		// Chase
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossChase", L"Sprite\\Monster\\FinalBossChase.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossChase");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossChaseRight");
+				fb->SetInfo({ texture, L"FB_FinalBossChaseRight", {60, 90}, 0, 4, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossChaseLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossChaseLeft", {60, 90}, 0, 7, 1, 0.7f });
+			}
+		}
+	
+		// Hit
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossHit", L"Sprite\\Monster\\FinalBossHit.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossHit");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossHitRight");
+				fb->SetInfo({ texture, L"FB_FinalBossHitRight", {60, 86}, 0, 0, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossHitLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossHitLeft", {60, 86}, 0, 0, 1, 0.7f });
+			}
+		}
+
+		// Dead
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossDead", L"Sprite\\Monster\\FinalBossDead.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossDead");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossDeadRight");
+				fb->SetInfo({ texture, L"FB_FinalBossDeadRight", {60, 60}, 0, 0, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossDeadLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossDeadLeft", {60, 60}, 0, 0, 1, 0.7f });
+			}
+		}
+
+		// Thrust
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossThrust", L"Sprite\\Monster\\FinalBossThrust.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossThrust");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossThrustRight");
+				fb->SetInfo({ texture, L"FB_FinalBossThrustRight", {145, 97}, 0, 5, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossThrustLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossThrustLeft", {145, 97}, 0, 5, 1, 0.7f });
+			}
+		}
+
+		// BackStep
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossBackStep", L"Sprite\\Monster\\FinalBossBackStep.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossBackStep");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossBackStepRight");
+				fb->SetInfo({ texture, L"FB_FinalBossBackStepRight", {145, 97}, 0, 5, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossBackStepLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossBackStepLeft", {145, 97}, 0, 5, 1, 0.7f });
+			}
+		}
+
+		// LongAttackLength
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossLongAttackLength", L"Sprite\\Monster\\FinalBossLongAttackLength.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossLongAttackLength");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossLongAttackLengthRight");
+				fb->SetInfo({ texture, L"FB_FinalBossLongAttackLengthRight", {94, 105}, 0, 7, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossLongAttackLengthLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossLongAttackLengthLeft", {94, 105}, 0, 7, 1, 0.7f });
+			}
+		}
+
+		// LongAttackWidth
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossLongAttackWidth", L"Sprite\\Monster\\FinalBossLongAttackWidth.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossLongAttackWidth");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossLongAttackWidthRight");
+				fb->SetInfo({ texture, L"FB_FinalBossLongAttackWidthRight", {65, 97}, 0, 6, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossLongAttackWidthLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossLongAttackWidthLeft", {65, 97}, 0, 6, 1, 0.7f });
+			}
+		}
+
+		// Dash
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossDash", L"Sprite\\Monster\\FinalBossDash.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossDash");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossDashRight");
+				fb->SetInfo({ texture, L"FB_FinalBossDashRight", {66, 97}, 0, 2, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossDashLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossDashLeft", {66, 97}, 0, 2, 1, 0.7f });
+			}
+		}
+
+		// CutServerely
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBossSlash", L"Sprite\\Monster\\FinalBossSlash.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBossSlash");
+
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossSlashRight");
+				fb->SetInfo({ texture, L"FB_FinalBossSlashRight", {110, 65}, 0, 8, 0, 0.7f });
+			}
+			{
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FinalBossSlashLeft");
+				fb->SetInfo({ texture, L"FB_FinalBossSlashLeft", {110, 65}, 0, 8, 1, 0.7f });
+			}
+		}
 	}
 }
 

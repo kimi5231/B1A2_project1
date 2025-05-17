@@ -125,6 +125,8 @@ enum class ObjectState
 	Jump,	// 점프
 	CloseAttack,	// 기본 공격
 	LongAttack,
+	LongAttackLength,
+	LongAttackWidth,
 	Thrust,		// 찌르기
 	BackStep,	// 백스텝
 	SlashWave,	// 검기 날리기
