@@ -1554,13 +1554,13 @@ void DevScene::SetStage1()
 
 			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
 		}
-		/*{
+		{
 			ZipLine* zipLine2 = SpawnObject<ZipLine>({ 5020, 585 }, LAYER_STRUCTURE);
 			zipLine2->SetZipLineType(ZipLineType::ZipLine);
 			zipLine2->SetBeginPos({ 4520, 450 });
 			zipLine2->SetEndPos({ 5520, 720 });
 			zipLine2->SetPlayer(_player);
-		}*/
+		}
 
 		// BreakingWall
 		{
