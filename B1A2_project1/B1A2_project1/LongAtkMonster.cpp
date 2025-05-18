@@ -161,15 +161,19 @@ void LongAtkMonster::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		SetFlipbook(_flipbookIdle[_dir]);
+		_collider->SetSize({ 40, 55 });
 		break;
 	case ObjectState::LongAttack:
 		SetFlipbook(_flipbookLongAttack[_dir]);
+		_collider->SetSize({ 44, 61 });
 		break;
 	case ObjectState::Hit:
 		SetFlipbook(_flipbookHit[_dir]);
+		_collider->SetSize({ 43, 59 });
 		break;
 	case ObjectState::Dead:
 		SetFlipbook(_flipbookDead[_dir]);
+		_collider->SetSize({ 45, 75 });
 		break;
 	}
 }

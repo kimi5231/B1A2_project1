@@ -220,39 +220,51 @@ void FinalBoss::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::Idle:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::Chase:
+		_collider->SetSize({ 60, 90 });
 		SetFlipbook(_flipbookChase[_dir]);
 		break;
 	case ObjectState::Hit:
+		_collider->SetSize({ 60, 86 });
 		SetFlipbook(_flipbookHit[_dir]);
 		break;
 	case ObjectState::Dead:
+		_collider->SetSize({ 60, 60 });
 		SetFlipbook(_flipbookDead[_dir]);
 		break;
 	case ObjectState::CrystalCreation:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::Thrust:
+		_collider->SetSize({ 115, 97 });
 		SetFlipbook(_flipbookThrust[_dir]);
 		break;
 	case ObjectState::BackStep:
+		_collider->SetSize({ 115, 97 });
 		SetFlipbook(_flipbookBackStep[_dir]);
 		break;
 	case ObjectState::LongAttackLength:
+		_collider->SetSize({ 94, 105 });
 		SetFlipbook(_flipbookLongAttackLength[_dir]);
 		break;
 	case ObjectState::LongAttackWidth:
+		_collider->SetSize({ 65, 97 });
 		SetFlipbook(_flipbookLongAttackWidth[_dir]);
 		break;
 	case ObjectState::Dash:
+		_collider->SetSize({ 66, 97 });
 		SetFlipbook(_flipbookDash[_dir]);
 		break;
 	case ObjectState::Teleport:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::CutSeverely:
+		_collider->SetSize({ 110, 65 });
 		SetFlipbook(_flipbookCutSeverely[_dir]);
 		break;
 	}

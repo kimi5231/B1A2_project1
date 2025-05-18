@@ -4,6 +4,7 @@
 
 enum class BehaviorState;
 class Node;
+class BoxCollider;
 
 struct FinalBossStat
 {
@@ -193,7 +194,7 @@ private:
 
 	float _currentMoveDistance;
 
-	Collider* _collider;
+	BoxCollider* _collider;
 	Collider* _attackCollider;
 
 	int32 _currentProjectileCount = 0;
