@@ -1,6 +1,8 @@
 #pragma once
 #include "Monster.h"
 
+class BoxCollider;
+
 struct LongAtkMonsterStat
 {
 	int32 hp = 100;	
@@ -71,6 +73,6 @@ private:
 	float _sumTime = 0.f;
 	float _creationTime = 0.f;
 
-	Collider* _collider;
+	BoxCollider* _collider;
 };
 

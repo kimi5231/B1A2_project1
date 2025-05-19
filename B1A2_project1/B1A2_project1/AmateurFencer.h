@@ -169,7 +169,7 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
-	Collider* _collider = nullptr;
+	BoxCollider* _collider = nullptr;
 	Collider* _detectCollider = nullptr;
 	Collider* _attackCollider = nullptr;
 

@@ -28,26 +28,26 @@ FinalBoss::FinalBoss()
 	CalPixelPerSecond();
 
 	// Flipbook
-	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookThrust[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookThrust[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookBackStep[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookBackStep[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookSlashWave[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookSlashWave[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookTeleport[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookTeleport[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookCutSeverely[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
-	_flipbookCutSeverely[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBoss");
+	_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossIdleRight");
+	_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossIdleLeft");
+	_flipbookChase[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossChaseRight");
+	_flipbookChase[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossChaseLeft");
+	_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossHitRight");
+	_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossHitLeft");
+	_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossDeadRight");
+	_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossDeadLeft");
+	_flipbookThrust[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossThrustRight");
+	_flipbookThrust[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossThrustLeft");
+	_flipbookBackStep[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossBackStepRight");
+	_flipbookBackStep[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossBackStepLeft");
+	_flipbookLongAttackLength[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossLongAttackLengthRight");
+	_flipbookLongAttackLength[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossLongAttackLengthLeft");
+	_flipbookLongAttackWidth[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossLongAttackWidthRight");
+	_flipbookLongAttackWidth[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossLongAttackWidthLeft");
+	_flipbookDash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossDashRight");
+	_flipbookDash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossDashLeft");
+	_flipbookCutSeverely[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossSlashRight");
+	_flipbookCutSeverely[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_FinalBossSlashLeft");
 
 	// Collider
 	{
@@ -220,36 +220,51 @@ void FinalBoss::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::Idle:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::Chase:
+		_collider->SetSize({ 60, 90 });
 		SetFlipbook(_flipbookChase[_dir]);
 		break;
 	case ObjectState::Hit:
+		_collider->SetSize({ 60, 86 });
 		SetFlipbook(_flipbookHit[_dir]);
 		break;
 	case ObjectState::Dead:
+		_collider->SetSize({ 60, 60 });
 		SetFlipbook(_flipbookDead[_dir]);
 		break;
 	case ObjectState::CrystalCreation:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::Thrust:
+		_collider->SetSize({ 115, 97 });
 		SetFlipbook(_flipbookThrust[_dir]);
 		break;
 	case ObjectState::BackStep:
+		_collider->SetSize({ 115, 97 });
 		SetFlipbook(_flipbookBackStep[_dir]);
 		break;
-	case ObjectState::SlashWave:
-		SetFlipbook(_flipbookSlashWave[_dir]);
+	case ObjectState::LongAttackLength:
+		_collider->SetSize({ 94, 105 });
+		SetFlipbook(_flipbookLongAttackLength[_dir]);
+		break;
+	case ObjectState::LongAttackWidth:
+		_collider->SetSize({ 65, 97 });
+		SetFlipbook(_flipbookLongAttackWidth[_dir]);
 		break;
 	case ObjectState::Dash:
+		_collider->SetSize({ 66, 97 });
 		SetFlipbook(_flipbookDash[_dir]);
 		break;
 	case ObjectState::Teleport:
+		_collider->SetSize({ 35, 90 });
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::CutSeverely:
+		_collider->SetSize({ 110, 65 });
 		SetFlipbook(_flipbookCutSeverely[_dir]);
 		break;
 	}

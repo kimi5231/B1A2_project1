@@ -504,13 +504,14 @@ void Player::TickJump()
 	else
 	{
 		// ZipLine 
-		if (_zipLine)
+		if (_nearZipLine)
 		{
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 			{
 				// 바라보는 방향 설정
 				_dir = DIR_RIGHT;
 
+				_currentZipLine = _nearZipLine;
 				SetState(ObjectState::Hang);
 			}
 		}
@@ -689,14 +690,14 @@ void Player::TickHang()
 	static bool isMoving = false;	// 이동 하는지
 	static float sumTime = 0.0f;
 
-	if (!_zipLine)
+	if (!_currentZipLine)
 		return;
 
-	Vec2 beginPos = _zipLine->GetBeginPos();
-	Vec2 endPos = _zipLine->GetEndPos();
+	Vec2 beginPos = _currentZipLine->GetBeginPos();
+	Vec2 endPos = _currentZipLine->GetEndPos();
 
-	if (_zipLine->GetMidPos().x != 0 && _zipLine->GetMidPos().y != 0)	// 중간 탑승
-		beginPos = _zipLine->GetMidPos();
+	if (_currentZipLine->GetMidPos().x != 0 && _currentZipLine->GetMidPos().y != 0)	// 중간 탑승
+		beginPos = _currentZipLine->GetMidPos();
 
 
 	// 매달리기 시작 - 짚라인 시작 위치로 이동
@@ -735,7 +736,7 @@ void Player::TickHang()
 			_isGround = false;
 			_isAir = true;
 
-			_zipLine->SetMidPos(_pos);
+			_currentZipLine->SetMidPos(_pos);
 
 			SetState(ObjectState::Release);
 
@@ -751,7 +752,7 @@ void Player::TickHang()
 			_isGround = false;
 			_isAir = true;
 
-			_zipLine->SetMidPos({ 0, 0 });	// 중간 하차 X
+			_currentZipLine->SetMidPos({ 0, 0 });	// 중간 하차 X
 
 			SetState(ObjectState::Release);
 		}
@@ -1117,14 +1118,14 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			{
 				if (zipLine->GetZipLineType() == ZipLineType::ZipLine)
 				{
-					_zipLine = zipLine;
+					_nearZipLine = zipLine;
 				}
 				else if (zipLine->GetZipLineType() == ZipLineType::ZipLineWithButton)
 				{
 					ZipLineButtonAndDisplay* BD = zipLine->GetZipLineButtonAndDisplay();
 					if (BD->GetState() == ObjectState::On)
 					{
-						_zipLine = zipLine;
+						_nearZipLine = zipLine;
 					}
 				}
 				return;
@@ -1288,7 +1289,7 @@ void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 	// ZipLine
 	if (b2->GetCollisionLayer() == CLT_STRUCTURE_DETECT)
 	{
-		_zipLine = nullptr;
+		_nearZipLine = nullptr;
 
 		return;
 	}

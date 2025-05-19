@@ -173,10 +173,10 @@ void Inventory::InventoryItemRender(HDC hdc)
 			std::wstring itemCountStr = std::to_wstring(itemCount);
 
 			// 출력할 위치
-			RECT rect = { (boxX + 108) * winSizeAdjustmemt.x, boxY * winSizeAdjustmemt.y, (boxX + ITEM_SIZEX) * winSizeAdjustmemt.x, (boxY + 20) * winSizeAdjustmemt.y };
+			RECT rect = { (boxX + 108) * winSizeAdjustmemt.x, (boxY - 10) *winSizeAdjustmemt.y, (boxX + ITEM_SIZEX) * winSizeAdjustmemt.x, (boxY + 30) * winSizeAdjustmemt.y };
 
 			// 폰트 생성
-			HFONT hfont = Utils::MakeFont(15.f * winSizeAdjustmemt.y, L"DungGeunMo");
+			HFONT hfont = Utils::MakeFont(30.f * winSizeAdjustmemt.y, L"DungGeunMo");
 
 			// 폰트 선택
 			HFONT oldFont = (HFONT)::SelectObject(hdc, hfont);

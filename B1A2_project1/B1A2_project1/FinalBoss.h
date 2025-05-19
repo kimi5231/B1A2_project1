@@ -4,6 +4,7 @@
 
 enum class BehaviorState;
 class Node;
+class BoxCollider;
 
 struct FinalBossStat
 {
@@ -177,9 +178,9 @@ private:
 	// 수정 소환 & 몬스터 소환 Flipbook은 Idle로 임시 설정
 	Flipbook* _flipbookThrust[2] = {};
 	Flipbook* _flipbookBackStep[2] = {};
-	Flipbook* _flipbookSlashWave[2] = {};
+	Flipbook* _flipbookLongAttackLength[2] = {};
+	Flipbook* _flipbookLongAttackWidth[2] = {};
 	Flipbook* _flipbookDash[2] = {};
-	Flipbook* _flipbookTeleport[2] = {};
 	Flipbook* _flipbookCutSeverely[2] = {};
 
 private:
@@ -193,7 +194,7 @@ private:
 
 	float _currentMoveDistance;
 
-	Collider* _collider;
+	BoxCollider* _collider;
 	Collider* _attackCollider;
 
 	int32 _currentProjectileCount = 0;

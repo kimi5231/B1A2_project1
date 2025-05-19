@@ -177,26 +177,34 @@ void AmateurFencer::UpdateAnimation()
 	{
 	case ObjectState::Idle:
 		SetFlipbook(_flipbookIdle[_dir]);
+		_collider->SetSize({ 31, 88 });
 		break;
 	case ObjectState::Hit:
 		SetFlipbook(_flipbookHit[_dir]);
+		_collider->SetSize({ 75, 65 });
 		break;
 	case ObjectState::Chase:
+		_collider->SetSize({ 90, 100 });
 		SetFlipbook(_flipbookChase[_dir]);
 		break;
 	case ObjectState::Thrust:
+		_collider->SetSize({ 145, 88 });
 		SetFlipbook(_flipbookThrust[_dir]);
 		break;
 	case ObjectState::BackStep:
+		_collider->SetSize({ 145, 88 });
 		SetFlipbook(_flipbookBackStep[_dir]);
 		break;
 	case ObjectState::SlashWave:
+		_collider->SetSize({ 85, 88 });
 		SetFlipbook(_flipbookSlashWave[_dir]);
 		break;
 	case ObjectState::Dash:
+		_collider->SetSize({ 90, 88 });
 		SetFlipbook(_flipbookDash[_dir]);
 		break;
 	case ObjectState::Dead:
+		_collider->SetSize({ 75, 60 });
 		SetFlipbook(_flipbookDead[_dir]);
 		break;
 	}
