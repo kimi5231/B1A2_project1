@@ -183,6 +183,8 @@ private:
 	bool _isGround = true;
 	bool _isAir = false;
 
+	bool _isOnStair = false;
+
 	// 획득한 아이템
 	ItemActor* _collideItem = {};	// unordered map에 저장하기 위해, 충돌한 아이템을 담을 변수
 	std::unordered_map<int32, int32> _acquiredItems;		// [아이템 ID, 개수]

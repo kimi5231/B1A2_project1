@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(1);
 
 	// Inventory
 	{
