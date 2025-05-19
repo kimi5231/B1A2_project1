@@ -653,11 +653,11 @@ void DevScene::LoadMonster()
 
 				{
 					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepRight");
-					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepRight", {145, 88}, 11, 16, 0, 0.7f });
+					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepRight", {145, 88}, 0, 6, 0, 0.7f });
 				}
 				{
 					Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_AmateurFencerBackStepLeft");
-					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepLeft", {145, 88}, 11, 16, 1, 0.7f });
+					fb->SetInfo({ texture, L"FB_AmateurFencerBackStepLeft", {145, 88}, 0, 6, 1, 0.7f });
 				}
 			}
 		}

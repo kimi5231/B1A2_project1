@@ -47,6 +47,12 @@ void BoxCollider::BeginPlay()
 		else
 			_pos.x = owner->GetPos().x - 30;
 	}
+	else if (GetCollisionLayer() == CLT_FINAL_BOSS_SLASH && dynamic_cast<Monster*>(GetOwner()))
+	{
+		Monster* owner = dynamic_cast<Monster*>(GetOwner());
+
+		_pos = GetOwner()->GetPos();
+	}
 	
 	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Player*>(GetOwner()))
 	{
@@ -119,6 +125,12 @@ void BoxCollider::TickComponent()
 			_pos.x = owner->GetPos().x + 30;
 		else
 			_pos.x = owner->GetPos().x - 30;
+	}
+	else if (GetCollisionLayer() == CLT_FINAL_BOSS_SLASH && dynamic_cast<Monster*>(GetOwner()))
+	{
+		Monster* owner = dynamic_cast<Monster*>(GetOwner());
+
+		_pos = GetOwner()->GetPos();
 	}
 
 	if (GetCollisionLayer() == CLT_DETECT && dynamic_cast<Player*>(GetOwner()))

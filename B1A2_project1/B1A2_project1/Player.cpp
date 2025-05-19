@@ -81,6 +81,7 @@ Player::Player()
 
 			// 충돌하고 싶은 객체 설정
 			collider->AddCollisionFlagLayer(CLT_MONSTER_ATTACK);
+			collider->AddCollisionFlagLayer(CLT_FINAL_BOSS_SLASH);
 			collider->AddCollisionFlagLayer(CLT_PROJECTILE);
 			collider->AddCollisionFlagLayer(CLT_ITEM);
 			collider->AddCollisionFlagLayer(CLT_GROUND);
@@ -1267,7 +1268,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		}
 	}
 
-	if (b1->GetCollisionLayer() == CLT_PLAYER && b2->GetCollisionLayer() == CLT_MONSTER_ATTACK)
+	if (b1->GetCollisionLayer() == CLT_PLAYER && (b2->GetCollisionLayer() == CLT_MONSTER_ATTACK || b2->GetCollisionLayer() == CLT_FINAL_BOSS_SLASH))
 	{
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);

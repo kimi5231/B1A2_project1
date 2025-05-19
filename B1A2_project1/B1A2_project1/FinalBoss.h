@@ -199,8 +199,8 @@ private:
 
 	float _currentMoveDistance;
 
-	BoxCollider* _collider;
-	Collider* _attackCollider;
+	BoxCollider* _collider = nullptr;
+	Collider* _attackCollider = nullptr;
 
 	int32 _currentProjectileCount = 0;
 	int32 _currentMonsterCreationCount = 0;		// 생성할 때

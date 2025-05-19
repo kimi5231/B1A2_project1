@@ -105,32 +105,33 @@ void AmateurFencer::BeginPlay()
 	ChaseSequence->addChild(c3);
 	ChaseSequence->addChild(a3);
 
-	// Attack Selector
-	// Close Atk Sequence
-	Condition* c4_1 = new Condition("is cur state Thrust?", [&]() {return is_cur_state_thrust(); });
-	Action* a4_1 = new Action("Thrust", [&]() {return Thrust(); });
+	// Thrust Sequence
+	Condition* c4 = new Condition("is cur state Thrust?", [&]() {return is_cur_state_thrust(); });
+	Action* a4 = new Action("Thrust", [&]() {return Thrust(); });
+	Sequence* ThrustSequence = new Sequence();
+	ThrustSequence->addChild(c4);
+	ThrustSequence->addChild(a4);
+
+	// BackStep Sequence
 	Condition* c4_2 = new Condition("is cur state BackStep?", [&]() {return is_cur_state_backstep(); });
 	Action* a4_2 = new Action("BackStep", [&]() {return BackStep(); });
-	Sequence* CloseAtkSequence = new Sequence();
-	CloseAtkSequence->addChild(c4_1);
-	CloseAtkSequence->addChild(a4_1);
-	CloseAtkSequence->addChild(c4_2);
-	CloseAtkSequence->addChild(a4_2);
+	Sequence* BackStepSequence = new Sequence();
+	BackStepSequence->addChild(c4_2);
+	BackStepSequence->addChild(a4_2);
 	
-	// Long Atk Sequence
+	// SlashWave Sequeuce
 	Condition* c5_1 = new Condition("is cur state SlashWave?", [&]() {return is_cur_state_slashwave(); });
 	Action* a5_1 = new Action("SlashWave", [&]() {return SlashWave(); });
+	Sequence* SlashWaveSequeuce = new Sequence();
+	SlashWaveSequeuce->addChild(c5_1);
+	SlashWaveSequeuce->addChild(a5_1);
+
+	// Dash Sequeuce
 	Condition* c5_2 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
 	Action* a5_2 = new Action("Dash", [&]() {return Dash(); });
-	Sequence* LongAtkSequence = new Sequence();
-	LongAtkSequence->addChild(c5_1);
-	LongAtkSequence->addChild(a5_1);
-	LongAtkSequence->addChild(c5_2);
-	LongAtkSequence->addChild(a5_2);
-
-	Selector* AttackSelector = new Selector();
-	AttackSelector->addChild(CloseAtkSequence);
-	AttackSelector->addChild(LongAtkSequence);
+	Sequence* DashSequence = new Sequence();
+	DashSequence->addChild(c5_2);
+	DashSequence->addChild(a5_2);
 
 	// Dead Sequence
 	Condition* c6 = new Condition("is cur state Dead?", [&]() {return is_cur_state_dead(); });
@@ -144,7 +145,10 @@ void AmateurFencer::BeginPlay()
 	RootSelector->addChild(IdleSequence);
 	RootSelector->addChild(HitSequence);
 	RootSelector->addChild(ChaseSequence);
-	RootSelector->addChild(AttackSelector);
+	RootSelector->addChild(ThrustSequence);
+	RootSelector->addChild(BackStepSequence);
+	RootSelector->addChild(SlashWaveSequeuce);
+	RootSelector->addChild(DashSequence);
 	RootSelector->addChild(DeadSequence);
 	_rootNode = RootSelector;
 }
@@ -360,7 +364,7 @@ BehaviorState AmateurFencer::Thrust()	// 찌르기
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
+			collider->SetSize({ 70, 70 });	// 스프라이트에 따라 수정 필요
 
 			_attackCollider = collider;
 			
@@ -391,38 +395,50 @@ BehaviorState AmateurFencer::is_cur_state_backstep()
 }
 
 BehaviorState AmateurFencer::BackStep()
-{
-	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->backStepDistance;
-	else
-		_pos.x += _stat->backStepDistance;
-
+{	
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	float xDistance = GetAbsFromPlayerXDisatance();
 	float yDistance = GetAbsFromPlayerYDistance();
+	_sumTime += deltaTime;
 
-	// Chase
-	if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRangeX && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+	if (_dir == DIR_RIGHT)
+		_pos.x -= (_stat->backStepDistance * 2) * deltaTime;
+	else
+		_pos.x += (_stat->backStepDistance * 2) * deltaTime;
+
+	if (_sumTime >= 0.5f)
 	{
-		if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
-		{
-			SetState(ObjectState::Chase);
-		}
+		_sumTime = 0.f;
 
+		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
+		//// Chase
+		//if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRangeX && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
+		//{
+		//	if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
+		//	{
+		//		SetState(ObjectState::Chase);
+		//		return BehaviorState::SUCCESS;
+		//	}
+		//}
+
+		//// 근거리 or 원거리 공격
+		//if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRangeX)
+		//{
+		//	SetState(ObjectState::Thrust);
+		//	return BehaviorState::SUCCESS;
+		//}
+		//else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRangeX) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+		//{
+		//	SetState(ObjectState::SlashWave);
+		//	return BehaviorState::SUCCESS;
+		//}
+
+		//SetState(ObjectState::Idle);
+		//return BehaviorState::SUCCESS;
 	}
 
-	// 근거리 or 원거리 공격
-	if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRangeX)
-	{
-		SetState(ObjectState::Thrust);
-		return BehaviorState::SUCCESS;
-	}
-	else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRangeX) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
-	{
-		SetState(ObjectState::SlashWave);
-		return BehaviorState::SUCCESS;
-	}
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState AmateurFencer::is_cur_state_slashwave()

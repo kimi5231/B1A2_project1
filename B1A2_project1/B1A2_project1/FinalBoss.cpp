@@ -113,38 +113,40 @@ void FinalBoss::BeginPlay()
 	CrystalCreationSequence->addChild(c5);
 	CrystalCreationSequence->addChild(a5);
 
-	// Close Atk Sequence
+	// Thrust Sequence
 	Condition* c7_1 = new Condition("is cur state Thrust?", [&]() {return is_cur_state_thrust(); });
 	Action* a7_1 = new Action("Thrust", [&]() {return Thrust(); });
+	Sequence* ThrustSequence = new Sequence();
+	ThrustSequence->addChild(c7_1);
+	ThrustSequence->addChild(a7_1);
+
+	// BackStep Sequence
 	Condition* c7_2 = new Condition("is cur state BackStep?", [&]() {return is_cur_state_backstep(); });
 	Action* a7_2 = new Action("BackStep", [&]() {return BackStep(); });
-	Sequence* CloseAtkSequence = new Sequence();
-	CloseAtkSequence->addChild(c7_1);
-	CloseAtkSequence->addChild(a7_1);
-	CloseAtkSequence->addChild(c7_2);
-	CloseAtkSequence->addChild(a7_2);
+	Sequence* BackStepSequence = new Sequence();
+	BackStepSequence->addChild(c7_2);
+	BackStepSequence->addChild(a7_2);
 
 	// LongAtk Length Sequence
-	Condition* c8_1_l = new Condition("is cur state LongAtkLength?", [&]() {return is_cur_state_long_attack_length(); });
-	Action* a8_1_l = new Action("LongAttackLength", [&]() {return LongAttackLength(); });
-	Condition* c8_2_l = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
-	Action* a8_2_l = new Action("Dash", [&]() {return Dash(); });
+	Condition* c8_1 = new Condition("is cur state LongAtkLength?", [&]() {return is_cur_state_long_attack_length(); });
+	Action* a8_1 = new Action("LongAttackLength", [&]() {return LongAttackLength(); });
 	Sequence* LongAtkLengthSequence = new Sequence();
-	LongAtkLengthSequence->addChild(c8_1_l);
-	LongAtkLengthSequence->addChild(a8_1_l);
-	LongAtkLengthSequence->addChild(c8_2_l);
-	LongAtkLengthSequence->addChild(a8_2_l);
+	LongAtkLengthSequence->addChild(c8_1);
+	LongAtkLengthSequence->addChild(a8_1);
 
 	// LongAtk Width Sequence
-	Condition* c8_1_w = new Condition("is cur state LongAtkWidth?", [&]() {return is_cur_state_long_attack_width(); });
-	Action* a8_1_w = new Action("LongAttackWidth", [&]() {return LongAttackWidth(); });
-	Condition* c8_2_w = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
-	Action* a8_2_w = new Action("Dash", [&]() {return Dash(); });
+	Condition* c8_2 = new Condition("is cur state LongAtkWidth?", [&]() {return is_cur_state_long_attack_width(); });
+	Action* a8_2 = new Action("LongAttackWidth", [&]() {return LongAttackWidth(); });
 	Sequence* LongAtkWidthSequence = new Sequence();
-	LongAtkWidthSequence->addChild(c8_1_w);
-	LongAtkWidthSequence->addChild(a8_1_w);
-	LongAtkWidthSequence->addChild(c8_2_w);
-	LongAtkWidthSequence->addChild(a8_2_w);
+	LongAtkWidthSequence->addChild(c8_2);
+	LongAtkWidthSequence->addChild(a8_2);
+
+	// Dash Sequence
+	Condition* c8_3 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
+	Action* a8_3 = new Action("Dash", [&]() {return Dash(); });
+	Sequence* DashSequence = new Sequence();
+	DashSequence->addChild(c8_3);
+	DashSequence->addChild(a8_3);
 
 	// Teleport Sequence
 	Condition* c9 = new Condition("is cur state teleport?", [&]() {return is_cur_state_teleport(); });
@@ -167,9 +169,11 @@ void FinalBoss::BeginPlay()
 	RootSelector->addChild(HitSequence);
 	RootSelector->addChild(DeadSequence);
 	RootSelector->addChild(CrystalCreationSequence);
-	RootSelector->addChild(CloseAtkSequence);
+	RootSelector->addChild(ThrustSequence);
+	RootSelector->addChild(BackStepSequence);
 	RootSelector->addChild(LongAtkLengthSequence);
 	RootSelector->addChild(LongAtkWidthSequence);
+	RootSelector->addChild(DashSequence);
 	RootSelector->addChild(TeleportSequence);
 	RootSelector->addChild(CutSeverelySequence);
 	_rootNode = RootSelector;
@@ -209,7 +213,7 @@ void FinalBoss::Tick()
 	//}
 
 	// Monster Creation
-	if (_monsterCreationSumTime >= 15.f)
+	if (_monsterCreationSumTime >= 30.f)
 	{
 		_monsterCreationSumTime = 0.f;
 
@@ -272,7 +276,7 @@ void FinalBoss::UpdateAnimation()
 		SetFlipbook(_flipbookDash[_dir]);
 		break;
 	case ObjectState::Teleport:
-		_collider->SetSize({ 35, 90 });
+		_collider->SetSize({ 35, 90 }); 
 		SetFlipbook(_flipbookIdle[_dir]);
 		break;
 	case ObjectState::CutSeverely:
@@ -347,12 +351,16 @@ BehaviorState FinalBoss::Idle()
 	{
 		_monsterIdleSumTime += deltaTime;
 
-		if (_monsterIdleSumTime >= 5.f)
+		SetPos({ 640, 125 });
+
+		if (_monsterIdleSumTime >= 10.f)
 		{
 			_isMonsterCreation = false;
 
 			_monsterIdleSumTime = 0.f;
 			_IdlesumTime = 0.f;
+
+			SetPos({ 640, 515 });
 		}
 
 		return BehaviorState::RUNNING;
@@ -456,24 +464,36 @@ BehaviorState FinalBoss::is_cur_state_hit()
 
 BehaviorState FinalBoss::Hit()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
 	// knock back
 	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->knockBackDistance;
+		_pos.x -= (_stat->knockBackDistance * 2) * deltaTime;
 	else
-		_pos.x += _stat->knockBackDistance;
+		_pos.x += (_stat->knockBackDistance * 2) * deltaTime;
 
-	// 난수 생성
-	std::random_device rd;
-	std::default_random_engine dre{ rd() };
-	std::uniform_real_distribution urd{ 0.f, 1.f };
-
-	// 힐템 드랍
-	if (urd(dre) <= _stat->healItemDropRate)
+	if (_sumTime >= 1.5f)
 	{
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-		
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-		ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+		_sumTime = 0.f;
+
+		// 난수 생성
+		std::random_device rd;
+		std::default_random_engine dre{ rd() };
+		std::uniform_real_distribution urd{ 0.f, 1.f };
+
+		// 힐템 드랍
+		if (urd(dre) <= _stat->healItemDropRate)
+		{
+			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+		}
+
+		SetState(ObjectState::Chase);
+
+		return BehaviorState::SUCCESS;
 	}
 
 	// 수정 소환
@@ -613,7 +633,7 @@ BehaviorState FinalBoss::Thrust()
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 20, 20 });	// 스프라이트에 따라 수정 필요
+			collider->SetSize({ 80, 60 });	// 스프라이트에 따라 수정 필요
 
 			_attackCollider = collider;
 
@@ -622,9 +642,14 @@ BehaviorState FinalBoss::Thrust()
 		}
 	}
 
-	if (GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
+	if (GetIdx() == _flipbookThrust[_dir]->GetFlipbookEndNum())	// _flipbookThrust[_dir}->GetFlipbookEndNum()
 	{
+		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+		RemoveComponent(_attackCollider);
+		SAFE_DELETE(_attackCollider);
+
 		SetState(ObjectState::BackStep);
+
 		return BehaviorState::SUCCESS;
 	}
 }
@@ -639,14 +664,23 @@ BehaviorState FinalBoss::is_cur_state_backstep()
 
 BehaviorState FinalBoss::BackStep()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
 	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->backStepDistance;
+		_pos.x -= (_stat->backStepDistance * 2) * deltaTime;
 	else
-		_pos.x += _stat->backStepDistance;
+		_pos.x += (_stat->backStepDistance * 2) * deltaTime;
 
-	SetState(ObjectState::Chase);
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Chase);
 
-	return BehaviorState::SUCCESS;
+		return BehaviorState::SUCCESS;
+	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_long_attack_length()
@@ -769,23 +803,25 @@ BehaviorState FinalBoss::Teleport()
 	else
 		_pos = { playerPos.x + 20, yPos };
 
+	SetState(ObjectState::CutSeverely);
+	return BehaviorState::SUCCESS;
 	// 찌르기 or 마구 베기 5:5
-	std::random_device rd;
-	std::mt19937 gen(rd()); // 시드 생성기
-	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+	//std::random_device rd;
+	//std::mt19937 gen(rd()); // 시드 생성기
+	//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
 
-	bool isThrust = (dist(gen) == 0);
+	//bool isThrust = (dist(gen) == 0);
 
-	if (isThrust)
-	{
-		SetState(ObjectState::Thrust);
-		return BehaviorState::SUCCESS;
-	}
-	else
-	{
-		SetState(ObjectState::CutSeverely);
-		return BehaviorState::SUCCESS;
-	}
+	//if (isThrust)
+	//{
+	//	SetState(ObjectState::Thrust);
+	//	return BehaviorState::SUCCESS;
+	//}
+	//else
+	//{
+	//	SetState(ObjectState::CutSeverely);
+	//	return BehaviorState::SUCCESS;
+	//}
 }
 
 BehaviorState FinalBoss::is_cur_state_cut_severely()
@@ -798,16 +834,19 @@ BehaviorState FinalBoss::is_cur_state_cut_severely()
 
 BehaviorState FinalBoss::CutSeverely()
 {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
 	if (!_attackCollider)
 	{
 		{
 			BoxCollider* collider = new BoxCollider();
 			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_MONSTER_ATTACK);
+			collider->SetCollisionLayer(CLT_FINAL_BOSS_SLASH);
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 100, 80 });	// 스프라이트에 따라 수정 필요
+			collider->SetSize({ 110, 65 });	// 스프라이트에 따라 수정 필요
 
 			_attackCollider = collider;
 
@@ -816,8 +855,14 @@ BehaviorState FinalBoss::CutSeverely()
 		}
 	}
 
-	if (_flipbookThrust[_dir]->GetFlipbookEndNum())	
+	if (_sumTime >= 2.5f)	
 	{
+		_sumTime = 0.f;
+
+		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+		RemoveComponent(_attackCollider);
+		SAFE_DELETE(_attackCollider);
+
 		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
 	}
@@ -859,9 +904,6 @@ void FinalBoss::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
 
 	if (b1 == nullptr || b2 == nullptr)
-		return;
-
-	if (_state == ObjectState::CrystalCreation)		// 수정 소환 상태에선 공격
 		return;
 	
 	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
@@ -951,17 +993,17 @@ void FinalBoss::CreateBlanket()
 
 void FinalBoss::CreateMonster()
 {
-	//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	//std::random_device rd;
-	//std::mt19937 gen(rd()); // 시드 생성기
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
 
-	//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
-	//std::uniform_int_distribution<> dist2(0, 110);
+	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+	std::uniform_int_distribution<> dist2(0, 110);
 
-	//// CloseAtk Monster
+	// CloseAtk Monster
 	//{
-	//	//int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
+	//	int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
 	//	CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
 	//	cm->SetSpawnDir(DIR_RIGHT);
 	//	cm->SetSpawnPos({ float(40), _firstFloorYpos });
