@@ -24,17 +24,17 @@ private:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 private:
-	Flipbook* _flipbookW;
+	Flipbook* _flipbookMove[2];
 };
 
 ////////////////////////////////////////////////////////////
 
-class SlashwaveH : public Projectile
+class SlashwaveL : public Projectile
 {
 	using Super = Projectile;
 public:
-	SlashwaveH();
-	virtual ~SlashwaveH() override;
+	SlashwaveL();
+	virtual ~SlashwaveL() override;
 
 	virtual void BeginPlay() override;
 	virtual void Tick() override;
@@ -52,6 +52,6 @@ private:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 private:
-	Flipbook* _flipbookH;
+	Flipbook* _flipbookMove[2];
 };
 

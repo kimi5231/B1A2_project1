@@ -124,16 +124,27 @@ void FinalBoss::BeginPlay()
 	CloseAtkSequence->addChild(c7_2);
 	CloseAtkSequence->addChild(a7_2);
 
-	// Long Atk Sequence
-	Condition* c8_1 = new Condition("is cur state SlashWave?", [&]() {return is_cur_state_slashwave(); });
-	Action* a8_1 = new Action("SlashWave", [&]() {return SlashWave(); });
-	Condition* c8_2 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
-	Action* a8_2 = new Action("Dash", [&]() {return Dash(); });
-	Sequence* LongAtkSequence = new Sequence();
-	LongAtkSequence->addChild(c8_1);
-	LongAtkSequence->addChild(a8_1);
-	LongAtkSequence->addChild(c8_2);
-	LongAtkSequence->addChild(a8_2);
+	// LongAtk Length Sequence
+	Condition* c8_1_l = new Condition("is cur state LongAtkLength?", [&]() {return is_cur_state_long_attack_length(); });
+	Action* a8_1_l = new Action("LongAttackLength", [&]() {return LongAttackLength(); });
+	Condition* c8_2_l = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
+	Action* a8_2_l = new Action("Dash", [&]() {return Dash(); });
+	Sequence* LongAtkLengthSequence = new Sequence();
+	LongAtkLengthSequence->addChild(c8_1_l);
+	LongAtkLengthSequence->addChild(a8_1_l);
+	LongAtkLengthSequence->addChild(c8_2_l);
+	LongAtkLengthSequence->addChild(a8_2_l);
+
+	// LongAtk Width Sequence
+	Condition* c8_1_w = new Condition("is cur state LongAtkWidth?", [&]() {return is_cur_state_long_attack_width(); });
+	Action* a8_1_w = new Action("LongAttackWidth", [&]() {return LongAttackWidth(); });
+	Condition* c8_2_w = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
+	Action* a8_2_w = new Action("Dash", [&]() {return Dash(); });
+	Sequence* LongAtkWidthSequence = new Sequence();
+	LongAtkWidthSequence->addChild(c8_1_w);
+	LongAtkWidthSequence->addChild(a8_1_w);
+	LongAtkWidthSequence->addChild(c8_2_w);
+	LongAtkWidthSequence->addChild(a8_2_w);
 
 	// Teleport Sequence
 	Condition* c9 = new Condition("is cur state teleport?", [&]() {return is_cur_state_teleport(); });
@@ -157,7 +168,8 @@ void FinalBoss::BeginPlay()
 	RootSelector->addChild(DeadSequence);
 	RootSelector->addChild(CrystalCreationSequence);
 	RootSelector->addChild(CloseAtkSequence);
-	RootSelector->addChild(LongAtkSequence);
+	RootSelector->addChild(LongAtkLengthSequence);
+	RootSelector->addChild(LongAtkWidthSequence);
 	RootSelector->addChild(TeleportSequence);
 	RootSelector->addChild(CutSeverelySequence);
 	_rootNode = RootSelector;
@@ -416,7 +428,17 @@ BehaviorState FinalBoss::Chase()
 	else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange) 
 		&& _bossFloor == _playerFloor)
 	{
-		SetState(ObjectState::SlashWave);
+		std::random_device rd;
+		std::mt19937 gen(rd()); // 시드 생성기
+		std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+
+		bool isWidth = (dist(gen) == 0);
+
+		if (isWidth)
+			SetState(ObjectState::LongAttackWidth);
+		else
+			SetState(ObjectState::LongAttackLength);
+
 		return BehaviorState::SUCCESS;
 	}
 
@@ -627,15 +649,15 @@ BehaviorState FinalBoss::BackStep()
 	return BehaviorState::SUCCESS;
 }
 
-BehaviorState FinalBoss::is_cur_state_slashwave()
+BehaviorState FinalBoss::is_cur_state_long_attack_length()
 {
-	if (_state == ObjectState::SlashWave)
+	if (_state == ObjectState::LongAttackLength)
 		return BehaviorState::SUCCESS;
 	else
 		return BehaviorState::FAIL;
 }
 
-BehaviorState FinalBoss::SlashWave()
+BehaviorState FinalBoss::LongAttackLength()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
@@ -643,7 +665,7 @@ BehaviorState FinalBoss::SlashWave()
 	if (_sumTime >= 0.3f)
 	{
 		_sumTime = 0.f;
-		CreateProjectile();
+		CreateLengthProjectile();
 
 		return BehaviorState::RUNNING;
 	}
@@ -651,7 +673,39 @@ BehaviorState FinalBoss::SlashWave()
 	if (_currentProjectileCount == _stat->longAtkProjectileCount)
 	{
 		SetState(ObjectState::Dash);
-	
+
+		_currentProjectileCount = 0;
+		_sumTime = 0.f;
+
+		return BehaviorState::SUCCESS;
+	}
+}
+
+BehaviorState FinalBoss::is_cur_state_long_attack_width()
+{
+	if (_state == ObjectState::LongAttackWidth)
+		return BehaviorState::SUCCESS;
+	else
+		return BehaviorState::FAIL;
+}
+
+BehaviorState FinalBoss::LongAttackWidth()
+{
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	if (_sumTime >= 0.3f)
+	{
+		_sumTime = 0.f;
+		CreateWidthProjectile();
+
+		return BehaviorState::RUNNING;
+	}
+
+	if (_currentProjectileCount == _stat->longAtkProjectileCount)
+	{
+		SetState(ObjectState::Dash);
+
 		_currentProjectileCount = 0;
 		_sumTime = 0.f;
 
@@ -762,7 +816,7 @@ BehaviorState FinalBoss::CutSeverely()
 		}
 	}
 
-	if (GetIdx() == 0)	// _flipbookThrust[_dir}->GetFlipbookEndNum()
+	if (_flipbookThrust[_dir]->GetFlipbookEndNum())	
 	{
 		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
@@ -821,34 +875,30 @@ void FinalBoss::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
 }
 
-void FinalBoss::CreateProjectile()
+void FinalBoss::CreateWidthProjectile()
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	std::random_device rd;
-	std::mt19937 gen(rd()); // 시드 생성기
-	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+	SlashwaveW* slashwaveW = scene->SpawnObject<SlashwaveW>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
+	slashwaveW->SetSpeed(_stat->longAtkProjectileSpeed);
+	slashwaveW->SetAttack(_stat->longAtkProjectileDamage);
+	slashwaveW->SetRange(_stat->longAtkRange);
+	slashwaveW->SetOwner(this);
+	slashwaveW->SetDir(_dir);
 
-	bool isWType = (dist(gen) == 0);
+	_currentProjectileCount++;
+}
 
-	if (isWType)
-	{
-		SlashwaveW* slashwaveW = scene->SpawnObject<SlashwaveW>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
-		slashwaveW->SetSpeed(_stat->longAtkProjectileSpeed);
-		slashwaveW->SetAttack(_stat->longAtkProjectileDamage);
-		slashwaveW->SetRange(_stat->longAtkRange);
-		slashwaveW->SetOwner(this);
-		slashwaveW->SetDir(_dir);
-	}
-	else
-	{
-		SlashwaveH* slashwaveH = scene->SpawnObject<SlashwaveH>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
-		slashwaveH->SetSpeed(_stat->longAtkProjectileSpeed);
-		slashwaveH->SetAttack(_stat->longAtkProjectileDamage);
-		slashwaveH->SetRange(_stat->longAtkRange);
-		slashwaveH->SetOwner(this);
-		slashwaveH->SetDir(_dir);
-	}
+void FinalBoss::CreateLengthProjectile()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	SlashwaveL* slashwaveH = scene->SpawnObject<SlashwaveL>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
+	slashwaveH->SetSpeed(_stat->longAtkProjectileSpeed);
+	slashwaveH->SetAttack(_stat->longAtkProjectileDamage);
+	slashwaveH->SetRange(_stat->longAtkRange);
+	slashwaveH->SetOwner(this);
+	slashwaveH->SetDir(_dir);
 
 	_currentProjectileCount++;
 }
@@ -901,51 +951,51 @@ void FinalBoss::CreateBlanket()
 
 void FinalBoss::CreateMonster()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	std::random_device rd;
-	std::mt19937 gen(rd()); // 시드 생성기
+	//std::random_device rd;
+	//std::mt19937 gen(rd()); // 시드 생성기
 
-	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
-	std::uniform_int_distribution<> dist2(0, 110);
+	//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+	//std::uniform_int_distribution<> dist2(0, 110);
 
-	// CloseAtk Monster
-	{
-		//int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
-		CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
-		cm->SetSpawnDir(DIR_RIGHT);
-		cm->SetSpawnPos({ float(40), _firstFloorYpos });
-		cm->SetMoveDistance(100.f);
-		cm->SetMovementLimit({ float(20), float(100) });
-	}
-	{
-		CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
-		cm->SetSpawnDir(DIR_RIGHT);
-		cm->SetSpawnPos({ float(1000), _firstFloorYpos });
-		cm->SetMoveDistance(100.f);
-		cm->SetMovementLimit({ float(980), float(1200) });
-	}
+	//// CloseAtk Monster
+	//{
+	//	//int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
+	//	CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
+	//	cm->SetSpawnDir(DIR_RIGHT);
+	//	cm->SetSpawnPos({ float(40), _firstFloorYpos });
+	//	cm->SetMoveDistance(100.f);
+	//	cm->SetMovementLimit({ float(20), float(100) });
+	//}
+	//{
+	//	CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
+	//	cm->SetSpawnDir(DIR_RIGHT);
+	//	cm->SetSpawnPos({ float(1000), _firstFloorYpos });
+	//	cm->SetMoveDistance(100.f);
+	//	cm->SetMovementLimit({ float(980), float(1200) });
+	//}
 
-	// LongAtk Monster
-	{
-		LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(50), _secondFloorYPos }, LAYER_MONSTER);
-		lam->SetSpawnDir(DIR_RIGHT);
-		lam->SetSpawnPos({ 50, _secondFloorYPos });
-		lam->SetMovementLimit({ float(40), float(240) });
-	}	
-	{
-		LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(1040), _secondFloorYPos }, LAYER_MONSTER);
-		lam->SetSpawnDir(DIR_RIGHT);
-		lam->SetSpawnPos({ 1040, _secondFloorYPos });
-		lam->SetMovementLimit({ float(1040), float(1240) });
-	}
-	
-	{
-		LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(480), _thirdFloorYPos }, LAYER_MONSTER);
-		lam->SetSpawnDir(DIR_RIGHT);
-		lam->SetSpawnPos({ 480, _secondFloorYPos });
-		lam->SetMovementLimit({ float(480), float(720) });
-	}
+	//// LongAtk Monster
+	//{
+	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(50), _secondFloorYPos }, LAYER_MONSTER);
+	//	lam->SetSpawnDir(DIR_RIGHT);
+	//	lam->SetSpawnPos({ 50, _secondFloorYPos });
+	//	lam->SetMovementLimit({ float(40), float(240) });
+	//}	
+	//{
+	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(1040), _secondFloorYPos }, LAYER_MONSTER);
+	//	lam->SetSpawnDir(DIR_RIGHT);
+	//	lam->SetSpawnPos({ 1040, _secondFloorYPos });
+	//	lam->SetMovementLimit({ float(1040), float(1240) });
+	//}
+	//
+	//{
+	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(480), _thirdFloorYPos }, LAYER_MONSTER);
+	//	lam->SetSpawnDir(DIR_RIGHT);
+	//	lam->SetSpawnPos({ 480, _secondFloorYPos });
+	//	lam->SetMovementLimit({ float(480), float(720) });
+	//}
 }
 
 void FinalBoss::UpdatePlayerFloor()

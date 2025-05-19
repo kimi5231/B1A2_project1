@@ -10,7 +10,8 @@
 
 SlashwaveW::SlashwaveW()
 {
-	_flipbookW = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveW");
+	_flipbookMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveWRight");
+	_flipbookMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveWLeft");
 
 	// Collider
 	{
@@ -74,7 +75,7 @@ void SlashwaveW::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::Move:
-		SetFlipbook(_flipbookW);
+		SetFlipbook(_flipbookMove[_dir]);
 		break;
 	}
 }
@@ -100,9 +101,10 @@ void SlashwaveW::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 //////////////////////////////////////////////////////////////////////////
 
-SlashwaveH::SlashwaveH()
+SlashwaveL::SlashwaveL()
 {
-	_flipbookH = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveH");
+	_flipbookMove[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveLRight");
+	_flipbookMove[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_SlashWaveLLeft");
 
 	// Collider
 	{
@@ -121,26 +123,26 @@ SlashwaveH::SlashwaveH()
 	SetState(ObjectState::Move);
 }
 
-SlashwaveH::~SlashwaveH()
+SlashwaveL::~SlashwaveL()
 {
 }
 
-void SlashwaveH::BeginPlay()
+void SlashwaveL::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void SlashwaveH::Tick()
+void SlashwaveL::Tick()
 {
 	Super::Tick();
 }
 
-void SlashwaveH::Render(HDC hdc)
+void SlashwaveL::Render(HDC hdc)
 {
 	Super::Render(hdc);
 }
 
-void SlashwaveH::TickMove()
+void SlashwaveL::TickMove()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
@@ -156,22 +158,22 @@ void SlashwaveH::TickMove()
 	}
 }
 
-void SlashwaveH::UpdateAnimation()
+void SlashwaveL::UpdateAnimation()
 {
 	switch (_state)
 	{
 	case ObjectState::Move:
-		SetFlipbook(_flipbookH);
+		SetFlipbook(_flipbookMove[_dir]);
 		break;
 	}
 }
 
-float SlashwaveH::GetSpeed()
+float SlashwaveL::GetSpeed()
 {
 	return 0.0f;
 }
 
-void SlashwaveH::OnComponentBeginOverlap(Collider* collider, Collider* other)
+void SlashwaveL::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
 	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
@@ -186,6 +188,6 @@ void SlashwaveH::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	}
 }
 
-void SlashwaveH::OnComponentEndOverlap(Collider* collider, Collider* other)
+void SlashwaveL::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
 }

@@ -133,7 +133,7 @@ enum class ObjectState
 	SlashWave,	// 검기 날리기
 	SkillReady,	// 스킬
 	SkillWaiting,
-	SkillEnd,
+	SkillEnd, 
 	Hang,	// 매달리기
 	Release,	// 놓기
 	Hit,	// 피격

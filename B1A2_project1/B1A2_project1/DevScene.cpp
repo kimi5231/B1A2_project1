@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -98,23 +98,6 @@ void DevScene::Init()
 		DialogueComponent* dialogueComponent = new DialogueComponent();
 		actor->AddComponent(dialogueComponent);
 		actor->SetID(21);
-	}
-
-	// Item
-	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-
-		// Nametag
-		ItemActor* nametag = SpawnObject<ItemActor>({ 300, 290 }, LAYER_ITEM, 320001, itemData->GetItems());
-
-		// Key
-		ItemActor* sword = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
-
-		// Multipletap
-		ItemActor* multipletap = SpawnObject<ItemActor>({ 150, 290 }, LAYER_ITEM, 310200, itemData->GetItems());
-
-		// Heal
-		ItemActor* healITem = SpawnObject<ItemActor>({ 100, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
 	}
 
 	// Monster
@@ -887,34 +870,37 @@ void DevScene::LoadProjectile()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-		fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
+		fb->SetInfo({ texture, L"FB_Paper", {10, 10}, 0, 0, 0, 0.7f });
 	}
 	
-	// SlashWave
+	// SlashWave - Width
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWave", L"Sprite\\Projectile\\SlashWave.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWave");
-
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWave");
-		fb->SetInfo({ texture, L"FB_SlashWave", {20, 88}, 0, 0, 0, 0.7f });
-	}
-
-	// SlashWaveW
-	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveW", L"Sprite\\Projectile\\SlashWaveW.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveW", L"Sprite\\Projectile\\WidthSwordWave.bmp", RGB(55, 255, 0));
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWaveW");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveW");
-		fb->SetInfo({ texture, L"FB_SlashWaveW", {20, 45}, 0, 0, 0, 0.7f });
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveWRight");
+			fb->SetInfo({ texture, L"FB_SlashWaveWRight", {90, 24}, 0, 0, 0, 0.7f });
+		}
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveWLeft");
+			fb->SetInfo({ texture, L"FB_SlashWaveWLeft", {90, 24}, 0, 0, 1, 0.7f });
+		}
 	}
 
-	// SlashWaveH
+	// SlashWave - Length
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveH", L"Sprite\\Projectile\\SlashWaveH.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWaveH");
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SlashWaveL", L"Sprite\\Projectile\\LengthSwordWave.bmp", RGB(55, 255, 0));
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"SlashWaveL");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveH");
-		fb->SetInfo({ texture, L"FB_SlashWaveH", {20, 88}, 0, 0, 0, 0.7f });
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveLRight");
+			fb->SetInfo({ texture, L"FB_SlashWaveLRight", {36, 82}, 0, 0, 0, 0.7f });
+		}
+		{
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveHLeft");
+			fb->SetInfo({ texture, L"FB_SlashWaveLLeft", {36, 82}, 0, 0, 1, 0.7f });
+		}
 	}
 
 	// Blanket
@@ -1570,6 +1556,21 @@ void DevScene::SetStage1()
 	}
 
 	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+
+		// Nametag
+		ItemActor* nametag = SpawnObject<ItemActor>({ 300, 290 }, LAYER_ITEM, 320001, itemData->GetItems());
+
+		// Key
+		ItemActor* sword = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
+
+		// Multipletap
+		ItemActor* multipletap = SpawnObject<ItemActor>({ 150, 290 }, LAYER_ITEM, 310200, itemData->GetItems());
+
+		// Heal
+		ItemActor* healITem = SpawnObject<ItemActor>({ 100, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
+	}
 }
 
 void DevScene::SetStage2()
