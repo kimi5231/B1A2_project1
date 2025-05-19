@@ -109,8 +109,8 @@ public:
 	//  Chase Sequeuce
 	BehaviorState is_cur_state_chase();
 	BehaviorState Chase();
-	// Hit Sequeucne
 
+	// Hit Sequeucne
 	BehaviorState is_cur_state_hit();
 	BehaviorState Hit();
 
@@ -128,11 +128,15 @@ public:
 	BehaviorState is_cur_state_backstep();
 	BehaviorState BackStep();
 
-	// LongAtk Sequence
-	BehaviorState is_cur_state_slashwave();
-	BehaviorState SlashWave();
+	// LongAtk Length Sequence
+	BehaviorState is_cur_state_long_attack_length();
+	BehaviorState LongAttackLength();
 	BehaviorState is_cur_state_dash();
 	BehaviorState Dash();
+
+	// LongAtk Width Sequence
+	BehaviorState is_cur_state_long_attack_width();
+	BehaviorState LongAttackWidth();
 
 	// 순간 이동 Sequence
 	BehaviorState is_cur_state_teleport();
@@ -158,7 +162,8 @@ public:
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
 public:
-	void CreateProjectile();	// Long Atk
+	void CreateWidthProjectile();	
+	void CreateLengthProjectile();
 	void CreateProjectileFall();	// Projectile Fall
 	void CreateBlanket();
 	void CreateMonster();
