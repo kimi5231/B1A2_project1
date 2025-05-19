@@ -1056,23 +1056,6 @@ void Player::CalPixelPerSecond()
 
 }
 
-void Player::TickGravity()
-{
-	// ¶¥¿¡ ´ê¾ÆÀÖÀ¸¸é Áß·Â Àû¿ë X
-	if (_isGround)
-		return;
-
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	if (deltaTime > 0.1f)
-		return;
-
-	// v = at
-	// s = vt
-
-	_ySpeed += _gravity * deltaTime;
-	_pos.y += _ySpeed * deltaTime;
-}
-
 void Player::RemoveItem(int32 id, int32 count)
 {
 	if (_acquiredItems.find(id) != _acquiredItems.end() && _acquiredItems[id] >= count)
@@ -1268,7 +1251,6 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// ¶¥°ú Ãæµ¹ - »óÇÏÁÂ¿ì È®ÀÎ
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
-		_groundCollisionCount++;
 		_isGround = true;
 		_isAir = false;
 	}

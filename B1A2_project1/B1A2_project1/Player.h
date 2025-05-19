@@ -137,7 +137,6 @@ public:
 
 	void AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2);	// 튕기기
 	void AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2);
-	void TickGravity();
 
 public:
 	// Item
@@ -175,14 +174,6 @@ private:
 
 	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
 
-	// Jump
-	int32 _groundCollisionCount = 0;	// 충돌중인 타일맵 개수 (0개일 때 _Ground = true)
-	int32 _gravity = 1000;
-	float _ySpeed = {};
-
-	bool _isGround = true;
-	bool _isAir = false;
-
 	bool _isOnStair = false;
 
 	// 획득한 아이템
@@ -215,4 +206,3 @@ private:
 	// CurSceneMum
 	int32 _curStageNum = 0;
 };
-

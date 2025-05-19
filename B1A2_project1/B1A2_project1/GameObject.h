@@ -41,6 +41,9 @@ protected:
 	virtual void TickOff() {};
 	virtual void UpdateAnimation() {};
 
+protected:
+	void TickGravity();
+
 public:
 	virtual float GetSpeed() = 0;
 
@@ -52,7 +55,12 @@ public:
 	Dir GetDir() { return _dir; }
 
 protected:
-	Vec2 _speed = {};
 	Dir _dir = DIR_RIGHT;
 	ObjectState _state = ObjectState::Idle;
+
+	int32 _gravity = 1000;
+	float _ySpeed{};
+
+	bool _isGround = true;
+	bool _isAir = false;
 };

@@ -40,6 +40,7 @@ BrokenCopyMachine::BrokenCopyMachine()
 			collider->SetCollisionLayer(CLT_MONSTER);
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
+			collider->AddCollisionFlagLayer(CLT_GROUND);
 
 			collider->SetSize({ 40, 55 });
 
@@ -64,6 +65,8 @@ void BrokenCopyMachine::BeginPlay()
 void BrokenCopyMachine::Tick()
 {
 	Super::Tick();
+
+	TickGravity();
 }
 
 void BrokenCopyMachine::Render(HDC hdc)
@@ -146,6 +149,8 @@ void BrokenCopyMachine::TickDead()
 
 void BrokenCopyMachine::UpdateAnimation()
 {
+	Vec2 colliderSize = _collider->GetSize();
+
 	switch (_state)
 	{
 	case ObjectState::Idle:
@@ -165,6 +170,12 @@ void BrokenCopyMachine::UpdateAnimation()
 		_collider->SetSize({ 45, 75 });
 		break;
 	}
+
+	if (colliderSize.y > _collider->GetSize().y)
+	{
+		_isGround = false;
+		_isAir = true;
+	}
 }
 
 void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* other)
@@ -182,10 +193,38 @@ void BrokenCopyMachine::OnComponentBeginOverlap(Collider* collider, Collider* ot
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
 	}
+
+	if (b2->GetCollisionLayer() == CLT_GROUND)
+	{
+		_isGround = true;
+		_isAir = false;
+
+		AdjustCollisionPosGround(b1, b2);
+	}
 }
 
-void BrokenCopyMachine::OnComponentEndOverlap(Collider* collider, Collider* other)
+void BrokenCopyMachine::AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2)
 {
+	RECT r1 = b1->GetRect();
+	RECT r2 = b2->GetRect();
+
+	Vec2 pos = GetPos();
+	Vec2 colliderPos = _collider->GetPos();
+
+	// 충돌 범위
+	RECT intersect = {};
+
+	if (::IntersectRect(&intersect, &r1, &r2))
+	{
+		int32 h = intersect.bottom - intersect.top;
+
+		// 위로 올려 보내기
+		pos.y -= h;
+		colliderPos.y -= h;
+	}
+
+	SetPos(pos);
+	_collider->SetPos(colliderPos);
 }
 
 float BrokenCopyMachine::GetSpeed()
