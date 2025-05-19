@@ -8,6 +8,7 @@ enum TILE_TYPE
 	TILE_G,		// Ground
 	TILE_W,		// Wall
 	TILE_S,		// Save Point
+	TILE_D,		// Stair
 };
 
 struct Tile
