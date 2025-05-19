@@ -49,6 +49,7 @@ TiredOfficeWorker::TiredOfficeWorker()
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
 			collider->AddCollisionFlagLayer(CLT_PLAYER_SKILL);
+			collider->AddCollisionFlagLayer(CLT_GROUND);
 
 			collider->SetSize({ 34, 80 });
 			
@@ -89,6 +90,8 @@ void TiredOfficeWorker::BeginPlay()
 void TiredOfficeWorker::Tick()
 {
 	Super::Tick();
+
+	TickGravity();
 }
 
 void TiredOfficeWorker::Render(HDC hdc)
@@ -294,6 +297,8 @@ void TiredOfficeWorker::TickReturnIdle()
 
 void TiredOfficeWorker::UpdateAnimation()
 {
+	Vec2 colliderSize = _collider->GetSize();
+
 	switch (_state)
 	{
 	case ObjectState::Idle:
@@ -328,6 +333,12 @@ void TiredOfficeWorker::UpdateAnimation()
 		SetFlipbook(_flipbookReturnIdle[_dir]);
 		_collider->SetSize({ 34, 80 });
 		break;
+	}
+
+	if (colliderSize.y > _collider->GetSize().y)
+	{
+		_isGround = false;
+		_isAir = true;
 	}
 }
 
@@ -365,6 +376,14 @@ void TiredOfficeWorker::OnComponentBeginOverlap(Collider* collider, Collider* ot
 			OnDamagedNoHit(otherOwner);
 			SetTarget(dynamic_cast<Player*>(b2->GetOwner()));
 		}
+		
+		if (b2->GetCollisionLayer() == CLT_GROUND)
+		{
+			_isGround = true;
+			_isAir = false;
+
+			AdjustCollisionPosGround(b1, b2);
+		}
 
 		return;
 	}
@@ -401,6 +420,30 @@ void TiredOfficeWorker::OnComponentEndOverlap(Collider* collider, Collider* othe
 			_sumTime += deltaTime;
 		}
 	}
+}
+
+void TiredOfficeWorker::AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2)
+{
+	RECT r1 = b1->GetRect();
+	RECT r2 = b2->GetRect();
+
+	Vec2 pos = GetPos();
+	Vec2 colliderPos = _collider->GetPos();
+
+	// 충돌 범위
+	RECT intersect = {};
+
+	if (::IntersectRect(&intersect, &r1, &r2))
+	{
+		int32 h = intersect.bottom - intersect.top;
+
+		// 위로 올려 보내기
+		pos.y -= h;
+		colliderPos.y -= h;
+	}
+
+	SetPos(pos);
+	_collider->SetPos(colliderPos);
 }
 
 void TiredOfficeWorker::SetSpawnPos(Vec2 pos)

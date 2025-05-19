@@ -77,6 +77,8 @@ private:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
 	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
 
+	void AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2);
+
 public:
 	void SetSpawnPos(Vec2 pos);
 	void SetSpawnDir(Dir dir);
