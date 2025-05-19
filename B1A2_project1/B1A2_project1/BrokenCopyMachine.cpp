@@ -246,14 +246,14 @@ void BrokenCopyMachine::CalPixelPerSecond()
 {
 	float PIXEL_PER_METER = (10.0 / 0.2);
 
-	// Move
+	// Projectile
 	{
-		float MOVE_SPEED_KMPH = _stat->projectileSpeed;
-		float MOVE_SPEED_MPM = (MOVE_SPEED_KMPH * 1000.0 / 60.0);
-		float MOVE_SPEED_MPS = (MOVE_SPEED_MPM / 60.0);
-		float MOVE_SPEED_PPS = (MOVE_SPEED_MPS * PIXEL_PER_METER);
+		float PROJECTILE_SPEED_KMPH = _stat->projectileSpeed;
+		float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+		float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+		float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
 
-		_stat->projectileSpeed = MOVE_SPEED_PPS;
+		_stat->projectileSpeed = PROJECTILE_SPEED_PPS;
 	}
 }
 
