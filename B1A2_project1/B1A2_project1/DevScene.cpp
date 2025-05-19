@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(1);
 
 	// Inventory
 	{
@@ -1544,7 +1544,7 @@ void DevScene::SetStage1()
 			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 695 }, LAYER_STRUCTURE);
 			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
 			zipLine->SetBeginPos({ 3490, 970 });
-			zipLine->SetEndPos({ 3490, 380 });
+			zipLine->SetEndPos({ 3490, 400 });
 			zipLine->SetPlayer(_player);
 
 			// Button이 필요 없는 짚라인은 아래 코드 작성X
