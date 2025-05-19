@@ -1485,7 +1485,7 @@ void DevScene::SetStage1()
 			_player = player;
 		}
 		
-		_player->SetPos({ 400, 200 });
+		//_player->SetPos({ 400, 200 });
 		_player->SetCurStageNum(_curStageNum);
 	}
 

@@ -57,6 +57,7 @@ void TilemapActor::BeginPlay()
 			
 			// Ãæµ¹ÇÒ °´Ã¼
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);
 		}
