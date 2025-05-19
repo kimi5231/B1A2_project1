@@ -67,7 +67,9 @@ private:
 
 private:
 	virtual void OnComponentBeginOverlap(Collider* collider, Collider* other);
-	virtual void OnComponentEndOverlap(Collider* collider, Collider* other);
+	virtual void OnComponentEndOverlap(Collider* collider, Collider* other) {};
+
+	void AdjustCollisionPosGround(BoxCollider* b1, BoxCollider* b2);
 
 public:
 	virtual float GetSpeed() override;

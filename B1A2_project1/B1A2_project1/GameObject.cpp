@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "DialogueManager.h"
+#include "TimeManager.h"
 
 GameObject::GameObject()
 {
@@ -111,6 +112,23 @@ void GameObject::Tick()
 void GameObject::Render(HDC hdc)
 {
 	Super::Render(hdc);
+}
+
+void GameObject::TickGravity()
+{
+	// 땅에 닿아있으면 중력 적용 X
+	if (_isGround)
+		return;
+
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	if (deltaTime > 0.1f)
+		return;
+
+	// v = at
+	// s = vt
+
+	_ySpeed += _gravity * deltaTime;
+	_pos.y += _ySpeed * deltaTime;
 }
 
 void GameObject::SetState(ObjectState state)

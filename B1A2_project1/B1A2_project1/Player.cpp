@@ -84,6 +84,7 @@ Player::Player()
 			collider->AddCollisionFlagLayer(CLT_PROJECTILE);
 			collider->AddCollisionFlagLayer(CLT_ITEM);
 			collider->AddCollisionFlagLayer(CLT_GROUND);
+			collider->AddCollisionFlagLayer(CLT_STAIR);
 			collider->AddCollisionFlagLayer(CLT_WALL);
 			collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
 			collider->AddCollisionFlagLayer(CLT_DETECT);
@@ -258,7 +259,7 @@ void Player::Tick()
 			{
 				BoxCollider* collider = dynamic_cast<BoxCollider*>(component);
 
-				if (collider->GetCollisionLayer() == CLT_GROUND)
+				if (collider->GetCollisionLayer() == CLT_GROUND || collider->GetCollisionLayer() == CLT_STAIR)
 				{
 					Vec2 pos = _playerCollider->GetPos();
 					float posX1 = pos.x - _playerCollider->GetSize().x / 2;
@@ -271,6 +272,12 @@ void Player::Tick()
 						{
 							_isAir = false;
 							_isGround = true;
+
+							if (collider->GetCollisionLayer() == CLT_STAIR)
+								_isOnStair = true;
+							else
+								_isOnStair = false;
+
 							return;
 						}
 					}
@@ -281,6 +288,12 @@ void Player::Tick()
 						{
 							_isAir = false;
 							_isGround = true;
+
+							if (collider->GetCollisionLayer() == CLT_STAIR)
+								_isOnStair = true;
+							else
+								_isOnStair = false;
+
 							return;
 						}
 					}
@@ -1043,23 +1056,6 @@ void Player::CalPixelPerSecond()
 
 }
 
-void Player::TickGravity()
-{
-	// 땅에 닿아있으면 중력 적용 X
-	if (_isGround)
-		return;
-
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	if (deltaTime > 0.1f)
-		return;
-
-	// v = at
-	// s = vt
-
-	_ySpeed += _gravity * deltaTime;
-	_pos.y += _ySpeed * deltaTime;
-}
-
 void Player::RemoveItem(int32 id, int32 count)
 {
 	if (_acquiredItems.find(id) != _acquiredItems.end() && _acquiredItems[id] >= count)
@@ -1255,9 +1251,20 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// 땅과 충돌 - 상하좌우 확인
 	if (b2->GetCollisionLayer() == CLT_GROUND)
 	{
-		_groundCollisionCount++;
 		_isGround = true;
 		_isAir = false;
+	}
+
+	// 계단
+	if (b2->GetCollisionLayer() == CLT_STAIR)
+	{
+		// Jump State일때만 충돌
+		if (_state == ObjectState::Jump)
+		{
+			_isGround = true;
+			_isAir = false;
+			//_isOnStair = true;
+		}
 	}
 
 	if (b1->GetCollisionLayer() == CLT_PLAYER && b2->GetCollisionLayer() == CLT_MONSTER_ATTACK)
@@ -1349,6 +1356,12 @@ void Player::OnComponentOverlapping(Collider* collider, Collider* other)
 	}
 
 	if (b2->GetCollisionLayer() == CLT_GROUND)
+	{
+		AdjustCollisionPosGround(b1, b2);
+		return;
+	}
+
+	if (b2->GetCollisionLayer() == CLT_STAIR && _isOnStair)
 	{
 		AdjustCollisionPosGround(b1, b2);
 		return;
