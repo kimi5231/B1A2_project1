@@ -708,6 +708,7 @@ void Player::TickHang()
 
 	Vec2 beginPos = _currentZipLine->GetBeginPos();
 	Vec2 endPos = _currentZipLine->GetEndPos();
+	Vec2 direction = (endPos - beginPos).Normalize();
 
 	if (_currentZipLine->GetMidPos().x != 0 && _currentZipLine->GetMidPos().y != 0)	// 중간 탑승
 		beginPos = _currentZipLine->GetMidPos();
@@ -734,8 +735,7 @@ void Player::TickHang()
 	{
 		float speed = 300.0f;
 		float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-
-		Vec2 direction = (endPos - beginPos).Normalize();
+		
 		_pos += direction * speed * deltaTime;
 		//_zipLine->GetPlayerDetectCollider()->SetPos({ _pos });
 
@@ -757,7 +757,8 @@ void Player::TickHang()
 		}
 
 		// endPos에 도착하면 놓기
-		if ((_pos - endPos).Length() <= 5.0f) // 오차 범위 고려
+		Vec2 toEnd = endPos - _pos;
+		if (toEnd.Dot(direction) <= 0.f)
 		{
 			isMoving = false;
 			sumTime = 0.0f;
