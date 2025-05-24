@@ -8,22 +8,22 @@ class BoxCollider;
 
 struct FinalBossStat
 {
-	CommonStat commonStat;	// A, B
-	float healItemDropRate;	// C
-	float speed;	//D
-	int32 knockBackDistance;	// E
-	int32 backStepDistance;	//F
-	float dashSpeed;	// G
-	int32 dashDistance;	// H
-	int32 closeAtkRange;	// I
-	int32 closeAtkDamage;	// J
-	int32 longAtkRange;	// K
-	int32 longAtkProjectileDamage;	// L
-	float longAtkProjectileSpeed;	// M
-	int32 longAtkProjectileCount;	// N
-	std::string projetileTypeWidth;	// O
-	std::string projectileTypeHeight;	// P
-	int32 slashAtkDamage;	// Q
+	int32 hp;	// A
+	float healItemDropRate;	// B
+	float speed;	//C
+	int32 knockBackDistance;	// D
+	int32 backStepDistance;	// E
+	float dashSpeed;	// F
+	int32 dashDistance;	// G
+	int32 closeAtkRange;	// H
+	int32 closeAtkDamage;	// I
+	int32 longAtkRange;	// J
+	int32 longAtkProjectileDamage;	// K
+	float longAtkProjectileSpeed;	// L
+	int32 longAtkProjectileCount;	// M
+	std::string projetileTypeWidth;	// N
+	std::string projectileTypeHeight;	// O
+	int32 slashAtkDamage;	// P
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -42,23 +42,22 @@ struct FinalBossStat
 			{
 				switch (column)
 				{
-				case 0:this->commonStat.id = std::stoi(cell); break;	// A
-				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
-				case 2: this->healItemDropRate = std::stof(cell); break;	// C
-				case 3: this->speed = std::stof(cell); break;	// D
-				case 4: this->knockBackDistance = std::stoi(cell); break;	// E
-				case 5: this->backStepDistance = std::stoi(cell); break;	// F
-				case 6: this->dashSpeed = std::stof(cell); break;	// G
-				case 7: this->dashDistance = std::stoi(cell); break;	// H
-				case 8: this->closeAtkRange = std::stoi(cell); break;	// I
-				case 9: this->closeAtkDamage = std::stoi(cell); break;	// J
-				case 10: this->longAtkRange = std::stoi(cell); break;	// K
-				case 11: this->longAtkProjectileDamage = std::stoi(cell); break;	// L
-				case 12: this->longAtkProjectileSpeed = std::stof(cell); break;	// M
-				case 13: this->longAtkProjectileCount = std::stoi(cell); break;	// N
-				case 14: this->projetileTypeWidth = cell; break;	// O
-				case 15: this->projectileTypeHeight = cell; break;	// P
-				case 16: this->slashAtkDamage = std::stoi(cell); break;	// Q
+				case 0:this->hp = std::stoi(cell); break;	// A
+				case 1: this->healItemDropRate = std::stof(cell); break;	// B
+				case 2: this->speed = std::stof(cell); break;	// C
+				case 3: this->knockBackDistance = std::stoi(cell); break;	// D
+				case 4: this->backStepDistance = std::stoi(cell); break;	// E
+				case 5: this->dashSpeed = std::stof(cell); break;	// F
+				case 6: this->dashDistance = std::stoi(cell); break;	// G
+				case 7: this->closeAtkRange = std::stoi(cell); break;	// H
+				case 8: this->closeAtkDamage = std::stoi(cell); break;	// I
+				case 9: this->longAtkRange = std::stoi(cell); break;	// J
+				case 10: this->longAtkProjectileDamage = std::stoi(cell); break;	// K
+				case 11: this->longAtkProjectileSpeed = std::stof(cell); break;	// L
+				case 12: this->longAtkProjectileCount = std::stoi(cell); break;	// M
+				case 13: this->projetileTypeWidth = cell; break;	// N
+				case 14: this->projectileTypeHeight = cell; break;	// O
+				case 15: this->slashAtkDamage = std::stoi(cell); break;	// P
 				}
 				++column;
 			}
@@ -95,7 +94,7 @@ protected:
 
 public:
 	virtual int32 GetAttack() override;
-	virtual int32& GetHp() override { return _stat->commonStat.hp; }
+	virtual int32& GetHp() override { return _stat->hp; }
 	virtual float GetSpeed() override { return _stat->speed; };
 	virtual Vec2Int GetPlayerDetection() { return { 0, 0 }; }
 

@@ -209,7 +209,7 @@ void Player::Tick()
 				SubtractHealthPoint(20);
 
 				// Ã¼·ÂÀÌ ´Ù ´âÀ¸¸é »ç¸Á
-				if (_playerStat->commonStat.hp == 0)
+				if (_playerStat->hp == 0)
 				{
 					SetState(ObjectState::Dead);
 					return;
@@ -250,7 +250,7 @@ void Player::Tick()
 	{
 		Scene* scene = GET_SINGLE(SceneManager)->GetCurrentScene();
 
-		TilemapActor* actor = dynamic_cast<TilemapActor*>(scene->GetActor(999));
+		TilemapActor* actor = dynamic_cast<TilemapActor*>(scene->GetActor(-2));
 
 		const std::vector<Component*>& components = actor->GetComponents();
 
@@ -958,7 +958,7 @@ void Player::OnDamaged(Creature* other)
 	SubtractHealthPoint(damage);
 
 	// Ã¼·ÂÀÌ ´Ù ´âÀ¸¸é »ç¸Á
-	if (_playerStat->commonStat.hp == 0)
+	if (_playerStat->hp == 0)
 	{
 		SetState(ObjectState::Dead);
 		return;
@@ -978,7 +978,7 @@ void Player::OnDamagedByProjectile(Projectile* projectile)
 	SubtractHealthPoint(damage);
 
 	// Ã¼·ÂÀÌ ´Ù ´âÀ¸¸é »ç¸Á
-	if (_playerStat->commonStat.hp == 0)
+	if (_playerStat->hp == 0)
 	{
 		SetState(ObjectState::Dead);
 		return;
@@ -989,36 +989,36 @@ void Player::OnDamagedByProjectile(Projectile* projectile)
 
 void Player::SetHealthPoint(int hp)
 {
-	_playerStat->commonStat.hp = 100;
+	_playerStat->hp = 100;
 
-	_healthObserver(_playerStat->commonStat.hp);
+	_healthObserver(_playerStat->hp);
 }
 
 void Player::AddHealthPoint(int hp)
 {
-	if (_playerStat->commonStat.hp >= 100)
+	if (_playerStat->hp >= 100)
 		return;
 
-	if (_playerStat->commonStat.hp += hp >= 100)
+	if (_playerStat->hp += hp >= 100)
 	{
-		_playerStat->commonStat.hp = 100;
+		_playerStat->hp = 100;
 	}
 	else
-		_playerStat->commonStat.hp += hp;
+		_playerStat->hp += hp;
 
 	// °üÂûÀÚ¿¡°Ô ¾Ë¸²
-	_healthObserver(_playerStat->commonStat.hp);
+	_healthObserver(_playerStat->hp);
 }
 
 void Player::SubtractHealthPoint(int hp)
 {
-	if (_playerStat->commonStat.hp <= 0)
+	if (_playerStat->hp <= 0)
 		return;
 
-	_playerStat->commonStat.hp -= hp;
+	_playerStat->hp -= hp;
 
 	// °üÂûÀÚ¿¡°Ô ¾Ë¸²
-	_healthObserver(_playerStat->commonStat.hp);
+	_healthObserver(_playerStat->hp);
 }
 
 void Player::CalPixelPerSecond()

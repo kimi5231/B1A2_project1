@@ -5,14 +5,13 @@ class BoxCollider;
 
 struct BrokenCopyMachineStat
 {
-	int32 id;	// A
-	int32 hp;	// B
-	float healtemDropRate;	// C
-	int32 attackRange;	// D
-	float projectileSpeed;	// E
-	int32 projectileAttack;	// F
-	int32 projectileCount;	// G
-	float attackCoolTime;	// H
+	int32 hp;	// A
+	float healtemDropRate;	// B
+	int32 attackRange;	// C
+	float projectileSpeed;	// D
+	int32 projectileAttack;	// E
+	int32 projectileCount;	// F
+	float attackCoolTime;	// G
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -31,14 +30,13 @@ struct BrokenCopyMachineStat
 			{
 				switch (column)
 				{
-				case 0:this->id = std::stoi(cell); break;	// A
-				case 1: this->hp = std::stoi(cell); break;	// B
-				case 2: this->healtemDropRate = std::stof(cell); break;	// C
-				case 3: this->attackRange = std::stoi(cell); break;	// D
-				case 4: this->projectileSpeed = std::stof(cell); break;	// E
-				case 5: this->projectileAttack = std::stoi(cell); break;	// F
-				case 6: this->projectileCount = std::stoi(cell); break;	// G
-				case 7: this->attackCoolTime = std::stof(cell); break;	// H
+				case 0: this->hp = std::stoi(cell); break;	// A
+				case 1: this->healtemDropRate = std::stof(cell); break;	// B
+				case 2: this->attackRange = std::stoi(cell); break;	// C
+				case 3: this->projectileSpeed = std::stof(cell); break;	// D
+				case 4: this->projectileAttack = std::stoi(cell); break;	// E
+				case 5: this->projectileCount = std::stoi(cell); break;	// F
+				case 6: this->attackCoolTime = std::stof(cell); break;	// G
 				}
 				++column;
 			}

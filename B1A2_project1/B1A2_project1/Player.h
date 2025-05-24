@@ -14,20 +14,20 @@ class Projectile;
 
 struct PlayerStat
 {
-	CommonStat commonStat{}; // A, B
-	float runSpeed = 0;	// C
-	float crouchSpeed = 0;	// D
-	float jumpSpeed = 0;	// E
-	int32 skillPoint = 0;	// F
-	int32 nAtkRange = 0;	// G
-	int32 nLongAtkDistance = 0;	// H
-	int32 knockBackDistance = 0;	// I
-	float strongAtkMultiplier = 0.f;	// J	
-	int32 nAtkDamage = 0;	// K
-	int32 skillDamage = 0;	// M
-	int32 skillRange = 0;	// N
-	float skillDuration = 0;	// O
-	int32 skillStepDistance = 0;	// P
+	int32 hp = 0; // A
+	float runSpeed = 0;	// B
+	float crouchSpeed = 0;	// C
+	float jumpSpeed = 0;	// D
+	int32 skillPoint = 0;	// E
+	int32 nAtkRange = 0;	// F
+	int32 nLongAtkDistance = 0;	// G
+	int32 knockBackDistance = 0;	// H
+	float strongAtkMultiplier = 0.f;	// I
+	int32 nAtkDamage = 0;	// J
+	int32 skillDamage = 0;	// K
+	int32 skillRange = 0;	// L
+	float skillDuration = 0;	// M
+	int32 skillStepDistance = 0;	// N
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -46,21 +46,20 @@ struct PlayerStat
 			{
 				switch (column)
 				{
-				case 0:this->commonStat.id = std::stoi(cell); break;	// A
-				case 1: this->commonStat.hp = std::stoi(cell); break;	// B
-				case 2: this->runSpeed = std::stof(cell); break;	// C
-				case 3: this->crouchSpeed = std::stof(cell); break;	// D
-				case 4: this->jumpSpeed = std::stof(cell); break;	// E
-				case 5: this->skillPoint = std::stoi(cell); break;	// F
-				case 6: this->nAtkRange = std::stoi(cell); break;	// G
-				case 7: this->nLongAtkDistance = std::stoi(cell); break;	// H
-				case 8: this->knockBackDistance = std::stoi(cell); break;	// I
-				case 9: this->strongAtkMultiplier = std::stof(cell); break;	// J
-				case 10: this->nAtkDamage = std::stoi(cell); break;	// K
-				case 11: this->skillDamage = std::stoi(cell); break;	// L
-				case 12: this->skillRange = std::stoi(cell); break;	// M
-				case 13: this->skillDuration = std::stof(cell); break;	// N
-				case 14: this->skillStepDistance = std::stoi(cell); break;	// O
+				case 0:this->hp = std::stoi(cell); break;	// A
+				case 1: this->runSpeed = std::stof(cell); break;	// B
+				case 2: this->crouchSpeed = std::stof(cell); break;	// C
+				case 3: this->jumpSpeed = std::stof(cell); break;	// D
+				case 4: this->skillPoint = std::stoi(cell); break;	// E
+				case 5: this->nAtkRange = std::stoi(cell); break;	// F
+				case 6: this->nLongAtkDistance = std::stoi(cell); break;	// G
+				case 7: this->knockBackDistance = std::stoi(cell); break;	// H
+				case 8: this->strongAtkMultiplier = std::stof(cell); break;	// I
+				case 9: this->nAtkDamage = std::stoi(cell); break;	// J
+				case 10: this->skillDamage = std::stoi(cell); break;	// K
+				case 11: this->skillRange = std::stoi(cell); break;	// L
+				case 12: this->skillDuration = std::stof(cell); break;	// M
+				case 13: this->skillStepDistance = std::stoi(cell); break;	// N
 				}
 				++column;
 			}
@@ -113,8 +112,8 @@ public:
 	void AddHealthPoint(int hp);
 	void SubtractHealthPoint(int hp);
 
-	int32& GetHp() { return _playerStat->commonStat.hp; }
-	void SetHp(int32 hp) { _playerStat->commonStat.hp = hp; }
+	int32& GetHp() { return _playerStat->hp; }
+	void SetHp(int32 hp) { _playerStat->hp = hp; }
 
 	int32 GetSkillPoint() { return _playerStat->skillPoint; }
 	void SetSkillPoint(int32 skillPoint) { _playerStat->skillPoint = skillPoint; }

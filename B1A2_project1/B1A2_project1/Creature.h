@@ -34,9 +34,6 @@ protected:
 	virtual void UpdateAnimation() override {};
 
 public:
-	void SetCommonStat(CommonStat stat) { _commonStat = stat; }
-	CommonStat& GetCommonStat() { return _commonStat; }
-
 	virtual int32 GetAttack() = 0;
 	virtual int32& GetHp() = 0;
 	virtual float GetSpeed() = 0;
@@ -44,8 +41,5 @@ public:
 protected:
 	virtual void OnDamaged(Creature* other);
 	virtual void OnDamagedNoHit(Creature* other);
-	
-protected:
-	CommonStat _commonStat;
 };
 

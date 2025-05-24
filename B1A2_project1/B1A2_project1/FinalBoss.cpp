@@ -497,20 +497,20 @@ BehaviorState FinalBoss::Hit()
 	}
 
 	// 수정 소환
-	if (_stat->commonStat.hp <= 1000 && _stat->commonStat.hp > 900 && !_isFirstCrystalCreationWork)
+	if (_stat->hp <= 1000 && _stat->hp > 900 && !_isFirstCrystalCreationWork)
 	{
 		_isFirstCrystalCreationWork = true;
 
 		SetState(ObjectState::CrystalCreation);
 	}
-	else if (_stat->commonStat.hp <= 600 && _stat->commonStat.hp > 500 && !_isSecondCrystalCreationWork)
+	else if (_stat->hp <= 600 && _stat->hp > 500 && !_isSecondCrystalCreationWork)
 	{
 		_isSecondCrystalCreationWork = true;
 		_currentCrystalCount = 2;
 
 		SetState(ObjectState::CrystalCreation);
 	}
-	else if (_stat->commonStat.hp <= 100 && _isThirdCrystalCreationWork)
+	else if (_stat->hp <= 100 && _isThirdCrystalCreationWork)
 	{
 		_isThirdCrystalCreationWork = true;
 		_currentCrystalCount = 3;
@@ -582,13 +582,13 @@ BehaviorState FinalBoss::CrystalCreation()
 		switch (_currentCrystalCount)
 		{
 		case 3:
-			_stat->commonStat.hp += 6;
+			_stat->hp += 6;
 			break;
 		case 2:
-			_stat->commonStat.hp += 4;
+			_stat->hp += 4;
 			break;
 		case 1:
-			_stat->commonStat.hp += 2;
+			_stat->hp += 2;
 			break;
 		}
 
@@ -955,7 +955,7 @@ void FinalBoss::CreateProjectileFall()
 
 	// FB의 체력에 따른 Damage 설정
 	int32 damage = 0;
-	int32 hp = _stat->commonStat.hp;
+	int32 hp = _stat->hp;
 
 	if (hp <= 100 && hp > 75)
 	{
