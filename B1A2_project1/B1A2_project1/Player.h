@@ -203,6 +203,6 @@ private:
 	int32 _leftInputCount = 0;
 	int32 _rightInputCount = 0;
 
-	// CurSceneMum
+	// CurSceneNum
 	int32 _curStageNum = 0;
 };

@@ -61,7 +61,7 @@ public:
 public:
 	// template func
 	template<typename T>
-	T* SpawnObject(Vec2 pos, LAYER_TYPE layer)
+	T* SpawnObject(int32 id, Vec2 pos, LAYER_TYPE layer)
 	{
 		// Actor가 맞는지 확인
 		auto isActor = std::is_convertible_v<T*, Actor*>;
@@ -69,6 +69,7 @@ public:
 
 		// Object 생성
 		T* object = new T();
+		object->SetID(id);
 		object->SetPos(pos);
 		object->SetLayer(layer);
 		AddActor(object);

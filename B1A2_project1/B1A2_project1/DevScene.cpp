@@ -1460,7 +1460,7 @@ void DevScene::SetStage1()
 		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage1");
 		
 		const Vec2Int size = sprite->GetSize();
-		SpriteActor* map = SpawnObject<SpriteActor>(Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
+		SpriteActor* map = SpawnObject<SpriteActor>(-1, Vec2(size.x / 2, size.y / 2), LAYER_BACKGROUND);
 		map->SetSprite(sprite);
 
 		GET_SINGLE(ValueManager)->SetMapSize(size);
@@ -1470,10 +1470,9 @@ void DevScene::SetStage1()
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage1");
 
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		TilemapActor* actor = SpawnObject<TilemapActor>(-2, { 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
-		actor->SetID(999);
 	}
 	
 	// Player
@@ -1481,11 +1480,10 @@ void DevScene::SetStage1()
 		// Player가 없다면 생성
 		if (!_player)
 		{
-			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			Player* player = SpawnObject<Player>(1, { 400, 200 }, LAYER_PLAYER);
 			_player = player;
 		}
 		
-		//_player->SetPos({ 400, 200 });
 		_player->SetCurStageNum(_curStageNum);
 	}
 
@@ -1499,7 +1497,7 @@ void DevScene::SetStage1()
 			// TOW
 			if (info.id > 20100 && info.id <= 20199)
 			{
-				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.id, info.spawnPos, LAYER_MONSTER);
 				TOW->SetSpawnDir(info.dir);
 				TOW->SetSpawnPos(info.spawnPos);
 				TOW->SetMoveDistance(info.movingDistance);
@@ -1510,7 +1508,7 @@ void DevScene::SetStage1()
 			// BCM
 			if (info.id > 20200 && info.id <= 20299)
 			{
-				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.id, info.spawnPos, LAYER_MONSTER);
 				BCM->SetDir(info.dir);
 				continue;
 			}
