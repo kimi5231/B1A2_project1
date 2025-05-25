@@ -5,6 +5,7 @@
 #include "CollisionManager.h"
 #include "ValueManager.h"
 #include "Texture.h"
+#include "Player.h"
 
 // 1. 짚라인 - 버튼이 있는 버전과 버튼 없이 짚라인만 있는 버전
 // 2. 짚라인 버튼 - Player와 충돌 처리되면 상호작용 입력을 받아 짚라인 활성화
@@ -13,8 +14,7 @@
 ZipLine::ZipLine()
 {
 	// Flipbook
-	_flipbookZipLineOff = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
-	_flipbookZipLineOn = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_ZipLine");
+	_flipbookZipLine = nullptr;
 
 	// Collider
 	{
@@ -51,7 +51,32 @@ void ZipLine::Tick()
 
 void ZipLine::Render(HDC hdc)
 {
+	if (_renderType == ZipLineRenderType::None)
+		return;
+
 	Super::Render(hdc);
+	
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+
+	int32 length = _beginPos.y - _endPos.y; 
+
+	if (_player->GetState() == ObjectState::Hang)
+		length = _player->GetPos().y - _endPos.y;
+
+	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLine");
+
+	::TransparentBlt(hdc,
+		((int32)_endPos.x - 2) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x, // x 기준 좌우 2픽셀 중심 정렬
+		((int32)_endPos.y) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+		4 * winSizeAdjustmemt.x,                  // 폭은 4 픽셀
+		(length - 30) * winSizeAdjustmemt.y,            // 줄의 길이
+		texture->GetDC(),
+		0,
+		0,
+		texture->GetSize().x,
+		texture->GetSize().y,
+		texture->GetTransparent());
 }
 
 void ZipLine::UpdateAnimation()
@@ -59,10 +84,10 @@ void ZipLine::UpdateAnimation()
 	switch (_state)
 	{
 	case ObjectState::On:
-		SetFlipbook(_flipbookZipLineOn);
+		SetFlipbook(_flipbookZipLine);
 		break;
 	case ObjectState::Off:
-		SetFlipbook(_flipbookZipLineOff);
+		SetFlipbook(_flipbookZipLine);
 		break;
 	}
 }

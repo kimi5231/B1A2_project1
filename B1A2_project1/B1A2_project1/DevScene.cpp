@@ -953,7 +953,7 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLine");
 
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLine");
-			fb->SetInfo({ texture, L"FB_ZipLine", {4, 400}, 0, 0, 0, 0.7f });
+			fb->SetInfo({ texture, L"FB_ZipLine", {4, 598}, 0, 0, 0, 0.7f });
 		}
 		
 		// Grip
@@ -1572,6 +1572,7 @@ void DevScene::SetStage1()
 		{
 			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 695 }, LAYER_STRUCTURE);
 			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+			zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
 			zipLine->SetBeginPos({ 3490, 970 });
 			zipLine->SetEndPos({ 3490, 400 });
 			zipLine->SetPlayer(_player);
@@ -1586,6 +1587,7 @@ void DevScene::SetStage1()
 		{
 			ZipLine* zipLine2 = SpawnObject<ZipLine>({ 5020, 585 }, LAYER_STRUCTURE);
 			zipLine2->SetZipLineType(ZipLineType::ZipLine);
+			zipLine2->SetZipLineRenderType(ZipLineRenderType::None);
 			zipLine2->SetBeginPos({ 4520, 450 });
 			zipLine2->SetEndPos({ 5520, 720 });
 			zipLine2->SetPlayer(_player);

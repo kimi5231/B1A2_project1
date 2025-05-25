@@ -161,6 +161,12 @@ enum class ZipLineType
 	ZipLineWithButton,
 };
 
+enum class ZipLineRenderType
+{
+	None,	// 대각선 - 그리지 않음
+	Line,	// 직선 - 그림
+};
+
 enum class SlashWaveType
 {
 	W,

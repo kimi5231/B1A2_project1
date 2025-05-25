@@ -29,6 +29,8 @@ private:
 public:
 	void SetZipLineType(ZipLineType type) { _zipLineType = type; }
 	ZipLineType GetZipLineType() { return _zipLineType; }
+	void SetZipLineRenderType(ZipLineRenderType type) { _renderType = type; }
+	ZipLineRenderType GetZipLineRenderType() { return _renderType; }
 
 	ObjectState GetZipLineState() { return _state; }
 
@@ -48,11 +50,12 @@ public:
 
 	void SetPlayer(Player* player) { _player = player; }
 	Player* GetPlayer() { return _player; }
+
 private:
-	Flipbook* _flipbookZipLineOff = nullptr;
-	Flipbook* _flipbookZipLineOn = nullptr;
+	Flipbook* _flipbookZipLine = nullptr;
 
 	ZipLineType _zipLineType;
+	ZipLineRenderType _renderType = ZipLineRenderType::None;
 
 	ZipLineButtonAndDisplay* _zipLineButtonAndDisplay = nullptr;
 
