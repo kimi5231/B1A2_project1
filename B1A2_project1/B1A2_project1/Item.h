@@ -8,6 +8,7 @@ struct ItemInfo
 	std::wstring explain;
 	bool acquiredByFKey;
 	int32 droppingMonsterPersonalID;
+	int32 stage;
 	Vec2 spawnPos;	// 스폰 위치 (spawnXpos, spawnYpos)
 };
 

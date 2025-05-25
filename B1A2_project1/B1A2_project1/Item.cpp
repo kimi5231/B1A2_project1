@@ -65,6 +65,11 @@ void Item::LoadFile(const std::wstring& path)
         std::getline(wiss, strDroppingMonsterPersonalID, L',');
         info->droppingMonsterPersonalID = std::stoi(strDroppingMonsterPersonalID);
 
+        // 스테이지
+        std::wstring strStage;
+        std::getline(wiss, strStage, L',');
+        info->stage = std::stoi(strStage);
+
         // 스폰 위치 - 없으면 음수값
         std::wstring strSpawnPosX;
         std::getline(wiss, strSpawnPosX, L',');
@@ -73,13 +78,7 @@ void Item::LoadFile(const std::wstring& path)
         std::wstring strSpawnPosY;
         std::getline(wiss, strSpawnPosY, L',');
         info->spawnPos.y = std::stoi(strSpawnPosY);
-
-        
-        // 메모리 누수 방지용 - 근데 지금은 필요없어서 보류...
-        //if (!std::getline(wiss, info->ID, L',')) { delete info; continue; }
-        //if (!std::getline(wiss, info->name, L',')) { delete info; continue; }
-        //if (!std::getline(wiss, info->explain)) { delete info; continue; }
-
+ 
         _items[info->ID] = info;
     }
 

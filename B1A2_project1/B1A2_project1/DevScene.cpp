@@ -1605,17 +1605,22 @@ void DevScene::SetStage1()
 	{
 		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		// Nametag
-		ItemActor* nametag = SpawnObject<ItemActor>({ 300, 290 }, LAYER_ITEM, 320001, itemData->GetItems());
+		if (!itemData)
+			return;
 
-		// Key
-		ItemActor* sword = SpawnObject<ItemActor>({ 200, 290 }, LAYER_ITEM, 310100, itemData->GetItems());
+		auto itemMap = itemData->GetItems();
 
-		// Multipletap
-		ItemActor* multipletap = SpawnObject<ItemActor>({ 150, 290 }, LAYER_ITEM, 310200, itemData->GetItems());
+		for (const auto& pair : itemMap)
+		{
+			ItemInfo* info = pair.second;
+			if (!info)
+				continue;
 
-		// Heal
-		ItemActor* healITem = SpawnObject<ItemActor>({ 100, 290 }, LAYER_ITEM, 300100, itemData->GetItems());
+			if (info->stage == 1)
+			{
+				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
+			}
+		}
 	}
 }
 
@@ -1761,6 +1766,28 @@ void DevScene::SetStage2()
 			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
 		}
 	}
+
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+
+		if (!itemData)
+			return;
+
+		auto itemMap = itemData->GetItems();
+
+		for (const auto& pair : itemMap)
+		{
+			ItemInfo* info = pair.second;
+			if (!info)
+				continue;
+
+			if (info->stage == 2)
+			{
+				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
+			}
+		}
+	}
 }
 
 void DevScene::SetStage3()
@@ -1885,6 +1912,28 @@ void DevScene::SetStage3()
 
 		FootHold* footHold = SpawnObject<FootHold>({ 1000, 1180 }, LAYER_STRUCTURE);
 		footHold->SetFootHoldAndZipLineButton(button);
+	}
+
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+
+		if (!itemData)
+			return;
+
+		auto itemMap = itemData->GetItems();
+
+		for (const auto& pair : itemMap)
+		{
+			ItemInfo* info = pair.second;
+			if (!info)
+				continue;
+
+			if (info->stage == 3)
+			{
+				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
+			}
+		}
 	}
 }
 
