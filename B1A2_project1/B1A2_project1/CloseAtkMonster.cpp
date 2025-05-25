@@ -87,6 +87,8 @@ void CloseAtkMonster::Tick()
 {
 	Super::Tick();
 
+	TickGravity();
+
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_creationTime += deltaTime;
 

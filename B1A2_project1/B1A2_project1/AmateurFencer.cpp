@@ -157,6 +157,8 @@ void AmateurFencer::Tick()
 {
 	Super::Tick();
 
+	TickGravity();
+
 	if (GetFromPlayerXDistance() >= 0)
 		SetDir(DIR_LEFT);
 	else
