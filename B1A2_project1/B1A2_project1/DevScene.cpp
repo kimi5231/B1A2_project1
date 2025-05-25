@@ -1015,20 +1015,65 @@ void DevScene::LoadStructure()
 	{
 		// Wall
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"Wall", L"Sprite\\Structure\\Wall.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Wall");
+			// Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"Wall", L"Sprite\\Structure\\Wall.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Wall");
 
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Wall");
-			fb->SetInfo({ texture, L"FB_Wall", {80, 240}, 0, 0, 0, 0.7f });
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Wall");
+				fb->SetInfo({ texture, L"FB_Wall", {80, 240}, 0, 0, 0, 0.7f });
+			}
+
+			// Breaking Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingWall", L"Sprite\\Structure\\BreakingWall.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingWall");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWall");
+				fb->SetInfo({ texture, L"FB_BreakingWall", {80, 240}, 0, 2, 0, 0.7f });
+			}
 		}
 
-		// Breaking Wall
+		// Short
 		{
-			GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingWall", L"Sprite\\Structure\\BreakingWall.bmp", RGB(55, 255, 0));
-			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingWall");
+			// Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"WallShort", L"Sprite\\Structure\\WallShort.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"WallShort");
 
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWall");
-			fb->SetInfo({ texture, L"FB_BreakingWall", {80, 240}, 0, 2, 0, 0.7f });
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_WallShort");
+				fb->SetInfo({ texture, L"FB_WallShort", {80, 160}, 0, 0, 0, 0.7f });
+			}
+
+			// Breaking Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingWallShort", L"Sprite\\Structure\\BreakingWallShort.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingWallShort");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWallShort");
+				fb->SetInfo({ texture, L"FB_BreakingWallShort", {80, 160}, 0, 2, 0, 0.7f });
+			}
+		}
+
+		// Long
+		{
+			// Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"WallLong", L"Sprite\\Structure\\WallLong.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"WallLong");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_WallLong");
+				fb->SetInfo({ texture, L"FB_WallLong", {80, 280}, 0, 0, 0, 0.7f });
+			}
+
+			// Breaking Wall
+			{
+				GET_SINGLE(ResourceManager)->LoadTexture(L"BreakingWallLong", L"Sprite\\Structure\\BreakingWallLong.bmp", RGB(55, 255, 0));
+				Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"BreakingWallLong");
+
+				Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_BreakingWallLong");
+				fb->SetInfo({ texture, L"FB_BreakingWallLong", {80, 280}, 0, 2, 0, 0.7f });
+			}
 		}
 	}
 
@@ -1549,6 +1594,7 @@ void DevScene::SetStage1()
 		// BreakingWall
 		{
 			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3760, 1040 }, LAYER_STRUCTURE);
+			breakingWall->SetWallType(BreakingWallType::Short);
 			breakingWall->SetPlayer(_player);
 		}
 	}

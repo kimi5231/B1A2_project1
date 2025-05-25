@@ -166,3 +166,10 @@ enum class SlashWaveType
 	W,
 	H,
 };
+
+enum class BreakingWallType
+{
+	Normal,
+	Short,
+	Long,
+};
