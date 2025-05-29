@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -1652,10 +1652,9 @@ void DevScene::SetStage2()
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage2");
 
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		TilemapActor* actor = SpawnObject<TilemapActor>(-2, { 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
-		actor->SetID(999);
 	}
 
 	// Player
@@ -1818,10 +1817,9 @@ void DevScene::SetStage3()
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"Stage3");
 
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		TilemapActor* actor = SpawnObject<TilemapActor>(-2, { 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
-		actor->SetID(999);
 	}
 
 	// Player
@@ -1967,10 +1965,9 @@ void DevScene::SetFinalBossStage()
 	{
 		Tilemap* tm = GET_SINGLE(ResourceManager)->GetTilemap(L"FinalBossStage");
 
-		TilemapActor* actor = SpawnObject<TilemapActor>({ 0, 0 }, LAYER_TILEMAP);
+		TilemapActor* actor = SpawnObject<TilemapActor>(-2, { 0, 0 }, LAYER_TILEMAP);
 		actor->SetShowDebug(false);
 		actor->SetTilemap(tm);
-		actor->SetID(999);
 	}
 
 	// Player
