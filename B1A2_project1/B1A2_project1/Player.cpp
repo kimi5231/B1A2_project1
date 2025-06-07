@@ -1017,6 +1017,22 @@ void Player::SubtractHealthPoint(int hp)
 	_healthObserver(_playerStat->hp);
 }
 
+void Player::AddSkillPoint(int32 skillPoint)
+{
+	_playerStat->skillPoint = min(5, _playerStat->skillPoint + skillPoint);
+
+	// 관찰자에게 알림
+	_skillPointObserver(_playerStat->skillPoint);
+}
+
+void Player::SubtractSkillPoint(int32 skillPoint)
+{
+	_playerStat->skillPoint = max(0, _playerStat->skillPoint - skillPoint);
+
+	// 관찰자에게 알림
+	_skillPointObserver(_playerStat->skillPoint);
+}
+
 void Player::CalPixelPerSecond()
 {
 	float PIXEL_PER_METER = (10.0 / 0.2);
@@ -1273,6 +1289,11 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		OnDamaged(otherOwner);
 
 		return;
+	}
+
+	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)
+	{
+		AddSkillPoint(1);
 	}
 }
 

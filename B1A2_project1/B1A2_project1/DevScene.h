@@ -26,7 +26,7 @@ public:
 	void LoadDialogue();
 	void LoadItem();
 	void LoadInventory();
-	void LoadMenu();
+	void LoadUI();
 	void LoadSound();
 
 private:

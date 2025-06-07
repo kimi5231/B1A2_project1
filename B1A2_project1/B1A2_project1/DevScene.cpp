@@ -62,11 +62,11 @@ void DevScene::Init()
 	LoadDialogue();
 	LoadItem();
 	LoadInventory();
-	LoadMenu();
+	LoadUI();
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(3);
 
 	// Inventory
 	{
@@ -86,6 +86,7 @@ void DevScene::Init()
 
 	// player의 체력 변경 시 UI 업데이트 등록
 	_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	_player->SetSkillPointObserver([panel](int skillPoint) {  if (panel) panel->UpdateSkillPoint(skillPoint); });
 
 	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
 	_player->SetCurrentScene(this);
@@ -1097,13 +1098,13 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHoldAndZipLineButton");
 
 			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOff");
-			fb1->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOff", { 80, 105 }, 0, 0, 0, 0.7f });
+			fb1->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOff", { 84, 96 }, 0, 0, 0, 0.7f });
 
 			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn1");
-			fb2->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn1", { 80, 105 }, 0, 0, 1, 0.7f });
+			fb2->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn1", { 84, 96 }, 0, 0, 1, 0.7f });
 
 			Flipbook* fb3 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn2");
-			fb3->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn2", { 80, 105 }, 0, 0, 2, 0.7f });
+			fb3->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn2", { 84, 96 }, 0, 0, 2, 0.7f });
 		}
 
 		// FootHold
@@ -1112,7 +1113,7 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHold");
 
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHold");
-			fb->SetInfo({ texture, L"FB_FootHold", {320, 120}, 0, 0, 0, 0.7f });
+			fb->SetInfo({ texture, L"FB_FootHold", {400, 120}, 0, 0, 0, 0.7f });
 		}
 	}
 
@@ -1368,7 +1369,7 @@ void DevScene::LoadInventory()
 	GET_SINGLE(ResourceManager)->CreateSprite(L"Inventory", texture, 0, 0, 1280, 720);
 }
 
-void DevScene::LoadMenu()
+void DevScene::LoadUI()
 {
 	// Menu
 	{
@@ -1378,6 +1379,7 @@ void DevScene::LoadMenu()
 
 		_menuPanel = new Panel();
 	}
+
 	// Go Title
 	{
 		Button* button = new Button();
@@ -1401,6 +1403,7 @@ void DevScene::LoadMenu()
 		button->AddOnClickDelegate(this, &DevScene::OnClickGoTitleButton);
 		_menuPanel->AddChild(button);
 	}
+
 	// Inventory
 	{
 		Button* button = new Button();
@@ -1426,6 +1429,7 @@ void DevScene::LoadMenu()
 		button->AddOnClickDelegate(this, &DevScene::OnClickMenuButton);
 		_menuPanel->AddChild(button);
 	}
+
 	// Setting
 	{
 		Button* button = new Button();
@@ -1453,6 +1457,18 @@ void DevScene::LoadMenu()
 
 	// Menu Background
 	GET_SINGLE(ResourceManager)->LoadTexture(L"MenuBackground", L"Sprite\\UI\\MenuBackground.bmp", RGB(0, 0, 0));
+
+	// HP
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"HpBar", L"Sprite\\UI\\HpBar.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"HpPoint", L"Sprite\\UI\\HpPoint.bmp", RGB(55, 255, 0));
+	}
+
+	// Skill Point
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPointBar", L"Sprite\\UI\\SkillPointBar.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPoint", L"Sprite\\UI\\SkillPoint.bmp", RGB(55, 255, 0));
+	}
 }
 
 void DevScene::LoadSound()
