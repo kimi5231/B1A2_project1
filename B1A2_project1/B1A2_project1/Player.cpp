@@ -801,15 +801,11 @@ void Player::TickHit()
 
 	// knockback
 	if (_dir == DIR_RIGHT)
-		_pos.x -= (_playerStat->knockBackDistance * 2) * deltaTime;		// ¼Ó = °Å / ½Ã
+		_pos.x -= _playerStat->knockBackDistance;
 	else
-		_pos.x += (_playerStat->knockBackDistance * 2) * deltaTime;
+		_pos.x += _playerStat->knockBackDistance;
 
-	if (sumTime >= 0.5f)
-	{
-		sumTime = 0.f;
-		SetState(ObjectState::Idle);
-	}
+	SetState(ObjectState::Idle);
 }
 
 void Player::TickDead()
@@ -1270,6 +1266,9 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 	if (b1->GetCollisionLayer() == CLT_PLAYER && (b2->GetCollisionLayer() == CLT_MONSTER_ATTACK || b2->GetCollisionLayer() == CLT_FINAL_BOSS_SLASH))
 	{
+		if (_state == ObjectState::Hit)
+			return;
+
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
 
