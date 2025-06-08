@@ -29,9 +29,10 @@ public:
 	void LoadUI();
 	void LoadSound();
 
-private:
+public:
 	// Set Stage
 	void SetStage(int32 stage);
+private:
 	void SetStage1();
 	void SetStage2();
 	void SetStage3();

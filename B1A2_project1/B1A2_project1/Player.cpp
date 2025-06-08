@@ -1118,12 +1118,42 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	// Save Point에 충돌하면 저장하기(밀어내기 X)
-	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
+	// 타일
 	{
-		_devScene->SaveCurData();
+		// Save Point에 충돌하면 저장하기(밀어내기 X)
+		if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
+		{
+			_devScene->SaveCurData();
 
-		return;
+			return;
+		}
+
+		// 낙사
+		if (b2->GetCollisionLayer() == CLT_GAME_OVER)
+		{
+			SetState(ObjectState::Dead);
+		}
+
+		// Next - 다음 스테이지로
+		if (b2->GetCollisionLayer() == CLT_NEXT)
+		{
+			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			
+			switch (_curStageNum)
+			{
+			case1:
+				scene->SetStage(2);
+				break;
+			case 2:
+				scene->SetStage(3);
+				break;
+			case 3:
+				scene->SetStage(4);
+				break;
+			case 4:
+				break;	// 수정 필요
+			}
+		}
 	}
 	
 	// Structure Detect
