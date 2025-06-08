@@ -190,6 +190,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemActor.h" />
+    <ClInclude Include="ItemStage.h" />
     <ClInclude Include="LockedDoorAndKey.h" />
     <ClInclude Include="LongAtkMonster.h" />
     <ClInclude Include="Monster.h" />
@@ -275,6 +276,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemActor.cpp" />
+    <ClCompile Include="ItemStage.cpp" />
     <ClCompile Include="LockedDoorAndKey.cpp" />
     <ClCompile Include="LongAtkMonster.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -322,9 +324,6 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <Image Include="B1A2_project1.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

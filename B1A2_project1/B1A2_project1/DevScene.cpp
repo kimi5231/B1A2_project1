@@ -34,6 +34,7 @@
 #include "ZipLine.h"
 #include "TimeManager.h"
 #include "Stage.h"
+#include "ItemStage.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
 #include "Window.h"
@@ -211,6 +212,13 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1_FieldMonster", L"DataBase\\Stage1_FieldMonster.csv");
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage2_FieldMonster", L"DataBase\\Stage2_FieldMonster.csv");
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage3_FieldMonster", L"DataBase\\Stage3_FieldMonster.csv");
+	}
+
+	// Item
+	{
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage1_Item", L"DataBase\\itemList_Field_Stage1.csv");
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage2.csv");
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage3.csv");
 	}
 
 	// Map
@@ -1153,7 +1161,7 @@ void DevScene::LoadDialogue()
 void DevScene::LoadItem()
 {
 	// Item info
-	GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
+	GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList_Inventory.csv");
 
 	// Texture
 	// Map	
@@ -1567,6 +1575,18 @@ void DevScene::SetStage1()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage1_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Structure
 	{
 		// LockedDoorAndKey
@@ -1608,27 +1628,7 @@ void DevScene::SetStage1()
 		}
 	}
 
-	// Item
-	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 1)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
-		}
-	}
 }
 
 void DevScene::SetStage2()
@@ -1719,6 +1719,18 @@ void DevScene::SetStage2()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage2_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Structure
 	{
 		// Window
@@ -1770,28 +1782,6 @@ void DevScene::SetStage2()
 			zipLineButtonAndDisplay->SetDisplayPos({ 3660, 920 });
 
 			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
-	}
-
-	// Item
-	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 2)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
 		}
 	}
 }
@@ -1884,6 +1874,18 @@ void DevScene::SetStage3()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage3_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Destructible Object
 	{
 		{
@@ -1921,24 +1923,7 @@ void DevScene::SetStage3()
 
 	// Item
 	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 3)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
-		}
 	}
 }
 

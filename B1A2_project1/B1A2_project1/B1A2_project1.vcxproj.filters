@@ -326,6 +326,9 @@
     <ClInclude Include="DestructibleObject.h">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="ItemStage.h">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -550,6 +553,9 @@
     <ClCompile Include="DestructibleObject.cpp">
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
+    <ClCompile Include="ItemStage.cpp">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="B1A2_project1.rc">
@@ -563,8 +569,5 @@
     <Image Include="B1A2_project1.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
