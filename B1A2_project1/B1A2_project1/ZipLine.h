@@ -16,6 +16,9 @@ public:
 	virtual void Tick() override;
 	virtual void Render(HDC hdc) override;
 
+	void LineRender(HDC hdc);
+	void GripRender(HDC hdc);
+
 protected:
 	virtual void UpdateAnimation();
 

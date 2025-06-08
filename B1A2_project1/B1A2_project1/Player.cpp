@@ -796,16 +796,29 @@ void Player::TickRelease()
 void Player::TickHit()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static bool knockBackApplied = false;
 	static float sumTime = 0.f;
-	sumTime += deltaTime;
+
 
 	// knockback
-	if (_dir == DIR_RIGHT)
-		_pos.x -= _playerStat->knockBackDistance;
-	else
-		_pos.x += _playerStat->knockBackDistance;
+	if (!knockBackApplied)
+	{
+		if (_dir == DIR_RIGHT)
+			_pos.x -= _playerStat->knockBackDistance;
+		else
+			_pos.x += _playerStat->knockBackDistance;
+	
+		knockBackApplied = true;
+	}
 
-	SetState(ObjectState::Idle);
+	sumTime += deltaTime;
+	
+	if (sumTime >= 0.5f)
+	{
+		SetState(ObjectState::Idle);
+		knockBackApplied = false;
+		sumTime = 0.f;
+	}
 }
 
 void Player::TickDead()

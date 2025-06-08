@@ -66,7 +66,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(3);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -961,21 +961,12 @@ void DevScene::LoadStructure()
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineGrip", L"Sprite\\Structure\\ZipLineGrip.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineGrip");
-
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineGrip");
-			fb->SetInfo({ texture, L"FB_ZipLineGrip", {35, 22}, 0, 0, 0, 0.7f });
 		}
 
 		// Display
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineDisplay", L"Sprite\\Structure\\ZipLineDisplay.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineDisplay");
-
-		//	Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOff");
-		//	fb1->SetInfo({ texture, L"FB_ZipLineDisplayOff", {110, 120}, 0, 0, 0, 0.7f });
-		//	
-		//	Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOn");
-		//	fb2->SetInfo({ texture, L"FB_ZipLineDisplayOn", {110, 120}, 0, 0, 1, 0.7f });
 		}
 
 		// Button
