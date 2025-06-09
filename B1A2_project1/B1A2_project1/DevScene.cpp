@@ -102,16 +102,6 @@ void DevScene::Init()
 		actor->SetID(21);
 	}
 
-	// Monster
-	{
-			//	// 중간 저장할 데이터, hp는 중간에 업데이트 필요
-			//	// ID와 Hp 객체에서 가져오는 걸로 수정 필요, 현재는 쓰레기값임 (CommonStat.id, hp 등)
-			//	_monsterHpData[20101] = 100;
-			//}
-	
-			//	_monsterHpData[20201] = 100;
-	}
-
 	// Start Dialogue
 	/*{
 		std::vector<Actor*> actors;
@@ -1567,6 +1557,9 @@ void DevScene::SetStage1()
 			// TOW
 			if (info.id > 20100 && info.id <= 20199)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.id, info.spawnPos, LAYER_MONSTER);
 				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
@@ -1580,6 +1573,9 @@ void DevScene::SetStage1()
 			// BCM
 			if (info.id > 20200 && info.id <= 20299)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.id, info.spawnPos, LAYER_MONSTER);
 				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
@@ -1701,6 +1697,9 @@ void DevScene::SetStage2()
 			// TOW
 			if (info.id > 20100 && info.id <= 20199)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue; // 죽은 몬스터는 생성하지 않음
+
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
 				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
@@ -1714,6 +1713,9 @@ void DevScene::SetStage2()
 			// BCM
 			if (info.id > 20200 && info.id <= 20299)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
 				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
@@ -1724,6 +1726,9 @@ void DevScene::SetStage2()
 			// AF
 			if (info.id > 20300 && info.id <= 20399)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
 				AF->SetMonsterId(info.id);
 				AF->SetSpawnDir(info.dir);
@@ -1860,6 +1865,9 @@ void DevScene::SetStage3()
 			// TOW
 			if (info.id > 20100 && info.id <= 20199)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
 				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
@@ -1873,6 +1881,9 @@ void DevScene::SetStage3()
 			// BCM
 			if (info.id > 20200 && info.id <= 20299)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
 				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
@@ -1883,6 +1894,9 @@ void DevScene::SetStage3()
 			// AF
 			if (info.id > 20300 && info.id <= 20399)
 			{
+				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+					continue;
+
 				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
 				AF->SetMonsterId(info.id);
 				AF->SetSpawnDir(info.dir);
@@ -2061,10 +2075,9 @@ void DevScene::SaveCurData()
 
 void DevScene::LoadGameData()
 {
-	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1/Resources/Database/SaveData.csv";
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv";
 
 	std::ifstream file(path);
-
 	if (!file.is_open())
 	{
 		std::cerr << "파일을 열 수 없습니다: " << path << std::endl;
@@ -2078,54 +2091,75 @@ void DevScene::LoadGameData()
 		return;
 	}
 
-	// ',' 기준으로 데이터 분할
 	std::stringstream ss(line);
 	std::vector<std::string> tokens;
 	std::string token;
 
 	while (std::getline(ss, token, ','))
-	{
 		tokens.push_back(token);
-	}
 
 	size_t index = 0;
 
-	// 현재 스테이지 번호
+	// 1. 현재 스테이지 번호
 	_curStageNum = std::stoi(tokens[index++]);
 
-	// 플레이어 체력
+	// 2. 플레이어 위치
+	float x = std::stof(tokens[index++]);
+	float y = std::stof(tokens[index++]);
+	_player->SetPos({ x, y });
+
+	// 3. 플레이어 체력
 	_player->SetHp(std::stoi(tokens[index++]));
 
-	// 스킬 포인트
+	// 4. 스킬 포인트
 	_player->SetSkillPoint(std::stoi(tokens[index++]));
 
-	// 몬스터 ID와 체력 읽기
-	//while (index < tokens.size() - 2) // 최소한 스킬포인트와 아이템 한 개가 남아야 함
-	//{
-	//	int32 monsterID = std::stoi(tokens[index++]);
-	//	int32 monsterHp = std::stoi(tokens[index++]);
-	//	_monsterHpData[monsterID] = monsterHp;
-	//}
+	// 5. 몬스터 정보 복원
+	_deadMonsterIds.clear();
+	_monsters.clear();  // 기존 몬스터 클리어 (혹시 모를 중복 방지)
 
-	// 아이템 정보 읽기
-	if (std::stoi(tokens[index++]) == 0)
+	while (index + 1 < tokens.size())
 	{
+		int32 id = std::stoi(tokens[index]);
+
+		// 아이템 ID 범위면 루프 종료
+		if (id >= 300000)
+			break;
+
+		index++;
+		int32 hp = std::stoi(tokens[index++]);
+
+		if (hp <= 0)
+		{
+			_deadMonsterIds.push_back(id);
+		}
+		else
+		{
+			// 살아 있는 몬스터는 아직 Spawn되지 않았기 때문에
+			// 일단 nullptr로 등록하고 이후 Stage 로딩 시 hp를 찾아 세팅
+			_monsters[id] = nullptr;
+		}
+	}
+
+	// 6. 아이템 정보
+	if (index < tokens.size() && std::stoi(tokens[index]) == 0)
+	{
+		index++; // 0 스킵
 		_player->ClearAcquireItems();
 	}
 	else
 	{
-		std::unordered_map<int32, int32> tempItems;
-		while (index < tokens.size())
+		std::unordered_map<int32, int32> items;
+		while (index + 1 < tokens.size())
 		{
 			int32 itemID = std::stoi(tokens[index++]);
 			int32 itemCount = std::stoi(tokens[index++]);
-			tempItems[itemID] = itemCount;
+			items[itemID] = itemCount;
 		}
-		_player->SetAcquireItems(tempItems);
+		_player->SetAcquireItems(items);
 	}
 
 	file.close();
-
 }
 
 void DevScene::SetSceneState()

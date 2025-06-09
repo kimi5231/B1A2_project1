@@ -834,9 +834,17 @@ void Player::TickDead()
 	{
 		sumTime = 0.f;
 
-		// 초기화 - 체력, 위치?
-		SetHealthPoint(100);
-		SetState(ObjectState::Idle);
+		// 수정 필요 
+		//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		//scene->LoadGameData();
+
+		//switch (_curStageNum)
+		//{
+		//case 1: scene->SetStage(1); break;
+		//case 2: scene->SetStage(2); break;
+		//case 3: scene->SetStage(3); break;
+		//case 4: scene->SetStage(4); break;
+		//}
 	}
 }
 
