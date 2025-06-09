@@ -1491,6 +1491,7 @@ void DevScene::LoadSound()
 void DevScene::SetStage(int32 stage)
 {
 	_curStageNum = stage;
+	_monsters.clear();
 
 	// 이전 스테이지 내용 삭제
 
@@ -1567,10 +1568,12 @@ void DevScene::SetStage1()
 			if (info.id > 20100 && info.id <= 20199)
 			{
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.id, info.spawnPos, LAYER_MONSTER);
+				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
 				TOW->SetSpawnPos(info.spawnPos);
 				TOW->SetMoveDistance(info.movingDistance);
 				TOW->SetMovementLimit(info.movementLimit);
+				_monsters[info.id] = TOW;
 				continue;
 			}
 			
@@ -1578,7 +1581,9 @@ void DevScene::SetStage1()
 			if (info.id > 20200 && info.id <= 20299)
 			{
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.id, info.spawnPos, LAYER_MONSTER);
+				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
+				_monsters[info.id] = BCM;
 				continue;
 			}
 		}
@@ -1697,10 +1702,12 @@ void DevScene::SetStage2()
 			if (info.id > 20100 && info.id <= 20199)
 			{
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
 				TOW->SetSpawnPos(info.spawnPos);
 				TOW->SetMoveDistance(info.movingDistance);
 				TOW->SetMovementLimit(info.movementLimit);
+				_monsters[info.id] = TOW;
 				continue;
 			}
 
@@ -1708,7 +1715,9 @@ void DevScene::SetStage2()
 			if (info.id > 20200 && info.id <= 20299)
 			{
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
+				_monsters[info.id] = BCM;
 				continue;
 			}
 
@@ -1716,13 +1725,13 @@ void DevScene::SetStage2()
 			if (info.id > 20300 && info.id <= 20399)
 			{
 				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
+				AF->SetMonsterId(info.id);
 				AF->SetSpawnDir(info.dir);
 				AF->SetSpawnPos(info.spawnPos);
 				AF->SetMoveDistance(info.movingDistance);
 				AF->SetMovementLimit(info.movementLimit);
-
 				AF->SetPlayer(_player);
-				 
+				_monsters[info.id] = AF;
 				continue;
 			}
 		}
@@ -1852,10 +1861,12 @@ void DevScene::SetStage3()
 			if (info.id > 20100 && info.id <= 20199)
 			{
 				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.spawnPos, LAYER_MONSTER);
+				TOW->SetMonsterId(info.id);
 				TOW->SetSpawnDir(info.dir);
 				TOW->SetSpawnPos(info.spawnPos);
 				TOW->SetMoveDistance(info.movingDistance);
 				TOW->SetMovementLimit(info.movementLimit);
+				_monsters[info.id] = TOW;
 				continue;
 			}
 
@@ -1863,7 +1874,9 @@ void DevScene::SetStage3()
 			if (info.id > 20200 && info.id <= 20299)
 			{
 				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.spawnPos, LAYER_MONSTER);
+				BCM->SetMonsterId(info.id);
 				BCM->SetDir(info.dir);
+				_monsters[info.id] = BCM;
 				continue;
 			}
 
@@ -1871,13 +1884,13 @@ void DevScene::SetStage3()
 			if (info.id > 20300 && info.id <= 20399)
 			{
 				AmateurFencer* AF = SpawnObject<AmateurFencer>(info.spawnPos, LAYER_MONSTER);
+				AF->SetMonsterId(info.id);
 				AF->SetSpawnDir(info.dir);
 				AF->SetSpawnPos(info.spawnPos);
 				AF->SetMoveDistance(info.movingDistance);
 				AF->SetMovementLimit(info.movementLimit);
-
 				AF->SetPlayer(_player);
-
+				_monsters[info.id] = AF;
 				continue;
 			}
 		}
@@ -2007,6 +2020,8 @@ void DevScene::SaveCurData()
 	// 현재 스테이지 번호
 	file << _curStageNum << ",";
 
+	// 플레이어 위치
+	file << _player->GetPos().x << "," << _player->GetPos().y << ",";
 
 	// 플레이어 체력
 	file << _player->GetHp() << ",";
@@ -2015,9 +2030,16 @@ void DevScene::SaveCurData()
 	file << _player->GetSkillPoint() << ",";
 
 	// 몬스터 ID와 체력
-	for (const auto& [monsterID, monsterHp] : _monsterHpData )
+	for (const auto& [id, monster] : _monsters)
 	{
-		file << monsterID << "," << monsterHp << ",";
+		if (monster)
+		{
+			file << id << "," << monster->GetHp() << ",";
+		}
+	}
+	for (int32 deadId : _deadMonsterIds)	// 죽은 몬스터 기록
+	{
+		file << deadId << ",0,";
 	}
 
 	// 아이템 정보 - 없으면 0 저장
@@ -2078,13 +2100,12 @@ void DevScene::LoadGameData()
 	_player->SetSkillPoint(std::stoi(tokens[index++]));
 
 	// 몬스터 ID와 체력 읽기
-	_monsterHpData.clear();
-	while (index < tokens.size() - 2) // 최소한 스킬포인트와 아이템 한 개가 남아야 함
-	{
-		int32 monsterID = std::stoi(tokens[index++]);
-		int32 monsterHp = std::stoi(tokens[index++]);
-		_monsterHpData[monsterID] = monsterHp;
-	}
+	//while (index < tokens.size() - 2) // 최소한 스킬포인트와 아이템 한 개가 남아야 함
+	//{
+	//	int32 monsterID = std::stoi(tokens[index++]);
+	//	int32 monsterHp = std::stoi(tokens[index++]);
+	//	_monsterHpData[monsterID] = monsterHp;
+	//}
 
 	// 아이템 정보 읽기
 	if (std::stoi(tokens[index++]) == 0)

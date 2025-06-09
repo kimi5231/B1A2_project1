@@ -3,6 +3,7 @@
 
 class Actor;
 class ItemActor;
+class Monster;
 
 class DevScene : public Scene
 {
@@ -42,6 +43,8 @@ public:
 	// Save
 	void SaveCurData();
 	void LoadGameData();
+
+	void InputDeadMonsterIdAndErasePointer(int32 id) { _deadMonsterIds.push_back(id);  _monsters.erase(id); }
 
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
@@ -98,9 +101,10 @@ private:
 
 	int32 _curStageNum;	// 현재 스테이지
 	
-	// 몬스터 수: stage1 - BCM 2, TOW 4, stage2 - BCM 3, TOW 6, AF 3, stage3 - BCM 2, TOW 6, AF 4
-	std::unordered_map<int32, int32> _monsterHpData;	// [몬스터 ID, 몬스터 hp]
-	
+	// Stage의 몬스터의 정보
+	std::vector<int32> _deadMonsterIds;
+	std::unordered_map<int32, Monster*> _monsters;	
+
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 
 	ItemActor* _acquireItem = nullptr;	// 아이템 획득 효과에 필요

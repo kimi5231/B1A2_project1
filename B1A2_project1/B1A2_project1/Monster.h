@@ -28,6 +28,7 @@ protected:
 	virtual void TickReturnIdle() override {};
 	virtual void UpdateAnimation() override {};
 
+
 public:
 	virtual int32 GetAttack() = 0;
 	virtual int32& GetHp() = 0;
@@ -36,6 +37,10 @@ public:
 
 	void SetTarget(Player* player) { _target = player; }
 
+	void SetMonsterId(int32 id) { _id = id; }
+
 protected:
 	Player* _target = nullptr;
+	
+	int32 _id = 0;
 };

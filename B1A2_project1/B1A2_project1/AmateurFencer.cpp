@@ -521,6 +521,8 @@ BehaviorState AmateurFencer::Dead()
 		// 객체 제거
 		// 추후 GameScene로 변경할 예정
 		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+		scene->InputDeadMonsterIdAndErasePointer(_id);
 		scene->RemoveActor(this);
 	
 		return BehaviorState::SUCCESS;

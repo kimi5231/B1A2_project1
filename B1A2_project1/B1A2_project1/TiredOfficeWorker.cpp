@@ -189,6 +189,7 @@ void TiredOfficeWorker::TickDead()
 		}
 
 		// °´Ã¼ Á¦°Å
+		scene->InputDeadMonsterIdAndErasePointer(_id);
 		scene->RemoveActor(this);
 	}	
 }

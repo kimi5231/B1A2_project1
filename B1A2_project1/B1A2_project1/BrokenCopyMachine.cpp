@@ -142,7 +142,8 @@ void BrokenCopyMachine::TickDead()
 			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 			ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 		}
-		
+
+		scene->InputDeadMonsterIdAndErasePointer(_id);
 		scene->RemoveActor(this);
 	}
 }
