@@ -34,6 +34,6 @@ private:
 	Vec2Int _winSize{ DefaultWinSizeX, DefaultWinSizeY };
 
 	// ∏  ªÁ¿Ã¡Ó
-	Vec2Int _mapSize{ 3080, 1960 };
+	Vec2Int _mapSize{ 1280, 720 };
 };
 
