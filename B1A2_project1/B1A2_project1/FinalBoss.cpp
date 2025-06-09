@@ -17,7 +17,6 @@
 #include "FallingProjectile.h"
 #include "ItemActor.h"
 
-
 FinalBoss::FinalBoss()
 {
 	// Stat
@@ -215,7 +214,7 @@ void FinalBoss::Tick()
 	}
 
 	// Monster Creation
-	if (_monsterCreationSumTime >= 30.f)
+	if (_monsterCreationSumTime >= _stat->monsterSpawnInterval)
 	{
 		_monsterCreationSumTime = 0.f;
 
@@ -403,6 +402,7 @@ BehaviorState FinalBoss::Chase()
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_dashTeleportSumTime += deltaTime;
+	_atkCoolTime += deltaTime;
 
 	float xDistance = GetAbsFromPlayerXDisatance();
 
@@ -430,30 +430,31 @@ BehaviorState FinalBoss::Chase()
 	}
 
 	// 근거리 or 원거리 공격
- 	if (xDistance <= _stat->closeAtkRange && _bossFloor == _playerFloor)
+	if (_atkCoolTime >= _stat->atkCooldown && _bossFloor == _playerFloor)
 	{
-		SetState(ObjectState::Thrust);
-		return BehaviorState::SUCCESS;
+		_atkCoolTime = 0.f;
+	
+		if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd()); // 시드 생성기
+			std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+
+			bool isWidth = (dist(gen) == 0);
+
+			if (isWidth)
+				SetState(ObjectState::LongAttackWidth);
+			else
+				SetState(ObjectState::LongAttackLength);
+
+			return BehaviorState::SUCCESS;
+		}
+		if (xDistance <= _stat->closeAtkRange)
+		{
+			SetState(ObjectState::Thrust);
+			return BehaviorState::SUCCESS;
+		}
 	}
-	else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange) 
-		&& _bossFloor == _playerFloor)
-	{
-		std::random_device rd;
-		std::mt19937 gen(rd()); // 시드 생성기
-		std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
-
-		bool isWidth = (dist(gen) == 0);
-
-		if (isWidth)
-			SetState(ObjectState::LongAttackWidth);
-		else
-			SetState(ObjectState::LongAttackLength);
-
-		return BehaviorState::SUCCESS;
-	}
-
-	SetState(ObjectState::Idle);
-	return BehaviorState::SUCCESS;
 }
 
 BehaviorState FinalBoss::is_cur_state_hit()
@@ -467,36 +468,7 @@ BehaviorState FinalBoss::is_cur_state_hit()
 BehaviorState FinalBoss::Hit()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_sumTime += deltaTime;
-
-	// knock back
-	if (_dir == DIR_RIGHT)
-		_pos.x -= (_stat->knockBackDistance * 2) * deltaTime;
-	else
-		_pos.x += (_stat->knockBackDistance * 2) * deltaTime;
-
-	if (_sumTime >= 1.5f)
-	{
-		_sumTime = 0.f;
-
-		// 난수 생성
-		std::random_device rd;
-		std::default_random_engine dre{ rd() };
-		std::uniform_real_distribution urd{ 0.f, 1.f };
-
-		// 힐템 드랍
-		if (urd(dre) <= _stat->healItemDropRate)
-		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-
-			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-			ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
-		}
-
-		SetState(ObjectState::Chase);
-
-		return BehaviorState::SUCCESS;
-	}
+	static bool knockBackApplied = false;
 
 	// 수정 소환
 	if (_stat->hp <= 1000 && _stat->hp > 900 && !_isFirstCrystalCreationWork)
@@ -519,12 +491,44 @@ BehaviorState FinalBoss::Hit()
 
 		SetState(ObjectState::CrystalCreation);
 	}
-	else
+
+	// knock back
+	if (!knockBackApplied)
 	{
-		SetState(ObjectState::Chase);
+		if (_dir == DIR_RIGHT)
+			_pos.x -= _stat->knockBackDistance;
+		else
+			_pos.x += _stat->knockBackDistance;
+
+		knockBackApplied = true;
 	}
 
-	return BehaviorState::SUCCESS;
+	_sumTime += deltaTime;
+
+	if (_sumTime >= 0.5f)
+	{
+		// 난수 생성
+		std::random_device rd;
+		std::default_random_engine dre{ rd() };
+		std::uniform_real_distribution urd{ 0.f, 1.f };
+
+		// 힐템 드랍
+		if (urd(dre) <= _stat->healItemDropRate)
+		{
+			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+		}
+
+		knockBackApplied = false;
+		_sumTime = 0.f;
+
+		SetState(ObjectState::Chase);
+		return BehaviorState::SUCCESS;
+	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_dead()
@@ -799,7 +803,7 @@ BehaviorState FinalBoss::Teleport()
 		yPos = _secondFloorYPos;
 	else if (_playerFloor == 3)
 		yPos = _thirdFloorYPos;
-
+	  
 	if (playerPos.x - _pos.x <= 0)	// 몬스터가 왼쪽
 		_pos = { playerPos.x - 20, yPos };	// 위치 맵에 따라, 플레이어 위치 따라 수정 필요
 	else
@@ -807,23 +811,6 @@ BehaviorState FinalBoss::Teleport()
 
 	SetState(ObjectState::CutSeverely);
 	return BehaviorState::SUCCESS;
-	// 찌르기 or 마구 베기 5:5
-	//std::random_device rd;
-	//std::mt19937 gen(rd()); // 시드 생성기
-	//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
-
-	//bool isThrust = (dist(gen) == 0);
-
-	//if (isThrust)
-	//{
-	//	SetState(ObjectState::Thrust);
-	//	return BehaviorState::SUCCESS;
-	//}
-	//else
-	//{
-	//	SetState(ObjectState::CutSeverely);
-	//	return BehaviorState::SUCCESS;
-	//}
 }
 
 BehaviorState FinalBoss::is_cur_state_cut_severely()
@@ -990,7 +977,7 @@ void FinalBoss::CreateBlanket()
 	std::mt19937 gen(rd()); // 시드 생성기
 	std::uniform_int_distribution<> dist(0, 20);
 
-	Blanket* blanket = scene->SpawnObject<Blanket>({ float(dist(gen) * 40), float(520) }, LAYER_PROJECTILE);	// 위치 수정 필요
+	Blanket* blanket = scene->SpawnObject<Blanket>({ float(dist(gen) * 40), float(540) }, LAYER_PROJECTILE);	// 위치 수정 필요
 	blanket->SetAttack(_stat->blanketDamage);
 	blanket->SetDuartion(_stat->blanketDuration);
 }

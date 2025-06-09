@@ -67,7 +67,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -918,7 +918,7 @@ void DevScene::LoadProjectile()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Blanket");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Blanket");
-		fb->SetInfo({ texture, L"FB_Blanket", {200, 45}, 0, 0, 0, 0.7f });
+		fb->SetInfo({ texture, L"FB_Blanket", {200, 45}, 0, 2, 0, 0.7f });
 	}
 
 	// Falling Projectile

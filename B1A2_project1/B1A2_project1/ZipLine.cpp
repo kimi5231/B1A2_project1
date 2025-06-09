@@ -107,7 +107,7 @@ void ZipLine::GripRender(HDC hdc)
 
 	::TransparentBlt(hdc,
 		((int32)GripPos.x) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x, 
-		((int32)GripPos.y) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+		((int32)GripPos.y + 5) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
 		texture->GetSize().x,                  
 		texture->GetSize().y,            
 		texture->GetDC(),

@@ -24,7 +24,7 @@ Blanket::Blanket()
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 
-			collider->SetSize({ 200, 80 });
+			collider->SetSize({ 200, 45 });
 
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 			AddComponent(collider);

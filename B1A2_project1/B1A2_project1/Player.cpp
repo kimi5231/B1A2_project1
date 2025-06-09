@@ -716,11 +716,11 @@ void Player::TickHang()
 	if (_currentZipLine->GetMidPos().x != 0 && _currentZipLine->GetMidPos().y != 0)	// 중간 탑승
 		beginPos = _currentZipLine->GetMidPos();
 
-
 	// 매달리기 시작 - 짚라인 시작 위치로 이동
 	if (!isMoving)
 	{
-		_pos = beginPos;
+		_pos.x = beginPos.x;
+		_pos.y = beginPos.y + 50;	// 위치 보정
 
 		_isGround = true;
 		_isAir = false;
@@ -748,6 +748,8 @@ void Player::TickHang()
 			isMoving = false;
 
 			sumTime = 0.0f;
+
+			_pos.y -= 50;	// 위치 보정
 
 			_isGround = false;
 			_isAir = true;
@@ -800,7 +802,6 @@ void Player::TickHit()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	static bool knockBackApplied = false;
 	static float sumTime = 0.f;
-
 
 	// knockback
 	if (!knockBackApplied)

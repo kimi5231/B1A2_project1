@@ -272,6 +272,7 @@ private:
 	int32 _currentCrystalCount = 0;
 
 	float _sumTime = 0.f;
+	float _atkCoolTime = 0.f;
 	float _IdlesumTime = 0.f;
 	float _dashTeleportSumTime = 0.f;
 	float _crystalCreationSumTime = 0.f;
