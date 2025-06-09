@@ -9,6 +9,7 @@ enum TILE_TYPE
 	TILE_W,		// Wall
 	TILE_S,		// Save Point
 	TILE_D,		// Stair
+	TILE_N,		// Next
 };
 
 struct Tile

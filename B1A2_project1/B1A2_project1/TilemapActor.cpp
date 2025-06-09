@@ -53,6 +53,8 @@ void TilemapActor::BeginPlay()
 				collider->SetCollisionLayer(CLT_SAVE_POINT); break;
 			case 5:
 				collider->SetCollisionLayer(CLT_STAIR); break;
+			case 6:
+				collider->SetCollisionLayer(CLT_NEXT); break;
 			}
 			
 			// Ãæµ¹ÇÒ °´Ã¼
@@ -94,6 +96,7 @@ void TilemapActor::Render(HDC hdc)
 	Sprite* spriteW = GET_SINGLE(ResourceManager)->GetSprite(L"TileW");
 	Sprite* spriteS = GET_SINGLE(ResourceManager)->GetSprite(L"TileS");
 	Sprite* spriteD = GET_SINGLE(ResourceManager)->GetSprite(L"TileD");
+	Sprite* spriteN = GET_SINGLE(ResourceManager)->GetSprite(L"TileN");
 
 	Vec2 cameraPosAdjustment = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 	Vec2 winSizeAdjustment = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
@@ -202,6 +205,19 @@ void TilemapActor::Render(HDC hdc)
 					TILE_SIZEY,
 					spriteD->GetTransparent());
 				break;
+			case 6:
+				::TransparentBlt(hdc,
+					(_pos.x + x * MAP_TILE_SIZEX) * ((float)winSize.x / (float)DefaultWinSizeX) - ((int32)cameraPos.x - winSize.x / 2),
+					(_pos.y + y * MAP_TILE_SIZEY) * ((float)winSize.y / (float)DefaultWinSizeY) - ((int32)cameraPos.y - winSize.y / 2),
+					MAP_TILE_SIZEX * ((float)winSize.x / (float)DefaultWinSizeX),
+					MAP_TILE_SIZEY * ((float)winSize.y / (float)DefaultWinSizeY),
+					spriteN->GetDC(),
+					spriteN->GetPos().x,
+					spriteN->GetPos().y,
+					TILE_SIZEX,
+					TILE_SIZEY,
+					spriteN->GetTransparent());
+				break;
 			}
 		}
 	}
@@ -252,6 +268,15 @@ void TilemapActor::TickPicking()
 		{
 			if (GetTile())
 				GetTile()->value = TILE_D;
+		}
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftShift))
+	{
+		// LeftShift + LeftMouse => N
+		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+		{
+			if (GetTile())
+				GetTile()->value = TILE_N;
 		}
 	}
 	else

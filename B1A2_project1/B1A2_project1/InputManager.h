@@ -15,6 +15,7 @@ enum class KeyType	// Å° ¹öÆ°
 	Tab = VK_TAB,
 	LeftAlt = VK_LMENU,
 	LeftCtrl = VK_LCONTROL,
+	LeftShift = VK_LSHIFT,
 
 	KEY_1 = '1',
 	KEY_2 = '2',

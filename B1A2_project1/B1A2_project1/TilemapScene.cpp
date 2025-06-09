@@ -37,6 +37,7 @@ void TilemapScene::Init()
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileW", texture, 144, 0, 48, 48);
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileS", texture, 192, 0, 48, 48);
 		GET_SINGLE(ResourceManager)->CreateSprite(L"TileD", texture, 240, 0, 48, 48);
+		GET_SINGLE(ResourceManager)->CreateSprite(L"TileN", texture, 288, 0, 48, 48);
 	}
 
 	// Tilemap
