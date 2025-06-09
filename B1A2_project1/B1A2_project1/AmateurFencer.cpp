@@ -315,6 +315,8 @@ BehaviorState AmateurFencer::is_cur_state_chase()
 BehaviorState AmateurFencer::Chase()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
 	float xDistance = GetAbsFromPlayerXDisatance();
 	float yDistance = GetAbsFromPlayerYDistance();
 	
@@ -333,15 +335,20 @@ BehaviorState AmateurFencer::Chase()
 	}
 	
 	// 근거리 or 원거리 공격
-	if (xDistance <= _stat->closeAtkRangeX)
+	if (_sumTime >= _stat->atkCooldown)
 	{
-		SetState(ObjectState::Thrust);
-		return BehaviorState::SUCCESS;
-	}
-	else if (std::abs(xDistance - _stat->closeAtkRangeX) > std::abs(xDistance - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
-	{
-		SetState(ObjectState::SlashWave);
-		return BehaviorState::SUCCESS;
+		_sumTime = 0.f;
+
+		if (xDistance <= _stat->closeAtkRangeX)
+		{
+			SetState(ObjectState::Thrust);
+			return BehaviorState::SUCCESS;
+		}
+		else if (std::abs(xDistance - _stat->closeAtkRangeX) > std::abs(xDistance - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
+		{
+			SetState(ObjectState::SlashWave);
+			return BehaviorState::SUCCESS;
+		}
 	}
 
 	// Idle 상태 변경은 Detection Collision 충돌이 끝났을 때 호출됨
@@ -414,30 +421,6 @@ BehaviorState AmateurFencer::BackStep()
 
 		SetState(ObjectState::Chase);
 		return BehaviorState::SUCCESS;
-		//// Chase
-		//if (GetAbsFromPlayerXDisatance() > _stat->closeAtkRangeX && GetAbsFromPlayerXDisatance() <= _stat->playerDetection.x)
-		//{
-		//	if (GetAbsFromPlayerYDistance() > _stat->playerDetection.y)
-		//	{
-		//		SetState(ObjectState::Chase);
-		//		return BehaviorState::SUCCESS;
-		//	}
-		//}
-
-		//// 근거리 or 원거리 공격
-		//if (GetAbsFromPlayerXDisatance() <= _stat->closeAtkRangeX)
-		//{
-		//	SetState(ObjectState::Thrust);
-		//	return BehaviorState::SUCCESS;
-		//}
-		//else if (std::abs(GetAbsFromPlayerXDisatance() - _stat->closeAtkRangeX) > std::abs(GetAbsFromPlayerXDisatance() - _stat->longAtkRange))	// |거리 - 근공사| > |거리 - 원공사| 
-		//{
-		//	SetState(ObjectState::SlashWave);
-		//	return BehaviorState::SUCCESS;
-		//}
-
-		//SetState(ObjectState::Idle);
-		//return BehaviorState::SUCCESS;
 	}
 
 	return BehaviorState::RUNNING;
