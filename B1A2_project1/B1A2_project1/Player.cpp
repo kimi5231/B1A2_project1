@@ -88,6 +88,8 @@ Player::Player()
 			collider->AddCollisionFlagLayer(CLT_STAIR);
 			collider->AddCollisionFlagLayer(CLT_WALL);
 			collider->AddCollisionFlagLayer(CLT_SAVE_POINT);
+			collider->AddCollisionFlagLayer(CLT_GAME_OVER);
+			collider->AddCollisionFlagLayer(CLT_NEXT);
 			collider->AddCollisionFlagLayer(CLT_DETECT);
 			collider->AddCollisionFlagLayer(CLT_STRUCTURE);
 			collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
@@ -260,7 +262,7 @@ void Player::Tick()
 			{
 				BoxCollider* collider = dynamic_cast<BoxCollider*>(component);
 
-				if (collider->GetCollisionLayer() == CLT_GROUND || collider->GetCollisionLayer() == CLT_STAIR)
+				if (collider->GetCollisionLayer() == CLT_GROUND || collider->GetCollisionLayer() == CLT_STAIR || collider->GetCollisionLayer() == CLT_GAME_OVER)
 				{
 					Vec2 pos = _playerCollider->GetPos();
 					float posX1 = pos.x - _playerCollider->GetSize().x / 2;
@@ -1109,51 +1111,13 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			item->SetFKeyState(FKeyState::Show);
 		else
 		{
-			AddHealthPoint(20);	// 숫자 수정 필요
+			AddHealthPoint(20);	
 			item->SetItemState(ItemState::Hidden);
 		}
 
 		_collideItem = item;
 
 		return;
-	}
-
-	// 타일
-	{
-		// Save Point에 충돌하면 저장하기(밀어내기 X)
-		if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
-		{
-			_devScene->SaveCurData();
-
-			return;
-		}
-
-		// 낙사
-		if (b2->GetCollisionLayer() == CLT_GAME_OVER)
-		{
-			SetState(ObjectState::Dead);
-		}
-
-		// Next - 다음 스테이지로
-		if (b2->GetCollisionLayer() == CLT_NEXT)
-		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-			
-			switch (_curStageNum)
-			{
-			case1:
-				scene->SetStage(2);
-				break;
-			case 2:
-				scene->SetStage(3);
-				break;
-			case 3:
-				scene->SetStage(4);
-				break;
-			case 4:
-				break;	// 수정 필요
-			}
-		}
 	}
 	
 	// Structure Detect
@@ -1309,6 +1273,48 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	{
 		_isGround = true;
 		_isAir = false;
+		
+		return;
+	}
+
+	// 낙사
+	if (b2->GetCollisionLayer() == CLT_GAME_OVER)
+	{
+		_isGround = true;
+		_isAir = false;
+
+		SetState(ObjectState::Dead);
+
+		return;
+	}
+	
+	// Save Point에 충돌하면 저장하기(밀어내기 X)
+	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
+	{
+		_devScene->SaveCurData();
+
+		return;
+	}
+
+	// Next - 다음 스테이지로
+	if (b2->GetCollisionLayer() == CLT_NEXT)
+	{
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+		switch (_curStageNum)
+		{
+		case1:
+			scene->SetStage(2);
+			break;
+		case 2:
+			scene->SetStage(3);
+			break;
+		case 3:
+			scene->SetStage(4);
+			break;
+		case 4:
+			break;	// 수정 필요
+		}
 	}
 
 	// 계단
@@ -1428,6 +1434,12 @@ void Player::OnComponentOverlapping(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_STAIR && _isOnStair)
 	{
 		AdjustCollisionPosGround(b1, b2);
+		return;
+	}
+
+	if (b2->GetCollisionLayer() == CLT_GAME_OVER)
+	{
+		AdjustCollisionPos(b1, b2);
 		return;
 	}
 }
