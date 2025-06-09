@@ -207,12 +207,12 @@ void FinalBoss::Tick()
 	}
 
 	// Blanket
-	//if (_blancketSumTime >= 3.f)
-	//{
-	//	_blancketSumTime = 0.f;
+	if (_blancketSumTime >= _stat->blanketSpawnInterval)
+	{
+		_blancketSumTime = 0.f;
 
-	//	CreateBlanket();
-	//}
+		CreateBlanket();
+	}
 
 	// Monster Creation
 	if (_monsterCreationSumTime >= 30.f)
@@ -991,6 +991,8 @@ void FinalBoss::CreateBlanket()
 	std::uniform_int_distribution<> dist(0, 20);
 
 	Blanket* blanket = scene->SpawnObject<Blanket>({ float(dist(gen) * 40), float(520) }, LAYER_PROJECTILE);	// 위치 수정 필요
+	blanket->SetAttack(_stat->blanketDamage);
+	blanket->SetDuartion(_stat->blanketDuration);
 }
 
 void FinalBoss::CreateMonster()

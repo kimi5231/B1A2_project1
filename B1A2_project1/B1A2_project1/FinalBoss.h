@@ -8,22 +8,56 @@ class BoxCollider;
 
 struct FinalBossStat
 {
-	int32 hp;	// A
-	float healItemDropRate;	// B
-	float speed;	//C
-	int32 knockBackDistance;	// D
-	int32 backStepDistance;	// E
-	float dashSpeed;	// F
-	int32 dashDistance;	// G
-	int32 closeAtkRange;	// H
-	int32 closeAtkDamage;	// I
-	int32 longAtkRange;	// J
-	int32 longAtkProjectileDamage;	// K
-	float longAtkProjectileSpeed;	// L
-	int32 longAtkProjectileCount;	// M
-	std::string projetileTypeWidth;	// N
-	std::string projectileTypeHeight;	// O
-	int32 slashAtkDamage;	// P
+	int32 id;
+	int32 hp;
+	float healItemDropRate;
+	float speed;
+	int32 knockBackDistance;
+	int32 backStepDistance;
+	float dashSpeed;
+	int32 dashDistance;
+	int32 closeAtkRange;
+	int32 closeAtkDamage;
+	int32 longAtkRange;
+	int32 longAtkProjectileDamage;
+	float longAtkProjectileSpeed;
+	int32 longAtkProjectileCount;
+	int32 slashAtkDamage;
+	float atkCooldown;
+	int32 blanketDamage;
+	float blanketSpawnInterval;
+	float blanketDuration;
+
+	float landedFallingProjectileDuration;
+	float playerHitFallingProjectileDuration;
+	int32 fallingProjectile1Count;
+	int32 fallingProjectile2Count;
+
+	float fallingProjectile1Speed1st;
+	int32 fallingProjectile1Damage1st;
+	float fallingProjectile1Speed2nd;
+	int32 fallingProjectile1Damage2nd;
+	float fallingProjectile1Speed3rd;
+	int32 fallingProjectile1Damage3rd;
+	float fallingProjectile1Speed4th;
+	int32 fallingProjectile1Damage4th;
+
+	float fallingProjectile2Speed1st;
+	int32 fallingProjectile2Damage1st;
+	float fallingProjectile2Speed2nd;
+	int32 fallingProjectile2Damage2nd;
+	float fallingProjectile2Speed3rd;
+	int32 fallingProjectile2Damage3rd;
+	float fallingProjectile2Speed4th;
+	int32 fallingProjectile2Damage4th;
+	float monsterSpawnInterval;
+	float monsterDuration;
+	float crystalDuration;
+	int32 skillPointOnCrystalDestroy;
+	int32 firstCrustalHealPerSec;
+	int32 secondCrystalHealPerSec;
+	int32 thridCrystalHealPerSec;
+
 
 	void LoadFile(const std::wstring& path)
 	{
@@ -42,22 +76,53 @@ struct FinalBossStat
 			{
 				switch (column)
 				{
-				case 0:this->hp = std::stoi(cell); break;	// A
-				case 1: this->healItemDropRate = std::stof(cell); break;	// B
-				case 2: this->speed = std::stof(cell); break;	// C
-				case 3: this->knockBackDistance = std::stoi(cell); break;	// D
-				case 4: this->backStepDistance = std::stoi(cell); break;	// E
-				case 5: this->dashSpeed = std::stof(cell); break;	// F
-				case 6: this->dashDistance = std::stoi(cell); break;	// G
-				case 7: this->closeAtkRange = std::stoi(cell); break;	// H
-				case 8: this->closeAtkDamage = std::stoi(cell); break;	// I
-				case 9: this->longAtkRange = std::stoi(cell); break;	// J
-				case 10: this->longAtkProjectileDamage = std::stoi(cell); break;	// K
-				case 11: this->longAtkProjectileSpeed = std::stof(cell); break;	// L
-				case 12: this->longAtkProjectileCount = std::stoi(cell); break;	// M
-				case 13: this->projetileTypeWidth = cell; break;	// N
-				case 14: this->projectileTypeHeight = cell; break;	// O
-				case 15: this->slashAtkDamage = std::stoi(cell); break;	// P
+				case 0: id = std::stoi(cell); break;
+				case 1: hp = std::stoi(cell); break;
+				case 2: healItemDropRate = std::stof(cell); break;
+				case 3: speed = std::stof(cell); break;
+				case 4: knockBackDistance = std::stoi(cell); break;
+				case 5: backStepDistance = std::stoi(cell); break;
+				case 6: dashSpeed = std::stof(cell); break;
+				case 7: dashDistance = std::stoi(cell); break;
+				case 8: closeAtkRange = std::stoi(cell); break;
+				case 9: closeAtkDamage = std::stoi(cell); break;
+				case 10: longAtkRange = std::stoi(cell); break;
+				case 11: longAtkProjectileDamage = std::stoi(cell); break;
+				case 12: longAtkProjectileSpeed = std::stof(cell); break;
+				case 13: longAtkProjectileCount = std::stoi(cell); break;
+				case 14: slashAtkDamage = std::stoi(cell); break;
+				case 15: atkCooldown = std::stof(cell); break;
+				case 16: blanketDamage = std::stoi(cell); break;
+				case 17: blanketSpawnInterval = std::stof(cell); break;
+				case 18: blanketDuration = std::stof(cell); break;
+				case 19: landedFallingProjectileDuration = std::stof(cell); break;
+				case 20: playerHitFallingProjectileDuration = std::stof(cell); break;
+				case 21: fallingProjectile1Count = std::stoi(cell); break;
+				case 22: fallingProjectile2Count = std::stoi(cell); break;
+				case 23: fallingProjectile1Speed1st = std::stof(cell); break;
+				case 24: fallingProjectile1Damage1st = std::stoi(cell); break;
+				case 25: fallingProjectile1Speed2nd = std::stof(cell); break;
+				case 26: fallingProjectile1Damage2nd = std::stoi(cell); break;
+				case 27: fallingProjectile1Speed3rd = std::stof(cell); break;
+				case 28: fallingProjectile1Damage3rd = std::stoi(cell); break;
+				case 29: fallingProjectile1Speed4th = std::stof(cell); break;
+				case 30: fallingProjectile1Damage4th = std::stoi(cell); break;
+				case 31: fallingProjectile2Speed1st = std::stof(cell); break;
+				case 32: fallingProjectile2Damage1st = std::stoi(cell); break;
+				case 33: fallingProjectile2Speed2nd = std::stof(cell); break;
+				case 34: fallingProjectile2Damage2nd = std::stoi(cell); break;
+				case 35: fallingProjectile2Speed3rd = std::stof(cell); break;
+				case 36: fallingProjectile2Damage3rd = std::stoi(cell); break;
+				case 37: fallingProjectile2Speed4th = std::stof(cell); break;
+				case 38: fallingProjectile2Damage4th = std::stoi(cell); break;
+				case 39: monsterSpawnInterval = std::stof(cell); break;
+				case 40: monsterDuration = std::stof(cell); break;
+				case 41: crystalDuration = std::stof(cell); break;
+				case 42: skillPointOnCrystalDestroy = std::stoi(cell); break;
+				case 43: firstCrustalHealPerSec = std::stoi(cell); break;
+				case 44: secondCrystalHealPerSec = std::stoi(cell); break;
+				case 45: thridCrystalHealPerSec = std::stoi(cell); break;
+				default: break;
 				}
 				++column;
 			}

@@ -67,7 +67,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -918,16 +918,25 @@ void DevScene::LoadProjectile()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Blanket");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Blanket");
-		fb->SetInfo({ texture, L"FB_Blanket", {200, 80}, 0, 0, 0, 0.7f });
+		fb->SetInfo({ texture, L"FB_Blanket", {200, 45}, 0, 0, 0, 0.7f });
 	}
 
 	// Falling Projectile
 	{
-		GET_SINGLE(ResourceManager)->LoadTexture(L"FallingProjectile", L"Sprite\\Projectile\\FallingProjectile.bmp", RGB(55, 255, 0));
-		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile");
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FallingProjectile1", L"Sprite\\Projectile\\FallingProjectile1.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile1");
 
-		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile");
-		fb->SetInfo({ texture, L"FB_FallingProjectile", {40, 40}, 0, 0, 0, 0.7f });
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile1");
+			fb->SetInfo({ texture, L"FB_FallingProjectile1", {40, 40}, 0, 0, 0, 0.7f });
+		}
+		{
+			GET_SINGLE(ResourceManager)->LoadTexture(L"FallingProjectile2", L"Sprite\\Projectile\\FallingProjectile2.bmp", RGB(55, 255, 0));
+			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile2");
+
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile2");
+			fb->SetInfo({ texture, L"FB_FallingProjectile2", {40, 40}, 0, 0, 0, 0.7f });
+		}
 	}
 }
 

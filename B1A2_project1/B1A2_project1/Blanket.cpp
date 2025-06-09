@@ -31,9 +31,6 @@ Blanket::Blanket()
 		}
 	}
 
-	// 공격력 수정 필요
-	SetAttack(5);
-
 	SetState(ObjectState::On);
 }
 
@@ -55,7 +52,7 @@ void Blanket::Tick()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
 
-	if (_sumTime >= 5.f)
+	if (_sumTime >= _duration)
 	{	
 		_sumTime - 0.f;
 
