@@ -6,10 +6,6 @@ struct ItemInfo
 	int32 ID;	
 	std::wstring name;
 	std::wstring explain;
-	bool acquiredByFKey;
-	int32 droppingMonsterPersonalID;
-	int32 stage;
-	Vec2 spawnPos;	// 스폰 위치 (spawnXpos, spawnYpos)
 };
 
 class Item : public ResourceBase

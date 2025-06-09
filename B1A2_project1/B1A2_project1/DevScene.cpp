@@ -34,6 +34,7 @@
 #include "ZipLine.h"
 #include "TimeManager.h"
 #include "Stage.h"
+#include "ItemStage.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
 #include "Window.h"
@@ -62,11 +63,11 @@ void DevScene::Init()
 	LoadDialogue();
 	LoadItem();
 	LoadInventory();
-	LoadMenu();
+	LoadUI();
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -86,6 +87,7 @@ void DevScene::Init()
 
 	// player의 체력 변경 시 UI 업데이트 등록
 	_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	_player->SetSkillPointObserver([panel](int skillPoint) {  if (panel) panel->UpdateSkillPoint(skillPoint); });
 
 	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
 	_player->SetCurrentScene(this);
@@ -210,6 +212,13 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage1_FieldMonster", L"DataBase\\Stage1_FieldMonster.csv");
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage2_FieldMonster", L"DataBase\\Stage2_FieldMonster.csv");
 		GET_SINGLE(ResourceManager)->LoadStage(L"Stage3_FieldMonster", L"DataBase\\Stage3_FieldMonster.csv");
+	}
+
+	// Item
+	{
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage1_Item", L"DataBase\\itemList_Field_Stage1.csv");
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage2.csv");
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage3.csv");
 	}
 
 	// Map
@@ -960,21 +969,12 @@ void DevScene::LoadStructure()
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineGrip", L"Sprite\\Structure\\ZipLineGrip.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineGrip");
-
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineGrip");
-			fb->SetInfo({ texture, L"FB_ZipLineGrip", {35, 22}, 0, 0, 0, 0.7f });
 		}
 
 		// Display
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"ZipLineDisplay", L"Sprite\\Structure\\ZipLineDisplay.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineDisplay");
-
-		//	Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOff");
-		//	fb1->SetInfo({ texture, L"FB_ZipLineDisplayOff", {110, 120}, 0, 0, 0, 0.7f });
-		//	
-		//	Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineDisplayOn");
-		//	fb2->SetInfo({ texture, L"FB_ZipLineDisplayOn", {110, 120}, 0, 0, 1, 0.7f });
 		}
 
 		// Button
@@ -1097,13 +1097,13 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHoldAndZipLineButton");
 
 			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOff");
-			fb1->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOff", { 80, 105 }, 0, 0, 0, 0.7f });
+			fb1->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOff", { 84, 96 }, 0, 0, 0, 0.7f });
 
 			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn1");
-			fb2->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn1", { 80, 105 }, 0, 0, 1, 0.7f });
+			fb2->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn1", { 84, 96 }, 0, 0, 1, 0.7f });
 
 			Flipbook* fb3 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHoldAndZipLineButtonOn2");
-			fb3->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn2", { 80, 105 }, 0, 0, 2, 0.7f });
+			fb3->SetInfo({ texture, L"FB_FootHoldAndZipLineButtonOn2", { 84, 96 }, 0, 0, 2, 0.7f });
 		}
 
 		// FootHold
@@ -1112,7 +1112,7 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FootHold");
 
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FootHold");
-			fb->SetInfo({ texture, L"FB_FootHold", {320, 120}, 0, 0, 0, 0.7f });
+			fb->SetInfo({ texture, L"FB_FootHold", {400, 120}, 0, 0, 0, 0.7f });
 		}
 	}
 
@@ -1161,7 +1161,7 @@ void DevScene::LoadDialogue()
 void DevScene::LoadItem()
 {
 	// Item info
-	GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList.csv");
+	GET_SINGLE(ResourceManager)->LoadItem(L"Item", L"DataBase\\itemList_Inventory.csv");
 
 	// Texture
 	// Map	
@@ -1368,7 +1368,7 @@ void DevScene::LoadInventory()
 	GET_SINGLE(ResourceManager)->CreateSprite(L"Inventory", texture, 0, 0, 1280, 720);
 }
 
-void DevScene::LoadMenu()
+void DevScene::LoadUI()
 {
 	// Menu
 	{
@@ -1378,6 +1378,7 @@ void DevScene::LoadMenu()
 
 		_menuPanel = new Panel();
 	}
+
 	// Go Title
 	{
 		Button* button = new Button();
@@ -1401,6 +1402,7 @@ void DevScene::LoadMenu()
 		button->AddOnClickDelegate(this, &DevScene::OnClickGoTitleButton);
 		_menuPanel->AddChild(button);
 	}
+
 	// Inventory
 	{
 		Button* button = new Button();
@@ -1426,6 +1428,7 @@ void DevScene::LoadMenu()
 		button->AddOnClickDelegate(this, &DevScene::OnClickMenuButton);
 		_menuPanel->AddChild(button);
 	}
+
 	// Setting
 	{
 		Button* button = new Button();
@@ -1453,6 +1456,18 @@ void DevScene::LoadMenu()
 
 	// Menu Background
 	GET_SINGLE(ResourceManager)->LoadTexture(L"MenuBackground", L"Sprite\\UI\\MenuBackground.bmp", RGB(0, 0, 0));
+
+	// HP
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"HpBar", L"Sprite\\UI\\HpBar.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"HpPoint", L"Sprite\\UI\\HpPoint.bmp", RGB(55, 255, 0));
+	}
+
+	// Skill Point
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPointBar", L"Sprite\\UI\\SkillPointBar.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPoint", L"Sprite\\UI\\SkillPoint.bmp", RGB(55, 255, 0));
+	}
 }
 
 void DevScene::LoadSound()
@@ -1560,6 +1575,18 @@ void DevScene::SetStage1()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage1_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Structure
 	{
 		// LockedDoorAndKey
@@ -1601,27 +1628,7 @@ void DevScene::SetStage1()
 		}
 	}
 
-	// Item
-	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 1)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
-		}
-	}
 }
 
 void DevScene::SetStage2()
@@ -1712,6 +1719,18 @@ void DevScene::SetStage2()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage2_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Structure
 	{
 		// Window
@@ -1763,28 +1782,6 @@ void DevScene::SetStage2()
 			zipLineButtonAndDisplay->SetDisplayPos({ 3660, 920 });
 
 			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
-	}
-
-	// Item
-	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 2)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
 		}
 	}
 }
@@ -1877,6 +1874,18 @@ void DevScene::SetStage3()
 		}
 	}
 
+	// Item
+	{
+		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+		ItemStage* itemStage = GET_SINGLE(ResourceManager)->GetItemStage(L"Stage3_Item");
+		const std::vector<ItemStageInfo>& infos = itemStage->GetItemStageInfos();
+
+		for (const ItemStageInfo& info : infos)
+		{
+			ItemActor* item = SpawnObject<ItemActor>({ info.spawnPos }, LAYER_ITEM, info.id, itemData->GetItems());
+		}
+	}
+
 	// Destructible Object
 	{
 		{
@@ -1914,24 +1923,7 @@ void DevScene::SetStage3()
 
 	// Item
 	{
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 
-		if (!itemData)
-			return;
-
-		auto itemMap = itemData->GetItems();
-
-		for (const auto& pair : itemMap)
-		{
-			ItemInfo* info = pair.second;
-			if (!info)
-				continue;
-
-			if (info->stage == 3)
-			{
-				ItemActor* item = SpawnObject<ItemActor>({ info->spawnPos }, LAYER_ITEM, info->ID, itemData->GetItems());
-			}
-		}
 	}
 }
 

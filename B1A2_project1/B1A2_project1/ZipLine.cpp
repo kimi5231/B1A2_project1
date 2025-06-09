@@ -51,15 +51,24 @@ void ZipLine::Tick()
 
 void ZipLine::Render(HDC hdc)
 {
+	// Grip 
+	GripRender(hdc);
+
+	// 직선 줄 
 	if (_renderType == ZipLineRenderType::None)
 		return;
 
 	Super::Render(hdc);
 	
+	LineRender(hdc);
+}
+
+void ZipLine::LineRender(HDC hdc)
+{
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
 
-	int32 length = _beginPos.y - _endPos.y; 
+	int32 length = _beginPos.y - _endPos.y;
 
 	if (_player->GetState() == ObjectState::Hang)
 		length = _player->GetPos().y - _endPos.y;
@@ -71,6 +80,36 @@ void ZipLine::Render(HDC hdc)
 		((int32)_endPos.y) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
 		4 * winSizeAdjustmemt.x,                  // 폭은 4 픽셀
 		(length - 30) * winSizeAdjustmemt.y,            // 줄의 길이
+		texture->GetDC(),
+		0,
+		0,
+		texture->GetSize().x,
+		texture->GetSize().y,
+		texture->GetTransparent());
+}
+
+void ZipLine::GripRender(HDC hdc)
+{	
+	if (_player->GetState() == ObjectState::Hang)
+		return;
+
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
+	Vec2 cameraPosAdjustmemt = GET_SINGLE(ValueManager)->GetCameraPosAdjustment();
+
+	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineGrip");
+
+	Vec2 GripPos = _beginPos;
+
+	if (_midPos.x != 0 && _midPos.y != 0)	// 중간 하차했을 때 그리기
+	{
+		GripPos = _midPos;
+	}
+
+	::TransparentBlt(hdc,
+		((int32)GripPos.x) * winSizeAdjustmemt.x - cameraPosAdjustmemt.x, 
+		((int32)GripPos.y) * winSizeAdjustmemt.y - cameraPosAdjustmemt.y,
+		texture->GetSize().x,                  
+		texture->GetSize().y,            
 		texture->GetDC(),
 		0,
 		0,

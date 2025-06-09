@@ -104,7 +104,7 @@ public:
 	virtual void OnDamaged(Creature* other);
 	void OnDamagedByProjectile(Projectile* projectile);
 
-	// Hp 바뀔 때
+	// Hp 
 	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입
 	void SetHealthObserver(std::function<void(int)> observer) { _healthObserver = observer; }
 	
@@ -115,10 +115,14 @@ public:
 	int32& GetHp() { return _playerStat->hp; }
 	void SetHp(int32 hp) { _playerStat->hp = hp; }
 
+	// SkillPoint
+	using SkillPointObserver = void(*)(int);
+	void SetSkillPointObserver(std::function<void(int)> observer) { _skillPointObserver = observer; }
+
 	int32 GetSkillPoint() { return _playerStat->skillPoint; }
 	void SetSkillPoint(int32 skillPoint) { _playerStat->skillPoint = skillPoint; }
-	void AddSkillPoint(int32 skillPoint) { _playerStat->skillPoint = min(5, _playerStat->skillPoint + skillPoint); }
-	void SubtractSkillPoint(int32 skillPoint) { _playerStat->skillPoint = max(0, _playerStat->skillPoint - skillPoint); }
+	void AddSkillPoint(int32 skillPoint);
+	void SubtractSkillPoint(int32 skillPoint);
 
 public:
 	void SetCurrentScene(DevScene* devScene) { _devScene = devScene; }		// GameScene으로 수정 필요
@@ -172,6 +176,7 @@ private:
 	PlayerStat* _playerStat = {};
 
 	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
+	std::function<void(int)> _skillPointObserver;
 
 	bool _isOnStair = false;
 

@@ -50,34 +50,6 @@ void Item::LoadFile(const std::wstring& path)
         }
 
         info->explain = strExplain;
-
-        // F 키로 습득
-        std::wstring strAcquiredByFkey;
-        std::getline(wiss, strAcquiredByFkey, L',');
-        int32 intAcquiredByFkey = std::stoi(strAcquiredByFkey);
-        if (intAcquiredByFkey == -1)
-            info->acquiredByFKey = false;
-        else
-            info->acquiredByFKey = true;
-
-        // 드랍하는 몬스터 고유 ID - 없으면 0
-        std::wstring strDroppingMonsterPersonalID;
-        std::getline(wiss, strDroppingMonsterPersonalID, L',');
-        info->droppingMonsterPersonalID = std::stoi(strDroppingMonsterPersonalID);
-
-        // 스테이지
-        std::wstring strStage;
-        std::getline(wiss, strStage, L',');
-        info->stage = std::stoi(strStage);
-
-        // 스폰 위치 - 없으면 음수값
-        std::wstring strSpawnPosX;
-        std::getline(wiss, strSpawnPosX, L',');
-        info->spawnPos.x = std::stoi(strSpawnPosX);
-
-        std::wstring strSpawnPosY;
-        std::getline(wiss, strSpawnPosY, L',');
-        info->spawnPos.y = std::stoi(strSpawnPosY);
  
         _items[info->ID] = info;
     }

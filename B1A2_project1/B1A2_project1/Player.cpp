@@ -796,19 +796,28 @@ void Player::TickRelease()
 void Player::TickHit()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static bool knockBackApplied = false;
 	static float sumTime = 0.f;
-	sumTime += deltaTime;
+
 
 	// knockback
-	if (_dir == DIR_RIGHT)
-		_pos.x -= (_playerStat->knockBackDistance * 2) * deltaTime;		// 속 = 거 / 시
-	else
-		_pos.x += (_playerStat->knockBackDistance * 2) * deltaTime;
+	if (!knockBackApplied)
+	{
+		if (_dir == DIR_RIGHT)
+			_pos.x -= _playerStat->knockBackDistance;
+		else
+			_pos.x += _playerStat->knockBackDistance;
+	
+		knockBackApplied = true;
+	}
 
+	sumTime += deltaTime;
+	
 	if (sumTime >= 0.5f)
 	{
-		sumTime = 0.f;
 		SetState(ObjectState::Idle);
+		knockBackApplied = false;
+		sumTime = 0.f;
 	}
 }
 
@@ -1021,6 +1030,22 @@ void Player::SubtractHealthPoint(int hp)
 	_healthObserver(_playerStat->hp);
 }
 
+void Player::AddSkillPoint(int32 skillPoint)
+{
+	_playerStat->skillPoint = min(5, _playerStat->skillPoint + skillPoint);
+
+	// 관찰자에게 알림
+	_skillPointObserver(_playerStat->skillPoint);
+}
+
+void Player::SubtractSkillPoint(int32 skillPoint)
+{
+	_playerStat->skillPoint = max(0, _playerStat->skillPoint - skillPoint);
+
+	// 관찰자에게 알림
+	_skillPointObserver(_playerStat->skillPoint);
+}
+
 void Player::CalPixelPerSecond()
 {
 	float PIXEL_PER_METER = (10.0 / 0.2);
@@ -1093,12 +1118,42 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		return;
 	}
 
-	// Save Point에 충돌하면 저장하기(밀어내기 X)
-	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
+	// 타일
 	{
-		_devScene->SaveCurData();
+		// Save Point에 충돌하면 저장하기(밀어내기 X)
+		if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
+		{
+			_devScene->SaveCurData();
 
-		return;
+			return;
+		}
+
+		// 낙사
+		if (b2->GetCollisionLayer() == CLT_GAME_OVER)
+		{
+			SetState(ObjectState::Dead);
+		}
+
+		// Next - 다음 스테이지로
+		if (b2->GetCollisionLayer() == CLT_NEXT)
+		{
+			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			
+			switch (_curStageNum)
+			{
+			case1:
+				scene->SetStage(2);
+				break;
+			case 2:
+				scene->SetStage(3);
+				break;
+			case 3:
+				scene->SetStage(4);
+				break;
+			case 4:
+				break;	// 수정 필요
+			}
+		}
 	}
 	
 	// Structure Detect
@@ -1270,10 +1325,18 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 	if (b1->GetCollisionLayer() == CLT_PLAYER && (b2->GetCollisionLayer() == CLT_MONSTER_ATTACK || b2->GetCollisionLayer() == CLT_FINAL_BOSS_SLASH))
 	{
+		if (_state == ObjectState::Hit)
+			return;
+
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
 
 		return;
+	}
+
+	if (b1->GetCollisionLayer() == CLT_PLAYER_ATTACK && b2->GetCollisionLayer() == CLT_MONSTER)
+	{
+		AddSkillPoint(1);
 	}
 }
 
