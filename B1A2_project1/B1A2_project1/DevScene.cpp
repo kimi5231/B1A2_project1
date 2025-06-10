@@ -67,7 +67,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(1);
 
 	// Inventory
 	{
@@ -869,7 +869,7 @@ void DevScene::LoadProjectile()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Paper");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Paper");
-		fb->SetInfo({ texture, L"FB_Paper", {10, 10}, 0, 0, 0, 0.7f });
+		fb->SetInfo({ texture, L"FB_Paper", {10, 5}, 0, 0, 0, 0.7f });
 	}
 	
 	// SlashWave - Width
