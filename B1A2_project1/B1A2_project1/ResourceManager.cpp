@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Stage.h"
 #include "ItemStage.h"
+#include "StructureStage.h"
 #include "Player.h"
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
@@ -190,6 +191,20 @@ ItemStage* ResourceManager::LoadItemStage(const std::wstring& key, const std::ws
 	_itemStages[key] = itemStage;
 
 	return itemStage;
+}
+
+StructureStage* ResourceManager::LoadStructureStage(const std::wstring& key, const std::wstring& path)
+{
+	if (_structureStages[key])
+		return _structureStages[key];
+
+	std::filesystem::path fullpath = _resourcePath / path;
+
+	StructureStage* structureStage = new StructureStage();
+	structureStage->LoadFile(fullpath);
+	_structureStages[key] = structureStage;
+
+	return structureStage;
 }
 
 PlayerStat* ResourceManager::LoadPlayerStat(const std::wstring& path)

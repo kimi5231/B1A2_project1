@@ -1,0 +1,32 @@
+#pragma once
+#include "ResourceBase.h"
+#include <string>
+
+struct StructureStageInfo
+{
+	std::wstring name;
+	Vec2 spawnPos;
+	Vec2 keyPos;
+	int32 wallType;
+	int32 zipLineType;
+	Vec2 zipLineStartPos;
+	Vec2 zipLineEndPos;
+	float windowFlickeringCycle;
+	float windowFlickeringDuration;
+};
+
+class StructureStage : public ResourceBase
+{
+public:
+	StructureStage();
+	virtual ~StructureStage() override;
+
+public:
+	virtual void LoadFile(const std::wstring& path) override;
+
+public:
+	std::vector<StructureStageInfo>& GetStructureStageInfos() { return _infos; }
+
+private:
+	std::vector<StructureStageInfo> _infos;
+};

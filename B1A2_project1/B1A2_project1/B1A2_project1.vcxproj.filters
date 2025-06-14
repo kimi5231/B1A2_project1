@@ -329,6 +329,9 @@
     <ClInclude Include="ItemStage.h">
       <Filter>소스 파일\04. Resources\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="StructureStage.h">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="B1A2_project1.cpp">
@@ -554,6 +557,9 @@
       <Filter>소스 파일\03. Objects\Game\Structure</Filter>
     </ClCompile>
     <ClCompile Include="ItemStage.cpp">
+      <Filter>소스 파일\04. Resources\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="StructureStage.cpp">
       <Filter>소스 파일\04. Resources\DataBase</Filter>
     </ClCompile>
   </ItemGroup>

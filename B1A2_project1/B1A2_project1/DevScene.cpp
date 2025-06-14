@@ -35,6 +35,7 @@
 #include "TimeManager.h"
 #include "Stage.h"
 #include "ItemStage.h"
+#include "StructureStage.h"
 #include "LockedDoorAndKey.h"
 #include "BreakingWall.h"
 #include "Window.h"
@@ -209,6 +210,14 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage1_Item", L"DataBase\\itemList_Field_Stage1.csv");
 		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage2.csv");
 		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage3_Item", L"DataBase\\itemList_Field_Stage3.csv");
+	}
+	
+	// Structure
+	{
+		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage1_Structure", L"DataBase\\Stage1StructurePosList.csv");
+		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage2_Structure", L"DataBase\\Stage2StructurePosList.csv");
+		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage3_Structure", L"DataBase\\Stage3StructurePosList.csv");
+		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage4_Structure", L"DataBase\\Stage4StructurePosList.csv");
 	}
 
 	// Map
@@ -1598,6 +1607,39 @@ void DevScene::SetStage1()
 	}
 
 	// Structure
+	//{
+	//	StructureStage* structureStage = GET_SINGLE(ResourceManager)->GetStructureStage(L"Stage1_Structure");
+	//	const std::vector<StructureStageInfo>& infos = structureStage->GetStructureStageInfos();
+
+	//	for (const StructureStageInfo& info : infos)
+	//	{
+	//		if (info.name == L"LockedDoor")
+	//		{
+	//			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
+	//			lockedDoorAndKey->SetItemPos({ info.keyPos.x, info.keyPos.y });
+	//		}
+	//		else if (info.name == L"ZipLine")
+	//		{
+	//			ZipLine* zipLine = SpawnObject<ZipLine>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
+	//			
+	//			zipLine->SetBeginPos({ info.zipLineStartPos });
+	//			zipLine->SetEndPos({ info.zipLineEndPos });
+
+	//			if (info.zipLineType == 0)
+	//				zipLine->SetZipLineType(ZipLineType::ZipLine);
+	//			else 
+	//			{
+	//				zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+
+	//			}
+	//				
+	//			zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
+	//			
+	//			zipLine->SetPlayer(_player);
+	//		}
+	//	}
+	//}
+
 	{
 		// LockedDoorAndKey
 		{
@@ -1683,8 +1725,7 @@ void DevScene::SetStage2()
 			_player = player;
 		}
 
-		//_player->SetPos({ 400, 200 });
-		_player->SetPos({ 3920, 960 });
+		_player->SetPos({ 400, 200 });
 		_player->SetCurStageNum(_curStageNum);
 	}
 
