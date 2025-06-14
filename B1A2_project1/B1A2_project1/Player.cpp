@@ -93,6 +93,7 @@ Player::Player()
 			collider->AddCollisionFlagLayer(CLT_DETECT);
 			collider->AddCollisionFlagLayer(CLT_STRUCTURE);
 			collider->AddCollisionFlagLayer(CLT_STRUCTURE_DETECT);
+			collider->AddCollisionFlagLayer(CLT_STRUCTURE_COLLISION);
 
 			collider->SetSize({ 23, 75 });
 
@@ -1180,33 +1181,6 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		if (!structure)
 			return;
 
-		// LcokedDoorAndKey
-		{
-			LockedDoorAndKey* lockedDoorAndKey = dynamic_cast<LockedDoorAndKey*>(structure);
-
-			if (lockedDoorAndKey)
-			{
-				if (!lockedDoorAndKey->_isKeyAcquired)
-				{
-					AdjustCollisionPos(b1, b2);
-					return;
-				}
-				return;
-			}
-		}
-
-		// BreakingWall
-		{
-			BreakingWall* breakingWall = dynamic_cast<BreakingWall*>(structure);
-
-			if (breakingWall)
-			{
-				_isCloseAtk = true;
-				AdjustCollisionPos(b1, b2);
-				return;
-			}
-		}
-
 		// DestructibleObject
 		{
 			DestructibleObject* destructibleObject = dynamic_cast<DestructibleObject*>(structure);
@@ -1214,7 +1188,6 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 			if (destructibleObject)
 			{
 				_isCloseAtk = true;
-				AdjustCollisionPos(b1, b2);
 			}
 		}
 
@@ -1240,14 +1213,21 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 				return;
 			}
 		}
+	}
+	// Structure Collision
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE_COLLISION)
+	{
+		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
+		if (!structure)
+			return;
 
-		// Crystal
+		// BreakingWall
 		{
-			Crystal* crystal = dynamic_cast<Crystal*>(structure);
+			BreakingWall* breakingWall = dynamic_cast<BreakingWall*>(structure);
 
-			if (crystal)
+			if (breakingWall)
 			{
-				AdjustCollisionPos(b1, b2);
+				_isCloseAtk = true;
 				return;
 			}
 		}
@@ -1270,30 +1250,10 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 		OnDamagedByProjectile(projectile);
 	}
 
-	// 벽 충돌하면 밀어내기
-	if (b2->GetCollisionLayer() == CLT_WALL)
-	{
-		AdjustCollisionPos(b1, b2);
-		return;
-	}
-
-	// 땅과 충돌 - 상하좌우 확인
-	if (b2->GetCollisionLayer() == CLT_GROUND)
-	{
-		_isGround = true;
-		_isAir = false;
-		
-		return;
-	}
-
 	// 낙사
 	if (b2->GetCollisionLayer() == CLT_GAME_OVER)
 	{
-		_isGround = true;
-		_isAir = false;
-
 		SetState(ObjectState::Dead);
-
 		return;
 	}
 	
@@ -1448,6 +1408,29 @@ void Player::OnComponentOverlapping(Collider* collider, Collider* other)
 
 	if (b2->GetCollisionLayer() == CLT_GAME_OVER)
 	{
+		AdjustCollisionPos(b1, b2);
+		return;
+	}
+
+	if (b2->GetCollisionLayer() == CLT_STRUCTURE_COLLISION)
+	{
+		Structure* structure = dynamic_cast<Structure*>(b2->GetOwner());
+
+		// LcokedDoorAndKey - 잠겼을 때만 위치 조정
+		{
+			LockedDoorAndKey* lockedDoorAndKey = dynamic_cast<LockedDoorAndKey*>(structure);
+
+			if (lockedDoorAndKey)
+			{
+				if (!lockedDoorAndKey->_isKeyAcquired)
+				{
+					AdjustCollisionPos(b1, b2);
+					return;
+				}
+				return;
+			}
+		}
+
 		AdjustCollisionPos(b1, b2);
 		return;
 	}

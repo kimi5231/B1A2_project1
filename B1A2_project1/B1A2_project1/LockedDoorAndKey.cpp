@@ -35,7 +35,7 @@ LockedDoorAndKey::LockedDoorAndKey()
 		{
 			BoxCollider* collider = new BoxCollider();
 			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_STRUCTURE);
+			collider->SetCollisionLayer(CLT_STRUCTURE_COLLISION);
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 

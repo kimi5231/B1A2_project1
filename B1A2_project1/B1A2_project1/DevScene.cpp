@@ -67,7 +67,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -208,7 +208,7 @@ void DevScene::LoadStage()
 	{
 		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage1_Item", L"DataBase\\itemList_Field_Stage1.csv");
 		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage2.csv");
-		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage2_Item", L"DataBase\\itemList_Field_Stage3.csv");
+		GET_SINGLE(ResourceManager)->LoadItemStage(L"Stage3_Item", L"DataBase\\itemList_Field_Stage3.csv");
 	}
 
 	// Map
@@ -1683,7 +1683,8 @@ void DevScene::SetStage2()
 			_player = player;
 		}
 
-		_player->SetPos({ 400, 200 });
+		//_player->SetPos({ 400, 200 });
+		_player->SetPos({ 3920, 960 });
 		_player->SetCurStageNum(_curStageNum);
 	}
 
@@ -1782,11 +1783,13 @@ void DevScene::SetStage2()
 		// BreakingWall
 		{
 			{
-				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3920, 960 }, LAYER_STRUCTURE);
+				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3820, 960 }, LAYER_STRUCTURE);
+				breakingWall->SetWallType(BreakingWallType::Long);
 				breakingWall->SetPlayer(_player);
 			}
 			{
 				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 5560, 1480 }, LAYER_STRUCTURE);
+				breakingWall->SetWallType(BreakingWallType::Long);
 				breakingWall->SetPlayer(_player);
 			}
 		}
@@ -1955,11 +1958,6 @@ void DevScene::SetStage3()
 
 		FootHold* footHold = SpawnObject<FootHold>({ 1000, 1180 }, LAYER_STRUCTURE);
 		footHold->SetFootHoldAndZipLineButton(button);
-	}
-
-	// Item
-	{
-
 	}
 }
 

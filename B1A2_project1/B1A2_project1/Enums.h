@@ -55,6 +55,7 @@ enum COLLISION_LAYER_TYPE : uint8
 
 	CLT_STRUCTURE,	//  예. 짚라인 버튼
 	CLT_STRUCTURE_DETECT, // 예. 짚라인
+	CLT_STRUCTURE_COLLISION,	// 충돌 처리 필요
 
 	CLT_NONE,		
 };

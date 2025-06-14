@@ -58,7 +58,7 @@ void BreakingWall::SetWallType(BreakingWallType type)
 		{
 			BoxCollider* collider = new BoxCollider();
 			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_STRUCTURE);
+			collider->SetCollisionLayer(CLT_STRUCTURE_COLLISION);
 
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 			collider->AddCollisionFlagLayer(CLT_PLAYER_ATTACK);
