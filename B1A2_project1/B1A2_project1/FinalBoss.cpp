@@ -461,12 +461,15 @@ BehaviorState FinalBoss::Chase()
 	float xDistance = GetAbsFromPlayerXDisatance();
 
 	// Chase 유지
-	if (xDistance > _stat->closeAtkRange && _bossFloor == _playerFloor)
+	if (xDistance > _stat->closeAtkRange && xDistance <= _stat->playerDetection.x)
 	{
-		if (_dir == DIR_RIGHT)
-			_pos.x += _stat->speed * deltaTime;
-		else
-			_pos.x -= _stat->speed * deltaTime;
+		if (_bossFloor == _playerFloor)
+		{
+			if (_dir == DIR_RIGHT)
+				_pos.x += _stat->speed * deltaTime;
+			else
+				_pos.x -= _stat->speed * deltaTime;
+		}
 
 		return BehaviorState::RUNNING;
 	}
@@ -487,27 +490,30 @@ BehaviorState FinalBoss::Chase()
 	if (_atkCoolTime >= _stat->atkCooldown && _bossFloor == _playerFloor)
 	{
 		_atkCoolTime = 0.f;
-	
-		if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))
-		{
-			std::random_device rd;
-			std::mt19937 gen(rd()); // 시드 생성기
-			std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
 
-			bool isWidth = (dist(gen) == 0);
-
-			if (isWidth)
-				SetState(ObjectState::LongAttackWidth);
-			else
-				SetState(ObjectState::LongAttackLength);
-
-			return BehaviorState::SUCCESS;
-		}
 		if (xDistance <= _stat->closeAtkRange)
 		{
 			SetState(ObjectState::Thrust);
 			return BehaviorState::SUCCESS;
 		}
+		else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))
+		{
+			//std::random_device rd;
+			//std::mt19937 gen(rd()); // 시드 생성기
+			//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+
+			//bool isWidth = (dist(gen) == 0);
+
+			/*if (isWidth)
+				SetState(ObjectState::LongAttackWidth);
+			else
+				SetState(ObjectState::LongAttackLength);*/
+
+			SetState(ObjectState::LongAttackWidth);
+
+			return BehaviorState::SUCCESS;
+		}
+
 	}
 }
 
