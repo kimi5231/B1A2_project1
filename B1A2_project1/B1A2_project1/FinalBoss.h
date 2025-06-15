@@ -163,6 +163,16 @@ public:
 	virtual float GetSpeed() override { return _stat->speed; };
 	virtual Vec2Int GetPlayerDetection() { return { 0, 0 }; }
 
+	virtual void OnDamaged(Creature* other);
+public:
+	// Hp 
+	using HealthObserver = void(*)(int);	// hp 변화시 호출될 콜백 함수 타입
+	void SetHealthObserver(std::function<void(int)> observer) { _healthObserver = observer; }
+	
+	void SetHealthPoint(int hp);
+	void AddHealthPoint(int hp);
+	void SubtractHealthPoint(int hp);
+
 public:
 	void CalPixelPerSecond();
 
@@ -262,6 +272,8 @@ private:
 	Vec2 _movementLimit;
 
 	float _currentMoveDistance;
+
+	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
 
 	BoxCollider* _collider = nullptr;
 	Collider* _attackCollider = nullptr;

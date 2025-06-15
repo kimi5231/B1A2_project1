@@ -37,12 +37,13 @@ void StructureStage::LoadFile(const std::wstring& path)
             case 4: info.keyPos.y = std::stof(std::string(cell.begin(), cell.end())); break;
             case 5: info.wallType = std::stoi(std::string(cell.begin(), cell.end())); break;
             case 6: info.zipLineType = std::stoi(std::string(cell.begin(), cell.end())); break;
-            case 7: info.zipLineStartPos.x = std::stof(std::string(cell.begin(), cell.end())); break;
-            case 8: info.zipLineStartPos.y = std::stof(std::string(cell.begin(), cell.end())); break;
-            case 9: info.zipLineEndPos.x = std::stof(std::string(cell.begin(), cell.end())); break;
-            case 10: info.zipLineEndPos.y = std::stof(std::string(cell.begin(), cell.end())); break;
-            case 11: info.windowFlickeringCycle = std::stof(std::string(cell.begin(), cell.end())); break;
-            case 12: info.windowFlickeringDuration = std::stof(std::string(cell.begin(), cell.end())); break;
+			case 7: info.zipLineRenderType = std::stoi(std::string(cell.begin(), cell.end())); break;
+            case 8: info.zipLineStartPos.x = std::stof(std::string(cell.begin(), cell.end())); break;
+            case 9: info.zipLineStartPos.y = std::stof(std::string(cell.begin(), cell.end())); break;
+            case 10: info.zipLineEndPos.x = std::stof(std::string(cell.begin(), cell.end())); break;
+            case 11: info.zipLineEndPos.y = std::stof(std::string(cell.begin(), cell.end())); break;
+            case 12: info.windowFlickeringCycle = std::stof(std::string(cell.begin(), cell.end())); break;
+            case 13: info.windowFlickeringDuration = std::stof(std::string(cell.begin(), cell.end())); break;
 			}
 			++column;
 		}

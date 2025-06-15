@@ -1010,7 +1010,7 @@ void Player::OnDamagedByProjectile(Projectile* projectile)
 
 void Player::SetHealthPoint(int hp)
 {
-	_playerStat->hp = 100;
+	_playerStat->hp = hp;
 
 	_healthObserver(_playerStat->hp);
 }

@@ -27,6 +27,7 @@
 #include "FlipbookUI.h"
 #include "TitleScene.h"
 #include "InGamePanel.h"
+#include "BossStagePanel.h"
 #include "TiredOfficeWorker.h"
 #include "BrokenCopyMachine.h"
 #include "AmateurFencer.h"
@@ -68,7 +69,7 @@ void DevScene::Init()
 	// LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -1476,6 +1477,12 @@ void DevScene::LoadUI()
 		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPointBar", L"Sprite\\UI\\SkillPointBar.bmp", RGB(55, 255, 0));
 		GET_SINGLE(ResourceManager)->LoadTexture(L"SkillPoint", L"Sprite\\UI\\SkillPoint.bmp", RGB(55, 255, 0));
 	}
+
+	// Boss HP
+	{
+		GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss_HpBar", L"Sprite\\UI\\FinalBoss_HpBar.bmp", RGB(55, 255, 0));
+		GET_SINGLE(ResourceManager)->LoadTexture(L"FinalBoss_HpPoint", L"Sprite\\UI\\FinalBoss_HpPoint.bmp", RGB(55, 255, 0));
+	}
 }
 
 void DevScene::LoadSound()
@@ -1618,23 +1625,49 @@ void DevScene::SetStage1()
 	//			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
 	//			lockedDoorAndKey->SetItemPos({ info.keyPos.x, info.keyPos.y });
 	//		}
+	//		else if (info.name == L"BreakingWall")
+	//		{
+	//			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
+	//			
+	//			// 타입 0(Normal), 1(Short), 2(Long)
+	//			BreakingWallType type;
+	//			switch (info.wallType)
+	//			{
+	//			case 0: type = BreakingWallType::Normal; break;
+	//			case 1: type = BreakingWallType::Short; break;
+	//			case 2: type = BreakingWallType::Long; break;
+	//			}
+	//			breakingWall->SetWallType(type);
+	//			breakingWall->SetPlayer(_player);
+	//		}
 	//		else if (info.name == L"ZipLine")
 	//		{
 	//			ZipLine* zipLine = SpawnObject<ZipLine>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
 	//			
+	//			// 시작 - 끝 위치
 	//			zipLine->SetBeginPos({ info.zipLineStartPos });
 	//			zipLine->SetEndPos({ info.zipLineEndPos });
 
+	//			// 짚라인 타입
 	//			if (info.zipLineType == 0)
 	//				zipLine->SetZipLineType(ZipLineType::ZipLine);
 	//			else 
 	//			{
 	//				zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
 
+	//				ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ info., 1060 }, LAYER_STRUCTURE);
+	//				zipLineButtonAndDisplay->SetOwner(zipLine);
+	//				zipLineButtonAndDisplay->SetDisplayPos({ 3580, 880 });
+
+	//				zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
 	//			}
-	//				
-	//			zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
 	//			
+	//			// 짚라인 렌더 타입
+	//			if (info.zipLineRenderType == 0)
+	//				zipLine->SetZipLineRenderType(ZipLineRenderType::None);
+	//			else
+	//				zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
+
 	//			zipLine->SetPlayer(_player);
 	//		}
 	//	}
@@ -2053,9 +2086,16 @@ void DevScene::SetFinalBossStage()
 	// FinalBoss
 	{
 		FinalBoss* finalBoss = SpawnObject<FinalBoss>({ 1000, 520 }, LAYER_MONSTER);
-		finalBoss->SetPlayer(_player);
-		finalBoss->SetSpawnDir(DIR_RIGHT);
-		finalBoss->SetMovementLimit({ 50, 1200 });	// 수정 필요
+		_finalBoss = finalBoss;
+		_finalBoss->SetPlayer(_player);
+		_finalBoss->SetSpawnDir(DIR_RIGHT);
+		_finalBoss->SetMovementLimit({ 50, 1200 });	// 수정 필요
+
+		BossStagePanel* panel = new BossStagePanel();
+		panel->SetFinalBoss(_finalBoss);
+		AddPanel(panel);
+
+		_finalBoss->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
 	}
 }
 

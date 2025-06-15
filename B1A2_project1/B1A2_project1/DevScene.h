@@ -4,6 +4,8 @@
 class Actor;
 class ItemActor;
 class Monster;
+class FinalBoss;
+class InGamePanel;
 
 class DevScene : public Scene
 {
@@ -108,4 +110,6 @@ private:
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 
 	ItemActor* _acquireItem = nullptr;	// 아이템 획득 효과에 필요
+
+	FinalBoss* _finalBoss = nullptr;	// 체력
 };

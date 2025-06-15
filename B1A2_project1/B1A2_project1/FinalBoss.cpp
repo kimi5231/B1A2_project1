@@ -287,6 +287,60 @@ void FinalBoss::UpdateAnimation()
 	}
 }
 
+void FinalBoss::OnDamaged(Creature* other)
+{
+	int32 damage = other->GetAttack();
+
+	if (damage <= 0)
+		return;
+
+	// 체력 감소 함수 호출
+	SubtractHealthPoint(damage);
+
+	// 체력이 다 닳으면 사망
+	if (_stat->hp == 0)
+	{
+		SetState(ObjectState::Dead);
+		return;
+	}
+
+	SetState(ObjectState::Hit);
+}
+
+void FinalBoss::SetHealthPoint(int hp)
+{
+	_stat->hp = hp;
+
+	_healthObserver(_stat->hp);
+}
+
+void FinalBoss::AddHealthPoint(int hp)
+{
+	if (_stat->hp >= 100)
+		return;
+
+	if (_stat->hp += hp >= 100)
+	{
+		_stat->hp = 100;
+	}
+	else
+		_stat->hp += hp;
+
+	// 관찰자에게 알림
+	_healthObserver(_stat->hp);
+}
+
+void FinalBoss::SubtractHealthPoint(int hp)
+{
+	if (_stat->hp <= 0)
+		return;
+
+	_stat->hp -= hp;
+
+	// 관찰자에게 알림
+	_healthObserver(_stat->hp);
+}
+
 int32 FinalBoss::GetAttack()
 {
 	switch (_state)

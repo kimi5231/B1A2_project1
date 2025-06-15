@@ -158,7 +158,7 @@ void InGamePanel::SkillPointRender(HDC hdc)
 
 void InGamePanel::UpdateHealthPoint(int32 health)
 {
-	SetHelathPoint(health);
+	SetHealthPoint(health);
 }
 
 void InGamePanel::UpdateSkillPoint(int32 sp)

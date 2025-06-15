@@ -9,6 +9,7 @@ struct StructureStageInfo
 	Vec2 keyPos;
 	int32 wallType;
 	int32 zipLineType;
+	int32 zipLineRenderType;
 	Vec2 zipLineStartPos;
 	Vec2 zipLineEndPos;
 	float windowFlickeringCycle;

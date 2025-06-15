@@ -20,8 +20,8 @@ public:
 
 public:
 	void SetPlayer(Player* player) { _player = player; }
-
-	void SetHelathPoint(int32 hp) { _hp = hp; }
+	
+	void SetHealthPoint(int32 hp) { _hp = hp; }
 	void SetSkillPoint(int32 sp) { _skillPoint = sp; }
 
 	void UpdateHealthPoint(int32 health);
