@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 #include "CollisionManager.h"
 #include "Flipbook.h"
+#include "Sound.h"
 
 AmateurFencer::AmateurFencer()
 {
@@ -196,6 +197,10 @@ void AmateurFencer::UpdateAnimation()
 	case ObjectState::Thrust:
 		_collider->SetSize({ 145, 88 });
 		SetFlipbook(_flipbookThrust[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"AfCloseAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::BackStep:
 		_collider->SetSize({ 145, 88 });
@@ -204,6 +209,10 @@ void AmateurFencer::UpdateAnimation()
 	case ObjectState::SlashWave:
 		_collider->SetSize({ 85, 88 });
 		SetFlipbook(_flipbookSlashWave[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"AfLongAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Dash:
 		_collider->SetSize({ 90, 88 });

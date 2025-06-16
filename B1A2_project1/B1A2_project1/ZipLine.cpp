@@ -6,6 +6,8 @@
 #include "ValueManager.h"
 #include "Texture.h"
 #include "Player.h"
+#include "InputManager.h"
+#include "Sound.h"
 
 // 1. 짚라인 - 버튼이 있는 버전과 버튼 없이 짚라인만 있는 버전
 // 2. 짚라인 버튼 - Player와 충돌 처리되면 상호작용 입력을 받아 짚라인 활성화
@@ -217,6 +219,14 @@ void ZipLineButtonAndDisplay::BeginPlay()
 void ZipLineButtonAndDisplay::Tick()
 {
 	Super::Tick();
+
+	if (_isCollide)
+	{
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
+		{
+			SetState(ObjectState::On);
+		}
+	}
 }
 
 void ZipLineButtonAndDisplay::Render(HDC hdc)
@@ -267,6 +277,10 @@ void ZipLineButtonAndDisplay::UpdateAnimation()
 	{
 	case ObjectState::On:
 		SetFlipbook(_flipbookButtonOn);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"ZipLineButtonPress");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Off:
 		SetFlipbook(_flipbookButtonOff);
@@ -282,15 +296,22 @@ void ZipLineButtonAndDisplay::OnComponentBeginOverlap(Collider* collider, Collid
 	if (b1 == nullptr || b2 == nullptr)
 		return;
 
-	if (b1->GetCollisionLayer() == CLT_STRUCTURE)
+	if (b1->GetCollisionLayer() == CLT_STRUCTURE && b2->GetCollisionLayer() == CLT_PLAYER)
 	{
-		if (b2->GetCollisionLayer() == CLT_PLAYER)
-		{
-			SetState(ObjectState::On);
-		}
+		_isCollide = true;
 	}
 }
 
 void ZipLineButtonAndDisplay::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	if (b1->GetCollisionLayer() == CLT_STRUCTURE && b2->GetCollisionLayer() == CLT_PLAYER)
+	{
+		_isCollide = false;
+	}
 }

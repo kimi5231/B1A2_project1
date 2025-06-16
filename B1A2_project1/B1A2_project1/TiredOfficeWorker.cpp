@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "CollisionManager.h"
 #include "SceneManager.h"
+#include "Sound.h"
 
 TiredOfficeWorker::TiredOfficeWorker()
 {
@@ -137,7 +138,7 @@ void TiredOfficeWorker::TickCloseAttack()
 		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange.x &&
 			_target->GetPos().y >= _pos.y - (_stat->attackRange.y / 2) &&
 			_target->GetPos().y <= _pos.y + (_stat->attackRange.y / 2))
-			SetState(ObjectState::CloseAttack);
+			SetState(ObjectState::CloseAttack);		
 		else
 		{
 			_sumTime = 0.f;
@@ -309,6 +310,10 @@ void TiredOfficeWorker::UpdateAnimation()
 	case ObjectState::CloseAttack:
 		SetFlipbook(_flipbookCloseAttack[_dir]);
 		_collider->SetSize({ 95, 105 });
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"TowCloseAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Hit:
 		SetFlipbook(_flipbookHit[_dir]);

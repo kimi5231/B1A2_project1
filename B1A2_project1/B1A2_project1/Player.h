@@ -97,6 +97,11 @@ private:
 	virtual void TickDead() override;
 	virtual void UpdateAnimation() override;
 
+	void TickColliderCreationAndRemove();
+	void TickCollideItem();
+	void TickWindow();
+	void TickFootHold();
+
 public:
 	virtual int32 GetAttack() override;
 	virtual float GetSpeed() override;

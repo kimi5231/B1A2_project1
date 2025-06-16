@@ -16,6 +16,7 @@
 #include "Crystal.h"
 #include "FallingProjectile.h"
 #include "ItemActor.h"
+#include "Sound.h"
 
 FinalBoss::FinalBoss()
 {
@@ -259,6 +260,10 @@ void FinalBoss::UpdateAnimation()
 	case ObjectState::Thrust:
 		_collider->SetSize({ 115, 97 });
 		SetFlipbook(_flipbookThrust[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"TowCloseAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::BackStep:
 		_collider->SetSize({ 115, 97 });
@@ -267,10 +272,18 @@ void FinalBoss::UpdateAnimation()
 	case ObjectState::LongAttackLength:
 		_collider->SetSize({ 94, 105 });
 		SetFlipbook(_flipbookLongAttackLength[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"FbLongAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::LongAttackWidth:
 		_collider->SetSize({ 65, 97 });
 		SetFlipbook(_flipbookLongAttackWidth[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"FbLongAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Dash:
 		_collider->SetSize({ 66, 97 });
@@ -283,6 +296,10 @@ void FinalBoss::UpdateAnimation()
 	case ObjectState::CutSeverely:
 		_collider->SetSize({ 110, 65 });
 		SetFlipbook(_flipbookCutSeverely[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"FbSlashAtk");
+			sound->Play(false);
+		}
 		break;
 	}
 }

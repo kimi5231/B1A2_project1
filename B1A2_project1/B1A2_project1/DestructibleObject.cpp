@@ -8,6 +8,7 @@
 #include "DevScene.h"
 #include "SceneManager.h"
 #include "ItemActor.h"
+#include "Sound.h"
 
 DestructibleObject::DestructibleObject()
 {
@@ -95,6 +96,10 @@ void DestructibleObject::UpdateAnimation()
 		break;
 	case ObjectState::Dead:
 		SetFlipbook(_flipbookBreakingObject);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BreakingObject");
+			sound->Play(false);
+		}
 		break;
 	}
 }

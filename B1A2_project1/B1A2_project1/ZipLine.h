@@ -112,4 +112,6 @@ private:
 
 	// Display
 	Vec2Int _displayPos;
+
+	bool _isCollide = false;	// Player와 충돌 중인지 확인
 };

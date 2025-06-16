@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include "DevScene.h"
 #include "SceneManager.h"
+#include "Sound.h"
 
 BreakingWall::BreakingWall()
 {
@@ -126,6 +127,11 @@ void BreakingWall::OnComponentBeginOverlap(Collider* collider, Collider* other)
 
 		if (_hp == 0)
 		{
+			{
+				Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BreakingWall");
+				sound->Play(false);
+			}
+
 			SetState(ObjectState::Dead);
 			return;
 		}

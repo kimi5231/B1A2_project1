@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "DevScene.h"
 #include "ItemActor.h"
+#include "Sound.h"
 
 LockedDoorAndKey::LockedDoorAndKey()
 {
@@ -78,9 +79,14 @@ void LockedDoorAndKey::UpdateAnimation()
 	{
 	case ObjectState::On:
 		SetFlipbook(_flipbookUnlockedDoor);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"UnlockedDoorOpen");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Off:
 		SetFlipbook(_flipbookLockedDoor);
+		break;
 	}
 }
 

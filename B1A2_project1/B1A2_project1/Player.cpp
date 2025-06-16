@@ -25,6 +25,7 @@
 #include "Projectile.h"
 #include "Crystal.h"
 #include "TilemapActor.h"
+#include "Sound.h"
 
 Player::Player()
 {
@@ -124,124 +125,14 @@ void Player::Tick()
 	/*if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
 		return;*/
 
-		// F key가 활성화되면 획득할 수 있음
-		// 획득 후 F key와 Item을 화면에서 지움
-	if (_collideItem)
-	{
-		if (_collideItem->GetFKeyState() == FKeyState::Show)
-		{
-			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
-			{
-				_acquiredItems[_collideItem->GetItemID()]++;
 
-				Collider* collider = _collideItem->GetCollider();
-				if (collider)
-				{
-					collider->SetCollisionLayer(CLT_NONE);
-				}
+	TickCollideItem();
 
-				// Scene에 아이템 획득 효과 그리기
-				// 추후 GameScene로 변경할 예정
-				DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-				scene->SetItemAcquireState(_collideItem);
+	TickColliderCreationAndRemove();
 
-				// 잠긴 문과 열쇠의 열쇠 획득시 문 열리도록 설정
-				if (_collideItem->GetItemID() == 310100)
-					_isKeyAcquire = true;
+	TickWindow();
 
-				// 아이템 숨기기
-				_collideItem->SetFKeyState(FKeyState::Hidden);
-				_collideItem->SetItemState(ItemState::Hidden);
-			}
-		}
-	}
-
-	if (_state != ObjectState::CloseAttack && _state != ObjectState::LongAttack)
-	{
-		if (_attackCollider)
-		{
-			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
-			RemoveComponent(_attackCollider);
-			_attackCollider = nullptr;
-		}
-	}	
-	if (_state != ObjectState::SkillWaiting && _state != ObjectState::SkillEnd)
-	{
-		if (_skillCollider)
-		{
-			GET_SINGLE(CollisionManager)->RemoveCollider(_skillCollider);
-			RemoveComponent(_skillCollider);
-			_skillCollider = nullptr;
-		}
-
-		// Detect Collider 생성
-		if (!_detectCollider)
-		{
-			BoxCollider* collider = new BoxCollider();
-			collider->ResetCollisionFlag();
-			collider->SetCollisionLayer(CLT_DETECT);
-
-			collider->AddCollisionFlagLayer(CLT_MONSTER);
-
-			collider->SetSize({ 80, 80 });
-
-			_detectCollider = collider;
-
-			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			AddComponent(collider);
-		}
-	}
-	if (_state == ObjectState::SkillWaiting || _state == ObjectState::SkillEnd)
-	{
-		if (_detectCollider)
-		{
-			GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
-			RemoveComponent(_detectCollider);
-			_detectCollider = nullptr;
-		}
-	}
-
-	// Window
-	if (_window && _isInWindow)
-	{
-		if (_window->GetState() == ObjectState::On)
-		{
-			if (!_damagedByWindow)
-			{
-				// 체력 감소 함수 호출
-				SubtractHealthPoint(20);
-
-				// 체력이 다 닳으면 사망
-				if (_playerStat->hp == 0)
-				{
-					SetState(ObjectState::Dead);
-					return;
-				}
-
-				_damagedByWindow = true;
-			}
-		}
-	}
-	else
-	{
-		_damagedByWindow = false;
-	}
-
-	// FootHoldAndZipLineButton
-	if (_footHoldAndZipLineButton)
-	{
-		switch (_footHoldAndZipLineButton->GetState())
-		{
-		case ObjectState::Off:
-			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_1))
-				_footHoldAndZipLineButton->SetState(ObjectState::On);
-			break;
-		case ObjectState::On:
-			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_2))
-				_footHoldAndZipLineButton->SetState(ObjectState::On2);
-			break;
-		}
-	}
+	TickFootHold();
 
 	TickGravity();
 
@@ -537,8 +428,6 @@ void Player::TickJump()
 
 void Player::TickCloseAttack()
 {
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-
 	if (!_attackCollider)
 	{
 		BoxCollider* collider = new BoxCollider();
@@ -556,7 +445,7 @@ void Player::TickCloseAttack()
 	}
 
 	if (this->GetIdx() == 6)
-	{
+	{	
 		SetState(ObjectState::Idle);
 	}
 }
@@ -896,26 +785,179 @@ void Player::UpdateAnimation()
 		SetFlipbook(_flipbookPlayerSkillEnd[_dir]);
 		break;
 	case ObjectState::CloseAttack:
-		//_playerCollider->SetSize({ 75, 90 });
+		_playerCollider->SetSize({ 75, 90 });
 		SetFlipbook(_flipbookPlayerSlash[_dir]);
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"PlayerCloseAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::LongAttack:
 		_playerCollider->SetSize({ 75, 90 });
-		SetFlipbook(_flipbookPlayerSlash[_dir]);		
+		SetFlipbook(_flipbookPlayerSlash[_dir]);	
+		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"PlayerLongAtk");
+			sound->Play(false);
+		}
 		break;
 	case ObjectState::Hit:
 		_playerCollider->SetSize({ 41, 80 });
 		SetFlipbook(_flipbookPlayerHit[_dir]);
-	break;
+		break;
 	case ObjectState::Dead:
-	//	SetFlipbook(_flipbookPlayerDead[_dir]);
-	break;
+		SetFlipbook(_flipbookPlayerDead[_dir]);
+		break;
 	}
 
 	if (colliderSize.y > _playerCollider->GetSize().y)
 	{
 		_isGround = false;
 		_isAir = true;
+	}
+}
+
+void Player::TickColliderCreationAndRemove()
+{
+	if (_state != ObjectState::CloseAttack && _state != ObjectState::LongAttack)
+	{
+		if (_attackCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+			RemoveComponent(_attackCollider);
+			_attackCollider = nullptr;
+		}
+	}
+	if (_state != ObjectState::SkillWaiting && _state != ObjectState::SkillEnd)
+	{
+		if (_skillCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_skillCollider);
+			RemoveComponent(_skillCollider);
+			_skillCollider = nullptr;
+		}
+
+		// Detect Collider 생성
+		if (!_detectCollider)
+		{
+			BoxCollider* collider = new BoxCollider();
+			collider->ResetCollisionFlag();
+			collider->SetCollisionLayer(CLT_DETECT);
+
+			collider->AddCollisionFlagLayer(CLT_MONSTER);
+
+			collider->SetSize({ 80, 80 });
+
+			_detectCollider = collider;
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
+			AddComponent(collider);
+		}
+	}
+	if (_state == ObjectState::SkillWaiting || _state == ObjectState::SkillEnd)
+	{
+		if (_detectCollider)
+		{
+			GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
+			RemoveComponent(_detectCollider);
+			_detectCollider = nullptr;
+		}
+	}
+}
+
+void Player::TickCollideItem()
+{
+	// F key가 활성화되면 획득할 수 있음
+	// 획득 후 F key와 Item을 화면에서 지움
+
+	if (!_collideItem)
+		return;
+
+	if (_collideItem->GetFKeyState() == FKeyState::Show)
+	{
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F))
+		{
+			_acquiredItems[_collideItem->GetItemID()]++;
+
+			Collider* collider = _collideItem->GetCollider();
+			if (collider)
+			{
+				collider->SetCollisionLayer(CLT_NONE);
+			}
+
+			// Scene에 아이템 획득 효과 그리기 & 사운드
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"PlayerPickUpItem");
+			sound->Play(false);
+
+			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			scene->SetItemAcquireState(_collideItem);
+
+			// 잠긴 문과 열쇠의 열쇠 획득시 문 열리도록 설정
+			if (_collideItem->GetItemID() == 310100)
+				_isKeyAcquire = true;
+
+			// 아이템 숨기기
+			_collideItem->SetFKeyState(FKeyState::Hidden);
+			_collideItem->SetItemState(ItemState::Hidden);
+		}
+	}
+	
+}
+
+void Player::TickWindow()
+{
+	if (_window && _isInWindow)
+	{
+		if (_window->GetState() == ObjectState::On)
+		{
+			if (!_damagedByWindow)
+			{
+				Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"WindowFlickering");
+				sound->Play(false);
+
+				// 체력 감소 함수 호출
+				SubtractHealthPoint(20);
+
+				// 체력이 다 닳으면 사망
+				if (_playerStat->hp == 0)
+				{
+					SetState(ObjectState::Dead);
+					return;
+				}
+
+				_damagedByWindow = true;
+			}
+		}
+	}
+	else
+	{
+		_damagedByWindow = false;
+	}
+}
+
+void Player::TickFootHold()
+{
+	// FootHoldAndZipLineButton
+	if (_footHoldAndZipLineButton)
+	{
+		switch (_footHoldAndZipLineButton->GetState())
+		{
+		case ObjectState::Off:
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_1))
+				_footHoldAndZipLineButton->SetState(ObjectState::On);
+			{
+				Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"ZipLineButtonPress");
+				sound->Play(false);
+			}
+			break;
+		case ObjectState::On:
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_2))
+				_footHoldAndZipLineButton->SetState(ObjectState::On2);
+			{
+				Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"ZipLineButtonPress");
+				sound->Play(false);
+			}
+			break;
+		}
 	}
 }
 

@@ -66,10 +66,10 @@ void DevScene::Init()
 	LoadItem();
 	LoadInventory();
 	LoadUI();
-	// LoadSound();
+	LoadSound();
 
 	// 스테이지 설정
-	SetStage(4);
+	SetStage(2);
 
 	// Inventory
 	{
@@ -907,7 +907,7 @@ void DevScene::LoadProjectile()
 			fb->SetInfo({ texture, L"FB_SlashWaveLRight", {36, 82}, 0, 0, 0, 0.7f });
 		}
 		{
-			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveHLeft");
+			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_SlashWaveLLeft");
 			fb->SetInfo({ texture, L"FB_SlashWaveLLeft", {36, 82}, 0, 0, 1, 0.7f });
 		}
 	}
@@ -1487,10 +1487,59 @@ void DevScene::LoadUI()
 
 void DevScene::LoadSound()
 {
-	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	// BGM
+	{	
+		//GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+
+		//Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
+		//sound->Play(true);
+	}
+
+	// UI
 	{
-		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
-		sound->Play(true);
+		GET_SINGLE(ResourceManager)->LoadSound(L"Click", L"Sound\\Click.wav");
+	}
+
+	// Player
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"PlayerCloseAtk", L"Sound\\PlayerCloseAtk.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"PlayerLongAtk", L"Sound\\PlayerLongAtk.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"PlayerPickUpItem", L"Sound\\PlayerPickUpItem.wav");
+	}
+
+	// TOW
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"TowCloseAtk", L"Sound\\TowCloseAtk.wav");
+	}
+
+	// BCM
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"BcmLongAtk", L"Sound\\BcmLongAtk.wav");
+	}
+
+	// AF
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"AfCloseAtk", L"Sound\\AfCloseAtk.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"AfLongAtk", L"Sound\\AfLongAtk.wav");
+	}
+
+	// FB
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"FbCloseAtk", L"Sound\\FbCloseAtk.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"FbLongAtk", L"Sound\\FbLongAtk.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"FbSlashAtk", L"Sound\\FbSlashAtk.wav");
+	}
+
+	// Projectile, Structure
+	{
+		GET_SINGLE(ResourceManager)->LoadSound(L"FallingProjectile1", L"Sound\\FallingProjectile1.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"FallingProjectile2", L"Sound\\FallingProjectile2.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"BreakCrystal", L"Sound\\BreakCrystal.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"UnlockedDoorOpen", L"Sound\\UnlockedDoorOpen.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"BreakingWall", L"Sound\\BreakingWall.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"BreakingObject", L"Sound\\BreakingObject.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"ZipLineButtonPress", L"Sound\\ZipLineButtonPress.wav");
+		GET_SINGLE(ResourceManager)->LoadSound(L"WindowFlickering", L"Sound\\WindowFlickering.wav");
 	}
 }
 

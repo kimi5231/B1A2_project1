@@ -9,6 +9,7 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "CollisionManager.h"
+#include "Sound.h"
 
 BrokenCopyMachine::BrokenCopyMachine()
 {
@@ -268,6 +269,10 @@ void BrokenCopyMachine::CreateProjectile()
 	paper->SetAttack(_stat->projectileAttack);
 	paper->SetRange(_stat->attackRange);
 	paper->SetOwner(this);
+
+	// Sound - 플레이어와 떨어져 있어도 소리가 나서 잠시 꺼둠
+	//Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BcmLongAtk");
+	//sound->Play(false);
 
 	_currentProjectileCount++;
 }

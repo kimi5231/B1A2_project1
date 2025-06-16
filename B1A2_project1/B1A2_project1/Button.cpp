@@ -6,6 +6,7 @@
 #include "ValueManager.h"
 #include "Flipbook.h"
 #include "Texture.h"
+#include "Sound.h"
 
 Button::Button()
 {
@@ -32,6 +33,9 @@ void Button::Tick()
 
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
+			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"Click");
+			sound->Play(false);
+
 			if(_onClick)
 				_onClick();
 		}
