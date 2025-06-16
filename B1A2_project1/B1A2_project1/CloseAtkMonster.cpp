@@ -104,7 +104,6 @@ void CloseAtkMonster::Tick()
 		if (_attackCollider)
 		{
 			GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
-			RemoveComponent(_attackCollider);
 			_attackCollider = nullptr;
 		}
 	}
@@ -147,29 +146,37 @@ void CloseAtkMonster::TickCloseAttack()
 	}
 
 	// 마지막 공격 모션일 때
-	if (GetIdx() == 0)
+	if (GetIdx() == 4)
 	{
-		// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
-		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+		// 공격 범위 체크 (코드 정리 필요)
+		if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange.x &&
+			_target->GetPos().y >= _pos.y - (_stat->attackRange.y / 2) &&
+			_target->GetPos().y <= _pos.y + (_stat->attackRange.y / 2))
 			SetState(ObjectState::CloseAttack);
 		else
 		{
 			_sumTime = 0.f;
 			SetState(ObjectState::Chase);
 		}
+
+		// Monster Attack Collider 삭제
+		GET_SINGLE(CollisionManager)->RemoveCollider(_attackCollider);
+		RemoveComponent(_attackCollider);
+		SAFE_DELETE(_attackCollider);
 	}
 }
 
 void CloseAtkMonster::TickHit()
 {
-	// knockback
-	if (_dir == DIR_RIGHT)
-		_pos.x -= _stat->knockBackDistance;
-	else
-		_pos.x += _stat->knockBackDistance;
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
 
-	_sumTime = 0.f;
-	SetState(ObjectState::Chase);
+	// 스턴이 끝나면 Chase으로 변경
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Chase);
+	}
 }
 
 void CloseAtkMonster::TickDead()
@@ -223,8 +230,10 @@ void CloseAtkMonster::TickChase()
 			SetState(ObjectState::Return);
 	}
 
-	// 공격 범위 체크 (추후 y축 포함하여 수정 예정)
-	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange)
+	// 공격 범위 체크 (코드 정리 필요)
+	if (std::abs(_target->GetPos().x - _pos.x) <= _stat->attackRange.x &&
+		_target->GetPos().y >= _pos.y - (_stat->attackRange.y / 2) &&
+		_target->GetPos().y <= _pos.y + (_stat->attackRange.y / 2))
 		SetState(ObjectState::CloseAttack);
 }
 

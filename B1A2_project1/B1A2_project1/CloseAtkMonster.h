@@ -11,7 +11,7 @@ struct CloseAtkMonsterStat
 	float chaseSpeed = 15.f;
 	Vec2Int playerDetection = { 240, 80 };
 	int32 knockBackDistance = 65;
-	int32 attackRange = 45;
+	Vec2Int attackRange = {45, 80};
 	int32 attack = 20;
 	float idleTime = 1.f;
 };

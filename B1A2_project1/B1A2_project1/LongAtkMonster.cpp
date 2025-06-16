@@ -18,14 +18,14 @@ LongAtkMonster::LongAtkMonster()
 
 	// SetFlipbook
 	{
-		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookLongAttack[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookLongAttack[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
-		_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachine");
+		_flipbookIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineIdleRight");
+		_flipbookIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineIdleLeft");
+		_flipbookLongAttack[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineLongAttackRight");
+		_flipbookLongAttack[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineLongAttackLeft");
+		_flipbookHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineHitRight");
+		_flipbookHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineHitLeft");
+		_flipbookDead[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineDeadRight");
+		_flipbookDead[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_BrokenCopyMachineDeadLeft");
 	}
 
 	// Collider Component
@@ -68,28 +68,29 @@ void LongAtkMonster::Tick()
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_creationTime += deltaTime;
+	_changeDirTime += deltaTime;
 
 	// 일정 시간 지나면 자동으로 삭제 
 	if (_creationTime > 10.f)
 	{
-		GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+		_creationTime = 0.f;
 
 		// 추후 GameScene으로 변경
 		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
+
+		return;
 	}
+	
+	if (_changeDirTime >= 3.f)
+	{
+		_changeDirTime = 0.f;
 
-	if (_pos.x <= _movementLimit.x)
-		SetDir(DIR_RIGHT);
-	else if (_pos.x >= _movementLimit.y)
-		SetDir(DIR_LEFT);
-
-	if (_dir == DIR_RIGHT)
-		_pos.x += _stat->speed * deltaTime;
-	else
-		_pos.x -= _stat->speed * deltaTime;
-
-	_pos.x = std::clamp(_pos.x, _movementLimit.x, _movementLimit.y);
+		if (_dir == DIR_RIGHT)
+			SetDir(DIR_LEFT);
+		else
+			SetDir(DIR_RIGHT);
+	}
 }
 
 void LongAtkMonster::Render(HDC hdc)
@@ -135,8 +136,15 @@ void LongAtkMonster::TickLongAttack()
 
 void LongAtkMonster::TickHit()
 {
-	_sumTime = 0.f;
-	SetState(ObjectState::Idle);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	_sumTime += deltaTime;
+
+	// 스턴이 끝나면 Idle로 변경
+	if (_sumTime >= 0.5f)
+	{
+		_sumTime = 0.f;
+		SetState(ObjectState::Idle);
+	}
 }
 
 void LongAtkMonster::TickDead()
@@ -144,15 +152,25 @@ void LongAtkMonster::TickDead()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
 
+	// 스턴이 끝나면 객체 제거 후 아이템 드랍
 	if (_sumTime >= 0.5f)
 	{
-		// 힐템 드랍
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
-		ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+		// 난수 생성
+		std::random_device rd;
+		std::default_random_engine dre{ rd() };
+		std::uniform_real_distribution urd{ 0.f, 1.f };
 
-		// 객체 제거
 		// 추후 GameScene로 변경할 예정
+		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+		// 아이템 드랍
+		if (urd(dre) <= _stat->healtemDropRate)
+		{
+			// 힐템 생성
+			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
+			ItemActor* Item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
+		}
+
 		scene->RemoveActor(this);
 	}
 }
@@ -201,19 +219,25 @@ void LongAtkMonster::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 void LongAtkMonster::SetSpawnPos(Vec2 pos)
 {
+	_spawnPos = pos;
+	SetPos(_spawnPos);
 }
 
 void LongAtkMonster::SetSpawnDir(Dir dir)
 {
+	_spawnDir = dir;
+	SetDir(dir);
 }
 
 void LongAtkMonster::SetMoveDistance(float distance)
 {
+	_moveDistance = distance;
+	_currentMoveDistance = _moveDistance;
 }
 
 float LongAtkMonster::GetSpeed()
 {
-	return 0.0f;
+	return _stat->speed;
 }
 
 int32 LongAtkMonster::GetAttack()
@@ -229,17 +253,6 @@ int32 LongAtkMonster::GetAttack()
 void LongAtkMonster::CalPixelPerSecond()
 {
 	float PIXEL_PER_METER = (10.0 / 0.2);
-
-
-	// Move
-	{
-		float MOVE_SPEED_KMPH = _stat->speed;
-		float MOVE_SPEED_MPM = (MOVE_SPEED_KMPH * 1000.0 / 60.0);
-		float MOVE_SPEED_MPS = (MOVE_SPEED_MPM / 60.0);
-		float MOVE_SPEED_PPS = (MOVE_SPEED_MPS * PIXEL_PER_METER);
-
-		_stat->speed = MOVE_SPEED_PPS;
-	}
 
 	// Projectile Move
 	{

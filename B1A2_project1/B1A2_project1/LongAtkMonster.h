@@ -6,7 +6,7 @@ class BoxCollider;
 struct LongAtkMonsterStat
 {
 	int32 hp = 100;	
-	float speed = 5.f;
+	float speed = 50.f;
 	float healtemDropRate = 0.2f;	
 	int32 attackRange = 480;	
 	float projectileSpeed = 7.f;	
@@ -69,9 +69,12 @@ private:
 	float _moveDistance;
 	Vec2 _movementLimit;
 
+	float _currentMoveDistance;
+
 	int32 _currentProjectileCount = 0;
 	float _sumTime = 0.f;
 	float _creationTime = 0.f;
+	float _changeDirTime = 0.f;
 
 	BoxCollider* _collider;
 };

@@ -225,7 +225,9 @@ public:
 
 public:
 	float GetFromPlayerXDistance();
-	float GetAbsFromPlayerXDisatance();
+	float GetAbsFromPlayerXDistance();
+	float GetFromPlayerYDistance();
+	float GetAbsFromPlayerYDistance();
 
 	void SetSpawnPos(Vec2 pos);
 	void SetSpawnDir(Dir dir);
@@ -241,7 +243,8 @@ public:
 public:
 	void CreateWidthProjectile();	
 	void CreateLengthProjectile();
-	void CreateProjectileFall();	// Projectile Fall
+	void CreateProjectileFall1();	// Projectile Fall
+	void CreateProjectileFall2();
 	void CreateBlanket();
 	void CreateMonster();
 
@@ -299,9 +302,9 @@ private:
 
 	int32 _playerFloor = 0;
 	int32 _bossFloor = 0;
-	float _firstFloorYpos = 550;
+	float _firstFloorYpos = 520;
 	float _secondFloorYPos = 370;
-	float _thirdFloorYPos = 260;
+	float _thirdFloorYPos = 250;
 
 	bool _isFirstCrystalCreationWork = false;
 	bool _isSecondCrystalCreationWork = false;

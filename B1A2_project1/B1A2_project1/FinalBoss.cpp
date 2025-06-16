@@ -458,19 +458,17 @@ BehaviorState FinalBoss::Chase()
 	_dashTeleportSumTime += deltaTime;
 	_atkCoolTime += deltaTime;
 
-	float xDistance = GetAbsFromPlayerXDisatance();
+	float xDistance = GetAbsFromPlayerXDistance();
+	float yDistance = GetAbsFromPlayerYDistance();
 
 	// Chase 유지
-	if (xDistance > _stat->closeAtkRange && xDistance <= _stat->playerDetection.x)
+	if (xDistance >= _stat->playerDetection.x && _playerFloor == _bossFloor)
 	{
-		if (_bossFloor == _playerFloor)
-		{
-			if (_dir == DIR_RIGHT)
-				_pos.x += _stat->speed * deltaTime;
-			else
-				_pos.x -= _stat->speed * deltaTime;
-		}
-
+		if (_dir == DIR_RIGHT)
+			_pos.x += _stat->speed * deltaTime;
+		else
+			_pos.x -= _stat->speed * deltaTime;
+	
 		return BehaviorState::RUNNING;
 	}
 
@@ -498,18 +496,16 @@ BehaviorState FinalBoss::Chase()
 		}
 		else if (std::abs(xDistance - _stat->closeAtkRange) > std::abs(xDistance - _stat->longAtkRange))
 		{
-			//std::random_device rd;
-			//std::mt19937 gen(rd()); // 시드 생성기
-			//std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
+			std::random_device rd;
+			std::mt19937 gen(rd()); // 시드 생성기
+			std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
 
-			//bool isWidth = (dist(gen) == 0);
+			bool isWidth = (dist(gen) == 0);
 
-			/*if (isWidth)
+			if (isWidth)
 				SetState(ObjectState::LongAttackWidth);
 			else
-				SetState(ObjectState::LongAttackLength);*/
-
-			SetState(ObjectState::LongAttackWidth);
+				SetState(ObjectState::LongAttackLength);
 
 			return BehaviorState::SUCCESS;
 		}
@@ -665,7 +661,7 @@ BehaviorState FinalBoss::CrystalCreation()
 	{
 		_projectileSumTime = 0.f;
 
-		CreateProjectileFall();
+		CreateProjectileFall1();
 	}
 
 	// 상태 변경
@@ -830,7 +826,6 @@ BehaviorState FinalBoss::Dash()
 		_pos.x += _stat->dashSpeed * deltaTime;
 	else
 		_pos.x -= _stat->dashSpeed * deltaTime;
-
 	
 	if (_sumTime >= 0.48f)
 	{
@@ -856,18 +851,60 @@ BehaviorState FinalBoss::Teleport()
 	// 이동 
 	Vec2 playerPos = _player->GetPos();
 	float yPos = 0.f;
+	int32 targetFloor = 0;
 
-	if (_playerFloor == 1)
-		yPos = _firstFloorYpos;
-	else if (_playerFloor == 2)
-		yPos = _secondFloorYPos;
-	else if (_playerFloor == 3)
-		yPos = _thirdFloorYPos;
+	switch (_playerFloor)
+	{
+		case 1:
+		{
+			yPos = _firstFloorYpos; 
+			targetFloor = 1;
+			break;
+		}
+		case 2:
+		{
+			if (playerPos.x < 480 || playerPos.x > 800)
+			{
+				yPos = _secondFloorYPos;
+				targetFloor = 2;
+			}
+			else
+			{
+				SetState(ObjectState::Idle);
+				return BehaviorState::SUCCESS;
+			}
+
+			break;
+		}
+		case 3:
+		{
+			yPos = _thirdFloorYPos;
+			targetFloor = 3;
+			break;
+		}
+	}
 	  
-	if (playerPos.x - _pos.x <= 0)	// 몬스터가 왼쪽
-		_pos = { playerPos.x - 20, yPos };	// 위치 맵에 따라, 플레이어 위치 따라 수정 필요
-	else
-		_pos = { playerPos.x + 20, yPos };
+	Vec2 limit = { 0.f, 0.f };
+	switch (targetFloor)
+	{
+	case 1:
+		limit = { 50, 1240 };
+		break;
+	case 2:
+		if (playerPos.x < 480)
+			limit = { 40, 440 };
+		else if (playerPos.x > 800)
+			limit = { 840, 1240 };
+		break;
+	case 3:
+		limit = { 440, 840 };
+		break;
+	}
+
+	float targetX = (playerPos.x <= _pos.x) ? (playerPos.x - 20.f) : (playerPos.x + 20.f);
+	targetX = std::clamp(targetX, limit.x, limit.y);
+
+	_pos = { targetX, yPos };
 
 	SetState(ObjectState::CutSeverely);
 	return BehaviorState::SUCCESS;
@@ -924,7 +961,17 @@ float FinalBoss::GetFromPlayerXDistance()
 	return this->GetPos().x - _player->GetPos().x;
 }
 
-float FinalBoss::GetAbsFromPlayerXDisatance()
+float FinalBoss::GetAbsFromPlayerXDistance()
+{
+	return std::abs(GetFromPlayerXDistance());
+}
+
+float FinalBoss::GetFromPlayerYDistance()
+{
+	return this->GetPos().y - _player->GetPos().y;
+}
+
+float FinalBoss::GetAbsFromPlayerYDistance()
 {
 	return std::abs(GetFromPlayerXDistance());
 }
@@ -994,7 +1041,7 @@ void FinalBoss::CreateLengthProjectile()
 	_currentProjectileCount++;
 }
 
-void FinalBoss::CreateProjectileFall()
+void FinalBoss::CreateProjectileFall1()
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
@@ -1006,11 +1053,42 @@ void FinalBoss::CreateProjectileFall()
 	int32 damage = 0;
 	int32 hp = _stat->hp;
 
-	if (hp <= 100 && hp > 75)
+	if (hp <= 1000 && hp > 900)
+	{
+		damage = _stat->fallingProjectile1Damage1st;
+	}
+	else if (hp <= 600 && hp > 500)
+	{
+		damage = _stat->fallingProjectile1Damage2nd;
+	}
+	else if (hp <= 50 && hp > 25)
+	{
+		damage = _stat->fallingProjectile1Damage3rd;
+	}
+
+	FallingProjectile* fp = scene->SpawnObject<FallingProjectile>({100, 0}, LAYER_PROJECTILE);	// {float(dist(gen))
+	fp->SetSpeed(_stat->longAtkProjectileSpeed);	// FallingProjectile 속도 없어서 걍 넣음
+	fp->SetAttack(damage);
+	fp->SetOwner(this);
+}
+
+void FinalBoss::CreateProjectileFall2()
+{
+	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+
+	std::random_device rd;
+	std::mt19937 gen(rd()); // 시드 생성기
+	std::uniform_int_distribution<> dist(0, 1200);
+
+	// FB의 체력에 따른 Damage 설정
+	int32 damage = 0;
+	int32 hp = _stat->hp;
+
+	if (hp <= 1000 && hp > 900)
 	{
 		damage = 10;
 	}
-	else if (hp <= 75 && hp > 50)
+	else if (hp <= 600 && hp > 500)
 	{
 		damage = 15;
 	}
@@ -1046,49 +1124,23 @@ void FinalBoss::CreateMonster()
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
-	std::random_device rd;
-	std::mt19937 gen(rd()); // 시드 생성기
-
-	std::uniform_int_distribution<> dist(0, 1); // 0 또는 1 반환
-	std::uniform_int_distribution<> dist2(0, 110);
-
 	// CloseAtk Monster
-	//{
-	//	int32 SpawnPos = dist2(gen) * 40 + 400;	// 400 ~ 880 위치 랜덤 생성
-	//	CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
-	//	cm->SetSpawnDir(DIR_RIGHT);
-	//	cm->SetSpawnPos({ float(40), _firstFloorYpos });
-	//	cm->SetMoveDistance(100.f);
-	//	cm->SetMovementLimit({ float(20), float(100) });
-	//}
-	//{
-	//	CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ float(40), _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
-	//	cm->SetSpawnDir(DIR_RIGHT);
-	//	cm->SetSpawnPos({ float(1000), _firstFloorYpos });
-	//	cm->SetMoveDistance(100.f);
-	//	cm->SetMovementLimit({ float(980), float(1200) });
-	//}
+	{
+		CloseAtkMonster* cm = scene->SpawnObject<CloseAtkMonster>({ 500.f, _firstFloorYpos }, LAYER_MONSTER);		// 위치 수정 필요
+		cm->SetSpawnDir(DIR_RIGHT);
+		cm->SetSpawnPos({ 500.f, _firstFloorYpos });
+		cm->SetMoveDistance(240.f);
+		cm->SetMovementLimit({ 400.f, 640.f });
+	}
 
-	//// LongAtk Monster
-	//{
-	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(50), _secondFloorYPos }, LAYER_MONSTER);
-	//	lam->SetSpawnDir(DIR_RIGHT);
-	//	lam->SetSpawnPos({ 50, _secondFloorYPos });
-	//	lam->SetMovementLimit({ float(40), float(240) });
-	//}	
-	//{
-	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(1040), _secondFloorYPos }, LAYER_MONSTER);
-	//	lam->SetSpawnDir(DIR_RIGHT);
-	//	lam->SetSpawnPos({ 1040, _secondFloorYPos });
-	//	lam->SetMovementLimit({ float(1040), float(1240) });
-	//}
-	//
-	//{
-	//	LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ float(480), _thirdFloorYPos }, LAYER_MONSTER);
-	//	lam->SetSpawnDir(DIR_RIGHT);
-	//	lam->SetSpawnPos({ 480, _secondFloorYPos });
-	//	lam->SetMovementLimit({ float(480), float(720) });
-	//}
+	// LongAtk Monster
+	{
+		LongAtkMonster* lam = scene->SpawnObject<LongAtkMonster>({ 800.f, _firstFloorYpos + 10 }, LAYER_MONSTER);
+		lam->SetSpawnDir(DIR_RIGHT);
+		lam->SetSpawnPos({ 800.f, _firstFloorYpos + 10});
+		lam->SetMoveDistance(240.f);
+		lam->SetMovementLimit({ 640, 800 });
+	}	
 }
 
 void FinalBoss::UpdatePlayerFloor()
@@ -1121,8 +1173,15 @@ void FinalBoss::UpdateMovementLimit()
 		SetMovementLimit({50, 1240});
 		break;
 	case 2:
-		SetMovementLimit({ 40, 440 });
+	{
+		float playerXPos = _player->GetPos().x;
+		if (playerXPos < 480)
+			SetMovementLimit({ 40, 440 });
+		else if (playerXPos > 800)
+			SetMovementLimit({ 840, 1240 });
+
 		break;
+	}
 	case 3:
 		SetMovementLimit({ 440, 840 });
 		break;
