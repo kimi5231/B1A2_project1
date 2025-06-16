@@ -69,7 +69,7 @@ void DevScene::Init()
 	LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(4);
 
 	// Inventory
 	{
@@ -928,14 +928,14 @@ void DevScene::LoadProjectile()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile1");
 
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile1");
-			fb->SetInfo({ texture, L"FB_FallingProjectile1", {40, 40}, 0, 0, 0, 0.7f });
+			fb->SetInfo({ texture, L"FB_FallingProjectile1", {54, 142}, 0, 0, 0, 0.7f });
 		}
 		{
 			GET_SINGLE(ResourceManager)->LoadTexture(L"FallingProjectile2", L"Sprite\\Projectile\\FallingProjectile2.bmp", RGB(55, 255, 0));
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"FallingProjectile2");
 
 			Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_FallingProjectile2");
-			fb->SetInfo({ texture, L"FB_FallingProjectile2", {40, 40}, 0, 0, 0, 0.7f });
+			fb->SetInfo({ texture, L"FB_FallingProjectile2", {54, 122}, 0, 0, 0, 0.7f });
 		}
 	}
 }
@@ -1131,7 +1131,7 @@ void DevScene::LoadStructure()
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"Crystal");
 
 		Flipbook* fb = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_Crystal");
-		fb->SetInfo({ texture, L"FB_Crystal", {40, 60}, 0, 0, 0, 0.7f });
+		fb->SetInfo({ texture, L"FB_Crystal", {41, 77}, 0, 0, 0, 0.7f });
 	}
 }
 
@@ -1535,6 +1535,7 @@ void DevScene::LoadSound()
 		GET_SINGLE(ResourceManager)->LoadSound(L"FallingProjectile1", L"Sound\\FallingProjectile1.wav");
 		GET_SINGLE(ResourceManager)->LoadSound(L"FallingProjectile2", L"Sound\\FallingProjectile2.wav");
 		GET_SINGLE(ResourceManager)->LoadSound(L"BreakCrystal", L"Sound\\BreakCrystal.wav");
+		
 		GET_SINGLE(ResourceManager)->LoadSound(L"UnlockedDoorOpen", L"Sound\\UnlockedDoorOpen.wav");
 		GET_SINGLE(ResourceManager)->LoadSound(L"BreakingWall", L"Sound\\BreakingWall.wav");
 		GET_SINGLE(ResourceManager)->LoadSound(L"BreakingObject", L"Sound\\BreakingObject.wav");

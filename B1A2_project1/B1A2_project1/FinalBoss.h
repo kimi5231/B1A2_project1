@@ -243,12 +243,12 @@ public:
 public:
 	void CreateWidthProjectile();	
 	void CreateLengthProjectile();
-	void CreateProjectileFall1();	// Projectile Fall
-	void CreateProjectileFall2();
+	void CreateProjectileFall1(int32 crystalCreationNumber);	// Projectile Fall
+	void CreateProjectileFall2(int32 crystalCreationNumber);
 	void CreateBlanket();
 	void CreateMonster();
 
-	void SubtractCurrentCrystalCount(int32) { _currentCrystalCount--; }
+	void SubtractCurrentCrystalCount(int32) { _currentCryatalNum--; }
 
 	void UpdatePlayerFloor();
 	void UpdateBossFloor();
@@ -285,9 +285,12 @@ private:
 	Collider* _attackCollider = nullptr;
 
 	int32 _currentProjectileCount = 0;
+	int32 _currentFallingProjectile1Count = 0;
+	int32 _currentFallingProjectile2Count = 0;
+
 	int32 _currentMonsterCreationCount = 0;		// 积己且 锭
 	int32 _currentMonsterCount = 0;		// 积己 饶
-	int32 _currentCrystalCount = 0;
+	int32 _currentCrystalCreationNumber = 0;
 
 	float _sumTime = 0.f;
 	float _atkCoolTime = 0.f;
@@ -309,8 +312,8 @@ private:
 	bool _isFirstCrystalCreationWork = false;
 	bool _isSecondCrystalCreationWork = false;
 	bool _isThirdCrystalCreationWork = false;
-
 	bool _isCrystalSpawned = false;
+	int32 _currentCryatalNum = 0;
 
 	bool _isMonsterCreation = false;
 

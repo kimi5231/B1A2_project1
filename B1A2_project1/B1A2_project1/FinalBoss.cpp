@@ -188,8 +188,12 @@ void FinalBoss::Tick()
 	TickGravity();
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_blancketSumTime += deltaTime;
-	_monsterCreationSumTime += deltaTime;
+	
+	if (_state != ObjectState::CrystalCreation)
+	{
+		_blancketSumTime += deltaTime;
+		_monsterCreationSumTime += deltaTime;
+	}
 
 	// Dir
 	if (GetFromPlayerXDistance() >= 0)
@@ -333,15 +337,19 @@ void FinalBoss::SetHealthPoint(int hp)
 
 void FinalBoss::AddHealthPoint(int hp)
 {
-	if (_stat->hp >= 100)
+	if (_stat->hp >= 2000)
 		return;
 
-	if (_stat->hp += hp >= 100)
+	int newHp = _stat->hp + hp; // 증가된 값을 미리 계산
+
+	if (newHp >= 2000)
 	{
-		_stat->hp = 100;
+		_stat->hp = 2000;
 	}
 	else
-		_stat->hp += hp;
+	{
+		_stat->hp = newHp; // 올바르게 업데이트
+	}
 
 	// 관찰자에게 알림
 	_healthObserver(_stat->hp);
@@ -547,22 +555,27 @@ BehaviorState FinalBoss::Hit()
 	if (_stat->hp <= 1000 && _stat->hp > 900 && !_isFirstCrystalCreationWork)
 	{
 		_isFirstCrystalCreationWork = true;
+		_currentCrystalCreationNumber = 1;
 
 		SetState(ObjectState::CrystalCreation);
+		return BehaviorState::SUCCESS;
 	}
 	else if (_stat->hp <= 600 && _stat->hp > 500 && !_isSecondCrystalCreationWork)
 	{
 		_isSecondCrystalCreationWork = true;
-		_currentCrystalCount = 2;
+		_currentCrystalCreationNumber = 2;
 
 		SetState(ObjectState::CrystalCreation);
+		return BehaviorState::SUCCESS;
+
 	}
 	else if (_stat->hp <= 100 && _isThirdCrystalCreationWork)
 	{
 		_isThirdCrystalCreationWork = true;
-		_currentCrystalCount = 3;
+		_currentCrystalCreationNumber = 3;
 
 		SetState(ObjectState::CrystalCreation);
+		return BehaviorState::SUCCESS;
 	}
 
 	// knock back
@@ -639,54 +652,66 @@ BehaviorState FinalBoss::CrystalCreation()
 	_projectileSumTime += deltaTime;
 	_crystalCreationSumTime += deltaTime;
 
+	SetPos({ 640, 125 });
+
 	// 수정 생성
 	if (!_isCrystalSpawned)
 	{
-		Crystal* crystal1 = scene->SpawnObject<Crystal>({ 440, 200 }, LAYER_STRUCTURE);
+		Crystal* crystal1 = scene->SpawnObject<Crystal>({ 240, 520 }, LAYER_STRUCTURE);
 		crystal1->SetFinalBoss(this);
-		Crystal* crystal2 = scene->SpawnObject<Crystal>({ 840, 200 }, LAYER_STRUCTURE);
+		Crystal* crystal2 = scene->SpawnObject<Crystal>({ 640, 520 }, LAYER_STRUCTURE);
 		crystal2->SetFinalBoss(this);
-		Crystal* crystal3 = scene->SpawnObject<Crystal>({ 1240, 200 }, LAYER_STRUCTURE);
+		Crystal* crystal3 = scene->SpawnObject<Crystal>({ 1040, 520 }, LAYER_STRUCTURE);
 		crystal3->SetFinalBoss(this);
 
-		_currentCrystalCount = 3;
+		_currentCryatalNum = 3;
 		_isCrystalSpawned = true;
 	}
 
 	// 몬스터 hp 올리기
-	if (_hpSumTime >= 1.f)
+	if (_hpSumTime >= 3.f)
 	{		
 		_hpSumTime = 0.f;
 		
-		switch (_currentCrystalCount)
+		switch (_currentCrystalCreationNumber)
 		{
 		case 3:
-			_stat->hp += 6;
+			AddHealthPoint(6);
 			break;
 		case 2:
-			_stat->hp += 4;
+			AddHealthPoint(4);
 			break;
 		case 1:
-			_stat->hp += 2;
+			AddHealthPoint(2);
 			break;
 		}
 
 	}
 
 	// Projectile Fall
-	if (_projectileSumTime >= 0.5f)
+	if (_projectileSumTime >= 1.f)
 	{
 		_projectileSumTime = 0.f;
 
-		CreateProjectileFall1();
+		if (_currentFallingProjectile1Count < _stat->fallingProjectile1Count)
+			CreateProjectileFall1(_currentCrystalCreationNumber);
+		
+		if (_currentFallingProjectile2Count < _stat->fallingProjectile2Count)
+			CreateProjectileFall2(_currentCrystalCreationNumber);
 	}
 
 	// 상태 변경
 	if (_crystalCreationSumTime >= 10.f)
 	{
+		// 변수 정리
 		_crystalCreationSumTime = 0.f;
+		_hpSumTime += 0.f;
+		_projectileSumTime = 0.f;
+		_isCrystalSpawned = false;
+		_currentCryatalNum = 0;
 
-		SetState(ObjectState::Chase);
+		SetPos({ 640, 515 });
+		SetState(ObjectState::Idle);
 		return BehaviorState::SUCCESS;
 	}
 
@@ -1021,6 +1046,9 @@ void FinalBoss::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	
 	if (b2->GetCollisionLayer() == CLT_PLAYER_ATTACK)
 	{
+		if (_state == ObjectState::CrystalCreation)
+			return;
+
 		Creature* otherOwner = dynamic_cast<Creature*>(b2->GetOwner());
 		OnDamaged(otherOwner);
 	}
@@ -1058,7 +1086,7 @@ void FinalBoss::CreateLengthProjectile()
 	_currentProjectileCount++;
 }
 
-void FinalBoss::CreateProjectileFall1()
+void FinalBoss::CreateProjectileFall1(int32 crystalCreationNumber)
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
@@ -1066,30 +1094,35 @@ void FinalBoss::CreateProjectileFall1()
 	std::mt19937 gen(rd()); // 시드 생성기
 	std::uniform_int_distribution<> dist(0, 1200);
 
-	// FB의 체력에 따른 Damage 설정
+	float speed = 0.f;
 	int32 damage = 0;
-	int32 hp = _stat->hp;
 
-	if (hp <= 1000 && hp > 900)
+	switch (crystalCreationNumber)
 	{
+	case 1:
+		speed = _stat->fallingProjectile1Speed1st;
 		damage = _stat->fallingProjectile1Damage1st;
-	}
-	else if (hp <= 600 && hp > 500)
-	{
+		break;
+	case 2:
+		speed = _stat->fallingProjectile1Speed2nd;
 		damage = _stat->fallingProjectile1Damage2nd;
-	}
-	else if (hp <= 50 && hp > 25)
-	{
+		break;
+	case 3:
+		speed = _stat->fallingProjectile1Speed3rd;
 		damage = _stat->fallingProjectile1Damage3rd;
+		break;
 	}
 
-	FallingProjectile* fp = scene->SpawnObject<FallingProjectile>({100, 0}, LAYER_PROJECTILE);	// {float(dist(gen))
-	fp->SetSpeed(_stat->longAtkProjectileSpeed);	// FallingProjectile 속도 없어서 걍 넣음
+	FallingProjectile1* fp = scene->SpawnObject<FallingProjectile1>({float(dist(gen)), 0}, LAYER_PROJECTILE);	// {float(dist(gen))
+	fp->SetSpeed(speed);	
 	fp->SetAttack(damage);
+	fp->SetLandedFallingProjectileDuration(_stat->landedFallingProjectileDuration);
+	fp->SetPlayerHitFallingProjectileDuration(_stat->playerHitFallingProjectileDuration);
 	fp->SetOwner(this);
+	_currentFallingProjectile1Count++;
 }
 
-void FinalBoss::CreateProjectileFall2()
+void FinalBoss::CreateProjectileFall2(int32 crystalCreationNumber)
 {
 	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
@@ -1097,31 +1130,32 @@ void FinalBoss::CreateProjectileFall2()
 	std::mt19937 gen(rd()); // 시드 생성기
 	std::uniform_int_distribution<> dist(0, 1200);
 
-	// FB의 체력에 따른 Damage 설정
+	float speed = 0.f;
 	int32 damage = 0;
-	int32 hp = _stat->hp;
 
-	if (hp <= 1000 && hp > 900)
+	switch (crystalCreationNumber)
 	{
-		damage = 10;
-	}
-	else if (hp <= 600 && hp > 500)
-	{
-		damage = 15;
-	}
-	else if (hp <= 50 && hp > 25)
-	{
-		damage = 20;
-	}
-	else
-	{
-		damage = 25;
+	case 1:
+		speed = _stat->fallingProjectile2Speed1st;
+		damage = _stat->fallingProjectile2Damage1st;
+		break;
+	case 2:
+		speed = _stat->fallingProjectile2Speed2nd;
+		damage = _stat->fallingProjectile2Damage2nd;
+		break;
+	case 3:
+		speed = _stat->fallingProjectile2Speed3rd;
+		damage = _stat->fallingProjectile2Damage3rd;
+		break;
 	}
 
-	FallingProjectile* fp = scene->SpawnObject<FallingProjectile>({100, 0}, LAYER_PROJECTILE);	// {float(dist(gen))
-	fp->SetSpeed(_stat->longAtkProjectileSpeed);	// FallingProjectile 속도 없어서 걍 넣음
+	FallingProjectile2* fp = scene->SpawnObject<FallingProjectile2>({ float(dist(gen)), 0 }, LAYER_PROJECTILE);	// {float(dist(gen))
+	fp->SetSpeed(speed);
 	fp->SetAttack(damage);
+	fp->SetLandedFallingProjectileDuration(_stat->landedFallingProjectileDuration);
+	fp->SetPlayerHitFallingProjectileDuration(_stat->playerHitFallingProjectileDuration);
 	fp->SetOwner(this);
+	_currentFallingProjectile2Count++;
 }
 
 void FinalBoss::CreateBlanket()
