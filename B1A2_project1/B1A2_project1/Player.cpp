@@ -1285,6 +1285,10 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// Projectile
 	if (b2->GetCollisionLayer() == CLT_PROJECTILE)
 	{
+		// 스킬 중엔 Projectile 안 맞도록
+		if (_state == ObjectState::SkillReady || _state == ObjectState::SkillEnd || _state == ObjectState::SkillWaiting)
+			return;
+
 		Projectile* projectile = dynamic_cast<Projectile*>(b2->GetOwner());
 		if (!projectile)
 			return;

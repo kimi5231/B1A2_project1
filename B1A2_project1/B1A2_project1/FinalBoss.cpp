@@ -409,6 +409,63 @@ void FinalBoss::CalPixelPerSecond()
 
 		_stat->longAtkProjectileSpeed = PROJECTILE_SPEED_PPS;
 	}
+
+	// Falling Projectile
+	{
+		// 1
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile1Speed1st;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile1Speed1st = PROJECTILE_SPEED_PPS;
+		}
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile1Speed2nd;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile1Speed2nd = PROJECTILE_SPEED_PPS;
+		}
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile1Speed3rd;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile1Speed3rd = PROJECTILE_SPEED_PPS;
+		}
+
+		// 2
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile2Speed1st;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile2Speed1st = PROJECTILE_SPEED_PPS;
+		}
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile2Speed2nd;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile2Speed2nd = PROJECTILE_SPEED_PPS;
+		}
+		{
+			float PROJECTILE_SPEED_KMPH = _stat->fallingProjectile2Speed3rd;
+			float PROJECTILE_SPEED_MPM = (PROJECTILE_SPEED_KMPH * 1000.0 / 60.0);
+			float PROJECTILE_SPEED_MPS = (PROJECTILE_SPEED_MPM / 60.0);
+			float PROJECTILE_SPEED_PPS = (PROJECTILE_SPEED_MPS * PIXEL_PER_METER);
+
+			_stat->fallingProjectile2Speed3rd = PROJECTILE_SPEED_PPS;
+		}
+
+	}
+
 }
 
 BehaviorState FinalBoss::is_cur_state_idle()
@@ -669,7 +726,7 @@ BehaviorState FinalBoss::CrystalCreation()
 	}
 
 	// 몬스터 hp 올리기
-	if (_hpSumTime >= 3.f)
+	if (_hpSumTime >= 1.f)
 	{		
 		_hpSumTime = 0.f;
 		

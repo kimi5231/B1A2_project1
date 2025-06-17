@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "CollisionManager.h"
+#include "Sound.h"
 
 FallingProjectile1::FallingProjectile1()
 {
@@ -114,6 +115,9 @@ void FallingProjectile1::OnComponentBeginOverlap(Collider* collider, Collider* o
 	if (b2->GetCollisionLayer() == CLT_PLAYER)
 	{
 		_isHitPlayer = true;
+
+		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"FallingProjectile1");
+		sound->Play(false);
 	}
 }
 
@@ -220,10 +224,6 @@ float FallingProjectile2::GetSpeed()
 
 void FallingProjectile2::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
-}
-
-void FallingProjectile2::OnComponentEndOverlap(Collider* collider, Collider* other)
-{
 	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
 	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
 
@@ -233,5 +233,12 @@ void FallingProjectile2::OnComponentEndOverlap(Collider* collider, Collider* oth
 	if (b2->GetCollisionLayer() == CLT_PLAYER)
 	{
 		_isHitPlayer = true;
+
+		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"FallingProjectile2");
+		sound->Play(false);
 	}
+}
+
+void FallingProjectile2::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
 }
