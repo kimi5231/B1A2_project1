@@ -41,6 +41,7 @@ private:
 	void SetStage3();
 	void SetFinalBossStage();
 
+	void SetStructureStageN(int32 stageNum);
 public:
 	// Save
 	void SaveCurData();

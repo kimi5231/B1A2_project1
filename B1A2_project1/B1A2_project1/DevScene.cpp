@@ -69,7 +69,7 @@ void DevScene::Init()
 	LoadSound();
 
 	// 스테이지 설정
-	SetStage(2);
+	SetStage(1);
 
 	// Inventory
 	{
@@ -218,7 +218,6 @@ void DevScene::LoadStage()
 		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage1_Structure", L"DataBase\\Stage1StructurePosList.csv");
 		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage2_Structure", L"DataBase\\Stage2StructurePosList.csv");
 		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage3_Structure", L"DataBase\\Stage3StructurePosList.csv");
-		GET_SINGLE(ResourceManager)->LoadStructureStage(L"Stage4_Structure", L"DataBase\\Stage4StructurePosList.csv");
 	}
 
 	// Map
@@ -992,10 +991,10 @@ void DevScene::LoadStructure()
 			Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineButton");
 
 			Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOff");
-			fb1->SetInfo({ texture, L"FB_ZipLineButtonOff", {101, 116}, 0, 0, 0, 0.7f });
+			fb1->SetInfo({ texture, L"FB_ZipLineButtonOff", {84, 96}, 0, 0, 0, 0.7f });
 
 			Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_ZipLineButtonOn");
-			fb2->SetInfo({ texture, L"FB_ZipLineButtonOn", {101, 116}, 0, 0, 1, 0.7f });
+			fb2->SetInfo({ texture, L"FB_ZipLineButtonOn", {84, 96}, 0, 0, 1, 0.7f });
 		}
 
 		// DestructibleObject
@@ -1664,106 +1663,7 @@ void DevScene::SetStage1()
 	}
 
 	// Structure
-	//{
-	//	StructureStage* structureStage = GET_SINGLE(ResourceManager)->GetStructureStage(L"Stage1_Structure");
-	//	const std::vector<StructureStageInfo>& infos = structureStage->GetStructureStageInfos();
-
-	//	for (const StructureStageInfo& info : infos)
-	//	{
-	//		if (info.name == L"LockedDoor")
-	//		{
-	//			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
-	//			lockedDoorAndKey->SetItemPos({ info.keyPos.x, info.keyPos.y });
-	//		}
-	//		else if (info.name == L"BreakingWall")
-	//		{
-	//			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
-	//			
-	//			// 타입 0(Normal), 1(Short), 2(Long)
-	//			BreakingWallType type;
-	//			switch (info.wallType)
-	//			{
-	//			case 0: type = BreakingWallType::Normal; break;
-	//			case 1: type = BreakingWallType::Short; break;
-	//			case 2: type = BreakingWallType::Long; break;
-	//			}
-	//			breakingWall->SetWallType(type);
-	//			breakingWall->SetPlayer(_player);
-	//		}
-	//		else if (info.name == L"ZipLine")
-	//		{
-	//			ZipLine* zipLine = SpawnObject<ZipLine>({ info.spawnPos.x, info.spawnPos.y }, LAYER_STRUCTURE);
-	//			
-	//			// 시작 - 끝 위치
-	//			zipLine->SetBeginPos({ info.zipLineStartPos });
-	//			zipLine->SetEndPos({ info.zipLineEndPos });
-
-	//			// 짚라인 타입
-	//			if (info.zipLineType == 0)
-	//				zipLine->SetZipLineType(ZipLineType::ZipLine);
-	//			else 
-	//			{
-	//				zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-
-	//				ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ info., 1060 }, LAYER_STRUCTURE);
-	//				zipLineButtonAndDisplay->SetOwner(zipLine);
-	//				zipLineButtonAndDisplay->SetDisplayPos({ 3580, 880 });
-
-	//				zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-	//			}
-	//			
-	//			// 짚라인 렌더 타입
-	//			if (info.zipLineRenderType == 0)
-	//				zipLine->SetZipLineRenderType(ZipLineRenderType::None);
-	//			else
-	//				zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
-
-	//			zipLine->SetPlayer(_player);
-	//		}
-	//	}
-	//}
-
-	{
-		// LockedDoorAndKey
-		{
-			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({1920, 520}, LAYER_STRUCTURE);
-			lockedDoorAndKey->SetItemPos({ 2250, 280 });
-		}
-
-		// ZipLine
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 695 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-			zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
-			zipLine->SetBeginPos({ 3490, 970 });
-			zipLine->SetEndPos({ 3490, 400 });
-			zipLine->SetPlayer(_player);
-
-			// Button이 필요 없는 짚라인은 아래 코드 작성X
-			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 3920, 1060 }, LAYER_STRUCTURE);
-			zipLineButtonAndDisplay->SetOwner(zipLine);
-			zipLineButtonAndDisplay->SetDisplayPos({ 3580, 880 });
-
-			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
-		{
-			ZipLine* zipLine2 = SpawnObject<ZipLine>({ 5020, 585 }, LAYER_STRUCTURE);
-			zipLine2->SetZipLineType(ZipLineType::ZipLine);
-			zipLine2->SetZipLineRenderType(ZipLineRenderType::None);
-			zipLine2->SetBeginPos({ 4520, 450 });
-			zipLine2->SetEndPos({ 5520, 720 });
-			zipLine2->SetPlayer(_player);
-		}
-
-		// BreakingWall
-		{
-			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3760, 1040 }, LAYER_STRUCTURE);
-			breakingWall->SetWallType(BreakingWallType::Short);
-			breakingWall->SetPlayer(_player);
-		}
-	}
-
-
+	SetStructureStageN(1);
 }
 
 void DevScene::SetStage2()
@@ -1880,60 +1780,7 @@ void DevScene::SetStage2()
 	}
 
 	// Structure
-	{
-		// Window
-		{
-			Window* window1 = SpawnObject<Window>({ 190, 1900 }, LAYER_STRUCTURE);
-			Window* window2 = SpawnObject<Window>({ 820, 310 }, LAYER_STRUCTURE);
-			Window* window3 = SpawnObject<Window>({ 1300, 400 }, LAYER_STRUCTURE);
-			Window* window4 = SpawnObject<Window>({ 1770, 490 }, LAYER_STRUCTURE);
-		}
-
-		// ZipLine
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 3490, 670 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLine);
-			zipLine->SetBeginPos({ 430, 150 });
-			zipLine->SetEndPos({ 2360, 510 });
-			zipLine->SetPlayer(_player);
-		}
-
-		// LockedDoorAndKey
-		{
-			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ 2760, 560 }, LAYER_STRUCTURE);
-			lockedDoorAndKey->SetItemPos({ 2250, 280 });
-		}
-
-		// BreakingWall
-		{
-			{
-				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 3820, 960 }, LAYER_STRUCTURE);
-				breakingWall->SetWallType(BreakingWallType::Long);
-				breakingWall->SetPlayer(_player);
-			}
-			{
-				BreakingWall* breakingWall = SpawnObject<BreakingWall>({ 5560, 1480 }, LAYER_STRUCTURE);
-				breakingWall->SetWallType(BreakingWallType::Long);
-				breakingWall->SetPlayer(_player);
-			}
-		}
-
-		// ZipLine 
-		{
-			ZipLine* zipLine = SpawnObject<ZipLine>({ 4475, 1020 }, LAYER_STRUCTURE);
-			zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
-			zipLine->SetBeginPos({ 3800, 920 });
-			zipLine->SetEndPos({ 5150, 1120 });
-			zipLine->SetPlayer(_player);
-
-			// Button이 필요 없는 짚라인은 아래 코드 작성X
-			ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ 5770, 1580 }, LAYER_STRUCTURE);
-			zipLineButtonAndDisplay->SetOwner(zipLine);
-			zipLineButtonAndDisplay->SetDisplayPos({ 3660, 920 });
-
-			zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
-		}
-	}
+	SetStructureStageN(2);
 }
 
 void DevScene::SetStage3()
@@ -2049,40 +1896,8 @@ void DevScene::SetStage3()
 		}
 	}
 
-	// Destructible Object
-	{
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 2060, 280 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 500, 600 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 1380, 600 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 360, 1240 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
-		{
-			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({ 2900, 1240 }, LAYER_STRUCTURE);
-			destructibleObject->SetPlayer(_player);
-		}
-	}
-
-	// FootHold
-	{
-		FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ 1320, 1230 }, LAYER_STRUCTURE);
-		button->SetZipLinePos({1740, 1480});
-		button->SetZipLineBegin({ 1740, 1480 });
-		button->SetZipLineEnd({ 2600, 1410 });
-
-		FootHold* footHold = SpawnObject<FootHold>({ 1000, 1180 }, LAYER_STRUCTURE);
-		footHold->SetFootHoldAndZipLineButton(button);
-	}
+	// Structure
+	SetStructureStageN(3);
 }
 
 void DevScene::SetFinalBossStage()
@@ -2140,12 +1955,104 @@ void DevScene::SetFinalBossStage()
 		_finalBoss->SetPlayer(_player);
 		_finalBoss->SetSpawnDir(DIR_RIGHT);
 		_finalBoss->SetMovementLimit({ 50, 1200 });	// 수정 필요
-
+		
 		BossStagePanel* panel = new BossStagePanel();
 		panel->SetFinalBoss(_finalBoss);
 		AddPanel(panel);
 
 		_finalBoss->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	}
+}
+
+void DevScene::SetStructureStageN(int32 stageNum)
+{
+	StructureStage* structureStage = nullptr;
+	
+	switch (stageNum)
+	{
+	case 1:	structureStage = GET_SINGLE(ResourceManager)->GetStructureStage(L"Stage1_Structure"); break;
+	case 2: structureStage = GET_SINGLE(ResourceManager)->GetStructureStage(L"Stage2_Structure"); break;
+	case 3: structureStage = GET_SINGLE(ResourceManager)->GetStructureStage(L"Stage3_Structure"); break;
+	}
+
+	const std::vector<StructureStageInfo>& infos = structureStage->GetStructureStageInfos();
+
+	for (const StructureStageInfo& info : infos)
+	{
+		if (info.name == L"LockedDoor")
+		{
+			LockedDoorAndKey* lockedDoorAndKey = SpawnObject<LockedDoorAndKey>({ info.spawnPos}, LAYER_STRUCTURE);
+			lockedDoorAndKey->SetItemPos({ info.keyPos });
+		}
+		else if (info.name == L"BreakingWall")
+		{
+			BreakingWall* breakingWall = SpawnObject<BreakingWall>({ info.spawnPos }, LAYER_STRUCTURE);
+
+			// 타입 0(Normal), 1(Short), 2(Long)
+			BreakingWallType type;
+			switch (info.wallType)
+			{
+			case 0: type = BreakingWallType::Normal; break;
+			case 1: type = BreakingWallType::Short; break;
+			case 2: type = BreakingWallType::Long; break;
+			}
+			breakingWall->SetWallType(type);
+			breakingWall->SetPlayer(_player);
+		}
+		else if (info.name == L"ZipLine")
+		{
+			ZipLine* zipLine = SpawnObject<ZipLine>({ info.spawnPos }, LAYER_STRUCTURE);
+
+			// 시작 - 끝 위치
+			zipLine->SetBeginPos({ info.zipLineStartPos });
+			zipLine->SetEndPos({ info.zipLineEndPos });
+
+			// 짚라인 타입
+			if (info.zipLineType == 0)
+				zipLine->SetZipLineType(ZipLineType::ZipLine);
+			else
+			{
+				zipLine->SetZipLineType(ZipLineType::ZipLineWithButton);
+
+				ZipLineButtonAndDisplay* zipLineButtonAndDisplay = SpawnObject<ZipLineButtonAndDisplay>({ info.zipLineButtonPos }, LAYER_STRUCTURE);
+				zipLineButtonAndDisplay->SetOwner(zipLine);
+				zipLineButtonAndDisplay->SetDisplayPos({ info.zipLineDisplayPos });
+
+				zipLine->SetZipLineButtonAndDisplay(zipLineButtonAndDisplay);
+			}
+
+			// 짚라인 렌더 타입
+			if (info.zipLineRenderType == 0)
+				zipLine->SetZipLineRenderType(ZipLineRenderType::None);
+			else
+				zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
+
+			zipLine->SetPlayer(_player);
+		}
+		else if (info.name == L"DestructibleObject")
+		{
+			DestructibleObject* destructibleObject = SpawnObject<DestructibleObject>({info.spawnPos }, LAYER_STRUCTURE);
+			destructibleObject->SetPlayer(_player);
+		}
+		else if (info.name == L"Window")
+		{
+			Window* window = SpawnObject<Window>({ info.spawnPos }, LAYER_STRUCTURE);
+			window->SetFlickeringCycle(info.windowFlickeringCycle);
+			window->SetFlickeringDuration(info.windowFlickeringDuration);
+		}
+		else if (info.name == L"FootHoldAndZipLineButton")
+		{
+			float zipLineXPos = (info.zipLineStartPos.x + info.zipLineEndPos.x) / 2;
+			float zipLineYPos = (info.zipLineStartPos.y + info.zipLineEndPos.y) / 2;
+
+			FootHoldAndZipLineButton* button = SpawnObject<FootHoldAndZipLineButton>({ info.zipLineButtonPos }, LAYER_STRUCTURE);
+			button->SetZipLinePos({ zipLineXPos, zipLineYPos });
+			button->SetZipLineBegin({ info.zipLineStartPos});
+			button->SetZipLineEnd({ info.zipLineEndPos });
+
+			FootHold* footHold = SpawnObject<FootHold>({ info.spawnPos }, LAYER_STRUCTURE);
+			footHold->SetFootHoldAndZipLineButton(button);
+		}
 	}
 }
 

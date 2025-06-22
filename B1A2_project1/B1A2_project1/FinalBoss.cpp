@@ -714,11 +714,11 @@ BehaviorState FinalBoss::CrystalCreation()
 	// 수정 생성
 	if (!_isCrystalSpawned)
 	{
-		Crystal* crystal1 = scene->SpawnObject<Crystal>({ 240, 520 }, LAYER_STRUCTURE);
+		Crystal* crystal1 = scene->SpawnObject<Crystal>({ 25.50, 521.50 }, LAYER_STRUCTURE);
 		crystal1->SetFinalBoss(this);
-		Crystal* crystal2 = scene->SpawnObject<Crystal>({ 640, 520 }, LAYER_STRUCTURE);
+		Crystal* crystal2 = scene->SpawnObject<Crystal>({ 639.50, 521.50 }, LAYER_STRUCTURE);
 		crystal2->SetFinalBoss(this);
-		Crystal* crystal3 = scene->SpawnObject<Crystal>({ 1040, 520 }, LAYER_STRUCTURE);
+		Crystal* crystal3 = scene->SpawnObject<Crystal>({ 1254.50, 521.50 }, LAYER_STRUCTURE);
 		crystal3->SetFinalBoss(this);
 
 		_currentCryatalNum = 3;

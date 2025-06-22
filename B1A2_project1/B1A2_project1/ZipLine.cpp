@@ -100,7 +100,11 @@ void ZipLine::GripRender(HDC hdc)
 
 	Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"ZipLineGrip");
 
-	Vec2 GripPos = _beginPos;
+	Vec2 GripPos;
+	if (_renderType == ZipLineRenderType::None)
+		GripPos = _beginPos;
+	else
+		GripPos = { _beginPos.x - 9, _beginPos.y - 37 };
 
 	if (_midPos.x != 0 && _midPos.y != 0)	// 중간 하차했을 때 그리기
 	{

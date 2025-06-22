@@ -97,7 +97,7 @@ private:
 public:
 	void SetOwner(ZipLine* zipLine) { _owner = zipLine; }
 
-	void SetDisplayPos(Vec2Int pos) { _displayPos = pos; }
+	void SetDisplayPos(Vec2 pos) { _displayPos = pos; }
 
 	ObjectState GetState() { return _state; }
 
@@ -111,7 +111,7 @@ private:
 	ZipLine* _owner = nullptr;
 
 	// Display
-	Vec2Int _displayPos;
+	Vec2 _displayPos;
 
 	bool _isCollide = false;	// Player와 충돌 중인지 확인
 };

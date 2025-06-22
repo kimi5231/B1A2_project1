@@ -12,6 +12,8 @@ struct StructureStageInfo
 	int32 zipLineRenderType;
 	Vec2 zipLineStartPos;
 	Vec2 zipLineEndPos;
+	Vec2 zipLineButtonPos;
+	Vec2 zipLineDisplayPos;
 	float windowFlickeringCycle;
 	float windowFlickeringDuration;
 };
