@@ -51,6 +51,23 @@ void BossStagePanel::Render(HDC hdc)
 {
 	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 
+	// HP Bar
+	{
+		Texture* hpBar = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss_HpBar");
+
+		::TransparentBlt(hdc,
+			430 * winSizeAdjustmemt.x,
+			10 * winSizeAdjustmemt.y,
+			hpBar->GetSize().x * winSizeAdjustmemt.x,
+			hpBar->GetSize().y * winSizeAdjustmemt.y,
+			hpBar->GetDC(),
+			0,
+			0,
+			hpBar->GetSize().x,
+			hpBar->GetSize().y,
+			hpBar->GetTransparent());
+	}
+
 	// HP Point
 	{
 		Texture* hpPoint = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss_HpPoint");
@@ -68,23 +85,6 @@ void BossStagePanel::Render(HDC hdc)
 			hpPoint->GetSize().x,
 			hpPoint->GetSize().y,
 			hpPoint->GetTransparent());
-	}
-
-	// HP Bar
-	{
-		Texture* hpBar = GET_SINGLE(ResourceManager)->GetTexture(L"FinalBoss_HpBar");
-
-		::TransparentBlt(hdc,
-			430 * winSizeAdjustmemt.x,
-			10 * winSizeAdjustmemt.y,
-			hpBar->GetSize().x * winSizeAdjustmemt.x,
-			hpBar->GetSize().y * winSizeAdjustmemt.y,
-			hpBar->GetDC(),
-			0,
-			0,
-			hpBar->GetSize().x,
-			hpBar->GetSize().y,
-			hpBar->GetTransparent());
 	}
 }
 

@@ -357,10 +357,7 @@ void FinalBoss::AddHealthPoint(int hp)
 
 void FinalBoss::SubtractHealthPoint(int hp)
 {
-	if (_stat->hp <= 0)
-		return;
-
-	_stat->hp -= hp;
+	_stat->hp = max(0, _stat->hp - hp);
 
 	// 관찰자에게 알림
 	_healthObserver(_stat->hp);
@@ -684,12 +681,23 @@ BehaviorState FinalBoss::is_cur_state_dead()
 
 BehaviorState FinalBoss::Dead()
 {
-	// 객체 제거
-	// 추후 GameScene로 변경할 예정
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	scene->RemoveActor(this);
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	static float sumTime = 0.f;
+	sumTime += deltaTime;
 
-	return BehaviorState::SUCCESS;
+	if (sumTime >= 2.f)
+	{
+		sumTime = 0.f;
+
+		// 객체 제거
+		// 추후 GameScene로 변경할 예정
+		//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		//scene->RemoveActor(this);
+		
+		return BehaviorState::SUCCESS;
+	}
+
+	return BehaviorState::RUNNING;
 }
 
 BehaviorState FinalBoss::is_cur_state_crystal_creation()

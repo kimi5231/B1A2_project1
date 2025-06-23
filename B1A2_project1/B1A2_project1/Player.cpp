@@ -1075,10 +1075,7 @@ void Player::AddHealthPoint(int hp)
 
 void Player::SubtractHealthPoint(int hp)
 {
-	if (_playerStat->hp <= 0)
-		return;
-
-	_playerStat->hp -= hp;
+	_playerStat->hp = max(0, _playerStat->hp - hp);
 
 	// 관찰자에게 알림
 	_healthObserver(_playerStat->hp);
