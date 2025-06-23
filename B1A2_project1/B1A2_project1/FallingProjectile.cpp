@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "FallingProjectile.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "Creature.h"
 #include "BoxCollider.h"
 #include "ResourceManager.h"
@@ -62,7 +62,7 @@ void FallingProjectile1::TickMove()
 
 		if (_sumTime >= _playerHitFallingProjectileDuration)
 		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 			scene->RemoveActor(this);
 			return;
 		}
@@ -74,7 +74,7 @@ void FallingProjectile1::TickMove()
 
 		if (_sumTime >= _landedFallingProjectileDuration)
 		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 			scene->RemoveActor(this);
 			return;
 		}
@@ -180,7 +180,7 @@ void FallingProjectile2::TickMove()
 
 		if (_sumTime >= _playerHitFallingProjectileDuration)
 		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 			scene->RemoveActor(this);
 			return;
 		}
@@ -192,7 +192,7 @@ void FallingProjectile2::TickMove()
 
 		if (_sumTime >= _landedFallingProjectileDuration)
 		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 			scene->RemoveActor(this);
 			return;
 		}

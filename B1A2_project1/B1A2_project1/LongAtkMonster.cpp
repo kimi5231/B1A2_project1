@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LongAtkMonster.h"
 #include "Paper.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "BoxCollider.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
@@ -76,7 +76,7 @@ void LongAtkMonster::Tick()
 		_creationTime = 0.f;
 
 		// 추후 GameScene으로 변경
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
 
 		return;
@@ -161,7 +161,7 @@ void LongAtkMonster::TickDead()
 		std::uniform_real_distribution urd{ 0.f, 1.f };
 
 		// 추후 GameScene로 변경할 예정
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 		// 아이템 드랍
 		if (urd(dre) <= _stat->healtemDropRate)
@@ -268,7 +268,7 @@ void LongAtkMonster::CalPixelPerSecond()
 void LongAtkMonster::CreateProjectile()
 {
 	// 추후 GameScene으로 변경
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	// 추후 Layer, Pos 변경 예정
 	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y }, LAYER_PLAYER);

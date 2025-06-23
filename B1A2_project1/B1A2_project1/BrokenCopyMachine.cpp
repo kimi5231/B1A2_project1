@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "BrokenCopyMachine.h"
 #include "Paper.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "BoxCollider.h"
 #include "Item.h"
 #include "ItemActor.h"
@@ -134,7 +134,7 @@ void BrokenCopyMachine::TickDead()
 		std::uniform_real_distribution urd{ 0.f, 1.f };
 
 		// 추후 GameScene로 변경할 예정
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		
 		// 아이템 드랍
 		if (urd(dre) <= _stat->healtemDropRate)
@@ -262,7 +262,7 @@ void BrokenCopyMachine::CalPixelPerSecond()
 void BrokenCopyMachine::CreateProjectile()
 {
 	// 추후 GameScene으로 변경
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y}, LAYER_PROJECTILE);
 	paper->SetSpeed(_stat->projectileSpeed);

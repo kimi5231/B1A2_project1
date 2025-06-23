@@ -9,7 +9,7 @@ class ZipLine;
 class LockedDoorAndKey;
 class Window;
 class FootHoldAndZipLineButton;
-class DevScene;
+class GameScene;
 class Projectile;
 
 struct PlayerStat
@@ -130,7 +130,7 @@ public:
 	void SubtractSkillPoint(int32 skillPoint);
 
 public:
-	void SetCurrentScene(DevScene* devScene) { _devScene = devScene; }		// GameScene으로 수정 필요
+	void SetCurrentScene(GameScene* gameScene) { _gameScene = gameScene; }		// GameScene으로 수정 필요
 	void SetCurStageNum(int32 stage) { _curStageNum = stage; }
 
 public: 
@@ -189,7 +189,7 @@ private:
 	ItemActor* _collideItem = {};	// unordered map에 저장하기 위해, 충돌한 아이템을 담을 변수
 	std::unordered_map<int32, int32> _acquiredItems;		// [아이템 ID, 개수]
 
-	DevScene* _devScene = nullptr;	// 현재 씬 데이터 정보 저장을 위해 필요, 다른 게임 Scene 추가시 수정 필요
+	GameScene* _gameScene = nullptr;	// 현재 씬 데이터 정보 저장을 위해 필요, 다른 게임 Scene 추가시 수정 필요
 
 	ZipLine* _currentZipLine = nullptr;
 	ZipLine* _nearZipLine = nullptr;

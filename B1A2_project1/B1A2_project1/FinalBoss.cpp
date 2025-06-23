@@ -8,7 +8,7 @@
 #include "TimeManager.h"
 #include "Flipbook.h"
 #include "SceneManager.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "SlashWave2.h"
 #include "CloseAtkMonster.h"
 #include "Blanket.h"
@@ -655,7 +655,7 @@ BehaviorState FinalBoss::Hit()
 		// 힐템 드랍
 		if (urd(dre) <= _stat->healItemDropRate)
 		{
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 			Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 			ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
@@ -691,7 +691,7 @@ BehaviorState FinalBoss::Dead()
 
 		// 객체 제거
 		// 추후 GameScene로 변경할 예정
-		//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		//GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		//scene->RemoveActor(this);
 		
 		return BehaviorState::SUCCESS;
@@ -710,7 +710,7 @@ BehaviorState FinalBoss::is_cur_state_crystal_creation()
 
 BehaviorState FinalBoss::CrystalCreation()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	_hpSumTime += deltaTime;
@@ -1125,7 +1125,7 @@ void FinalBoss::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 void FinalBoss::CreateWidthProjectile()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	SlashwaveW* slashwaveW = scene->SpawnObject<SlashwaveW>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
 	slashwaveW->SetSpeed(_stat->longAtkProjectileSpeed);
@@ -1139,7 +1139,7 @@ void FinalBoss::CreateWidthProjectile()
 
 void FinalBoss::CreateLengthProjectile()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	SlashwaveL* slashwaveH = scene->SpawnObject<SlashwaveL>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
 	slashwaveH->SetSpeed(_stat->longAtkProjectileSpeed);
@@ -1153,7 +1153,7 @@ void FinalBoss::CreateLengthProjectile()
 
 void FinalBoss::CreateProjectileFall1(int32 crystalCreationNumber)
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	std::random_device rd;
 	std::mt19937 gen(rd()); // 시드 생성기
@@ -1189,7 +1189,7 @@ void FinalBoss::CreateProjectileFall1(int32 crystalCreationNumber)
 
 void FinalBoss::CreateProjectileFall2(int32 crystalCreationNumber)
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	std::random_device rd;
 	std::mt19937 gen(rd()); // 시드 생성기
@@ -1225,7 +1225,7 @@ void FinalBoss::CreateProjectileFall2(int32 crystalCreationNumber)
 
 void FinalBoss::CreateBlanket()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	std::random_device rd;
 	std::mt19937 gen(rd()); // 시드 생성기
@@ -1238,7 +1238,7 @@ void FinalBoss::CreateBlanket()
 
 void FinalBoss::CreateMonster()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	// CloseAtk Monster
 	{

@@ -172,7 +172,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Crystal.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DestructibleObject.h" />
-    <ClInclude Include="DevScene.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DialogueComponent.h" />
     <ClInclude Include="DialogueManager.h" />
@@ -187,7 +187,6 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="InGamePanel.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inventory.h" />
@@ -262,7 +261,7 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Crystal.cpp" />
     <ClCompile Include="DestructibleObject.cpp" />
-    <ClCompile Include="DevScene.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DialogueComponent.cpp" />
     <ClCompile Include="DialogueManager.cpp" />
@@ -275,7 +274,6 @@ xcopy /y /d "$(SolutionDir)FMOD_API\studio\lib\x64\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="FootHold.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="InGamePanel.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />

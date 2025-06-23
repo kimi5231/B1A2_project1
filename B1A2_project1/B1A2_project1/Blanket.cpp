@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "Blanket.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "BoxCollider.h"
 #include "CollisionManager.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "SceneManager.h"
-#include "CollisionManager.h"
 
 Blanket::Blanket()
 {
@@ -58,7 +57,7 @@ void Blanket::Tick()
 
 		GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
 
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
 	}
 }

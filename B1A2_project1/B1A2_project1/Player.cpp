@@ -13,7 +13,7 @@
 #include "BoxCollider.h"
 #include "ItemActor.h"
 #include "Item.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "ZipLine.h"
 #include "Flipbook.h"
 #include "LockedDoorAndKey.h"
@@ -138,7 +138,7 @@ void Player::Tick()
 
 	// 플레이어가 화면 밖으로 넘어가지 않도록
 	Vec2Int mapSize = GET_SINGLE(ValueManager)->GetMapSize();
-	_pos.x = std::clamp(_pos.x, (float)(67 / 2), (float)mapSize.x);		// 67은 DevScene에서 설정한 Player collider 크기
+	_pos.x = std::clamp(_pos.x, (float)(67 / 2), (float)mapSize.x);
 
 	// Ground or Air 판단 코드(추후 코드 정리 필요)
 	{
@@ -725,7 +725,7 @@ void Player::TickDead()
 		sumTime = 0.f;
 
 		// 수정 필요 
-		//DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		//GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		//scene->LoadGameData();
 
 		//switch (_curStageNum)
@@ -888,7 +888,7 @@ void Player::TickCollideItem()
 			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"PlayerPickUpItem");
 			sound->Play(false);
 
-			DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+			GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 			scene->SetItemAcquireState(_collideItem);
 
 			// 잠긴 문과 열쇠의 열쇠 획득시 문 열리도록 설정
@@ -1303,7 +1303,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// Save Point에 충돌하면 저장하기(밀어내기 X)
 	if (b2->GetCollisionLayer() == CLT_SAVE_POINT)
 	{
-		_devScene->SaveCurData();
+		_gameScene->SaveCurData();
 
 		return;
 	}
@@ -1311,7 +1311,7 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	// Next - 다음 스테이지로
 	if (b2->GetCollisionLayer() == CLT_NEXT)
 	{
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 		switch (_curStageNum)
 		{

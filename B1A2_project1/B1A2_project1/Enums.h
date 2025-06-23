@@ -6,7 +6,6 @@ enum class SceneType
 	TitleScene,	// ≈∏¿Ã∆≤ æ¿
 	SettingScene, // º≥¡§ æ¿
 	GameScene,	// ¿Œ∞‘¿” æ¿
-	DevScene,	// ∞≥πﬂ æ¿
 	TilemapScene,
 };
 

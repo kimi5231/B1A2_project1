@@ -127,7 +127,7 @@ void TitlePanel::Render(HDC hdc)
 // CallBack ÇÔ¼ö
 void TitlePanel::OnClickStartButton()
 {
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DevScene);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
 }
 
 void TitlePanel::OnClickSettingButton()

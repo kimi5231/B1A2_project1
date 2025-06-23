@@ -152,7 +152,7 @@
     <ClInclude Include="Sprite.h">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClInclude>
-    <ClInclude Include="DevScene.h">
+    <ClInclude Include="GameScene.h">
       <Filter>소스 파일\02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="SettingScene.h">
@@ -175,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="FlipbookUI.h">
       <Filter>소스 파일\06. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>소스 파일\04. Resources\Sound</Filter>
@@ -385,7 +382,7 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>소스 파일\04. Resources\paper2D</Filter>
     </ClCompile>
-    <ClCompile Include="DevScene.cpp">
+    <ClCompile Include="GameScene.cpp">
       <Filter>소스 파일\02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="SettingScene.cpp">
@@ -408,9 +405,6 @@
     </ClCompile>
     <ClCompile Include="FlipbookUI.cpp">
       <Filter>소스 파일\06. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>소스 파일\02. Scene\Game</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>소스 파일\04. Resources\Sound</Filter>

@@ -3,7 +3,7 @@
 #include "BehaviorTree.h"
 #include "Player.h"
 #include "Slashwave.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "BoxCollider.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
@@ -512,7 +512,7 @@ BehaviorState AmateurFencer::Dead()
 	{	
 		// 객체 제거
 		// 추후 GameScene로 변경할 예정
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 		scene->InputDeadMonsterIdAndErasePointer(_id);
 		scene->RemoveActor(this);
@@ -604,7 +604,7 @@ void AmateurFencer::OnComponentEndOverlap(Collider* collider, Collider* other)
 
 void AmateurFencer::CreateProjectile()
 {
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	Slashwave* slashwave = scene->SpawnObject<Slashwave>({ _pos.x, _pos.y }, LAYER_PROJECTILE);
 	slashwave->SetSpeed(_stat->longAtkProjectileSpeed);

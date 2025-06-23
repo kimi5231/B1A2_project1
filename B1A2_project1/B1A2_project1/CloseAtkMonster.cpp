@@ -2,7 +2,7 @@
 #include "CloseAtkMonster.h"
 #include "BoxCollider.h"
 #include "Player.h"
-#include "DevScene.h"
+#include "GameScene.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
@@ -95,7 +95,7 @@ void CloseAtkMonster::Tick()
 	if (_creationTime > 10.f)
 	{
 		// 추후 GameScene으로 변경
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		scene->RemoveActor(this);
 	}
 
@@ -187,7 +187,7 @@ void CloseAtkMonster::TickDead()
 	if (_sumTime >= 0.5f)
 	{
 		// 힐템 드랍
-		DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		Item* itemData = GET_SINGLE(ResourceManager)->GetItem(L"Item");
 		ItemActor* item = scene->SpawnObject<ItemActor>({ _pos.x, _pos.y }, LAYER_ITEM, 300100, itemData->GetItems());
 
