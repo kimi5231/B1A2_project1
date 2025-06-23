@@ -112,6 +112,11 @@ enum class InventoryState
 // Scene
 enum class SceneState
 {
+	// Title Scene
+	Title,
+	SelectStart,
+
+	// Game Scene
 	Play,
 	Menu,
 	ItemAcquire,

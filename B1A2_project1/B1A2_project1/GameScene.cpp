@@ -1390,7 +1390,7 @@ void GameScene::LoadUI()
 	// Go Title
 	{
 		Button* button = new Button();
-
+		 
 		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"GoTitle");
 
 		{
