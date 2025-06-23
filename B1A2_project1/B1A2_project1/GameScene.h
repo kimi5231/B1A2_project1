@@ -7,6 +7,14 @@ class Monster;
 class FinalBoss;
 class InGamePanel;
 
+struct LoadData
+{
+	Vec2 playerPos;
+	int playerHp;
+	int skillPoint;
+	std::unordered_map<int32, int32> playerItems;
+};
+
 class GameScene : public Scene
 {
 	using Super = Scene;
@@ -46,8 +54,10 @@ public:
 	// Save
 	void SaveCurData();
 	void LoadGameData();
-
+	bool isSaveFile() { std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv"; return std::filesystem::exists(path); }
 	void InputDeadMonsterIdAndErasePointer(int32 id) { _deadMonsterIds.push_back(id);  _monsters.erase(id); }
+
+	LoadData GetLoadData() { return _loadData; }
 
 public:
 	void SetSceneState();	// ESC 입력으로 Menu
@@ -98,6 +108,9 @@ public:
 		return object;
 	}
 
+public:
+	void RequestStageChange(int32 nextStage) { _pendingStage = nextStage; _hasPendingStage = true; }
+
 private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성
 	Inventory* _inventory = nullptr;
@@ -111,6 +124,11 @@ private:
 	Player* _player = nullptr;	// 체력, 획득 아이템 등 알기 위해 필요
 
 	ItemActor* _acquireItem = nullptr;	// 아이템 획득 효과에 필요
-
 	FinalBoss* _finalBoss = nullptr;	// 체력
+	
+	LoadData _loadData;
+	bool _isLoadingSave = false;
+
+	int32 _pendingStage = -1;	// 바꿀 예정인 스테이지 번호(NextTile 닿고 다음 프레임에 스테이지 전환하기 위해, Collider nullptr 오류)
+	bool _hasPendingStage = false;
 };

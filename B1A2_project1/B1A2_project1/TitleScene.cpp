@@ -6,6 +6,8 @@
 #include "Button.h"
 #include "Flipbook.h"
 #include "InputManager.h"
+#include "ValueManager.h"
+#include "Texture.h"
 
 TitleScene::TitleScene()
 {
@@ -18,12 +20,14 @@ TitleScene::~TitleScene()
 
 void TitleScene::Init()
 {
+	LoadSound();
+	LoadUI();
+
 	TitlePanel* panel = new TitlePanel();
 	panel->SetOwner(this);
 	AddPanel(panel);
 
-	LoadUI();
-
+	
 	_sceneState = SceneState::Title;
 
 	Super::Init();
@@ -52,32 +56,46 @@ void TitleScene::Render(HDC hdc)
 	}
 	else if (_sceneState == SceneState::SelectStart)
 	{
+		Super::Render(hdc);
+
+		// Background
+		BackgroundRender(hdc);
+
+		// Panel
 		if (_beginContinuePanel)
 			_beginContinuePanel->Render(hdc);
 	}
 }
 
-void TitleScene::OnClickBegin()
+void TitleScene::BackgroundRender(HDC hdc)
 {
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
-}
+	BLENDFUNCTION bf;
+	bf.AlphaFormat = 0; // 비트맵 종류로 일반 비트맵의 경우 0, 32비트 비트맵의 경우 AC_SRC_ALPHA
+	bf.BlendFlags = 0; // 무조건 0이어야 한다
+	bf.BlendOp = AC_SRC_OVER; // 무조건 AC_SRC_OVER이어야 하고 원본과 대상 이미지를 합친다는 의미
+	bf.SourceConstantAlpha = 170; // 투명도(투명 0 - 불투명 255)
 
-void TitleScene::OnClickContinue()
-{
-}
-
-void TitleScene::SetSceneState()
-{
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Esc))
+	Vec2 winSizeAdjustmemt = GET_SINGLE(ValueManager)->GetWinSizeAdjustment();
 	{
-		if (_sceneState == SceneState::Title)
-			return;
-		
-		if (_sceneState == SceneState::SelectStart)
-		{
-			_sceneState = SceneState::Title;
-		}
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"MenuBackground");
+		::AlphaBlend(hdc,
+			0,
+			0,
+			(texture->GetSize().x) * winSizeAdjustmemt.x,
+			(texture->GetSize().y) * winSizeAdjustmemt.y,
+			texture->GetDC(),
+			0,
+			0,
+			texture->GetSize().x,
+			texture->GetSize().y,
+			bf);
 	}
+}
+
+void TitleScene::LoadSound()
+{
+	// 사운드
+	GET_SINGLE(ResourceManager)->LoadSound(L"Click", L"Sound\\Click.wav");
 }
 
 void TitleScene::LoadUI()
@@ -138,5 +156,43 @@ void TitleScene::LoadUI()
 
 		button->AddOnClickDelegate(this, &TitleScene::OnClickContinue);
 		_beginContinuePanel->AddChild(button);
+	}
+
+	// Menu Background
+	GET_SINGLE(ResourceManager)->LoadTexture(L"MenuBackground", L"Sprite\\UI\\MenuBackground.bmp", RGB(0, 0, 0));
+}
+
+void TitleScene::OnClickBegin()
+{
+	// 저장된 세이브 파일 삭제
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv";
+	if (std::filesystem::exists(path))
+		std::filesystem::remove(path);
+
+	GET_SINGLE(SceneManager)->SetIsContinue(false);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
+}
+
+void TitleScene::OnClickContinue()
+{
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv";
+	if (!std::filesystem::exists(path))
+		return;
+
+	GET_SINGLE(SceneManager)->SetIsContinue(true);
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::GameScene);
+}
+
+void TitleScene::SetSceneState()
+{
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Esc))
+	{
+		if (_sceneState == SceneState::Title)
+			return;
+		
+		if (_sceneState == SceneState::SelectStart)
+		{
+			_sceneState = SceneState::Title;
+		}
 	}
 }

@@ -31,9 +31,6 @@ void Game::Init(HWND hwnd)
 	// 폰트 추가
 	::AddFontResourceEx(fullPath.c_str(), FR_PRIVATE, NULL);
 
-	// 사운드
-	GET_SINGLE(ResourceManager)->LoadSound(L"Click", L"Sound\\Click.wav");
-
 	// 더블 버퍼링 코드
 	::GetClientRect(hwnd, &_rect);
 

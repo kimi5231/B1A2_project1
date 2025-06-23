@@ -724,17 +724,37 @@ void Player::TickDead()
 	{
 		sumTime = 0.f;
 
-		// 수정 필요 
-		//GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-		//scene->LoadGameData();
+		// 보스 스테이지
+		if (_curStageNum == 4)	
+		{
+			SetPos({ 200, 520 });
+			AddHealthPoint(100);
+			SubtractSkillPoint(5);
 
-		//switch (_curStageNum)
-		//{
-		//case 1: scene->SetStage(1); break;
-		//case 2: scene->SetStage(2); break;
-		//case 3: scene->SetStage(3); break;
-		//case 4: scene->SetStage(4); break;
-		//}
+			SetState(ObjectState::Idle);
+			return;
+		}
+
+		// 나머지 스테이지
+		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
+		if (scene->isSaveFile())
+		{
+			scene->LoadGameData();
+			LoadData data = scene->GetLoadData();
+
+			SetPos(data.playerPos);
+			AddHealthPoint(100);
+			SubtractSkillPoint(5);
+			SetAcquireItems(data.playerItems);
+		}
+		else
+		{
+			SetPos({ 400, 200 });
+			AddHealthPoint(100);
+			SubtractSkillPoint(5);
+		}
+		
+		SetState(ObjectState::Idle);
 	}
 }
 
@@ -1312,21 +1332,18 @@ void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 	if (b2->GetCollisionLayer() == CLT_NEXT)
 	{
 		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-
+		
 		switch (_curStageNum)
 		{
-		case1:
-			scene->SetStage(2);
-			break;
+		case 1:
+			scene->RequestStageChange(2); break;
 		case 2:
-			scene->SetStage(3);
-			break;
+			scene->RequestStageChange(3); break;
 		case 3:
-			scene->SetStage(4);
-			break;
-		case 4:
-			break;	// 수정 필요
+			scene->RequestStageChange(4);	break;
 		}
+
+		return;
 	}
 
 	// 계단

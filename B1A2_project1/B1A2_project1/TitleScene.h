@@ -13,13 +13,17 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc) override;
 
+	void BackgroundRender(HDC hdc);
+
+public:
+	void LoadSound();
+	void LoadUI();
+
 	void OnClickBegin();
 	void OnClickContinue();
 
 public:
 	void SetSceneState();
-
-	void LoadUI();
 
 private:
 	Panel* _beginContinuePanel = nullptr;

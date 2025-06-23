@@ -69,7 +69,16 @@ void GameScene::Init()
 	LoadSound();
 
 	// 스테이지 설정
-	SetStage(1);
+	if (GET_SINGLE(SceneManager)->GetIsContinue())
+	{
+		LoadGameData();
+		SetStage(_curStageNum);
+	}
+	else
+	{
+		_curStageNum = 1;
+		SetStage(_curStageNum);
+	}
 
 	// Inventory
 	{
@@ -116,7 +125,16 @@ void GameScene::Init()
 }
 
 void GameScene::Update()
-{
+{	
+	if (_hasPendingStage)
+	{
+		SetStage(_pendingStage);
+		_hasPendingStage = false;
+		_pendingStage = -1;
+
+		return;
+	}
+
 	SetSceneState();	// (Game -> Menu) or (Menu -> Game) or (Menu -> Inventory)
 
 	if (_sceneState == SceneState::Play)
@@ -1462,9 +1480,7 @@ void GameScene::LoadUI()
 		_menuPanel->AddChild(button);
 	}
 
-	// Menu Background
 	GET_SINGLE(ResourceManager)->LoadTexture(L"MenuBackground", L"Sprite\\UI\\MenuBackground.bmp", RGB(0, 0, 0));
-
 	// HP
 	{
 		GET_SINGLE(ResourceManager)->LoadTexture(L"HpBar", L"Sprite\\UI\\HpBar.bmp", RGB(55, 255, 0));
@@ -1549,6 +1565,10 @@ void GameScene::SetStage(int32 stage)
 	_monsters.clear();
 
 	// 이전 스테이지 내용 삭제
+	// 저장된 세이브 파일 삭제
+	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() / "B1A2_project1\\Resources\\Database\\SaveData.csv";
+	if (std::filesystem::exists(path))
+		std::filesystem::remove(path);
 
 	switch (stage)
 	{
@@ -1570,15 +1590,15 @@ void GameScene::SetStage(int32 stage)
 void GameScene::SetStage1()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	{
-		for (const std::vector<Actor*>& actors : _actors)
-		{
-			if (actors == _actors[LAYER_PLAYER])
-				break;
-			for (Actor* actor : actors)
-				SAFE_DELETE(actor);
-		}
-	}
+	//{
+	//	for (const std::vector<Actor*>& actors : _actors)
+	//	{
+	//		if (actors == _actors[LAYER_PLAYER])
+	//			break;
+	//		for (Actor* actor : actors)
+	//			SAFE_DELETE(actor);
+	//	}
+	//}
 
 	// Map
 	{
@@ -1664,20 +1684,29 @@ void GameScene::SetStage1()
 
 	// Structure
 	SetStructureStageN(1);
+
+	// LoadData 적용
+	if (GET_SINGLE(SceneManager)->GetIsContinue())
+	{
+		_player->SetPos(_loadData.playerPos);
+		_player->SetHp(_loadData.playerHp);
+		_player->SetSkillPoint(_loadData.skillPoint);
+		_player->SetAcquireItems(_loadData.playerItems);
+	}
 }
 
 void GameScene::SetStage2()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	{
-		for (const std::vector<Actor*>& actors : _actors)
-		{
-			if (actors == _actors[LAYER_PLAYER])
-				break;
-			for (Actor* actor : actors)
-				SAFE_DELETE(actor);
-		}
-	}
+	//{
+	//	for (const std::vector<Actor*>& actors : _actors)
+	//	{
+	//		if (actors == _actors[LAYER_PLAYER])
+	//			break;
+	//		for (Actor* actor : actors)
+	//			SAFE_DELETE(actor);
+	//	}
+	//}
 
 	// Map
 	{
@@ -1781,20 +1810,29 @@ void GameScene::SetStage2()
 
 	// Structure
 	SetStructureStageN(2);
+
+	// LoadData 적용
+	if (GET_SINGLE(SceneManager)->GetIsContinue())
+	{
+		_player->SetPos(_loadData.playerPos);
+		_player->SetHp(_loadData.playerHp);
+		_player->SetSkillPoint(_loadData.skillPoint);
+		_player->SetAcquireItems(_loadData.playerItems);
+	}
 }
 
 void GameScene::SetStage3()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	{
-		for (const std::vector<Actor*>& actors : _actors)
-		{
-			if (actors == _actors[LAYER_PLAYER])
-				break;
-			for (Actor* actor : actors)
-				SAFE_DELETE(actor);
-		}
-	}
+	//{
+	//	for (const std::vector<Actor*>& actors : _actors)
+	//	{
+	//		if (actors == _actors[LAYER_PLAYER])
+	//			break;
+	//		for (Actor* actor : actors)
+	//			SAFE_DELETE(actor);
+	//	}
+	//}
 
 	// Map
 	{
@@ -1898,6 +1936,15 @@ void GameScene::SetStage3()
 
 	// Structure
 	SetStructureStageN(3);
+
+	// LoadData 적용
+	if (GET_SINGLE(SceneManager)->GetIsContinue())
+	{
+		_player->SetPos(_loadData.playerPos);
+		_player->SetHp(_loadData.playerHp);
+		_player->SetSkillPoint(_loadData.skillPoint);
+		_player->SetAcquireItems(_loadData.playerItems);
+	}
 }
 
 void GameScene::SetFinalBossStage()
@@ -1905,15 +1952,15 @@ void GameScene::SetFinalBossStage()
 	// 임시 코드, 추후 수정 예정
 	
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	{
-		for (const std::vector<Actor*>& actors : _actors)
-		{
-			if (actors == _actors[LAYER_PLAYER])
-				break;
-			for (Actor* actor : actors)
-				SAFE_DELETE(actor);
-		}
-	}
+	//{
+	//	for (const std::vector<Actor*>& actors : _actors)
+	//	{
+	//		if (actors == _actors[LAYER_PLAYER])
+	//			break;
+	//		for (Actor* actor : actors)
+	//			SAFE_DELETE(actor);
+	//	}
+	//}
 
 	// Map
 	{
@@ -2142,13 +2189,13 @@ void GameScene::LoadGameData()
 	// 2. 플레이어 위치
 	float x = std::stof(tokens[index++]);
 	float y = std::stof(tokens[index++]);
-	_player->SetPos({ x, y });
+	_loadData.playerPos = { x, y };
 
 	// 3. 플레이어 체력
-	_player->SetHp(std::stoi(tokens[index++]));
+	_loadData.playerHp = std::stoi(tokens[index++]);
 
 	// 4. 스킬 포인트
-	_player->SetSkillPoint(std::stoi(tokens[index++]));
+	_loadData.skillPoint = std::stoi(tokens[index++]);
 
 	// 5. 몬스터 정보 복원
 	_deadMonsterIds.clear();
@@ -2178,21 +2225,20 @@ void GameScene::LoadGameData()
 	}
 
 	// 6. 아이템 정보
+	_loadData.playerItems.clear();
+
 	if (index < tokens.size() && std::stoi(tokens[index]) == 0)
 	{
 		index++; // 0 스킵
-		_player->ClearAcquireItems();
 	}
 	else
 	{
-		std::unordered_map<int32, int32> items;
 		while (index + 1 < tokens.size())
 		{
 			int32 itemID = std::stoi(tokens[index++]);
 			int32 itemCount = std::stoi(tokens[index++]);
-			items[itemID] = itemCount;
+			_loadData.playerItems[itemID] = itemCount;
 		}
-		_player->SetAcquireItems(items);
 	}
 
 	file.close();
