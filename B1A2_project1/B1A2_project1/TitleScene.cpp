@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "TitleScene.h"
 #include "TitlePanel.h"
-#include "SceneManager.h"
-#include "ResourceManager.h"
 #include "Button.h"
 #include "Flipbook.h"
+#include "Sprite.h"
+#include "SpriteActor.h"
 #include "InputManager.h"
+#include "SceneManager.h"
+#include "ResourceManager.h"
 
 TitleScene::TitleScene()
 {
@@ -138,5 +140,20 @@ void TitleScene::LoadUI()
 
 		button->AddOnClickDelegate(this, &TitleScene::OnClickContinue);
 		_beginContinuePanel->AddChild(button);
+	}
+
+	// Background
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->LoadTexture(L"Background", L"Sprite\\UI\\TitleBackground.bmp");
+		GET_SINGLE(ResourceManager)->CreateSprite(L"Background", texture, 0, 0, 1280, 720);
+		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Background");
+
+		const Vec2Int size = sprite->GetSize();
+		SpriteActor* background = new SpriteActor();
+		background->SetLayer(LAYER_BACKGROUND);
+		background->SetPos(Vec2(size.x / 2, size.y / 2));
+		background->SetSprite(sprite);
+
+		AddActor(background);
 	}
 }
