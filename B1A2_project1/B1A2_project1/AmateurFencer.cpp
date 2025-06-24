@@ -73,17 +73,6 @@ AmateurFencer::AmateurFencer()
 			AddComponent(collider);
 		}
 	}
-}
-
-AmateurFencer::~AmateurFencer()
-{
-	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
-	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
-}
-
-void AmateurFencer::BeginPlay()
-{
-	Super::BeginPlay();
 
 	// Idle Sequence
 	Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_idle(); });
@@ -119,7 +108,7 @@ void AmateurFencer::BeginPlay()
 	Sequence* BackStepSequence = new Sequence();
 	BackStepSequence->addChild(c4_2);
 	BackStepSequence->addChild(a4_2);
-	
+
 	// SlashWave Sequeuce
 	Condition* c5_1 = new Condition("is cur state SlashWave?", [&]() {return is_cur_state_slashwave(); });
 	Action* a5_1 = new Action("SlashWave", [&]() {return SlashWave(); });
@@ -152,6 +141,19 @@ void AmateurFencer::BeginPlay()
 	RootSelector->addChild(DashSequence);
 	RootSelector->addChild(DeadSequence);
 	_rootNode = RootSelector;
+}
+
+AmateurFencer::~AmateurFencer()
+{
+	GET_SINGLE(CollisionManager)->RemoveCollider(_collider);
+	GET_SINGLE(CollisionManager)->RemoveCollider(_detectCollider);
+}
+
+void AmateurFencer::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
 }
 
 void AmateurFencer::Tick()

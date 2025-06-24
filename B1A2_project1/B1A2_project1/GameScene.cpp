@@ -104,14 +104,14 @@ void GameScene::Init()
 	_player->SetCurrentScene(this);
 
 	// Announcemet
-	{
-		// Layer 추후 수정 예정
-		Actor* actor = SpawnObject<Actor>({ 500, 500 }, LAYER_PLAYER);
+	//{
+	//	// Layer 추후 수정 예정
+	//	Actor* actor = SpawnObject<Actor>({ 500, 500 }, LAYER_PLAYER);
 
-		DialogueComponent* dialogueComponent = new DialogueComponent();
-		actor->AddComponent(dialogueComponent);
-		actor->SetID(21);
-	}
+	//	DialogueComponent* dialogueComponent = new DialogueComponent();
+	//	actor->AddComponent(dialogueComponent);
+	//	actor->SetID(21);
+	//}
 
 	// Start Dialogue
 	/*{
@@ -1353,37 +1353,6 @@ void GameScene::LoadItem()
 			fb->SetInfo({ texture, L"FB_map_Poster", {30, 30}, 0, 2, 0, 0.7f, true });
 		}
 	}
-
-	// Inventory
-	{
-		// key
-
-		// Multipletap
-
-		// Gem
-
-		// Nametag
-
-		// Sword
-
-		// Medal1gold
-
-		// Medal2gold
-
-		// Photo1
-
-		// Medal3silver
-
-		// Photo2
-
-		// Photo3
-
-		// Box
-
-		// Photo4
-
-		// Poster
-	}
 }
 
 void GameScene::LoadInventory()
@@ -1590,15 +1559,22 @@ void GameScene::SetStage(int32 stage)
 void GameScene::SetStage1()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	//{
-	//	for (const std::vector<Actor*>& actors : _actors)
-	//	{
-	//		if (actors == _actors[LAYER_PLAYER])
-	//			break;
-	//		for (Actor* actor : actors)
-	//			SAFE_DELETE(actor);
-	//	}
-	//}
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+
+			for (Actor* actor : actors)
+			{
+				toRemove.push_back(actor);
+			}
+		}
+	}
+
+	for (Actor* actor : toRemove)
+		RemoveActor(actor);
+
 
 	// Map
 	{
@@ -1625,7 +1601,7 @@ void GameScene::SetStage1()
 		// Player가 없다면 생성
 		if (!_player)
 		{
-			Player* player = SpawnObject<Player>(1, { 400, 200 }, LAYER_PLAYER);
+			Player* player = SpawnObject<Player>(1, { 6000, 400 }, LAYER_PLAYER);
 			_player = player;
 		}
 		
@@ -1693,20 +1669,28 @@ void GameScene::SetStage1()
 		_player->SetSkillPoint(_loadData.skillPoint);
 		_player->SetAcquireItems(_loadData.playerItems);
 	}
+
+	Super::Init();
 }
 
 void GameScene::SetStage2()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	//{
-	//	for (const std::vector<Actor*>& actors : _actors)
-	//	{
-	//		if (actors == _actors[LAYER_PLAYER])
-	//			break;
-	//		for (Actor* actor : actors)
-	//			SAFE_DELETE(actor);
-	//	}
-	//}
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+
+			for (Actor* actor : actors)
+			{
+				toRemove.push_back(actor);
+			}	
+		}
+	}
+
+	for (Actor* actor : toRemove)
+		RemoveActor(actor);
 
 	// Map
 	{
@@ -1733,11 +1717,11 @@ void GameScene::SetStage2()
 		// Player가 없다면 생성
 		if (!_player)
 		{
-			Player* player = SpawnObject<Player>({ 400, 200 }, LAYER_PLAYER);
+			Player* player = SpawnObject<Player>({ 370, 200 }, LAYER_PLAYER);
 			_player = player;
 		}
 
-		_player->SetPos({ 400, 200 });
+		_player->SetPos({ 370, 200 });
 		_player->SetCurStageNum(_curStageNum);
 	}
 
@@ -1819,20 +1803,29 @@ void GameScene::SetStage2()
 		_player->SetSkillPoint(_loadData.skillPoint);
 		_player->SetAcquireItems(_loadData.playerItems);
 	}
+
+	Super::Init();
 }
 
 void GameScene::SetStage3()
 {
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	//{
-	//	for (const std::vector<Actor*>& actors : _actors)
-	//	{
-	//		if (actors == _actors[LAYER_PLAYER])
-	//			break;
-	//		for (Actor* actor : actors)
-	//			SAFE_DELETE(actor);
-	//	}
-	//}
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+
+			for (Actor* actor : actors)
+			{
+				toRemove.push_back(actor);
+			}
+		}
+	}
+
+	for (Actor* actor : toRemove)
+		RemoveActor(actor);
+
 
 	// Map
 	{
@@ -1945,22 +1938,29 @@ void GameScene::SetStage3()
 		_player->SetSkillPoint(_loadData.skillPoint);
 		_player->SetAcquireItems(_loadData.playerItems);
 	}
+
+	Super::Init();
 }
 
 void GameScene::SetFinalBossStage()
 {
-	// 임시 코드, 추후 수정 예정
-	
 	// 이전 스테이지 객체 삭제 (Player, UI 제외)
-	//{
-	//	for (const std::vector<Actor*>& actors : _actors)
-	//	{
-	//		if (actors == _actors[LAYER_PLAYER])
-	//			break;
-	//		for (Actor* actor : actors)
-	//			SAFE_DELETE(actor);
-	//	}
-	//}
+	{
+		for (const std::vector<Actor*>& actors : _actors)
+		{
+			if (actors == _actors[LAYER_PLAYER])
+				break;
+
+			for (Actor* actor : actors)
+			{
+				toRemove.push_back(actor);
+			}
+		}
+	}
+
+	for (Actor* actor : toRemove)
+		RemoveActor(actor);
+
 
 	// Map
 	{
@@ -2009,6 +2009,8 @@ void GameScene::SetFinalBossStage()
 
 		_finalBoss->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
 	}
+
+	Super::Init();
 }
 
 void GameScene::SetStructureStageN(int32 stageNum)

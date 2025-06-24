@@ -11,7 +11,6 @@
 
 TilemapActor::TilemapActor()
 {
-
 }
 
 TilemapActor::~TilemapActor()
@@ -36,27 +35,27 @@ void TilemapActor::BeginPlay()
 			BoxCollider* collider = new BoxCollider();
 			collider->SetSize({ MAP_TILE_SIZEX, MAP_TILE_SIZEY });
 			collider->SetPos({ (float)(x * MAP_TILE_SIZEX + MAP_TILE_SIZEX / 2),(float)(y * MAP_TILE_SIZEY + MAP_TILE_SIZEY / 2) });
-			
+
 			// flag reset
 			collider->ResetCollisionFlag();
 
 			switch (tiles[y][x].value)
 			{
-			case 1:		
+			case 1:
 				collider->SetCollisionLayer(CLT_GAME_OVER); break;
 				break;
 			case 2:
 				collider->SetCollisionLayer(CLT_GROUND); break;
 			case 3:
 				collider->SetCollisionLayer(CLT_WALL); break;
-			case 4:		
+			case 4:
 				collider->SetCollisionLayer(CLT_SAVE_POINT); break;
 			case 5:
 				collider->SetCollisionLayer(CLT_STAIR); break;
 			case 6:
 				collider->SetCollisionLayer(CLT_NEXT); break;
 			}
-			
+
 			// Ãæµ¹ÇÒ °´Ã¼
 			collider->AddCollisionFlagLayer(CLT_PLAYER);
 			collider->AddCollisionFlagLayer(CLT_MONSTER);

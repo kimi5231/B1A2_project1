@@ -131,4 +131,6 @@ private:
 
 	int32 _pendingStage = -1;	// 바꿀 예정인 스테이지 번호(NextTile 닿고 다음 프레임에 스테이지 전환하기 위해, Collider nullptr 오류)
 	bool _hasPendingStage = false;
+
+	std::vector<Actor*> toRemove;
 };
