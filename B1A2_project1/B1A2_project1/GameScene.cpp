@@ -284,6 +284,7 @@ void GameScene::LoadPlayer()
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerHang", L"Sprite\\Player\\PlayerHang.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerRelease", L"Sprite\\Player\\PlayerRelease.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSlash", L"Sprite\\Player\\PlayerSlash.bmp", RGB(55, 255, 0));
+	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerThrust", L"Sprite\\Player\\PlayerThrust.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerHit", L"Sprite\\Player\\PlayerHit.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSkillReady", L"Sprite\\Player\\PlayerSkillReady.bmp", RGB(55, 255, 0));
 	GET_SINGLE(ResourceManager)->LoadTexture(L"PlayerSkillWaiting", L"Sprite\\Player\\PlayerSkillWaiting.bmp", RGB(55, 255, 0));
@@ -391,6 +392,19 @@ void GameScene::LoadPlayer()
 		// Left
 		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerSlashLeft");
 		fb2->SetInfo({ texture, L"FB_PlayerSlashLeft", {75, 90}, 0, 6, 1, 0.7f });
+	}
+
+	// Thrust - LongAtk
+	{
+		Texture* texture = GET_SINGLE(ResourceManager)->GetTexture(L"PlayerThrust");
+
+		// Right
+		Flipbook* fb1 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerThrustRight");
+		fb1->SetInfo({ texture, L"FB_PlayerThrustRight", {125, 85}, 0, 14, 0, 0.7f });
+
+		// Left
+		Flipbook* fb2 = GET_SINGLE(ResourceManager)->CreateFlipbook(L"FB_PlayerThrustLeft");
+		fb2->SetInfo({ texture, L"FB_PlayerThrustLeft", {125, 85}, 0, 14, 1, 0.7f });
 	}
 
 	// Hit

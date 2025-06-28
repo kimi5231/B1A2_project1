@@ -168,6 +168,7 @@ private:
 	Flipbook* _flipbookPlayerDuckDownMove[2] = {};
 	Flipbook* _flipbookPlayerHang[2] = {};
 	Flipbook* _flipbookPlayerSlash[2] = {};		// CloseAtk
+	Flipbook* _flipbookPlayerThrust[2] = {};	// LongAtk
 	Flipbook* _flipbookPlayerSkillReady[2] = {};
 	Flipbook* _flipbookPlayerSkillWaiting[2] = {};
 	Flipbook* _flipbookPlayerSkillEnd[2] = {};

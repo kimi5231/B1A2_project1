@@ -60,6 +60,9 @@ public:
 	LoadData GetLoadData() { return _loadData; }
 
 public:
+	void RequestStageChange(int32 nextStage) { _pendingStage = nextStage; _hasPendingStage = true; }
+
+public:
 	void SetSceneState();	// ESC 입력으로 Menu
 	void SetItemAcquireState(ItemActor* item) { _sceneState = SceneState::ItemAcquire; _acquireItem = item; };
 
@@ -108,8 +111,6 @@ public:
 		return object;
 	}
 
-public:
-	void RequestStageChange(int32 nextStage) { _pendingStage = nextStage; _hasPendingStage = true; }
 
 private:
 	Panel* _menuPanel = nullptr;	// Menu 상태에서만 보여야 해서 _panel과 별개로 변수 생성

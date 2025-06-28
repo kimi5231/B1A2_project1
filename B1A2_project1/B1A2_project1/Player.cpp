@@ -52,6 +52,8 @@ Player::Player()
 	_flipbookPlayerRelease[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerReleaseLeft");
 	_flipbookPlayerSlash[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashRight");
 	_flipbookPlayerSlash[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSlashLeft");
+	_flipbookPlayerThrust[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerThrustRight");
+	_flipbookPlayerThrust[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerThrustLeft");
 	_flipbookPlayerHit[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitRight");
 	_flipbookPlayerHit[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerHitLeft");
 	_flipbookPlayerSkillReady[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerSkillReadyRight");
@@ -417,7 +419,7 @@ void Player::TickJump()
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
 			{
 				// 바라보는 방향 설정
-				_dir = DIR_RIGHT;
+				SetDir(DIR_RIGHT);
 
 				_currentZipLine = _nearZipLine;
 				SetState(ObjectState::Hang);
@@ -483,7 +485,7 @@ void Player::TickLongAttack()
 			_pos.x -= 114 * deltaTime;
 	}
 
-	if (this->GetIdx() == 6)
+	if (this->GetIdx() == 14)
 	{
 		sumTime = 0.0f;
 
@@ -813,8 +815,8 @@ void Player::UpdateAnimation()
 		}
 		break;
 	case ObjectState::LongAttack:
-		_playerCollider->SetSize({ 75, 90 });
-		SetFlipbook(_flipbookPlayerSlash[_dir]);	
+		_playerCollider->SetSize({ 125, 85 });
+		SetFlipbook(_flipbookPlayerThrust[_dir]);	
 		{
 			Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"PlayerLongAtk");
 			sound->Play(false);

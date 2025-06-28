@@ -67,6 +67,111 @@ FinalBoss::FinalBoss()
 			AddComponent(collider);
 		}
 	}
+
+	// Build BT
+	{
+		// Idle Sequence
+		Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_idle(); });
+		Action* a1 = new Action("Idle", [&]() {return Idle(); });
+		Sequence* IdleSequence = new Sequence();
+		IdleSequence->addChild(c1);
+		IdleSequence->addChild(a1);
+
+		// Chase Sequence
+		Condition* c = new Condition("is cur state chase?", [&]() {return is_cur_state_chase(); });
+		Action* a = new Action("Chase", [&]() {return Chase(); });
+		Sequence* ChaseSequeuce = new Sequence();
+		ChaseSequeuce->addChild(c);
+		ChaseSequeuce->addChild(a);
+
+		// Hit Sequence
+		Condition* c2 = new Condition("is cur state Hit?", [&]() {return is_cur_state_hit(); });
+		Action* a2 = new Action("Hit", [&]() {return Hit(); });
+		Sequence* HitSequence = new Sequence();
+		HitSequence->addChild(c2);
+		HitSequence->addChild(a2);
+
+		// Dead Sequence
+		Condition* c3 = new Condition("is cur state Dead?", [&]() {return is_cur_state_dead(); });
+		Action* a3 = new Action("Dead", [&]() {return Dead(); });
+		Sequence* DeadSequence = new Sequence();
+		DeadSequence->addChild(c3);
+		DeadSequence->addChild(a3);
+
+		// 수정 소환 Sequence
+		Condition* c5 = new Condition("is cur state Crystal Creation?", [&]() {return is_cur_state_crystal_creation(); });
+		Action* a5 = new Action("CrystalCreation", [&]() {return CrystalCreation(); });
+		Sequence* CrystalCreationSequence = new Sequence();
+		CrystalCreationSequence->addChild(c5);
+		CrystalCreationSequence->addChild(a5);
+
+		// Thrust Sequence
+		Condition* c7_1 = new Condition("is cur state Thrust?", [&]() {return is_cur_state_thrust(); });
+		Action* a7_1 = new Action("Thrust", [&]() {return Thrust(); });
+		Sequence* ThrustSequence = new Sequence();
+		ThrustSequence->addChild(c7_1);
+		ThrustSequence->addChild(a7_1);
+
+		// BackStep Sequence
+		Condition* c7_2 = new Condition("is cur state BackStep?", [&]() {return is_cur_state_backstep(); });
+		Action* a7_2 = new Action("BackStep", [&]() {return BackStep(); });
+		Sequence* BackStepSequence = new Sequence();
+		BackStepSequence->addChild(c7_2);
+		BackStepSequence->addChild(a7_2);
+
+		// LongAtk Length Sequence
+		Condition* c8_1 = new Condition("is cur state LongAtkLength?", [&]() {return is_cur_state_long_attack_length(); });
+		Action* a8_1 = new Action("LongAttackLength", [&]() {return LongAttackLength(); });
+		Sequence* LongAtkLengthSequence = new Sequence();
+		LongAtkLengthSequence->addChild(c8_1);
+		LongAtkLengthSequence->addChild(a8_1);
+
+		// LongAtk Width Sequence
+		Condition* c8_2 = new Condition("is cur state LongAtkWidth?", [&]() {return is_cur_state_long_attack_width(); });
+		Action* a8_2 = new Action("LongAttackWidth", [&]() {return LongAttackWidth(); });
+		Sequence* LongAtkWidthSequence = new Sequence();
+		LongAtkWidthSequence->addChild(c8_2);
+		LongAtkWidthSequence->addChild(a8_2);
+
+		// Dash Sequence
+		Condition* c8_3 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
+		Action* a8_3 = new Action("Dash", [&]() {return Dash(); });
+		Sequence* DashSequence = new Sequence();
+		DashSequence->addChild(c8_3);
+		DashSequence->addChild(a8_3);
+
+		// Teleport Sequence
+		Condition* c9 = new Condition("is cur state teleport?", [&]() {return is_cur_state_teleport(); });
+		Action* a9 = new Action("Teleport", [&]() {return Teleport(); });
+		Sequence* TeleportSequence = new Sequence();
+		TeleportSequence->addChild(c9);
+		TeleportSequence->addChild(a9);
+
+		// Cut Severely Sequence
+		Condition* c10 = new Condition("is cur state cut severely?", [&]() {return is_cur_state_cut_severely(); });
+		Action* a10 = new Action("CutSeverely", [&]() {return CutSeverely(); });
+		Sequence* CutSeverelySequence = new Sequence();
+		CutSeverelySequence->addChild(c10);
+		CutSeverelySequence->addChild(a10);
+
+		// rootNode 설정
+		Selector* RootSelector = new Selector();
+		RootSelector->addChild(IdleSequence);
+		RootSelector->addChild(ChaseSequeuce);
+		RootSelector->addChild(HitSequence);
+		RootSelector->addChild(DeadSequence);
+		RootSelector->addChild(CrystalCreationSequence);
+		RootSelector->addChild(ThrustSequence);
+		RootSelector->addChild(BackStepSequence);
+		RootSelector->addChild(LongAtkLengthSequence);
+		RootSelector->addChild(LongAtkWidthSequence);
+		RootSelector->addChild(DashSequence);
+		RootSelector->addChild(TeleportSequence);
+		RootSelector->addChild(CutSeverelySequence);
+		_rootNode = RootSelector;
+
+		SetState(ObjectState::Idle);
+	}
 }
 
 FinalBoss::~FinalBoss()
@@ -77,108 +182,6 @@ FinalBoss::~FinalBoss()
 void FinalBoss::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// Idle Sequence
-	Condition* c1 = new Condition("is cur state Idle?", [&]() {return is_cur_state_idle(); });
-	Action* a1 = new Action("Idle", [&]() {return Idle(); });
-	Sequence* IdleSequence = new Sequence();
-	IdleSequence->addChild(c1);
-	IdleSequence->addChild(a1);
-
-	// Chase Sequence
-	Condition* c = new Condition("is cur state chase?", [&]() {return is_cur_state_chase(); });
-	Action* a = new Action("Chase", [&]() {return Chase(); });
-	Sequence* ChaseSequeuce = new Sequence();
-	ChaseSequeuce->addChild(c);
-	ChaseSequeuce->addChild(a);
-
-	// Hit Sequence
-	Condition* c2 = new Condition("is cur state Hit?", [&]() {return is_cur_state_hit(); });
-	Action* a2 = new Action("Hit", [&]() {return Hit(); });
-	Sequence* HitSequence = new Sequence();
-	HitSequence->addChild(c2);
-	HitSequence->addChild(a2);
-
-	// Dead Sequence
-	Condition* c3 = new Condition("is cur state Dead?", [&]() {return is_cur_state_dead(); });
-	Action* a3 = new Action("Dead", [&]() {return Dead(); });
-	Sequence* DeadSequence = new Sequence();
-	DeadSequence->addChild(c3);
-	DeadSequence->addChild(a3);
-
-	// 수정 소환 Sequence
-	Condition* c5 = new Condition("is cur state Crystal Creation?", [&]() {return is_cur_state_crystal_creation(); });
-	Action* a5 = new Action("CrystalCreation", [&]() {return CrystalCreation(); });
-	Sequence* CrystalCreationSequence = new Sequence();
-	CrystalCreationSequence->addChild(c5);
-	CrystalCreationSequence->addChild(a5);
-
-	// Thrust Sequence
-	Condition* c7_1 = new Condition("is cur state Thrust?", [&]() {return is_cur_state_thrust(); });
-	Action* a7_1 = new Action("Thrust", [&]() {return Thrust(); });
-	Sequence* ThrustSequence = new Sequence();
-	ThrustSequence->addChild(c7_1);
-	ThrustSequence->addChild(a7_1);
-
-	// BackStep Sequence
-	Condition* c7_2 = new Condition("is cur state BackStep?", [&]() {return is_cur_state_backstep(); });
-	Action* a7_2 = new Action("BackStep", [&]() {return BackStep(); });
-	Sequence* BackStepSequence = new Sequence();
-	BackStepSequence->addChild(c7_2);
-	BackStepSequence->addChild(a7_2);
-
-	// LongAtk Length Sequence
-	Condition* c8_1 = new Condition("is cur state LongAtkLength?", [&]() {return is_cur_state_long_attack_length(); });
-	Action* a8_1 = new Action("LongAttackLength", [&]() {return LongAttackLength(); });
-	Sequence* LongAtkLengthSequence = new Sequence();
-	LongAtkLengthSequence->addChild(c8_1);
-	LongAtkLengthSequence->addChild(a8_1);
-
-	// LongAtk Width Sequence
-	Condition* c8_2 = new Condition("is cur state LongAtkWidth?", [&]() {return is_cur_state_long_attack_width(); });
-	Action* a8_2 = new Action("LongAttackWidth", [&]() {return LongAttackWidth(); });
-	Sequence* LongAtkWidthSequence = new Sequence();
-	LongAtkWidthSequence->addChild(c8_2);
-	LongAtkWidthSequence->addChild(a8_2);
-
-	// Dash Sequence
-	Condition* c8_3 = new Condition("is cur State Dash?", [&]() {return is_cur_state_dash(); });
-	Action* a8_3 = new Action("Dash", [&]() {return Dash(); });
-	Sequence* DashSequence = new Sequence();
-	DashSequence->addChild(c8_3);
-	DashSequence->addChild(a8_3);
-
-	// Teleport Sequence
-	Condition* c9 = new Condition("is cur state teleport?", [&]() {return is_cur_state_teleport(); });
-	Action* a9 = new Action("Teleport", [&]() {return Teleport(); });
-	Sequence* TeleportSequence = new Sequence();
-	TeleportSequence->addChild(c9);
-	TeleportSequence->addChild(a9);
-
-	// Cut Severely Sequence
-	Condition* c10 = new Condition("is cur state cut severely?", [&]() {return is_cur_state_cut_severely(); });
-	Action* a10 = new Action("CutSeverely", [&]() {return CutSeverely(); });
-	Sequence* CutSeverelySequence = new Sequence();
-	CutSeverelySequence->addChild(c10);
-	CutSeverelySequence->addChild(a10);
-	
-	// rootNode 설정
-	Selector* RootSelector = new Selector();
-	RootSelector->addChild(IdleSequence);
-	RootSelector->addChild(ChaseSequeuce);
-	RootSelector->addChild(HitSequence);
-	RootSelector->addChild(DeadSequence);
-	RootSelector->addChild(CrystalCreationSequence);
-	RootSelector->addChild(ThrustSequence);
-	RootSelector->addChild(BackStepSequence);
-	RootSelector->addChild(LongAtkLengthSequence);
-	RootSelector->addChild(LongAtkWidthSequence);
-	RootSelector->addChild(DashSequence);
-	RootSelector->addChild(TeleportSequence);
-	RootSelector->addChild(CutSeverelySequence);
-	_rootNode = RootSelector;
-
-	SetState(ObjectState::Idle);
 }
 
 void FinalBoss::Tick()

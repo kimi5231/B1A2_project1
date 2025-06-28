@@ -152,8 +152,6 @@ AmateurFencer::~AmateurFencer()
 void AmateurFencer::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 void AmateurFencer::Tick()
